@@ -12,7 +12,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-Ukończono planowanie P000, inwentaryzację narzędzi P001 i minimalny build P002. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 oraz jeden natywny test CTest. Build i test przeszły w Debug i Release na MSVC x64; potwierdzono też wykrywanie celowego błędu testu. Nie ma jeszcze mechanik ani okna gry. Wersje narzędzi opisuje [toolchain](docs/TOOLCHAIN.md), a wyniki [raport P002](docs/workflow/history/P002.md). Następne zadanie: **P003 — konfiguracja stylu**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
+Ukończono planowanie P000, inwentaryzację narzędzi P001, minimalny build P002 i konfigurację stylu P003. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 oraz jeden natywny test CTest. Build i test przeszły w Debug i Release na MSVC x64; potwierdzono też wykrywanie celowego błędu testu. Nie ma jeszcze mechanik ani okna gry. Wersje narzędzi opisuje [toolchain](docs/TOOLCHAIN.md), a wyniki [raport P002](docs/workflow/history/P002.md). Następne zadanie: **P004 — presety Windows**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
 
 ## Mapa dokumentacji
 
@@ -62,6 +62,16 @@ ctest --test-dir build -C Release --output-on-failure
 ```
 
 `build/` jest ignorowany przez Git. Test sprawdza kompilację, linkowanie i działanie elementów biblioteki standardowej C++20 (`span`, ranges); nie testuje jeszcze reguł gry. Szczegóły i dowód niezerowego kodu błędu są w raporcie P002.
+
+## Styl C++
+
+`.clang-format` ustawia wcięcia na cztery spacje i klamry otwierające w osobnej linii. `.editorconfig` ustawia UTF-8 i LF, z CRLF dla skryptów PowerShell zgodnie z `.gitattributes`. Nazwy funkcji i zmiennych zapisuj w `snake_case`, a typów w `PascalCase`; formatter nie sprawdza nazw.
+
+Sprawdzenie formatowania obecnych źródeł bez ich zmiany:
+
+```powershell
+clang-format --style=file --dry-run --Werror tests/unit/build_tests.cpp
+```
 
 ## Planowane komendy — jeszcze niedostępne
 
