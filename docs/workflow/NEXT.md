@@ -1,19 +1,19 @@
 # Następny mały krok
 
-Task: P005
+Task: P006
 
 ## Cel
 
-Dodaj jeden workflow GitHub Actions, który buduje i testuje projekt na Windows x64 w Debug i Release. Zależność P004 jest ukończona. Workflow ma działać bez assetów.
+Dodaj silne typy identyfikatorów domeny `NodeId` i `EntityId` w core. Zależność P005 jest ukończona.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [STATE.json](STATE.json), [raport P004](history/P004.md), wpis P005 w [tasks.json](../plan/tasks.json), [CMakePresets.json](../../CMakePresets.json) i [README](../../README.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [STATE.json](STATE.json), [raport P005](history/P005.md), wpis P006 w [tasks.json](../plan/tasks.json), [ARCHITECTURE.md](../ARCHITECTURE.md), [TESTING.md](../TESTING.md) i [CMakeLists.txt](../../CMakeLists.txt).
 
 ## Wykonaj
 
-Umieść workflow w `.github/workflows/`. Wybierz runner Windows zgodny z generatorem `Visual Studio 17 2022` i użyj presetów z README. Ogranicz zadanie do konfiguracji, kompilacji i testów. Kod C++, pakowanie i integracja Steam są poza zakresem.
+Zdefiniuj oba typy i ich zakres zgodnie z architekturą. Dodaj testy wartości granicznych i sprawdzenia w czasie kompilacji, że niedozwolone konwersje są odrzucane, w tym konwersje między typami. Zakres kroku obejmuje identyfikatory i ich testy.
 
 ## Weryfikacja i przekazanie
 
-Sprawdź YAML i lokalnie uruchom komendy configure, build i CTest obu konfiguracji z workflow. Wynik zdalny zapisz dopiero po faktycznym uruchomieniu w GitHub Actions. Uruchom walidator projektu na początku i końcu, zapisz wyniki w `history/P005.md`, zaktualizuj STATE i NEXT oraz wykonaj `git diff --check`. Zakończ lokalnym commitem i sprawdź jego hash oraz zakres. Push wymaga osobnej zgody.
+Uruchom konfigurację, build i CTest w Debug i Release zgodnie z [README](../../README.md). Wykonaj walidator projektu i `git diff --check`. Zapisz wyniki w `history/P006.md`, zaktualizuj STATE i NEXT, a następnie sprawdź hash i zakres lokalnego commitu.

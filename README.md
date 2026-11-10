@@ -12,7 +12,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-Ukończono planowanie P000, inwentaryzację narzędzi P001, minimalny build P002, konfigurację stylu P003 i presety Windows P004. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 oraz jeden natywny test CTest. Presety sprawdzono w Debug i Release na MSVC x64. Mechaniki i okno gry są w planie. Wersje narzędzi opisuje [toolchain](docs/TOOLCHAIN.md), a wyniki [raport P004](docs/workflow/history/P004.md). Następne zadanie to **P005 — CI Windows**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
+Ukończono planowanie P000 i etap M1 (P001–P005). CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 oraz jeden natywny test CTest. [Workflow Windows CI](.github/workflows/windows.yml) buduje i testuje Debug oraz Release na MSVC x64 po pushu do `main` i przy pull requestach. Komendy workflow sprawdzono lokalnie w obu konfiguracjach. [Raport P005](docs/workflow/history/P005.md) podaje zakres weryfikacji. Następne zadanie to **P006 — identyfikatory domeny**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
 
 ## Mapa dokumentacji
 
