@@ -34,7 +34,8 @@ Core nie zależy od prezentacji. Application korzysta z core i portów. Platform
 - Porty jako maska czterech bitów; sąsiedztwo obliczane, bez mutowania obu końców krawędzi.
 - `GameState` + `Command` → `TurnResult`: nowy stan i zdarzenia. Nielegalna komenda nie zużywa RNG.
 - Podgląd używa resolvera na kopii, bez zapisu i achievementów.
-- Całkowitoliczbowa logika i stabilna iteracja. Mały opisany PRNG z testowymi wektorami; jawne mapowanie zakresu bez zależności od implementacji `uniform_int_distribution`.
+- Całkowitoliczbowa logika i stabilna iteracja. P012 przewiduje jawne mapowanie zakresu bez zależności od implementacji `uniform_int_distribution`.
+- `RunSeed` przyjmuje każdą wartość `uint64_t` jako początkowy stan SplitMix64. Każde `next_u64()` najpierw dodaje `0x9e3779b97f4a7c15` do stanu modulo 2⁶⁴, a następnie miesza nową wartość przesunięciami, XOR i mnożeniami modulo 2⁶⁴. [Kod generatora](../src/core/splitmix64.hpp) · [Implementacja referencyjna](https://prng.di.unimi.it/splitmix.c)
 - Replay: wersja reguł, seed, komendy. Zmiana reguł może zerwać zgodność; nieobsługiwaną wersję odrzucaj jawnie.
 
 ## Zapis

@@ -75,4 +75,9 @@ class EntityId
     Value value_;
 };
 
+// Every 64-bit unsigned value is a valid run seed.
+enum class RunSeed : std::uint64_t
+{
+};
+
 } // namespace closed_circuit
