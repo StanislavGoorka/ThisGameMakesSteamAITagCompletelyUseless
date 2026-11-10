@@ -12,7 +12,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-Ukończono planowanie P000, inwentaryzację narzędzi P001, minimalny build P002 i konfigurację stylu P003. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 oraz jeden natywny test CTest. Build i test przeszły w Debug i Release na MSVC x64; potwierdzono też wykrywanie celowego błędu testu. Nie ma jeszcze mechanik ani okna gry. Wersje narzędzi opisuje [toolchain](docs/TOOLCHAIN.md), a wyniki [raport P002](docs/workflow/history/P002.md). Następne zadanie: **P004 — presety Windows**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
+Ukończono planowanie P000, inwentaryzację narzędzi P001, minimalny build P002, konfigurację stylu P003 i presety Windows P004. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 oraz jeden natywny test CTest. Presety sprawdzono w Debug i Release na MSVC x64. Mechaniki i okno gry są w planie. Wersje narzędzi opisuje [toolchain](docs/TOOLCHAIN.md), a wyniki [raport P004](docs/workflow/history/P004.md). Następne zadanie to **P005 — CI Windows**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
 
 ## Mapa dokumentacji
 
@@ -51,17 +51,17 @@ Lokalny dysk nie zapisuje informacji o właścicielu katalogu. Opcja `git -c saf
 
 ## Build i test C++20
 
-CMake 3.26+, Visual Studio Build Tools 2022 z MSVC x64 i Windows SDK. Z katalogu repozytorium w PowerShell; generator sam wykrywa instalację VS, bez globalnych zmian PATH:
+Wymagane są CMake 3.26+, Visual Studio Build Tools 2022 z MSVC x64 i Windows SDK. Uruchom poniższe komendy w PowerShell z katalogu repozytorium. Generator sam wykrywa instalację VS.
 
 ```powershell
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64
-cmake --build build --config Debug
-ctest --test-dir build -C Debug --output-on-failure
-cmake --build build --config Release
-ctest --test-dir build -C Release --output-on-failure
+cmake --preset windows-msvc
+cmake --build --preset windows-debug
+ctest --preset windows-debug --output-on-failure
+cmake --build --preset windows-release
+ctest --preset windows-release --output-on-failure
 ```
 
-`build/` jest ignorowany przez Git. Test sprawdza kompilację, linkowanie i działanie elementów biblioteki standardowej C++20 (`span`, ranges); nie testuje jeszcze reguł gry. Szczegóły i dowód niezerowego kodu błędu są w raporcie P002.
+Obie konfiguracje korzystają z katalogu `build/windows-msvc/`, ignorowanego przez Git. Test sprawdza kompilację, linkowanie i działanie elementów biblioteki standardowej C++20 (`span`, ranges). [Raport P002](docs/workflow/history/P002.md) dokumentuje też sprawdzenie celowego błędu testu.
 
 ## Styl C++
 
@@ -73,16 +73,6 @@ Sprawdzenie formatowania obecnych źródeł bez ich zmiany:
 clang-format --style=file --dry-run --Werror tests/unit/build_tests.cpp
 ```
 
-## Planowane komendy — jeszcze niedostępne
+## Narzędzia utrzymaniowe i licencja
 
-P004 wprowadzi presety, P005 CI. Docelowo:
-
-```powershell
-cmake --preset windows-msvc
-cmake --build --preset windows-debug
-ctest --preset windows-debug --output-on-failure
-cmake --build --preset windows-release
-ctest --preset windows-release --output-on-failure
-```
-
-Nie przedstawiaj tych komend jako wykonanych przed wdrożeniem presetów. Projekt nie wymaga Pythona. Skrypty utrzymaniowe korzystają z Windows PowerShell 5.1+. Nie ustalono jeszcze licencji własnego kodu; publiczne repozytorium nie oznacza udzielenia licencji na wykorzystanie jego zawartości.
+Projekt nie wymaga Pythona. Skrypty utrzymaniowe korzystają z Windows PowerShell 5.1+. Nie ustalono jeszcze licencji własnego kodu; publiczne repozytorium nie oznacza udzielenia licencji na wykorzystanie jego zawartości.
