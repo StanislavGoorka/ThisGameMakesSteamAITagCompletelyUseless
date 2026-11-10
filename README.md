@@ -12,7 +12,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-Ukończono pakiet planowania P000. Nie ma jeszcze gry, systemu budowania ani testów C++. Następne zadanie: **P001 — inwentaryzacja narzędzi Windows**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
+Ukończono pakiet planowania P000 i inwentaryzację narzędzi P001. Potwierdzono lokalny MSVC x64, Windows SDK, CMake/CTest i formatter; wersje i komendy opisuje [toolchain](docs/TOOLCHAIN.md). Nie ma jeszcze gry, systemu budowania ani testów C++. Następne zadanie: **P002 — minimalny build core**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
 
 ## Mapa dokumentacji
 
@@ -21,6 +21,7 @@ Ukończono pakiet planowania P000. Nie ma jeszcze gry, systemu budowania ani tes
 | [Koncepcja i reguły](docs/GAME_DESIGN.md) | Pętla gry, reguły tur, zakres MVP i 1.0 |
 | [Analiza gier](docs/RESEARCH.md) | Punkty odniesienia, alternatywy i uzasadnienie wyboru |
 | [Architektura](docs/ARCHITECTURE.md) | Moduły C++, Windows, zapis, achievementy |
+| [Toolchain](docs/TOOLCHAIN.md) | Sprawdzone lokalne wersje i ścieżki narzędzi Windows |
 | [Plan etapów](docs/ROADMAP.md) | Bramki etapów i sposób rozbijania pracy |
 | [Zadania](docs/plan/tasks.json) | Kolejka mikro-kroków i zależności |
 | [Workflow](docs/WORKFLOW.md) | Jedno uruchomienie = jeden mały krok |
@@ -50,7 +51,7 @@ Lokalny dysk nie zapisuje informacji o właścicielu katalogu. Opcja `git -c saf
 
 ## Planowane komendy — jeszcze niedostępne
 
-P002 wprowadzi CMake 3.26+, generator Visual Studio 2022 i CTest; P004 presety, P005 CI. MSVC i Windows SDK muszą być wykryte przez P001. Docelowo:
+P002 wprowadzi CMake 3.26+, generator Visual Studio 2022 i CTest; P004 presety, P005 CI. P001 wykrył MSVC i Windows SDK; kompilacja i linkowanie wymagają sprawdzenia w P002. Docelowo:
 
 ```powershell
 cmake --preset windows-msvc

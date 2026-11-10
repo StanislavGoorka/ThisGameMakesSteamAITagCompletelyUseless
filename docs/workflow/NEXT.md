@@ -1,24 +1,24 @@
 # Następny mały krok
 
-Task: P001
+Task: P002
 
 ## Cel
 
-Wyłącznie inwentaryzacja toolchainu Windows do `docs/TOOLCHAIN.md`. Nie zaczynaj CMake, kodu gry, okna, grafiki ani pobierania assetów. P000 jest jednorazowym pakietem planowania; następne kroki są znacznie mniejsze.
+Wyłącznie minimalny build core: `CMakeLists.txt` i jeden test C++20 wykonywany przez CTest. Zależność P001 jest ukończona. Bez okna, treści gry, presetów, CI i pobierania assetów. Nie realizuj P003 w tym samym wznowieniu.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [STATE.json](STATE.json), [raport P000](history/P000.md), wpis P001 w [tasks.json](../plan/tasks.json) oraz [architekturę](../ARCHITECTURE.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [STATE.json](STATE.json), [raport P001](history/P001.md), wpis P002 w [tasks.json](../plan/tasks.json), [toolchain](../TOOLCHAIN.md), [architekturę](../ARCHITECTURE.md) i [testy](../TESTING.md).
 
 ## Wykonaj
 
-Sprawdź rzeczywiste wersje i lokalizacje CMake, CTest, clang-format, Visual Studio, MSVC i Windows SDK, w tym `vswhere`. Ustal, czy brak polecenia wynika tylko z niezaładowanego środowiska VS. Nie instaluj i nie zmieniaj globalnego PATH. Gdy czegoś brakuje, zapisz to z konkretnym warunkiem umożliwiającym P002.
+Dodaj najmniejszy sensowny cel core i jeden natywny test C++20 z jawnym kodem błędu, zarejestrowany w CTest. Test ma działać także w Release, bez polegania na `assert`. Wybierz generator `Visual Studio 17 2022` i platformę `x64`. Nie dodawaj mechanik ani kolejnych modułów.
 
-Wstępna obserwacja P000: CMake/CTest są w `C:/mingw64/bin`, CMake 3.26.4, clang-format 16.0.4, widoczny katalog Visual Studio 2022. To nie potwierdza działającego kompilatora MSVC ani SDK. Python launcher zgłosił odmowę dostępu; workflow nie wymaga Pythona. Sprawdź aktualny stan zamiast kopiować te wyniki jako własny test.
+P001 potwierdził CMake/CTest 3.26.4 z `C:/mingw64/bin`, clang-format 16.0.4, VS Build Tools 2022 17.14.40, MSVC x64 19.44.35228 i SDK 10.0.22621.0. CMake zgłasza generator VS 2022 i x64. Dodatkowy CMake/CTest 3.31.6-msvc6 jest w instalacji VS. Brak `cl` w zwykłym PATH wynika z niezaładowanego środowiska VS; komendy inicjalizacji procesu potomnego są w TOOLCHAIN.md. Nie zmieniaj globalnego PATH i niczego nie instaluj. P001 nie sprawdzał kompilacji ani linkowania.
 
 ## Weryfikacja i przekazanie
 
-Uruchom `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Project.ps1` oraz rzeczywiste komendy wersji/wykrywania. Raportuj dokładne wyniki bez sekretów. Zapisz `history/P001.md`, zaktualizuj STATE i NEXT. Jeżeli narzędzia nie umożliwiają P002, wpisz blokadę; nie oznaczaj przyszłego builda jako wykonanego. Nie realizuj P002 w tym samym wznowieniu.
+Uruchom walidator projektu na początku i końcu. Skonfiguruj CMake, zbuduj Debug i Release oraz uruchom CTest dla obu konfiguracji. Sprawdź celowy błąd testu: runner i CTest muszą zwrócić niezerowy kod również w Release; przywróć poprawny stan i potwierdź PASS. Zapisz dokładne komendy i kody wyjścia, nie deklaruj niewykonanych buildów. Na końcu `git diff --check`, raport `history/P002.md`, aktualizacja STATE i NEXT oraz lokalny commit tylko własnych zmian. Przy rzeczywistej blokadzie zapisz przyczynę i warunek odblokowania.
 
 ## Obowiązkowy commit każdego kroku
 
