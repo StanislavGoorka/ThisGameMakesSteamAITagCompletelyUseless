@@ -1,0 +1,59 @@
+# Architektura docelowa
+
+Plan, nie opis zaimplementowanych modułów. Budujemy małą grę testowalną bez wyświetlania treści, nie silnik ogólnego zastosowania.
+
+## Stos
+
+Windows x64, desktop Win32, C++20, MSVC z Visual Studio 2022 i Windows SDK, CMake 3.26+. Windows 11 jest celem wsparcia 1.0; Windows 10 można sprawdzać dodatkowo bez obiecywania zgodności. Narzędzia musi zweryfikować P001; ich obecność nie jest założona.
+
+[Direct2D](https://learn.microsoft.com/en-us/windows/win32/direct2d/direct2d-quickstart) renderuje gotowe bitmapy; [WIC](https://learn.microsoft.com/en-us/windows/win32/wic/-wic-about-windows-imaging-codec) dekoduje zatwierdzone PNG. DirectWrite składa zatwierdzone napisy lub oznaczone placeholdery, bez projektowania fontów. XAudio2 odtwarza zatwierdzone WAV, bez syntezy. To API systemu, nie zewnętrzny silnik.
+
+Nie dodawaj frameworka, ECS, fizyki ani edytora bez konkretnego uzasadnienia. Początkowo mały runner testów C++ z niezerowym kodem błędu, rejestrowany w CTest; nie polegaj na `assert`, które znika w Release. Zależności wymagają wersji i licencji. Pobranie biblioteki zawierającej assety nie omija zasad zgody.
+
+## Granice modułów
+
+| Katalog docelowy | Odpowiedzialność |
+| --- | --- |
+| `src/core/` | Stan, graf, komendy, tury, RNG, zdarzenia; bez Windows, plików i Steam |
+| `src/application/` | Sesja, checkpointy, porty usług |
+| `src/platform/windows/` | Win32, zegar, wejście, pliki, urządzenia |
+| `src/presentation/` | Przekład stanu na zatwierdzone bitmapy i teksty |
+| `src/steam/` | Opcjonalny adapter Steamworks |
+| `tests/unit/`, `tests/integration/` | Logika, trwałość, kontrakty |
+| `tests/fixtures/` | Niewyświetlane dane syntetyczne, nigdy w paczce gry |
+| `assets/approved/` | Zatwierdzone zasoby; obecnie katalog nie istnieje |
+| `content/` | Rejestry pochodzenia, zgód i plików paczki |
+| `scripts/`, `tools/` | Narzędzia deweloperskie, poza paczką gry |
+
+Core nie zależy od prezentacji. Application korzysta z core i portów. Platforma oraz Steam implementują porty, a entrypoint składa moduły. Przy kilkudziesięciu obiektach nie potrzeba ECS.
+
+## Domena i determinizm
+
+- Silne typy `NodeId`, `EntityId`, `RunSeed`, `TurnIndex`; jawne granice zakresów.
+- Porty jako maska czterech bitów; sąsiedztwo obliczane, bez mutowania obu końców krawędzi.
+- `GameState` + `Command` → `TurnResult`: nowy stan i zdarzenia. Nielegalna komenda nie zużywa RNG.
+- Podgląd używa resolvera na kopii, bez zapisu i achievementów.
+- Całkowitoliczbowa logika i stabilna iteracja. Mały opisany PRNG z testowymi wektorami; jawne mapowanie zakresu bez zależności od implementacji `uniform_int_distribution`.
+- Replay: wersja reguł, seed, komendy. Zmiana reguł może zerwać zgodność; nieobsługiwaną wersję odrzucaj jawnie.
+
+## Zapis
+
+Oddziel `profile` (odblokowania, achievementy, ustawienia) od `run_checkpoint` (seed, granica sektora, reguły, moduły, HP, rezerwa, dług). Pliki w katalogu użytkownika, nie przy exe. Zapis tymczasowy → bezpieczna zamiana → backup ostatniego poprawnego pliku. Schema version, limity rozmiaru i walidacja wartości. Uszkodzony zapis nie nadpisuje poprawnego backupu. Bez serializacji wskaźników.
+
+## Achievementy
+
+Lokalny evaluator reaguje na zdarzenia domenowe. Stałe identyfikatory, np. `ACH_FIRST_DELIVERY`, nie są etykietami dla gracza. Pięć MVP: dostawa, sektor, run bez overdrive, dostawa po rekonfiguracji, ukończenie runu. P045 precyzuje predykaty i resetowanie; implementować każdy oddzielnie.
+
+Port `AchievementSink` ma backend lokalny i później Steam. Najpierw trwały zapis lokalny, potem idempotentna synchronizacja z kolejką i potwierdzeniami. Offline i brak Steam nie blokują gry. [Dokumentacja Steamworks](https://partner.steamgames.com/doc/features/achievements) opisuje odblokowanie i zapis statystyk; aktualne API sprawdzić przy implementacji. Ikony, opisy i nazwy wymagają pochodzenia tak samo jak reszta treści.
+
+## Prezentacja
+
+Renderer używa wyłącznie zatwierdzonego manifestu. Brak zasobu oznacza kontrolowany błąd lub wyłączenie widoku, nie rysowanie nowej ikony. Panele, ścieżki i znaczniki powstają z pozyskanych elementów. Zwykłe pozycjonowanie i skalowanie gotowych bitmap jest operacją prezentacji; nie daje prawa do twórczego przerabiania artworku.
+
+Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych finalnych tekstów z dowodami pochodzenia. Komunikat błędu pokazywany graczowi również jest treścią. Wewnętrznych nazw nie wyświetlaj jako finalnego tytułu. Binarne identyfikatory nie mogą wyciekać na UI jako nieoznaczone etykiety.
+
+## Styl i budżety
+
+4 spacje; `snake_case` dla funkcji i pól, `PascalCase` dla typów; RAII dla COM, uchwytów i pamięci. MSVC `/W4`, `/permissive-`, ostrzeżenia jako błędy dla własnego kodu w CI. Debug i Release. Osobna konfiguracja AddressSanitizer po sprawdzeniu obsługi toolchainu.
+
+Cel pomiarowy: 60 FPS prezentacji, logiczne tury niezależne od FPS, podgląd typowej planszy do 16 ms, RAM poniżej 250 MB. To budżety do sprawdzenia na opisanym sprzęcie, nie ogłoszone wymagania minimalne. Raport benchmarku podaje sprzęt i rozkład czasów.

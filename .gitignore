@@ -1,0 +1,29 @@
+# Build and local tool configuration
+/build/
+/out/
+/.vs/
+/CMakeUserPresets.json
+*.user
+*.suo
+*.pdb
+*.ilk
+*.obj
+*.exe
+*.dll
+
+# Unapproved downloads and private platform tools
+/.local/
+/downloads/
+/quarantine/
+/private/
+/steamworks_sdk/
+/steam_appid.txt
+/.env
+/.env.*
+!/.env.example
+*.pem
+*.key
+
+# Local reports and test scratch; curated evidence belongs in docs
+/test-results/
+/tmp/

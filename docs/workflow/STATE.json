@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-10",
+  "completed": ["P000"],
+  "current_task": "P001",
+  "blocked": [],
+  "last_report": "docs/workflow/history/P000.md"
+}
