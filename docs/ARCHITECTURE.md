@@ -30,6 +30,7 @@ Core nie zależy od prezentacji. Application korzysta z core i portów. Platform
 ## Domena i determinizm
 
 - Silne typy `NodeId`, `EntityId`, `RunSeed`, `TurnIndex`; jawne granice zakresów.
+  `NodeId` obejmuje 0–48, po jednej wartości na pole planszy 7×7. `EntityId` obejmuje 0–4 294 967 295, pełny zakres `uint32_t`. `from_value` zwraca pusty `std::optional` dla liczby całkowitej spoza zakresu.
 - Porty jako maska czterech bitów; sąsiedztwo obliczane, bez mutowania obu końców krawędzi.
 - `GameState` + `Command` → `TurnResult`: nowy stan i zdarzenia. Nielegalna komenda nie zużywa RNG.
 - Podgląd używa resolvera na kopii, bez zapisu i achievementów.
