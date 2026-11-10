@@ -12,7 +12,9 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006 oraz maskę portów z obrotem w P007. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i trzy testy CTest. [Workflow Windows CI](.github/workflows/windows.yml) buduje i testuje Debug oraz Release na MSVC x64 po pushu do `main` i przy pull requestach. Obie konfiguracje sprawdzono lokalnie. [Raport P007](docs/workflow/history/P007.md) podaje zakres weryfikacji. Następne zadanie to **P008 — sąsiedztwo grafu**. Wystarczy polecenie **„Zrealizuj następny krok”**. Agent czyta [AGENTS.md](AGENTS.md), skill next-step i aktualne przekazanie pracy.
+Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007 oraz sąsiedztwo na siatce 7×7 w P008. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i cztery testy CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P008](docs/workflow/history/P008.md)
+
+Następne zadanie to **P009 — komenda obrotu węzła**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -61,7 +63,9 @@ cmake --build --preset windows-release
 ctest --preset windows-release --output-on-failure
 ```
 
-Obie konfiguracje korzystają z katalogu `build/windows-msvc/`, ignorowanego przez Git. `core_build_smoke` sprawdza kompilację, linkowanie i działanie elementów biblioteki standardowej C++20 (`span`, ranges). `core_identifier_ranges` sprawdza granice identyfikatorów i ich porządek, a podczas kompilacji także niedozwolone konwersje. `core_port_rotation` sprawdza obrót wszystkich 16 masek i odrzucanie wartości spoza zakresu. [Raport P002](docs/workflow/history/P002.md) dokumentuje sprawdzenie celowego błędu testu kompilacji i uruchomienia.
+Obie konfiguracje korzystają z katalogu `build/windows-msvc/`, ignorowanego przez Git. `core_build_smoke` sprawdza kompilację, linkowanie i działanie elementów biblioteki standardowej C++20 (`span`, ranges). `core_identifier_ranges` sprawdza granice identyfikatorów i ich porządek, a podczas kompilacji także niedozwolone konwersje. `core_port_rotation` sprawdza obrót wszystkich 16 masek i odrzucanie wartości spoza zakresu. `core_grid_adjacency` sprawdza wzajemne porty i granice planszy. [Raport P002](docs/workflow/history/P002.md) dokumentuje sprawdzenie celowego błędu testu kompilacji i uruchomienia.
+
+CI buduje i testuje Debug oraz Release na MSVC x64 po pushu do `main` i przy pull requestach. [Workflow Windows CI](.github/workflows/windows.yml)
 
 ## Styl C++
 
@@ -70,7 +74,7 @@ Obie konfiguracje korzystają z katalogu `build/windows-msvc/`, ignorowanego prz
 Sprawdzenie formatowania obecnych źródeł bez ich zmiany:
 
 ```powershell
-clang-format --style=file --dry-run --Werror src/core/identifiers.hpp src/core/port_mask.hpp tests/unit/build_tests.cpp tests/unit/identifier_tests.cpp tests/unit/port_mask_tests.cpp
+clang-format --style=file --dry-run --Werror src/core/identifiers.hpp src/core/port_mask.hpp src/core/grid_adjacency.hpp tests/unit/build_tests.cpp tests/unit/identifier_tests.cpp tests/unit/port_mask_tests.cpp tests/unit/grid_adjacency_tests.cpp
 ```
 
 ## Narzędzia utrzymaniowe i licencja

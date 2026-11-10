@@ -4,7 +4,7 @@
 
 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Project.ps1` kontroluje spójność dokumentacji, kolejki i pustych rejestrów. `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ProjectValidator.ps1` sprawdza 11 przypadków, w tym uszkodzony hash i brak zgody, na izolowanych kopiach. Syntetyczne rekordy testowe nie są prawdziwymi zgodami ani dowodami autorstwa.
 
-`core_build_smoke` sprawdza kompilację C++20 i wykonanie kodu korzystającego z `std::span` i ranges. `core_identifier_ranges` sprawdza granice i porządek wartości `NodeId` oraz `EntityId`. Kompilacja testu weryfikuje także brak niedozwolonych konwersji. `core_port_rotation` sprawdza obrót o 90° dla każdej maski, powrót po czterech obrotach, zachowanie liczby portów i odrzucanie wartości spoza zakresu. Uruchamianie Debug/Release opisuje [README](../README.md). [Raport P002](workflow/history/P002.md) dokumentuje celowy błąd i niezerowe kody runnera oraz CTest w obu konfiguracjach.
+`core_build_smoke` sprawdza kompilację C++20 i wykonanie kodu korzystającego z `std::span` i ranges. `core_identifier_ranges` sprawdza granice i porządek wartości `NodeId` oraz `EntityId`. Kompilacja testu weryfikuje także brak niedozwolonych konwersji. `core_port_rotation` sprawdza obrót o 90° dla każdej maski, powrót po czterech obrotach, zachowanie liczby portów i odrzucanie wartości spoza zakresu. `core_grid_adjacency` sprawdza wzajemność połączeń, granice siatki i brak zawijania między wierszami. Uruchamianie Debug/Release opisuje [README](../README.md). [Raport P002](workflow/history/P002.md) dokumentuje celowy błąd i niezerowe kody runnera oraz CTest w obu konfiguracjach.
 
 ## C++ i zakres testów
 
