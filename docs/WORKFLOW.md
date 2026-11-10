@@ -24,7 +24,7 @@ Nie raportuj testu jako zaliczonego, jeśli nie był uruchomiony. Brak kompilato
 - `docs/workflow/history/<ID>.md`: data, cel, pliki, decyzja, dokładne komendy i wyniki, ograniczenia, konkretna instrukcja następcy. Bez fikcyjnych testów i odwołań do nieistniejących logów.
 - `STATE.json` jest źródłem stanu: `completed`, `current_task`, `blocked`, `last_report`. Dodaj zadanie do completed dopiero po spełnieniu jego kryteriów. Nie oznaczaj planu jako implementacji.
 - `NEXT.md` jest przekazaniem dla człowieka i agenta. Podaje ten sam `Task: <ID>`, mały zakres, zależności, pliki do czytania, testy i zakazy rozszerzania zakresu.
-- Zaktualizuj README, jeśli zmienił się stan lub działające komendy. Uruchom walidator i `git diff --check`. Commituj tylko swoje pliki z krótkim opisem zmiany; wstrzymaj commit przy nieznanym zakresie cudzych zmian.
+- Zaktualizuj README, jeśli zmienił się stan lub działające komendy. Uruchom walidator i `git diff --check`. Obowiązkowo commituj własne zmiany; cudze zmiany pozostaw poza commitem. Jeśli nie można ich bezpiecznie oddzielić, zgłoś blokadę zamiast deklarować zakończenie.
 - Bieżące polecenie użytkownika autoryzuje pierwszy publiczny push planu. Dalsze kroki domyślnie kończą się lokalnym commitem. Push wykonuj, gdy użytkownik go poleci lub ustanowi osobną zgodę; nie zakładaj automatycznego publikowania każdego wznowienia.
 
 Zakończ turę krótkim raportem po polsku: co gotowe, co sprawdzono, co jest następne. Nie realizuj następnego zadania w tym samym wznowieniu.
@@ -42,3 +42,7 @@ Agent sam wybiera szczegóły implementacji, balans i podział zadań w ramach [
 Wyraźne zgody wymagane przez założenia: pobranie każdego wskazanego pakietu assetów. Zgody mają konkretny zakres i wersję, więc nie trzeba pytać ponownie dla zatwierdzonego zakresu. Wniosek przygotowuje agent; człowiek tylko zezwala lub odmawia. Nie pytamy o pobieranie, dopóki brak ten nie jest potrzebny do konkretnego etapu.
 
 Zewnętrzne warunki wydania: konto Steamworks, prawa do SDK, formalności właściciela, opłaty, finalne treści pochodzenia ludzkiego i aktualne warunki Valve. Agenci przygotowują dowody i integrację; nie mogą samodzielnie stworzyć ludzkiego autorstwa ani podpisać umowy za człowieka. Jeżeli nie znajdą legalnych nie-AI treści bez udziału autora, dana część wydania pozostaje zablokowana. Projekt nie obiecuje całkowicie bezobsługowej premiery ani gwarancji braku oznaczenia AI.
+
+## Obowiązkowy commit każdego kroku
+
+Każdy agent obowiązkowo kończy swój krok lokalnym commitem obejmującym wyłącznie własne zmiany, testy i przekazanie. Dotyczy to również kroków dokumentacyjnych, podziału zadania oraz zapisania nowej blokady. Najpierw wykonaj wymagane kontrole, potem commit, następnie sprawdź jego hash i zakres. W odpowiedzi końcowej podaj hash commitu. Nie uznawaj kroku za zakończony, jeśli commit się nie udał; podaj konkretny powód. Nie commituj cudzych zmian i nie twórz pustych commitów, gdy ponowne sprawdzenie blokady niczego nie zmieniło. Push jest osobną operacją wymagającą autoryzacji.

@@ -19,3 +19,7 @@ Wstępna obserwacja P000: CMake/CTest są w `C:/mingw64/bin`, CMake 3.26.4, clan
 ## Weryfikacja i przekazanie
 
 Uruchom `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Project.ps1` oraz rzeczywiste komendy wersji/wykrywania. Raportuj dokładne wyniki bez sekretów. Zapisz `history/P001.md`, zaktualizuj STATE i NEXT. Jeżeli narzędzia nie umożliwiają P002, wpisz blokadę; nie oznaczaj przyszłego builda jako wykonanego. Nie realizuj P002 w tym samym wznowieniu.
+
+## Obowiązkowy commit każdego kroku
+
+Każdy agent obowiązkowo kończy swój krok lokalnym commitem obejmującym wyłącznie własne zmiany, testy i przekazanie. Dotyczy to również kroków dokumentacyjnych, podziału zadania oraz zapisania nowej blokady. Najpierw wykonaj wymagane kontrole, potem commit, następnie sprawdź jego hash i zakres. W odpowiedzi końcowej podaj hash commitu. Nie uznawaj kroku za zakończony, jeśli commit się nie udał; podaj konkretny powód. Nie commituj cudzych zmian i nie twórz pustych commitów, gdy ponowne sprawdzenie blokady niczego nie zmieniło. Push jest osobną operacją wymagającą autoryzacji.

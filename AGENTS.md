@@ -25,3 +25,7 @@ C++: 4 spacje, `snake_case` dla funkcji/zmiennych, `PascalCase` dla typów; RAII
 ## Commity i publikacja
 
 Małe commity w trybie rozkazującym, np. `Add deterministic port rotation tests`. Raportuj wykonane i niewykonane testy. Nie publikuj sekretów, prywatnego Steamworks SDK ani nieudokumentowanych assetów. Nie deklaruj gwarancji braku oznaczenia AI; ankieta Steam musi być zgodna z faktami.
+
+## Obowiązkowy commit każdego kroku
+
+Każdy agent obowiązkowo kończy swój krok lokalnym commitem obejmującym wyłącznie własne zmiany, testy i przekazanie. Dotyczy to również kroków dokumentacyjnych, podziału zadania oraz zapisania nowej blokady. Najpierw wykonaj wymagane kontrole, potem commit, następnie sprawdź jego hash i zakres. W odpowiedzi końcowej podaj hash commitu. Nie uznawaj kroku za zakończony, jeśli commit się nie udał; podaj konkretny powód. Nie commituj cudzych zmian i nie twórz pustych commitów, gdy ponowne sprawdzenie blokady niczego nie zmieniło. Push jest osobną operacją wymagającą autoryzacji.

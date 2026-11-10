@@ -15,4 +15,8 @@ Nie generuj treści dla gracza. Wyjątek to osobne napisy robocze zaczynające s
 
 Wykonaj minimalną zmianę i testy. Nie pytaj o rutynowe wybory projektowe, nie rozbudowuj zakresu. Nie uruchamiaj równoległych agentów implementujących ten krok. Jeśli wymagany warunek jest niedostępny, zapisz blokadę i nie fikcyjne ukończenie; możesz wybrać jedno niezależne gotowe zadanie.
 
-Przy zakończeniu zapisz raport `docs/workflow/history/<ID>.md` z komendami, wynikami i ograniczeniami. Zaktualizuj STATE i NEXT, utrzymując to samo Task ID; wykonaj walidator oraz `git diff --check`. Oznacz ukończenie dopiero po kryteriach. Mały lokalny commit jest częścią kroku, jeśli można bezpiecznie wyodrębnić własne zmiany; push wymaga odpowiedniej autoryzacji. Zakończ krótkim raportem po polsku i zatrzymaj się przed kolejnym ID.
+Przy zakończeniu zapisz raport `docs/workflow/history/<ID>.md` z komendami, wynikami i ograniczeniami. Zaktualizuj STATE i NEXT, utrzymując to samo Task ID; wykonaj walidator oraz `git diff --check`. Oznacz ukończenie dopiero po kryteriach. Lokalny commit jest obowiązkową częścią każdego kroku; stosuj poniższą regułę. Zakończ krótkim raportem po polsku i zatrzymaj się przed kolejnym ID.
+
+## Obowiązkowy commit każdego kroku
+
+Każdy agent obowiązkowo kończy swój krok lokalnym commitem obejmującym wyłącznie własne zmiany, testy i przekazanie. Dotyczy to również kroków dokumentacyjnych, podziału zadania oraz zapisania nowej blokady. Najpierw wykonaj wymagane kontrole, potem commit, następnie sprawdź jego hash i zakres. W odpowiedzi końcowej podaj hash commitu. Nie uznawaj kroku za zakończony, jeśli commit się nie udał; podaj konkretny powód. Nie commituj cudzych zmian i nie twórz pustych commitów, gdy ponowne sprawdzenie blokady niczego nie zmieniło. Push jest osobną operacją wymagającą autoryzacji.
