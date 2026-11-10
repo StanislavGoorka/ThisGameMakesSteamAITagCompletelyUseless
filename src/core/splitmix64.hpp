@@ -3,6 +3,7 @@
 #include "core/identifiers.hpp"
 
 #include <cstdint>
+#include <optional>
 
 namespace closed_circuit
 {
@@ -24,6 +25,39 @@ class SplitMix64
         mixed = (mixed ^ (mixed >> 30)) * 0xbf58476d1ce4e5b9ULL;
         mixed = (mixed ^ (mixed >> 27)) * 0x94d049bb133111ebULL;
         return mixed ^ (mixed >> 31);
+    }
+
+    // Both endpoints are inclusive. Invalid and singleton ranges consume no
+    // draws.
+    [[nodiscard]] constexpr std::optional<std::uint64_t>
+    next_in_range(std::uint64_t minimum, std::uint64_t maximum) noexcept
+    {
+        if (minimum > maximum)
+        {
+            return std::nullopt;
+        }
+        if (minimum == maximum)
+        {
+            return minimum;
+        }
+
+        const std::uint64_t count = maximum - minimum + 1;
+        if (count == 0)
+        {
+            // Only the full 64-bit range has a count of 2^64, which wraps to
+            // zero.
+            return next_u64();
+        }
+
+        // Unsigned wrap computes 2^64 % count. Removing that many low values
+        // leaves a whole number of residue cycles for the modulo operation.
+        const auto threshold = (std::uint64_t{0} - count) % count;
+        auto draw = next_u64();
+        while (draw < threshold)
+        {
+            draw = next_u64();
+        }
+        return minimum + draw % count;
     }
 
   private:
