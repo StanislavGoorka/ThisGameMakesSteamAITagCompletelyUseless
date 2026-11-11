@@ -34,6 +34,8 @@ bool initial_state_preserves_input_and_starts_at_zero()
         !std::ranges::equal(state->ports, ports, {}, &PortMask::bits,
                             &PortMask::bits) ||
         state->rotatable_nodes != rotatable_nodes ||
+        std::ranges::any_of(state->blocked_nodes,
+                            [](bool blocked) { return blocked; }) ||
         state->ports[1].bits() != 0)
     {
         std::cerr
@@ -85,12 +87,13 @@ bool changing_inputs_and_copy_preserves_original_state()
     rotatable_nodes.back() = false;
     const bool rotated = rotate_node(copy.ports, copy.rotatable_nodes, start);
     copy.rotatable_nodes.back() = false;
+    copy.blocked_nodes.back() = true;
     copy.player_position = next_position;
     copy.turns_taken = TurnIndex{1};
 
     if (!rotated || copy.ports.back().bits() != PortMask::east_bit ||
         original->ports.back().bits() != PortMask::north_bit ||
-        !original->rotatable_nodes.back() ||
+        !original->rotatable_nodes.back() || original->blocked_nodes.back() ||
         original->player_position != start ||
         original->turns_taken != TurnIndex{0})
     {

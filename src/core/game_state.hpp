@@ -18,6 +18,8 @@ struct GameState
 
     std::array<PortMask, node_count> ports{};
     std::array<bool, node_count> rotatable_nodes{};
+    // Occupancy by blocking units only; packets do not block movement.
+    std::array<bool, node_count> blocked_nodes{};
     NodeId player_position;
     TurnIndex turns_taken{};
 
