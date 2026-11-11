@@ -10,6 +10,8 @@ namespace closed_circuit
 class PortMask
 {
   public:
+    constexpr PortMask() noexcept = default;
+
     static constexpr std::uint8_t north_bit = 0b0001;
     static constexpr std::uint8_t east_bit = 0b0010;
     static constexpr std::uint8_t south_bit = 0b0100;
@@ -48,7 +50,7 @@ class PortMask
     {
     }
 
-    std::uint8_t bits_;
+    std::uint8_t bits_{};
 };
 
 } // namespace closed_circuit

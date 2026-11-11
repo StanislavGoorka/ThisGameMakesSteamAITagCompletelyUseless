@@ -12,9 +12,9 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011 oraz losowanie z przedziału bez obciążenia modulo w P012. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i siedem testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P012](docs/workflow/history/P012.md)
+Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012 i wartościowy `GameState` w P013. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i osiem testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P013](docs/workflow/history/P013.md)
 
-Następne zadanie to **P013 — wartościowy `GameState`**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P014 — walidacja ruchu**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -65,6 +65,8 @@ ctest --preset windows-release --output-on-failure
 
 Obie konfiguracje korzystają z katalogu `build/windows-msvc/`, ignorowanego przez Git. `core_build_smoke` sprawdza kompilację, linkowanie i działanie elementów biblioteki standardowej C++20 (`span`, ranges). `core_identifier_ranges` sprawdza granice identyfikatorów i ich porządek, a podczas kompilacji także niedozwolone konwersje. `core_port_rotation` sprawdza obrót wszystkich 16 masek i odrzucanie wartości spoza zakresu. `core_grid_adjacency` sprawdza wzajemne porty i granice planszy. `core_node_rotation` sprawdza zmianę połączeń, odmowę obrotu węzła nieruchomego i powrót planszy do stanu początkowego po czterech obrotach. `core_grid_pathfinding` sprawdza najkrótsze trasy, remisy i nieosiągalne cele. `core_splitmix64` sprawdza wektory surowego generatora, powtarzalność losowania z przedziału, jego granice i ponawianie odrzuconych losowań. Sprawdzenie celowego błędu testu kompilacji i uruchomienia opisano w raporcie. [Raport P002](docs/workflow/history/P002.md)
 
+`core_game_state` sprawdza inicjalizację planszy i gracza, odrzucanie błędnych danych wejściowych oraz niezależność kopii stanu.
+
 CI buduje i testuje Debug oraz Release na MSVC x64 po pushu do `main` i przy pull requestach. [Workflow Windows CI](.github/workflows/windows.yml)
 
 ## Styl C++
@@ -74,7 +76,7 @@ CI buduje i testuje Debug oraz Release na MSVC x64 po pushu do `main` i przy pul
 Sprawdzenie formatowania obecnych źródeł bez ich zmiany:
 
 ```powershell
-clang-format --style=file --dry-run --Werror src/core/identifiers.hpp src/core/port_mask.hpp src/core/grid_adjacency.hpp src/core/node_rotation.hpp src/core/grid_pathfinding.hpp src/core/splitmix64.hpp tests/unit/build_tests.cpp tests/unit/identifier_tests.cpp tests/unit/port_mask_tests.cpp tests/unit/grid_adjacency_tests.cpp tests/unit/node_rotation_tests.cpp tests/unit/grid_pathfinding_tests.cpp tests/unit/splitmix64_tests.cpp
+clang-format --style=file --dry-run --Werror src/core/identifiers.hpp src/core/port_mask.hpp src/core/grid_adjacency.hpp src/core/node_rotation.hpp src/core/grid_pathfinding.hpp src/core/splitmix64.hpp src/core/game_state.hpp tests/unit/build_tests.cpp tests/unit/identifier_tests.cpp tests/unit/port_mask_tests.cpp tests/unit/grid_adjacency_tests.cpp tests/unit/node_rotation_tests.cpp tests/unit/grid_pathfinding_tests.cpp tests/unit/splitmix64_tests.cpp tests/unit/game_state_tests.cpp
 ```
 
 ## Narzędzia utrzymaniowe i licencja

@@ -80,4 +80,8 @@ enum class RunSeed : std::uint64_t
 {
 };
 
+enum class TurnIndex : std::uint32_t
+{
+};
+
 } // namespace closed_circuit
