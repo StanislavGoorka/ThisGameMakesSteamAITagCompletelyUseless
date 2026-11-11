@@ -26,7 +26,9 @@ P022 zamknięto jako podział planu; oba dzieci są zaimplementowane. P022-01 im
 
 P023 implementuje `preview_turn(const GameState&, const Command&)`, które deleguje do wartościowego resolvera bez dodatkowej kopii i bez dostępu do zapisu, achievementów oraz RNG. Podgląd i wykonanie tury zwracają identyczne state/accepted/outcome; wyniki posiadają niezależne kopie. Korpus testów chroni pełny live state i komendę przy powtórzeniach, legalnych akcjach, odmowach oraz końcu sektora. Debug i Release po P023 zaliczyły po 24/24 CTest. [Raport P023](docs/workflow/history/P023.md)
 
-Następne zadanie to **P024 — replay bez prezentacji**; najpierw wymaga oceny zakresu brakującej fabryki stanu z seeda, hasha i narzędzia replay. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P024 zamknięto wyłącznie jako podział planu: P024-01 obejmuje kanoniczny hash pełnego stanu, P024-02 syntetyczny fixture deweloperski z seeda, P024-03 wersjonowany runner replay, a P024-04 adapter CLI. Żadne dziecko nie jest jeszcze zaimplementowane. Fixture pozostanie niewyświetlanym stałym scenariuszem z jedną seedowaną orientacją, odrębnym od generatora sektorów P028. Replay nadal nie działa. [Raport P024](docs/workflow/history/P024.md)
+
+Następne zadanie to **P024-01 — kanoniczny hash pełnego stanu**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 

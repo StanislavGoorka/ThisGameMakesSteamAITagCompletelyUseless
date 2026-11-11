@@ -402,10 +402,54 @@
                       "id":  "P024",
                       "phase":  "M2",
                       "title":  "Replay bez prezentacji",
-                      "scope":  "Dodaj replay seed+wersja+komendy do narzędzia deweloperskiego.",
-                      "acceptance":  "Identical replay gives identical state hashes; reject unknown version.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij kanoniczny hash stanu, syntetyczną fabrykę deweloperską z seeda, wykonanie wersjonowanego replay i adapter CLI na dzieci P024-01 do P024-04; bez implementacji.",
+                      "acceptance":  "Dzieci określają pełne kodowanie stanu, powtarzalny seedowany fixture headless i replay seed+wersja+komendy ze zgodnymi hashami oraz jawną odmową nieobsługiwanej wersji. P025 zależy od P024-04; ukończenie rodzica nie oznacza działającego replay ani generatora P028.",
                       "depends_on":  [
                                          "P023"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P024-01",
+                      "phase":  "M2",
+                      "title":  "Kanoniczny hash pełnego stanu",
+                      "scope":  "Dodaj jeden niemutujący hash pełnego GameState w narzędziach deweloperskich, poza core i paczką gry. Stosuj jawny strumień bajtów i FNV-1a 64-bit, bez surowej pamięci, std::hash lub serializatora ogólnego przeznaczenia. Zachowaj kolejność przechowywania impulsów jako część dokładnego stanu.",
+                      "acceptance":  "Udokumentowane kodowanie ma wersję, stałe szerokości little-endian, wszystkie pola, tagi optional, liczbę i kolejność impulsów. Znane wektory obliczone niezależnie zgadzają się w Debug/Release. Zmiany każdego pola i elementów tablic, puste/wypełnione optional, granice ID/liczników i permutacja impulsów są rozróżniane w korpusie; wywołanie zachowuje cały stan. Mutacja pomijająca pole jest wykryta po potwierdzonym Rebuild. Hash jest niekryptograficzny, bez obietnicy braku kolizji.",
+                      "depends_on":  [
+                                         "P024"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P024-02",
+                      "phase":  "M2",
+                      "title":  "Seedowany fixture deweloperski",
+                      "scope":  "Dodaj jedną czystą fabrykę niewyświetlanego syntetycznego GameState z RunSeed w narzędziach deweloperskich. Jeden stały scenariusz ma tylko seedowaną początkową orientację jednego węzła przez lokalny SplitMix64; to fixture replay, bez generatora sektorów P028, solvera ani RNG w resolverze.",
+                      "acceptance":  "Jawny stały układ numeryczny obejmuje gracza, wejście, dwóch odbiorników, wyjście i impuls. Seed wybiera 0-3 obroty dokładnie wskazanego węzła; wszystkie inne pola są stałe. Seedy 0 i UINT64_MAX oraz znane różne orientacje mają oczekiwane pełne stany i hashe P024-01. Ten sam seed odtwarza ten sam stan, kopie są niezależne, zewnętrzny RNG nietknięty. Nie wymaga się unikalności stanu dla każdego seeda ani wygrywalności fixture. Mutacja ignorująca seed jest wykryta po Rebuild.",
+                      "depends_on":  [
+                                         "P024-01"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P024-03",
+                      "phase":  "M2",
+                      "title":  "Wersjonowane wykonanie replay",
+                      "scope":  "Dodaj jeden wartościowy runner deweloperski: wersja reguł, RunSeed i sekwencja Command. Wersja 1 korzysta z fixture P024-02, tego samego resolve_turn oraz hasha P024-01; zwraca początkowy hash, ślad accepted/outcome/hash po każdej próbie i niezależny stan końcowy. Bez parsera, plików i prezentacji.",
+                      "acceptance":  "Nieobsługiwana wersja jest jawnie odrzucona bez wyniku częściowego. Identyczny replay daje identyczny pełny stan i ślad hashy, a znany korpus zgadza się z jawnymi oczekiwaniami oraz bezpośrednim resolverem. Obejmuje pustą sekwencję, legalne i błędne move/rotate/wait oraz komendy po końcu sektora. Odrzucona komenda tworzy wpis z niezmienionym hashem i nie zatrzymuje następnych prób. Wejściowe komendy i inne wyniki pozostają nietknięte. Mutacja pomijająca bramkę wersji lub komendę jest wykryta po Rebuild.",
+                      "depends_on":  [
+                                         "P024-02"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P024-04",
+                      "phase":  "M2",
+                      "title":  "Adapter CLI replay",
+                      "scope":  "Dodaj małe narzędzie CLI poza paczką gry, przyjmujące dziesiętne version seed i opcjonalne tokeny wait, move:NodeId, rotate:NodeId. Parse całego wejścia przed uruchomieniem runnera P024-03; wypisz stabilny numeryczny ślad początkowego i kolejnych hashy, accepted i outcome. Bez formatu zapisu gry, importu JSON ani wyświetlania planszy.",
+                      "acceptance":  "CTest uruchamia rzeczywiste exe w Debug/Release: dwa identyczne wywołania dają identyczny stdout i kod 0. Pusta sekwencja jest dozwolona, seed 0 i UINT64_MAX poprawne. Brak argumentu, zły token, trailing junk, znak minus, przepełnienie liczby, NodeId 49 i nieobsługiwana wersja dają niezerowy kod bez częściowego śladu sukcesu. Test wskazuje konkretny oczekiwany wynik i wykrywa celowo zmieniony parser lub kod wyjścia po Rebuild. README podaje działającą komendę; narzędzie i diagnostyka są wyłącznie deweloperskie.",
+                      "depends_on":  [
+                                         "P024-03"
                                      ],
                       "gate":  null
                   },
@@ -416,7 +460,7 @@
                       "scope":  "Przeanalizuj jeden niewyświetlany scenariusz z trzema sekwencjami decyzji; zapisz dowód wyróżnika.",
                       "acceptance":  "Trasy pakietu i impulsu reagują na tę samą zmianę; raport nie udaje playtestu.",
                       "depends_on":  [
-                                         "P024"
+                                         "P024-04"
                                      ],
                       "gate":  null
                   },

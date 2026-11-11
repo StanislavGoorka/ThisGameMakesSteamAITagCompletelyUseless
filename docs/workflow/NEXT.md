@@ -1,25 +1,44 @@
 # Następny mały krok
 
-Task: P024
+Task: P024-01
 
 ## Cel i lektura
 
-Oceń zakres replay seed + wersja reguł + komendy przed implementacją. P023 dostarcza podgląd przez ten sam resolver, bez efektów ubocznych. Ostatnie lokalne Debug i Release zaliczyły po 24/24 CTest; walidator ma 127 zadań.
+Dodaj jeden niemutujący hash pełnego GameState jako narzędzie deweloperskie. P024 jest ukończonym podziałem planu, bez implementacji dzieci. P023 dostarcza preview; ostatnie Debug i Release zaliczyły po 24/24 CTest. Walidator po podziale ma 131 zadań.
 
-Przeczytaj [AGENTS](../../AGENTS.md), [next-step](../../.agents/skills/next-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE](STATE.json), [raport P023](history/P023.md), wpis P024 i jego zależność P023 w [kolejce](../plan/tasks.json), [ARCHITECTURE](../ARCHITECTURE.md), [GAME_DESIGN](../GAME_DESIGN.md), [TESTING](../TESTING.md), [README](../../README.md), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [SplitMix64](../../src/core/splitmix64.hpp), [komendy](../../src/core/command.hpp), [resolver](../../src/core/turn_resolver.hpp), [podgląd](../../src/core/turn_preview.hpp) i [jego testy](../../tests/unit/turn_preview_tests.cpp).
+Przeczytaj [AGENTS](../../AGENTS.md), [next-step](../../.agents/skills/next-step/SKILL.md), [cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE](STATE.json), [raport P024](history/P024.md), wpisy P024/P024-01 i zależność P023 w [kolejce](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [PortMask](../../src/core/port_mask.hpp), [testy podglądu](../../tests/unit/turn_preview_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), [GAME_DESIGN](../GAME_DESIGN.md), [TESTING](../TESTING.md) i komendy w [README](../../README.md).
 
-## Ocena przed zmianą
+## Wykonaj
 
-Obecnie seed inicjalizuje tylko RNG. Nie istnieją fabryka stanu z seeda, kanoniczny hash pełnego GameState ani format/narzędzie replay. Resolver i preview nie przyjmują RNG; powtarzanie resolvera dla ręcznie zbudowanej planszy nie spełnia samo kontraktu seed + wersja + komendy. Generator topologii P028 pozostaje późniejszym, osobnym etapem.
+Jeden kontrakt: const GameState → uint64_t, bez mutacji. Umieść mały nagłówek pod tools/; core nie zależy od narzędzi. CMake udostępnia go tylko właściwemu celowi testowemu. Nazwy funkcji i pliku wybiera wykonawca.
 
-Ustal minimalny, jawnie deweloperski zakres replay bez prezentacji i bez pozorowania generatora sektora. Wymagane są zgodne hashe przy identycznym replay oraz jawna odmowa nieobsługiwanej wersji. Określ stabilne kodowanie każdego pola GameState, opcjonalnych wartości i kolekcji, zamiast hashowania surowej pamięci lub std::hash; kolejność impulsów wymaga jawnego kontraktu. Nie dodawaj zapisu gry lub ogólnego formatu serializacji.
+Użyj FNV-1a 64-bit: początek 14695981039346656037, dla każdego bajtu XOR, następnie mnożenie przez 1099511628211 modulo 2^64. To hash niekryptograficzny do regresji, bez gwarancji braku kolizji. Nie haszuj surowej pamięci, paddingu, adresów ani std::hash; nie dodawaj ogólnego serializatora lub plików.
 
-Jeżeli brakujące kontrakty nie mieszczą się w jednym małym kroku, zgodnie z WORKFLOW wykonaj **wyłącznie podział P024** na odrębnie ocenialne dzieci. Zachowaj ID rodzica jako planistyczne, topologiczną kolejność i przepnij P025 na ostatnie wymagane dziecko; nie implementuj dzieci w tym samym kroku. Każde dziecko musi mieć dowód sukcesu i właściwy przypadek błędu. Nie zmieniaj mechanik, żeby ominąć brak fabryki stanu.
+Jawny format bajtów v1, w tej kolejności:
+
+1. Wersja kodowania 1 jako uint32 little-endian.
+2. ports: 49 bajtów bits() w kolejności NodeId 0…48.
+3. rotatable_nodes i potem blocked_nodes: po 49 bajtów 0/1.
+4. player_position jako uint8, player_integrity jako uint8, turns_taken jako uint32 little-endian.
+5. packet: tag 0/1; przy 1 position i target jako po jednym uint8.
+6. powered_nodes i potem receiver_nodes: po 49 bajtów 0/1.
+7. sector_entry i potem sector_exit: osobny tag 0/1; przy 1 jeden uint8 NodeId. Brak i NodeId 0 muszą dawać różne kodowanie.
+8. Liczba pulses jako uint64 little-endian, następnie dla każdego elementu w kolejności przechowywania EntityId jako uint32 little-endian i position jako uint8.
+
+Kolejność impulsów jest częścią dokładnego wartościowego stanu, jak w helperach same_state. Nie sortuj kolekcji w hashu ani w stanie; identyczne zachowanie symulacji po permutacji nie oznacza identycznej reprezentacji. Wynik sektora jest wyliczany, więc nie dodawaj jego kopii do strumienia. Nie dokładaj seeda/RNG do GameState.
+
+## Dowód sukcesu i błędu
+
+Dodaj test do trzech miejsc CMake wzorem testu preview. Ustal stałe oczekiwane hashe co najmniej dla minimalnego i pełnego stanu. Oblicz wektory niezależnie od produkcyjnej funkcji i zapisz odtwarzalny sposób w raporcie; samo porównanie funkcji z nią samą nie dowodzi formatu.
+
+Sprawdź każde pole i każdy indeks tablic przez kontrolowaną zmianę względem kopii. Obejmij tagi optional (brak/NodeId 0/48), pola pakietu, ID impulsów 0/UINT32_MAX, pozycje 0/48, zmianę liczby i kolejności impulsów, HP 0/3/255, licznik 0/48/UINT32_MAX. Korpus ma wykrywać pominięcie pola; nie dowodzi braku wszystkich kolizji. Każde wywołanie porównuje cały stan przed/po z niepustym pakietem i impulsami w pełnym scenariuszu. Powtórzenie i niezależna kopia muszą dawać ten sam hash.
+
+Celowo pomiń pole w produkcyjnym hashu i wykaż oczekiwany błąd CTest po /t:Rebuild właściwego celu z potwierdzoną rekompilacją. Przywróć kod i przebuduj przed końcowymi testami.
 
 ## Weryfikacja i przekazanie
 
-W kroku dokumentacyjnym zweryfikuj graf, zależności i przekazanie walidatorem oraz izolowanym testem negatywnym zależności nowych dzieci/konsumenta. Nie deklaruj nowych testów gry bez ich wykonania. Gdy zakres faktycznie pozostanie pojedynczą implementacją, zastosuj [cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md) i wymagane konfigurację, build, CTest Debug/Release, formatter oraz celową mutację z potwierdzoną rekompilacją.
+Konfiguracja, build i pełne CTest Debug/Release, formatter, walidator projektu i kontrole diff. Zaktualizuj README/ARCHITECTURE zgodnie z faktem, zapisz history/P024-01.md, STATE/NEXT przestaw na P024-02 po kryteriach. Lokalny commit własnych zmian i sprawdzenie hasha, zakresu oraz czystości są obowiązkowe; bez pushu. Zatrzymaj się przed kolejnym ID.
 
-Zaktualizuj README/ARCHITECTURE zgodnie z faktem, zapisz history/P024.md, STATE i konkretne NEXT. Uruchom walidator i kontrole diff; wykonaj lokalny commit wyłącznie własnych zmian, sprawdź hash, zakres i czystość. Bez pushu. Zatrzymaj się po jednym ID.
+P024-02 ma później zbudować jeden stały syntetyczny fixture headless: pola 0/1/7/8 tworzą kwadrat, z maskami odpowiednio E|S, W|S, N|E, N|W; pozostałe maski 0. Gracz startuje na 0 z HP3 i turą0, wejście0, odbiorniki1/8, wyjście8, impuls EntityId1 na7; brak pakietu, dostaw i blocked_nodes. Tylko węzeł1 jest obrotowy, a lokalny SplitMix64 z seeda wybierze przez next_in_range(0,3) liczbę jego początkowych obrotów. Te dane nie są planszą do wyświetlania ani generatorem sektorów P028.
 
-Nie implementuj P025, overdrive, generatora P028, runu, zapisu ani prezentacji. Nie generuj assetów i treści dla gracza. Znany błąd scripts/Test-ProjectValidator.ps1 pozostaje poza zakresem.
+Nie implementuj teraz fabryki, runnera, CLI, P025, generatora, runu, overdrive, zapisu ani prezentacji. Nie generuj assetów lub treści dla gracza. Znany błąd scripts/Test-ProjectValidator.ps1 pozostaje poza zakresem.
