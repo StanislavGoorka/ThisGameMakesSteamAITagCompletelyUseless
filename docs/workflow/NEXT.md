@@ -1,51 +1,40 @@
 # Następny mały krok
 
-Task: P021-02
+Task: P022
 
-## Cel
+## Cel i ocena zakresu
 
-Dodaj jeden wartościowy resolver zaakceptowanej tury. P021-01 dostarczyło komendy i niemutującą walidację, a P020-02 pełną fazę impulsów. P021 pozostaje ukończonym podziałem planu. Nie rozpoczynaj wyjścia/limitu P022 ani preview P023.
+Oceń zadanie „Limit i wyjście” przed implementacją. Resolver P021-02 już łączy zaakceptowaną turę, ale nie ma reprezentacji wyjścia ani wyniku sektora. Jeżeli dodanie danych, ocena zakończenia i integracja z transakcją stanowią osobne kontrakty, tym krokiem ma być wyłącznie podział P022 na małe dzieci, z kryteriami i testami, bez rozpoczynania pierwszego dziecka. Przepnij P023 na ostatnie wymagane dziecko i zachowaj porządek topologiczny. Zamknięcie rodzica planistycznego nie oznacza implementacji.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P021-01](history/P021-01.md), [raport podziału P021](history/P021.md), wpis P021-02 i jego zależność w [tasks.json](../plan/tasks.json), [komendy](../../src/core/command.hpp), [testy komend](../../tests/unit/command_tests.cpp), [GameState](../../src/core/game_state.hpp), [ruch gracza](../../src/core/player_movement.hpp), [obrót gracza](../../src/core/player_rotation.hpp), [wait](../../src/core/player_wait.hpp), [koszt tury](../../src/core/turn_cost.hpp), [wprowadzenie pakietu](../../src/core/packet_introduction.hpp), [ruch pakietu](../../src/core/packet_movement.hpp), [dostawę](../../src/core/packet_delivery.hpp), [fazę impulsów](../../src/core/pulse_phase.hpp), [testy fazy](../../tests/unit/pulse_phase_tests.cpp), [RNG](../../src/core/splitmix64.hpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), „Akcje” i „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) oraz [TESTING](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P021-02](history/P021-02.md), [podział P021](history/P021.md), wpis P022 i jego zależność w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [komendy](../../src/core/command.hpp), [resolver](../../src/core/turn_resolver.hpp), [testy resolvera](../../tests/unit/turn_resolver_tests.cpp), [dostawę](../../src/core/packet_delivery.hpp), [odbiorniki](../../src/core/packet_target.hpp), [fazę impulsów](../../src/core/pulse_phase.hpp), [koszt tury](../../src/core/turn_cost.hpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), „Plansza i stan początkowy” oraz „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
 
 ## Stan zastany
 
-`Command` to `std::variant<MoveCommand, RotateCommand, WaitCommand>`. Ruch i obrót mają pole `NodeId target`; wait nie ma celu. Komendy są wartościowe, porównywalne, a `Command` nie ma przypadkowego domyślnego celu. `is_command_legal(const GameState&, const Command&)` odrzuca wszystkie warianty przy HP=0, a dla żywego gracza sprawdza ruch/obrót istniejącymi helperami na niezależnej roboczej kopii. Wait zwraca legalność bez naliczania tury. Predykat nie wprowadza pakietu ani nie uruchamia żadnej fazy. Ostatnie Debug i Release zaliczyły po 21/21 CTest; mutacja kontroli życia została wykryta i wycofana.
+`resolve_turn(const GameState&, const Command&)` zwraca wartościowy `TurnResult { GameState state; bool accepted; }`. Najpierw wywołuje `is_command_legal`; odmowa zwraca niezależną, niezmienioną kopię, bez faz i kosztu. Sukces na kopii wykonuje jedno wprowadzenie pakietu, akcję gracza, ruch pakietu, dostawę, jedną pełną fazę impulsów i końcowy `charge_turn`, także po śmierci. Wejście i komenda pozostają nietknięte. Wait nie uruchamia dodatkowo kosztującego `wait_player`. Kolejny pakiet czeka do następnej zaakceptowanej tury. Resolver nie przyjmuje RNG i nie losuje.
 
-`move_player` i `rotate_from_player` wykonują tylko akcję, bez kontroli życia i bez kosztu. `wait_player` sprawdza życie i sam nalicza turę. `charge_turn` jest jedynym miejscem zwiększającym licznik. `resolve_pulse_phase` łączy kontakty zastane, ruch według ID i natychmiastowe kontakty ze wspólnym limitem jednego HP. Nie wolno uruchamiać dodatkowo `advance_pulses`.
+GameState przechowuje życie, licznik tur, flagi odbiorników i dostaw oraz wejście sektora, lecz nie wyjście ani trwały wynik sektora. `is_command_legal` wymaga żywego gracza; nie rozpoznaje ukończenia sektora i limitu. `deliver_packet` zapisuje cel jako zasilony bez kontroli flagi odbiornika; testy mają także zasilone węzły niebędące odbiornikami. Nie dodawaj kolejnego licznika dostaw bez potrzeby. Przyszłą reprezentację wyniku i warunek zatrzymania dalszych komend trzeba jasno ustalić w małym kontrakcie lub podziale, bez zmiany wizji gry.
 
-Wprowadzenie, ruch i dostawa pakietu nadal są osobnymi krokami. Nie ma `TurnResult`, resolvera, wyjścia ani wyniku sektora. RNG to osobny `SplitMix64`, poza `GameState`; żadna z faz nie losuje.
+Ostatnie lokalne Debug i Release zaliczyły po **22/22 CTest**. Mutacja usuwająca wczesne odrzucenie komendy została wykryta na stanie gotowym do wprowadzenia pakietu i z kontaktami; kod przywrócono i przebudowano.
 
-## Wykonaj
+## Kontrakt do pokrycia w implementacji lub dzieciach
 
-Jeden kontrakt: `const GameState` i `Command` dają wartościowy `TurnResult` z niezależnym stanem oraz informacją o przyjęciu. Nazwę funkcji i pól wyniku wybiera wykonawca; bez callbacków i ogólnego systemu zdarzeń.
-
-- Najpierw wywołaj `is_command_legal`. Odrzucenie zwraca pełny niezmieniony stan i informację o odmowie; nie wprowadza pakietu i nie uruchamia faz, kontaktu ani kosztu. Stan wejściowy pozostaje nietknięty również po sukcesie.
-- Po akceptacji pracuj na własnej kopii: jedno `introduce_packet`, akcja gracza, jedno `advance_packet`, jedno `deliver_packet`, jedna pełna `resolve_pulse_phase`, końcowe `charge_turn`. Zachowaj właśnie tę kolejność.
-- Move/rotate wykonuj istniejącymi helperami. Wait po walidacji nie ma efektu na planszy: nie wywołuj naliczającego koszt `wait_player` razem ze wspólnym końcowym kosztem. Jego dotychczasowy kontrakt pozostaje bez zmian.
-- Każda przyjęta komenda kosztuje dokładnie jedną turę, również gdy gracz umrze w fazie impulsów. Po dostawie nie wprowadzaj następnego pakietu w tej samej turze; pojawi się na początku kolejnej zaakceptowanej tury.
-- Resolver nie przyjmuje RNG i nie losuje. Nie dodawaj RNG do GameState ani nie deklaruj rollbacku generatora. Wynik domenowy wystarcza do obserwacji kolejności.
+- Bazowy sektor wymaga dwóch dostaw do odbiorników i żywego gracza na wyjściu. Brak wyjścia, za mało dostaw lub inna pozycja nie mogą dawać sukcesu. Dowolna flaga zasilonego węzła poza odbiornikami nie zastępuje wymaganej dostawy.
+- Wynik oceniaj po zagrożeniach i końcowym naliczeniu zaakceptowanej tury. HP=0 ma pierwszeństwo przed wyjściem. Żywy gracz z wymaganymi dostawami wygrywa również na ostatniej, 48. turze; w przeciwnym razie limit oznacza przeciążenie. Samo osiągnięcie wyjścia nie pomija kontaktu.
+- Ustal i przetestuj zachowanie kolejnej komendy po terminalnym wyniku. Odmowa nie uruchamia faz, nie zmienia pakietu, impulsów ani kosztu; zachowaj wartościowy wynik i niezmienność wejścia.
+- Ewentualne nowe pola GameState uwzględnij w inicjalizacji, kopiowaniu i wszystkich porównaniach pełnego stanu. Wyszukaj je przez `rg -l 'bool same_state' tests` — obecnie jest 14 helperów, w tym nowe testy komend i resolvera. Nie ograniczaj aktualizacji do pierwotnych siedmiu helperów.
 
 ## Dowód sukcesu i test błędu
 
-Porównuj pełny wynik z jawnym oczekiwanym stanem i sprawdzaj niezmienność wejścia dla sukcesu i odmowy. Testy muszą objąć:
+Kryteria muszą pokrywać wygraną na 48. zaakceptowanej turze, brak wygranej na wyjściu bez dwóch dostaw, śmierć na wyjściu mimo dostaw i limit bez dostaw. Sprawdź też granicę przed limitem, zasilony węzeł poza odbiornikami oraz zachowanie pełnego stanu po odmowie dalszej komendy. Wyniki nie mogą zależeć od przypadkowego naliczania wait dwa razy.
 
-- odmowę nielegalnego move/rotate i wszystkich wariantów przy HP=0, także na stanie gotowym do wprowadzenia pakietu i z impulsami, które inaczej by ruszyły lub spowodowały kontakt;
-- legalne move/rotate/wait z kosztem dokładnie jednej tury i bez podwójnej fazy pakietu lub impulsów;
-- obrót przed wyborem trasy pakietu i impulsu oraz kontakt po legalnym wejściu gracza na impuls;
-- dostawę zachowaną także w turze śmierci od impulsu i naliczenie tej tury;
-- następny pakiet dopiero na początku kolejnej zaakceptowanej tury, nie po dostawie i nie po odrzuconej komendzie;
-- niezależne posiadanie kolekcji impulsów przez wynik (zmiana wyniku nie modyfikuje wejścia), także dla odmowy;
-- zewnętrzny `SplitMix64`: po odrzuconych i zaakceptowanych wywołaniach dalsza sekwencja jest taka sama jak w jego kopii. To dokumentuje granicę API, nie istnienie RNG w transakcji.
-
-Zarejestruj nowy test w trzech miejscach CMake. Celowa mutacja produkcyjna ma wykazać istotną ścieżkę negatywną, np. usunięcie odmowy lub zamianę kolejności akcji i ruchu pakietu. Wymuś `/t:Rebuild` właściwego celu i potwierdź rekompilację testu w logu. Przywróć kod przed końcowymi Debug/Release.
+Przy samym podziale wystarczy walidator, kontrola dokładnego grafu i negatywne próby pominięcia dzieci na izolowanej kopii; nie pozoruj testów gry. Przy implementacji wykonaj Debug/Release i celową mutację istotnej reguły z potwierdzeniem rekompilacji właściwego testu, a potem przywróć kod.
 
 ## Nie rozszerzaj
 
-Nie implementuj ukończenia sektora, limitu 48 tur, wyniku runu, preview, overdrive, generatora, rezerwy, długu, zapisu i prezentacji. Nie dodawaj ogólnej magistrali zdarzeń ani nowych rodzajów zagrożeń. Nie generuj assetów lub treści dla gracza. Nie naprawiaj znanego błędu `scripts/Test-ProjectValidator.ps1` z raportów P018 i P018-03.
+Nie implementuj preview P023, generatora, całego runu, overdrive, rezerwy, długu, zapisu ani prezentacji. Nie twórz ogólnej magistrali zdarzeń i nowych zagrożeń. Nie generuj assetów ani treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1` z raportów P018 i P018-03.
 
 ## Weryfikacja i przekazanie
 
-Wykonaj konfigurację, build i CTest Debug/Release oraz formatter według [README](../../README.md). Zaktualizuj README i ARCHITECTURE zgodnie z faktem. Zapisz `history/P021-02.md`, a STATE/NEXT przestaw na P022 dopiero po kryteriach. Następcy pozostaw ocenę rozmiaru P022 przed implementacją i ewentualny podział, bez rozpoczynania tego zadania tutaj. Uruchom walidator i kontrole diff, wykonaj lokalny commit tylko własnych zmian, sprawdź hash, zakres i czystość. Zatrzymaj się przed P022.
+Wykonaj odpowiednie kontrole według [README](../../README.md) i [TESTING](../TESTING.md), zaktualizuj README i ARCHITECTURE zgodnie z faktem. Zapisz `history/P022.md` lub raport bieżącego dziecka, jeżeli podział nastąpi osobnym krokiem; STATE i NEXT muszą wskazywać ten sam następny Task ID i rzeczywiście gotowe zależności. Po samym podziale ustaw pierwsze dziecko jako następne. Uruchom walidator i kontrole diff, wykonaj lokalny commit wyłącznie własnych zmian, sprawdź hash, zakres oraz czystość. Zatrzymaj się przed kolejnym ID.
