@@ -468,10 +468,65 @@
                       "id":  "P026",
                       "phase":  "M3",
                       "title":  "Overdrive",
-                      "scope":  "Dodaj jedną akcję dwóch obrotów z kosztem rezerwy.",
-                      "acceptance":  "Brak rezerwy odrzuca bez mutacji; koszt i dług dokładnie raz.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij dane rezerwy/długu i wersjonowanie pełnego hasha, regenerację po dostawie, atomowy helper overdrive, integrację komendy z turą oraz adapter CLI na dzieci P026-01 do P026-05; bez implementacji.",
+                      "acceptance":  "Dzieci pokrywają rezerwę startową 2 i limit 3, dług startowy 0, dostawę +1, dwa obroty z kosztem jednej rezerwy i +1 długu, jedną turę oraz pełną niezmienność odmowy. Hash i replay mają jawny plan wersji. P027 zależy od P026-05; ukończenie rodzica nie oznacza działającego overdrive.",
                       "depends_on":  [
                                          "P025"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P026-01",
+                      "phase":  "M3",
+                      "title":  "Dane rezerwy i długu z pełnym hashem",
+                      "scope":  "Dodaj wartościowe pola GameState reserve uint8 (start 2, limit gry 3) i overload_debt uint32 (start 0), bez zmiany sygnatury initial. Rozszerz pełny hash do kodowania v2 i jawnie przełącz runner na replay 2; stare wersje odrzucaj, bez emulacji. Nie zmieniaj dostawy, komend ani resolvera.",
+                      "acceptance":  "Inicjalizacja i dwie niezależne kopie zachowują zasoby; wszystkie same_state i fabryki testów chronią oba pola. Hash v2 zachowuje format v1 poza prefiksem wersji 2 i dodaniem na końcu reserve uint8 oraz overload_debt uint32 LE. Niezależne wektory, granice pól i mutacja pominięcia zasobu dowodzą pełnego odczytu. Runner/CLI przyjmują wyłącznie replay 2 z nowymi pełnymi wektorami; replay 1 odrzucony bez wyniku/stdout. Debug/Release przechodzą, a dostawa i akcje nadal nie zmieniają zasobów.",
+                      "depends_on":  [
+                                         "P026"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P026-02",
+                      "phase":  "M3",
+                      "title":  "Regeneracja rezerwy po dostawie",
+                      "scope":  "Rozszerz istniejący deliver_packet o dokładnie jeden przyrost reserve przy rzeczywistej dostawie, z limitem 3. Zmiana reguł przełącza replay na wersję 3, bez zmiany kodowania hasha v2. Nie implementuj overdrive ani runu.",
+                      "acceptance":  "Dostawa dla rezerwy 0/1/2 daje 1/2/3, a przy 3 zachowuje 3. Brak pakietu, poza celem, zasilony cel i powtórzenie dostawy nie regenerują. Dług i reszta stanu poza dotychczasowym efektem dostawy pozostają niezmienione; HP nie rośnie i koszt tury nie należy do helpera. Resolver i preview zachowują zgodność, także przy dostawie w turze śmierci. Replay 3 przyjęty, 1/2 odrzucone; jawne hashe i negatywna mutacja przyrostu są sprawdzone po Rebuild.",
+                      "depends_on":  [
+                                         "P026-01"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P026-03",
+                      "phase":  "M3",
+                      "title":  "Atomowy helper dwóch obrotów",
+                      "scope":  "Dodaj jeden helper akcji overdrive dla GameState i NodeId: warunki celu jak rotate_from_player, reserve co najmniej 1, dwa obroty zgodnie z zegarem, -1 reserve i +1 overload_debt. Brak kosztu tury i faz; brak nowego wariantu Command. Przy długu UINT32_MAX odrzuć przed mutacją zamiast zawijania.",
+                      "acceptance":  "Pełny stan po sukcesie zmienia tylko maskę celu, reserve i overload_debt; pola w zasięgu, wszystkie maski oraz granice rezerwy 0/1/3 i długu 0/MAX-1/MAX są przetestowane. Brak rezerwy, zły zasięg, zawinięcie wiersza, nieruchomy cel i przepełnienie długu zachowują cały stan. Nie wymagaj połączenia ani wolnego pola; helper jak rotate nie dodaje kontroli życia/końca sektora. Mutacja pojedynczego obrotu lub kosztu wykryta po Rebuild. Replay pozostaje 3, bo helper nie jest jeszcze częścią wykonywanej komendy.",
+                      "depends_on":  [
+                                         "P026-02"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P026-04",
+                      "phase":  "M3",
+                      "title":  "Overdrive w komendzie i transakcji tury",
+                      "scope":  "Dodaj wartościowy OverdriveCommand z NodeId do Command, legalności i resolve_turn przez helper P026-03. Zasoby zużyj w akcji przed dostawą, fazy wykonaj raz i charge_turn raz na końcu. Preview nadal deleguje. Przełącz replay na wersję 4 z korpusem nowej komendy, bez parsera CLI.",
+                      "acceptance":  "Legalna akcja daje dwa obroty, -1 rezerwy, +1 długu i jedną turę. Dostawa w tej samej turze regeneruje po koszcie (reserve 3 daje po akcji 2 i po dostawie 3), a impuls widzi topologię po obu obrotach. Preview=resolver dla sukcesu, odmowy, śmierci i granicy 47→48. Brak rezerwy/długu MAX/zły cel/terminalny stan odrzucają przed wszystkimi fazami, bez mutacji stanu, komendy i zewnętrznego RNG. Replay 4 przyjmuje nowy wariant i jawne ślady; 1/2/3 odrzuca. CLI pozostaje przy dotychczasowych tokenach, ale używa wersji 4; istotna mutacja kolejności/kosztu wykryta po Rebuild.",
+                      "depends_on":  [
+                                         "P026-03"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P026-05",
+                      "phase":  "M3",
+                      "title":  "Token overdrive w CLI replay",
+                      "scope":  "Rozszerz wyłącznie adapter CLI o overdrive:NodeId mapowane na istniejący OverdriveCommand. Zachowaj pełny parse przed runnerem i reguły liczb 0-48; bez zmiany wersji 4 i reguł gry.",
+                      "acceptance":  "CTest uruchamia rzeczywiste exe Debug/Release: dokładny ślad legalnego overdrive, odmowa bez rezerwy jako poprawny wpis i powtarzalność stdout. Zły/brakujący cel, 49, minus, plus, trailing junk i overflow odrzucają bez częściowego stdout, także po poprawnych tokenach. Oczekiwany hash i koszt zgadzają się z runnerem oraz jawnym wynikiem; celowa mutacja parsera lub kodu wyjścia wykryta po Rebuild. README zawiera rzeczywiście uruchomioną komendę deweloperską.",
+                      "depends_on":  [
+                                         "P026-04"
                                      ],
                       "gate":  null
                   },
@@ -482,7 +537,7 @@
                       "scope":  "Dodaj przeliczenie długu na dodatkowy spawn.",
                       "acceptance":  "Granice 2,3,6; reszta długu; brak spawnu na zajętym polu.",
                       "depends_on":  [
-                                         "P026"
+                                         "P026-05"
                                      ],
                       "gate":  null
                   },

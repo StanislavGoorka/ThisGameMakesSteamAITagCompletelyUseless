@@ -30,7 +30,9 @@ P024 zamknięto jako podział planu. P024-01 implementuje deweloperskie `state_h
 
 P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema sekwencjami po trzy tury. Obrót węzła 7 otwiera krawędź dla pakietu i impulsu: pakiet zostaje dostarczony, a zagrożenie rusza do gracza. Kolejny obrót zamyka pościg i zachowuje HP. Pełne dane, trasy i ograniczenia zawiera [raport P025](docs/workflow/history/P025.md). To dowód działania reguł w syntetycznym scenariuszu, bez oceny grywalności lub balansu. Debug i Release zaliczyły po 29/29 CTest.
 
-Następne zadanie to **P026 — ocena zakresu overdrive**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. Żadne dziecko nie jest zaimplementowane; GameState nadal nie ma tych zasobów, dostawa nie regeneruje rezerwy, a overdrive nie działa. Plan jawnie rozdziela przyszłe wersje hasha i replay; bieżące narzędzie nadal używa v1. [Raport P026](docs/workflow/history/P026.md)
+
+Następne zadanie to **P026-01 — dane rezerwy i długu z pełnym hashem**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
