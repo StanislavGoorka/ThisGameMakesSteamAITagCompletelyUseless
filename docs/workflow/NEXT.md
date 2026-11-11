@@ -1,29 +1,25 @@
 # Następny mały krok
 
-Task: P023
+Task: P024
 
 ## Cel i lektura
 
-Dodaj podgląd jednej komendy przez ten sam wartościowy resolver. P022-02 jest zaimplementowane: TurnResult podaje state/accepted/outcome, a terminalne wejście odrzuca komendę przed fazami. Ostatnie Debug i Release zaliczyły po 23/23 CTest; walidator ma 127 zadań.
+Oceń zakres replay seed + wersja reguł + komendy przed implementacją. P023 dostarcza podgląd przez ten sam resolver, bez efektów ubocznych. Ostatnie lokalne Debug i Release zaliczyły po 24/24 CTest; walidator ma 127 zadań.
 
-Przeczytaj [AGENTS](../../AGENTS.md), [next-step](../../.agents/skills/next-step/SKILL.md), [cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE](STATE.json), [raport P022-02](history/P022-02.md), wpis P023 i jego zależność w [kolejce](../plan/tasks.json), [resolver](../../src/core/turn_resolver.hpp), [komendy](../../src/core/command.hpp), [GameState](../../src/core/game_state.hpp), [klasyfikator](../../src/core/sector_outcome.hpp), [testy resolvera](../../tests/unit/turn_resolver_tests.cpp), [testy komend](../../tests/unit/command_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), [GAME_DESIGN](../GAME_DESIGN.md), [TESTING](../TESTING.md) i komendy w [README](../../README.md).
+Przeczytaj [AGENTS](../../AGENTS.md), [next-step](../../.agents/skills/next-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE](STATE.json), [raport P023](history/P023.md), wpis P024 i jego zależność P023 w [kolejce](../plan/tasks.json), [ARCHITECTURE](../ARCHITECTURE.md), [GAME_DESIGN](../GAME_DESIGN.md), [TESTING](../TESTING.md), [README](../../README.md), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [SplitMix64](../../src/core/splitmix64.hpp), [komendy](../../src/core/command.hpp), [resolver](../../src/core/turn_resolver.hpp), [podgląd](../../src/core/turn_preview.hpp) i [jego testy](../../tests/unit/turn_preview_tests.cpp).
 
-## Wykonaj
+## Ocena przed zmianą
 
-Jeden kontrakt: preview przyjmuje const GameState i const Command, zwraca wartościowy wynik identyczny z resolve_turn i pozostawia live state oraz komendę nietknięte. Wybierz nazwę funkcji i mały nagłówek core. Deleguj do istniejącego resolvera; nie kopiuj kolejności faz, reguł ani klasyfikacji. Resolver już pracuje na własnej kopii, więc nie dodawaj warstw sesji, commit API, callbacków ani zbędnej drugiej kopii.
+Obecnie seed inicjalizuje tylko RNG. Nie istnieją fabryka stanu z seeda, kanoniczny hash pełnego GameState ani format/narzędzie replay. Resolver i preview nie przyjmują RNG; powtarzanie resolvera dla ręcznie zbudowanej planszy nie spełnia samo kontraktu seed + wersja + komendy. Generator topologii P028 pozostaje późniejszym, osobnym etapem.
 
-Podgląd nie zapisuje plików, nie odblokowuje achievementów i nie przyjmuje RNG. Brak tych usług w API jest właściwym ograniczeniem; test zewnętrznego RNG względem kopii dokumentuje granicę API, a nie rollback.
+Ustal minimalny, jawnie deweloperski zakres replay bez prezentacji i bez pozorowania generatora sektora. Wymagane są zgodne hashe przy identycznym replay oraz jawna odmowa nieobsługiwanej wersji. Określ stabilne kodowanie każdego pola GameState, opcjonalnych wartości i kolekcji, zamiast hashowania surowej pamięci lub std::hash; kolejność impulsów wymaga jawnego kontraktu. Nie dodawaj zapisu gry lub ogólnego formatu serializacji.
 
-## Dowód sukcesu i błędu
-
-Zbuduj niewyświetlany korpus move/rotate/wait: legalne i błędne akcje, wprowadzenie i dostawa pakietu, obrót zmieniający trasy, ruch oraz kontakt impulsu, śmierć, wygrana i przeciążenie 47→48. Obejmij odmowę wszystkich komend dla completed/death/overload. Porównuj pełne state, accepted i outcome podglądu z wynikiem resolve_turn dla tego samego wejścia; zachowaj też jawne oczekiwania istotnych rezultatów, żeby zgodność dwóch wywołań nie ukrywała błędnego scenariusza.
-
-Po każdym wywołaniu porównaj wszystkie pola live state i komendę. Powtarzany podgląd nie nalicza tury w live state, nie wprowadza pakietu ani nie przesuwa lub usuwa impulsów. Mutacja wyniku podglądu nie może zmienić live state, osobnego wyniku ani kolejnego podglądu; chroń pakiet, kolekcję impulsów i sector_exit. Nowy same_state musi obejmować wszystkie pola, w tym sector_exit. CMake wymaga rejestracji celu, opcji MSVC i add_test, wzorem testu resolvera.
-
-Wykaż czułość testu celową mutacją produkcyjnej funkcji preview, np. dodatkowym charge_turn w zwracanym stanie. Wymuś /t:Rebuild właściwego celu, potwierdź rekompilację i oczekiwany błąd CTest; przywróć kod i przebuduj przed końcowymi testami.
+Jeżeli brakujące kontrakty nie mieszczą się w jednym małym kroku, zgodnie z WORKFLOW wykonaj **wyłącznie podział P024** na odrębnie ocenialne dzieci. Zachowaj ID rodzica jako planistyczne, topologiczną kolejność i przepnij P025 na ostatnie wymagane dziecko; nie implementuj dzieci w tym samym kroku. Każde dziecko musi mieć dowód sukcesu i właściwy przypadek błędu. Nie zmieniaj mechanik, żeby ominąć brak fabryki stanu.
 
 ## Weryfikacja i przekazanie
 
-Konfiguracja, build i pełne CTest Debug/Release, formatter, walidator projektu i kontrole diff. Zaktualizuj README/ARCHITECTURE, zapisz history/P023.md, a STATE/NEXT przestaw na P024 po kryteriach. Następca ocenia zakres P024 przed implementacją replay: obecnie nie ma fabryki stanów z seeda, hasha pełnego stanu ani formatu/narzędzia replay. Nie pozoruj tych braków samym testem powtarzanego resolvera.
+W kroku dokumentacyjnym zweryfikuj graf, zależności i przekazanie walidatorem oraz izolowanym testem negatywnym zależności nowych dzieci/konsumenta. Nie deklaruj nowych testów gry bez ich wykonania. Gdy zakres faktycznie pozostanie pojedynczą implementacją, zastosuj [cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md) i wymagane konfigurację, build, CTest Debug/Release, formatter oraz celową mutację z potwierdzoną rekompilacją.
 
-Lokalny commit własnych zmian oraz sprawdzenie hasha, zakresu i czystości są obowiązkowe; bez pushu. Nie implementuj replay P024, generatora, runu, overdrive, rezerwy, długu, zapisu ani prezentacji. Nie generuj assetów i treści dla gracza. Nie naprawiaj przy okazji znanego błędu scripts/Test-ProjectValidator.ps1. Zatrzymaj się przed kolejnym ID.
+Zaktualizuj README/ARCHITECTURE zgodnie z faktem, zapisz history/P024.md, STATE i konkretne NEXT. Uruchom walidator i kontrole diff; wykonaj lokalny commit wyłącznie własnych zmian, sprawdź hash, zakres i czystość. Bez pushu. Zatrzymaj się po jednym ID.
+
+Nie implementuj P025, overdrive, generatora P028, runu, zapisu ani prezentacji. Nie generuj assetów i treści dla gracza. Znany błąd scripts/Test-ProjectValidator.ps1 pozostaje poza zakresem.
