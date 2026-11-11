@@ -1,37 +1,44 @@
 # Następny mały krok
 
-Task: P019
+Task: P019-01
 
 ## Cel
 
-Dodaj jeden typ zagrożenia podążający po grafie: impuls pościgowy. Zależność P018-03 jest ukończona i zaimplementowana; wszystkie trzy dzieci P018 są gotowe. P020 zależy od P019 i zajmie się kontaktem oraz obrażeniami.
+Dodaj reprezentację impulsów i jeden predykat zajęcia pola przez impuls. P019 jest ukończonym wpisem planistycznym, nie implementacją zagrożeń. Zależność P018-03 była zaimplementowana przed podziałem; pierwsze dziecko P019-01 jest gotowe do realizacji. Nie zaczynaj wyboru kroku P019-02 ani ruchu P019-03.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P018-03](history/P018-03.md), wpis P019 i zależności w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [BFS](../../src/core/grid_pathfinding.hpp), [ruch pakietu](../../src/core/packet_movement.hpp), [ruch gracza](../../src/core/player_movement.hpp), [testy BFS](../../tests/unit/grid_pathfinding_tests.cpp), [testy ruchu pakietu](../../tests/unit/packet_movement_tests.cpp), [testy stanu](../../tests/unit/game_state_tests.cpp), [ARCHITECTURE](../ARCHITECTURE.md), sekcję „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P019](history/P019.md), [raport P018-03](history/P018-03.md), wpisy P019 i P019-01 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [ruch gracza](../../src/core/player_movement.hpp), [testy stanu](../../tests/unit/game_state_tests.cpp), [testy ruchu gracza](../../tests/unit/player_movement_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), sekcję „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
 
 ## Stan zastany
 
-`GameState` ma porty, flagi obrotu i blokowania, gracza z integralnością, licznik tur, opcjonalny pakiet, zapis zasilonych węzłów, odbiorniki i opcjonalne wejście sektora `sector_entry`. `GameState::initial` zachowuje dotychczasową sygnaturę i pozostawia wejście puste; dane wejścia dostarczy generator. Testy ustawiają pola bezpośrednio. Nie ma reprezentacji zagrożeń ani ich kolekcji. `blocked_nodes` to wyłącznie tablica flag zajęcia przez blokujące jednostki, czytana przez ruch gracza; nie ma jeszcze źródła tych flag w postaci obiektów jednostek. `EntityId` już istnieje, ale stan go nie używa.
+`GameState` nie ma reprezentacji zagrożeń ani kolekcji jednostek. Ma porty, flagi obrotu i blokowania, gracza z integralnością, licznik tur, opcjonalny pakiet, zapis zasilonych węzłów, odbiorniki i opcjonalne wejście sektora. `GameState::initial` pozostawia pakiet i wejście puste. `EntityId` istnieje, lecz stan go jeszcze nie używa.
 
-`shortest_route` oblicza trasę po wzajemnych portach, z remisami N, E, S, W; nie czyta zajęcia pól. `advance_packet` wykonuje jeden ruch, nie nalicza tury. `introduce_packet` wprowadza pakiet tylko przy braku aktywnego pakietu, obecności wejścia i niezasilonego odbiornika. Nie ma znacznika oczekującego pakietu: wywołujący ma używać kroku raz na początku tury, przed ruchem i dostawą. Wywołanie go po dostawie w tej samej turze może wprowadzić kolejny pakiet; dopiero resolver P021 wymusi poprawną kolejność. Test P018-03 składa tę kolejność ręcznie.
-
-Pakiety nie blokują ruchu. Dostawa nie sprawdza, czy cel jest odbiornikiem; nie zmieniaj jej przy okazji. Obecnie jest piętnaście testów CTest, wszystkie przeszły w Debug i Release.
+`blocked_nodes` to tablica flag zajęcia przez blokujące jednostki, czytana przez `move_player`. Nie ma obiektów będących źródłem tych flag; testy ustawiają je bezpośrednio. Pakiet nie blokuje ruchu i może współdzielić pole z graczem. BFS czyta wyłącznie porty. W kodzie nie ma impulsów, obrażeń ani resolvera tury. Ostatni wynik 15/15 CTest w Debug i Release pochodzi z P018-03; podział P019 nie uruchamiał ponownie testów gry.
 
 ## Wykonaj
 
-Najpierw oceń rozmiar P019 według WORKFLOW: jedno obserwowalne zachowanie ruchu impulsu, do około 150 linii kodu produkcyjnego i trzech plików, poza testami. Jeśli reprezentacja, ruch i utrzymywanie zajęcia wymagają osobno ocenialnych kontraktów wykraczających poza mikro-krok, wykonaj wyłącznie rozbicie P019 na dzieci, przepnij zależność P020 i pozostaw pierwsze dziecko jako następne. Nie zaczynaj wtedy implementacji.
+Jeden kontrakt: stan przechowuje impulsy wartościowo, a predykat odczytuje, czy wskazane pole jest zajęte przez impuls.
 
-Przy implementacji zachowaj reguły: impuls idzie o jedną krawędź BFS do bieżącej pozycji gracza, czeka bez trasy, remisy N, E, S, W. Zagrożenia są rozwiązywane w stabilnej kolejności identyfikatorów; próba wejścia na pole innego zagrożenia oznacza czekanie. Nie szukaj objazdu wokół zajętego pola w miejsce tej odmowy. Zdefiniuj reprezentację i kontrakt zajęcia względem `blocked_nodes`, żeby ruch gracza i impulsy odczytywały spójny stan. Zachowaj wartościowe kopiowanie `GameState`, deterministyczny porządek i silne ID.
+- Każdy impuls ma silny `EntityId` i pozycję `NodeId`. Zalecana prosta kolekcja wartości, bez ECS, wskaźników i zależności platformowych. Nie utrzymuj osobnej kopii flag zajęcia impulsów. Nazwy typu, kolekcji i predykatu wybiera wykonawca.
+- Stan początkowy ma pustą kolekcję; zachowaj dotychczasową sygnaturę `GameState::initial`. Kopia stanu ma niezależnie posiadać wszystkie jednostki, ich ID i pozycje. Prawidłowy stan ma unikalne ID i najwyżej jeden impuls na polu. Udokumentuj te warunki; nie dodawaj jeszcze fabryki spawnu ani walidatora całego sektora. Gracz i pakiet mogą dzielić pole z impulsem.
+- Predykat przyjmuje stan przez stałą referencję i `NodeId`, zwraca zajęcie przez dowolny impuls, niezależnie od kolejności zapisu jednostek. Nie czyta portów, integralności ani `blocked_nodes`; nie mutuje stanu i nie nalicza tury.
+- **Nie wpisuj impulsów do `blocked_nodes`.** Reguły P020 wymagają wejścia gracza na impuls, więc takie pole jest legalnym celem ruchu po wzajemnej krawędzi. Osobna flaga `blocked_nodes` nadal odrzuca ruch. Predykat zajęcia impulsów będzie w P019-02 blokował wybrany krok innego impulsu; nie zmieniaj teraz `move_player` bez potrzeby.
 
-Testy powinny wykazać jeden ruch po grafie, remisy, brak trasy i stabilne blokowanie innym impulsem, niezależnie od kolejności zapisania jednostek. Sprawdzaj pełny stan oraz brak naliczenia tury. Celowy błąd produkcyjny ma potwierdzić istotny test negatywny. Przy każdej próbie sprawdź w wyjściu builda rekompilację testu; `/t:Rebuild` pozwala uniknąć starej binarki przy szybkich zmianach nagłówka.
+Każde nowe pole `GameState` dopisz do testów inicjalizacji/kopiowania i siedmiu helperów `same_state`: `player_movement`, `player_rotation`, `player_wait`, `packet_movement`, `packet_delivery`, `packet_target`, `packet_introduction`. W odpowiednich fabrykach testowych umieść niepustą kolekcję, aby istniejące kroki nie mogły jej po cichu wyzerować. Nowe testy rejestruj w trzech miejscach CMake wzorem ostatnich testów.
 
-Każde nowe pole `GameState` dopisz do testów inicjalizacji/kopiowania i siedmiu helperów `same_state`: `player_movement`, `player_rotation`, `player_wait`, `packet_movement`, `packet_delivery`, `packet_target`, `packet_introduction`. Nowe testy rejestruj w trzech miejscach CMake wzorem ostatnich testów.
+## Dowód sukcesu i test błędu
+
+Testy mają wykazać pustą kolekcję po inicjalizacji, niezależność dwóch kolejnych kopii z niepustą kolekcją oraz odczyt zajętego i wolnego pola przy pustej i niepustej kolekcji, również dla NodeId 0 i 48 i po odwróceniu kolejności jednostek. Predykat musi zachowywać pełny stan, w tym licznik tur.
+
+Test integrujący z istniejącym ruchem gracza: połączenie na pole impulsu pozwala na ruch i zmienia wyłącznie pozycję gracza; ten sam cel z osobną flagą `blocked_nodes` odrzuca ruch i zachowuje cały stan. Kontakt nie zmienia integralności ani nie usuwa impulsu, bo te zachowania należą do P020.
+
+Celowy błąd produkcyjny ma potwierdzić istotny test negatywny, np. predykat błędnie zwracający zajęcie wolnego pola. Przy próbie sprawdź w wyjściu builda rekompilację testu; `/t:Rebuild` chroni przed starą binarką po szybkiej zmianie nagłówka. Przywróć kod przed końcowymi testami Debug/Release.
 
 ## Nie rozszerzaj
 
-Nie implementuj kontaktu, obrażeń, znikania impulsu po kontakcie, limitu obrażeń ani porażki przy zerowej integralności: to P020. Nie dodawaj resolvera tury P021, innych typów zagrożeń, emitowania impulsów, generatora sektora, rezerwy, długu, wyjścia, zdarzeń, achievementów, zapisu ani prezentacji. Nie zmieniaj reguł BFS ani kroków pakietu. Nie generuj treści dla gracza ani assetów. Nie naprawiaj przy okazji `scripts/Test-ProjectValidator.ps1`; znany błąd opisano w raportach P018 i P018-03. Nie zaczynaj P020.
+Nie implementuj wyboru następnego pola, BFS impulsu, ruchu, sortowania fazy zagrożeń, kontaktu, obrażeń, znikania jednostek ani emisji. Nie dodawaj resolvera, innych typów zagrożeń, generatora sektora, rezerwy, długu, wyjścia, zdarzeń, zapisu, achievementów ani prezentacji. Nie zmieniaj BFS i kroków pakietu. Nie generuj treści dla gracza ani assetów. Nie naprawiaj przy okazji `scripts/Test-ProjectValidator.ps1`; znany błąd opisano w raportach P018 i P018-03.
 
 ## Weryfikacja i przekazanie
 
-Przy zmianie C++ wykonaj konfigurację, build i CTest Debug/Release oraz sprawdzenie formatowania według [README](../../README.md). Zaktualizuj README i ARCHITECTURE odpowiednio do rezultatu. Zapisz raport `history/P019.md`, STATE i NEXT z następnym gotowym ID. Uruchom walidator projektu i `git diff --check`, następnie wykonaj lokalny commit wyłącznie własnych zmian i sprawdź jego hash oraz zakres. Przy samym rozbiciu nie uruchamiaj pozorowanych testów gry; sprawdź zależności walidatorem, także negatywnie na izolowanej kopii.
+Wykonaj konfigurację, build i CTest Debug/Release oraz sprawdzenie formatowania według [README](../../README.md). Zaktualizuj README i ARCHITECTURE zgodnie z faktycznym wynikiem. Zapisz `history/P019-01.md`, zaktualizuj STATE i NEXT na P019-02 dopiero po spełnieniu kryteriów. Uruchom walidator projektu i `git diff --check`, wykonaj lokalny commit wyłącznie własnych zmian, sprawdź hash i zakres. Zatrzymaj się przed P019-02.

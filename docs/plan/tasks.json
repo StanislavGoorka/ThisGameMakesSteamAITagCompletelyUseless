@@ -248,10 +248,43 @@
                       "id":  "P019",
                       "phase":  "M2",
                       "title":  "Impuls pościgowy",
-                      "scope":  "Dodaj jeden typ zagrożenia podążający po grafie.",
-                      "acceptance":  "N E S W w remisach, brak trasy, stabilne blokowanie innym impulsem.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij reprezentację impulsów i ich zajęcia, wybór kroku pościgu oraz ruch w kolejności ID na dzieci P019-01, P019-02 i P019-03; bez implementacji.",
+                      "acceptance":  "Dzieci pokrywają remisy N E S W, czekanie bez trasy i stabilne blokowanie innym impulsem, ze spójnym kontraktem zajęcia. P020 zależy od ostatniego dziecka; zamknięcie P019 nie oznacza działającego impulsu.",
                       "depends_on":  [
                                          "P018-03"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P019-01",
+                      "phase":  "M2",
+                      "title":  "Reprezentacja i zajęcie impulsów",
+                      "scope":  "Dodaj wartościową kolekcję impulsów z EntityId i NodeId oraz jeden predykat zajęcia pola przez impuls. Impulsy są oddzielne od blocked_nodes: blokują inne impulsy, lecz pozwalają graczowi wejść na swoje pole dla przyszłego kontaktu P020. Bez ruchu, obrażeń i emisji.",
+                      "acceptance":  "Stan początkowy ma pustą kolekcję; kopie są niezależne. Predykat wykrywa zajęte pole, odrzuca wolne i pustą kolekcję niezależnie od kolejności zapisu, także dla NodeId 0 i 48; nie mutuje stanu ani tury. Ruch gracza na impuls jest legalny po krawędzi, a osobna flaga blocked_nodes nadal go blokuje. Nowe pola uwzględnione w testach inicjalizacji, kopiowania i wszystkich helperach same_state; unikalne ID i pozycje opisane jako warunki poprawnego stanu.",
+                      "depends_on":  [
+                                         "P019"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P019-02",
+                      "phase":  "M2",
+                      "title":  "Wybór kroku pościgu",
+                      "scope":  "Dodaj jedną funkcję tylko do odczytu, która dla EntityId impulsu wskazuje następny NodeId po BFS do bieżącej pozycji gracza albo brak ruchu. Korzystaj z istniejącego BFS i predykatu zajęcia z P019-01; nie przesuwaj jednostek.",
+                      "acceptance":  "Wynik to dokładnie jedna krawędź najkrótszej trasy, z remisami N E S W. Brak impulsu o podanym ID, brak trasy, pozycja już na graczu lub następne pole zajęte przez inny impuls daje brak ruchu. Zajęty pierwszy krok oznacza czekanie, bez objazdu nawet gdy istnieje dłuższa wolna trasa; zmiana topologii lub pozycji gracza zmienia wynik. Cały stan i tura pozostają niezmienione.",
+                      "depends_on":  [
+                                         "P019-01"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P019-03",
+                      "phase":  "M2",
+                      "title":  "Ruch impulsów w kolejności ID",
+                      "scope":  "Dodaj krok przesuwający każdy impuls najwyżej raz w rosnącej kolejności EntityId. Wybór z P019-02 obliczaj na bieżącym stanie po wcześniejszych ruchach, zachowując kolejność przechowywania kolekcji; bez kontaktów, obrażeń, usuwania jednostek i naliczenia tury.",
+                      "acceptance":  "Jeden impuls idzie o jedną krawędź; pusta kolekcja i brak możliwych ruchów zachowują stan. Wynik według ID nie zależy od kolejności zapisu: niższe ID może zwolnić pole wyższemu, a impuls zablokowany w swoim kroku nie rusza ponownie po późniejszym zwolnieniu pola. Przy wspólnym celu pierwszeństwo ma niższe ID; zajęcie nie powoduje objazdu. Pełny stan różni się tylko oczekiwanymi pozycjami impulsów, bez zmiany integralności i tury; kontakt pozostaje do P020.",
+                      "depends_on":  [
+                                         "P019-02"
                                      ],
                       "gate":  null
                   },
@@ -262,7 +295,7 @@
                       "scope":  "Dodaj kontakty i limit jednego obrażenia w turze.",
                       "acceptance":  "Wejście na impuls, wejście impulsu na gracza, wiele kontaktów, HP=0.",
                       "depends_on":  [
-                                         "P019"
+                                         "P019-03"
                                      ],
                       "gate":  null
                   },

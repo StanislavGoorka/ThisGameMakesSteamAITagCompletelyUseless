@@ -16,7 +16,9 @@ Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId
 
 P018 zamknięto jako wpis planistyczny: dostawę pakietu rozbito na zadania P018-01, P018-02 i P018-03. Wszystkie trzy dzieci są zaimplementowane. Kroki wprowadzenia, ruchu i dostawy pozostają osobnymi funkcjami; ich kolejność ustali resolver w P021. [Raport P018](docs/workflow/history/P018.md)
 
-Następne zadanie to **P019 — impuls pościgowy**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P019 zamknięto wyłącznie jako podział planu: P019-01 doda reprezentację i predykat zajęcia impulsów, P019-02 wybór kroku pościgu, a P019-03 ruch w kolejności ID. Żadne z tych dzieci nie jest zaimplementowane; P020 wymaga ukończenia P019-03. [Raport P019](docs/workflow/history/P019.md)
+
+Następne zadanie to **P019-01 — reprezentacja i zajęcie impulsów**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
