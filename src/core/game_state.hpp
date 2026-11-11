@@ -39,6 +39,8 @@ struct GameState
     TurnIndex turns_taken{};
     // The single active packet; empty while no packet is on the board.
     std::optional<Packet> packet{};
+    // Delivery record: targets that already received a packet.
+    std::array<bool, node_count> powered_nodes{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {
