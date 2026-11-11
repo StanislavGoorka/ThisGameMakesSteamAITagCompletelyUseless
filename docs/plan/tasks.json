@@ -292,10 +292,32 @@
                       "id":  "P020",
                       "phase":  "M2",
                       "title":  "Kontakt i obrażenia",
-                      "scope":  "Dodaj kontakty i limit jednego obrażenia w turze.",
-                      "acceptance":  "Wejście na impuls, wejście impulsu na gracza, wiele kontaktów, HP=0.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij pojedynczy kontakt z limitem obrażeń oraz fazę impulsów z kontaktami na dzieci P020-01 i P020-02; bez implementacji.",
+                      "acceptance":  "Dzieci pokrywają wejście gracza na impuls przed ruchem, wejście impulsu na gracza, natychmiastowe zwolnienie pola, wspólny limit jednego obrażenia i HP=0. P021 zależy od ostatniego dziecka; zamknięcie P020 nie oznacza działających kontaktów.",
                       "depends_on":  [
                                          "P019-03"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P020-01",
+                      "phase":  "M2",
+                      "title":  "Pojedynczy kontakt i limit obrażeń",
+                      "scope":  "Dodaj jedną funkcję obsługującą kontakt impulsu wskazanego EntityId z graczem: usuń jednostkę stojącą na graczu i odejmij najwyżej jeden punkt integralności według przekazanej przez referencję lokalnej blokady obrażeń. Blokada należy do wywołującego, poza GameState. Bez ruchu i pełnej fazy zagrożeń.",
+                      "acceptance":  "Kontakt usuwa wyłącznie wskazany impuls i zachowuje kolejność pozostałych. Pierwszy kontakt przy HP>0 zmniejsza HP o 1 i zużywa blokadę; kolejne z tą samą blokadą nadal usuwają impulsy bez obrażeń. Przy HP=1 gracz umiera, a przy HP=0 nie ma underflow. Brak ID, brak kontaktu i ponowienie po usunięciu zachowują pełny stan i blokadę. Legalny move_player na impuls, potem kontakt, daje oczekiwany stan bez naliczenia tury. Wszystkie pozostałe pola, w tym pakiet, są zachowane.",
+                      "depends_on":  [
+                                         "P020"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P020-02",
+                      "phase":  "M2",
+                      "title":  "Faza impulsów z natychmiastowym kontaktem",
+                      "scope":  "Dodaj jedną fazę impulsów ze wspólną lokalną blokadą obrażeń z P020-01. Najpierw rozwiąż wszystkie kontakty zastane po akcji gracza, następnie wykonaj najwyżej jeden krok każdego pozostałego impulsu w rosnącej kolejności ID i natychmiast rozwiąż jego kontakt. Używaj next_pulse_step na bieżącym stanie. Bez resolvera tury i naliczenia kosztu.",
+                      "acceptance":  "Wejście gracza na impuls jest rozpoznane przed jakimkolwiek ruchem, niezależnie od ID kontaktującej jednostki. Impuls po wejściu na gracza znika od razu, więc późniejsze ID widzą zwolnione pole i też mogą wejść oraz zniknąć. Kontakty przed ruchem i po ruchu używają łącznie najwyżej jednego HP; wszystkie kontakty są usuwane także po spadku HP do zera. Nowe wywołanie fazy ma świeży limit. Permutacje kolekcji dają ten sam wynik według ID, zachowując kolejność ocalałych; brak kontaktu zachowuje reguły ruchu, blokady i braku retry. Pełny stan zmienia tylko pozycje lub usunięcie impulsów i ewentualnie HP; tura pozostaje niezmieniona.",
+                      "depends_on":  [
+                                         "P020-01"
                                      ],
                       "gate":  null
                   },
@@ -306,7 +328,7 @@
                       "scope":  "Połącz istniejące kroki w jedną transakcję w ustalonej kolejności.",
                       "acceptance":  "Nielegalna komenda zachowuje cały stan i RNG; test kolejności zdarzeń.",
                       "depends_on":  [
-                                         "P020"
+                                         "P020-02"
                                      ],
                       "gate":  null
                   },

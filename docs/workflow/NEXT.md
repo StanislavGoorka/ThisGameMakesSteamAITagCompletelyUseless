@@ -1,38 +1,44 @@
 # Następny mały krok
 
-Task: P020
+Task: P020-01
 
 ## Cel
 
-Oceń rozmiar kontaktu i obrażeń przed implementacją P020. P019 i jego trzy dzieci są ukończone; reprezentacja, wybór kroku i ruch impulsów działają. P020 łączy kontakt przed fazą zagrożeń, znikanie jednostek po ruchu oraz wspólny limit jednego obrażenia w turze. Jeśli to więcej niż jeden mały kontrakt, tym krokiem jest wyłącznie podział P020 na dzieci i przepięcie P021 na ostatnie wymagane dziecko. Nie zaczynaj wtedy implementacji pierwszego dziecka.
+Dodaj jeden kontrakt kontaktu wskazanego impulsu z graczem oraz współdzielonego limitu obrażeń. P020 jest ukończonym wpisem planistycznym, nie implementacją kontaktów. P019-03 jest zaimplementowane. Nie zaczynaj pełnej fazy P020-02 ani resolvera P021.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P019-03](history/P019-03.md), wpis P020 i jego zależność w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [ruch impulsów](../../src/core/pulse_movement.hpp), [wybór kroku](../../src/core/pulse_chase.hpp), [ruch gracza](../../src/core/player_movement.hpp), [testy ruchu impulsów](../../tests/unit/pulse_movement_tests.cpp), [testy gracza](../../tests/unit/player_movement_tests.cpp), [ARCHITECTURE](../ARCHITECTURE.md), sekcję „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P020](history/P020.md), [raport P019-03](history/P019-03.md), wpisy P020 i P020-01 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [ruch gracza](../../src/core/player_movement.hpp), [ruch impulsów](../../src/core/pulse_movement.hpp), [testy ruchu gracza](../../tests/unit/player_movement_tests.cpp), [testy ruchu impulsów](../../tests/unit/pulse_movement_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), sekcję „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
 
 ## Stan zastany
 
-`advance_pulses(GameState&)` działa raz na każdej jednostce w rosnącej kolejności `EntityId`, z wyborem na stanie po wcześniejszych ruchach. Buduje osobną listę ID i zachowuje kolejność `GameState::pulses`. Zajęte pierwsze pole oznacza czekanie bez objazdu; niższe ID może zwolnić pole wyższemu, ale wcześniejszy impuls nie ponawia próby. Funkcja zmienia tylko pozycje. Impuls na graczu pozostaje w kolekcji i blokuje wejście innych impulsów; integralność oraz tura są zachowane.
+`GameState::pulses` to wartościowa kolekcja `Pulse {EntityId id, NodeId position}`. Poprawny stan ma unikalne ID i najwyżej jeden impuls na polu. Gracz i pakiet mogą współdzielić pole z impulsem. `move_player` pozwala na wejście na impuls po legalnej krawędzi; osobne `blocked_nodes` nadal blokuje gracza. Nie ma obsługi kontaktu ani obrażeń. `advance_pulses` przesuwa jednostki w kolejności ID, zmienia wyłącznie ich pozycje i zachowuje kolejność kolekcji. Nie wolno zmieniać jego dotychczasowego kontraktu w tym kroku.
 
-`move_player` pozwala wejść na impuls po legalnej krawędzi, bez obrażeń i usuwania jednostki. Osobne `blocked_nodes` nadal blokuje ruch gracza. Poprawny stan ma unikalne ID impulsów i najwyżej jedną jednostkę na polu. Gracz i pakiet mogą z nią współdzielić pole. Ostatnie testy to 18/18 CTest Debug i Release; kontrolowana mutacja odwracająca kolejność ID została wykryta i wycofana.
+`player_integrity` jest `uint8_t`; zero oznacza martwego gracza. Żaden istniejący krok nie odejmuje HP. Ostatnie 18/18 CTest w Debug i Release pochodzi z P019-03; podział P020 nie uruchamiał testów gry.
 
-## Kontrakt do zachowania w P020
+## Wykonaj
 
-- Wejście gracza na impuls musi zostać rozpoznane przed ruchem zagrożeń, nawet gdy impuls mógłby później odejść. Kontakt po wejściu impulsu na gracza również usuwa jednostkę.
-- Znikanie kontaktującego impulsu powinno od razu zwolnić pole dla późniejszych ID. Samo `advance_pulses`, a potem zbiorczy kontakt, może błędnie blokować drugi impuls. Nie obliczaj całej listy zamiarów ze stanu początkowego. Zachowaj deterministyczny porządek i kolejność pozostałych jednostek w kolekcji.
-- Jeden wspólny limit obrażeń ma obejmować kontakty przed ruchem i po ruchu w tej samej turze. Nie przechowuj bez potrzeby drugiej kopii zajęcia ani licznika kontaktów w `GameState`. Reset limitu na granicy tury będzie odpowiedzialnością resolvera P021.
-- Wiele kontaktów usuwa wszystkie odpowiednie impulsy, lecz zabiera najwyżej jeden punkt integralności. Integralność nie może spaść poniżej zera; śmierć musi być rozpoznawalna przed przyszłym sprawdzeniem wyjścia. Dostawa nie leczy. Nie naliczaj tury wewnątrz kontaktu.
+Jedna funkcja przyjmuje `GameState&`, `EntityId` oraz przekazywaną przez referencję lokalną blokadę obrażeń. Nazwy i prostą reprezentację blokady wybiera wykonawca; wystarczy informacja, czy obrażenie już zadano. Blokada nie jest polem `GameState` i nie ma automatycznego resetu w funkcji kontaktu.
+
+- Znajdź wskazany impuls po ID. Gdy go nie ma albo stoi poza graczem, zachowaj cały stan oraz blokadę i zwróć brak kontaktu.
+- Gdy stoi na graczu, usuń wyłącznie tę jednostkę, zachowując kolejność pozostałych. Zwróć informację, że kontakt wystąpił, również gdy gracz już nie żyje lub limit był zużyty.
+- Jeśli blokada nie jest zużyta i HP > 0, odejmij dokładnie jeden HP i oznacz obrażenie jako zadane. Przy HP = 0 nie odejmuj niczego i pozostaw blokadę bez zmiany. Zużyta blokada nigdy nie pozwala na kolejne obrażenie; nadal usuwaj kontaktujące impulsy.
+- Nie przesuwaj jednostek i nie naliczaj tury. Zachowaj wszystkie inne pola, w tym pakiet i flagi dostaw. Kontakt nie czyta portów ani `blocked_nodes`.
+
+P020-02 utworzy jedną świeżą blokadę na wywołanie fazy i użyje jej zarówno przed ruchem, jak i po każdym ruchu. Najpierw usunie wszystkie zastane kontakty, niezależnie od ich ID. Potem każdy ocalały impuls ruszy najwyżej raz w kolejności ID i zniknie od razu po kontakcie. To przyszły zakres, nie implementacja tego kroku. Nie dodawaj nowych pól stanu ani ogólnego systemu zdarzeń.
 
 ## Dowód sukcesu i test błędu
 
-Przy podziale zachowaj niezmienne ID, porządek topologiczny i pierwotne kryteria P020 w dzieciach. Walidator ma odrzucać rozpoczęcie dziecka z nieukończoną zależnością i P021 przed ostatnim dzieckiem; testuj na izolowanej kopii, bez zmiany roboczego stanu. Sam podział nie wymaga CMake/CTest.
+Testuj brak wskazanego ID, brak kontaktu, kontakt z HP 3, HP 1 i HP 0, już zużytą blokadę i ponowienie po usunięciu jednostki. Uwzględnij graniczne ID, różne kolejności kolekcji oraz zachowanie kolejności ocalałych. Każde wywołanie porównuje pełny stan i blokadę z oczekiwaniem, łącznie z niepustym pakietem oraz niezerową turą.
 
-Jeśli ocena uzasadni jeden wąski krok implementacyjny, testuj legalne wejście gracza na impuls, wejście impulsu na gracza, kontakt przed fazą ruchu oraz wiele kontaktów w obu momentach przy wspólnym limicie. Uwzględnij integralność 1 i 0, brak kontaktu, powtórzenie kroku oraz zwolnienie pola dla późniejszego ID. Porównuj pełny stan, w tym pakiet, dostawy i turę. Celowa mutacja ma ujawnić istotny błąd; wymuś rekompilację celowanego testu i przywróć kod przed końcowymi Debug/Release.
+Test wielu kontaktów może wykonać kolejne wywołania z tą samą blokadą, ustawiając przed każdym kolejną jednostkę na graczu w poprawnym stanie: wszystkie wskazane impulsy znikają, HP maleje tylko raz. Nowa, świeża blokada umożliwia obrażenie w następnej turze; w tym kroku testuje to wywołujący, nie resolver. Test integrujący `move_player` z kontaktem ma wykazać legalne wejście gracza na impuls, usunięcie jednostki i ubytek jednego HP, bez zmiany tury i pakietu. Nie łącz jeszcze kontaktu z ruchem impulsów.
+
+Nowy test zarejestruj w trzech miejscach CMake według ostatnich testów. Celowa mutacja produkcyjna ma sprawdzić istotny negatywny przypadek, np. pominięcie blokady obrażeń przy drugim kontakcie. Wymuś `/t:Rebuild` właściwego celu, potwierdź rekompilację w logu i przywróć kod przed końcowymi Debug/Release.
 
 ## Nie rozszerzaj
 
-Nie implementuj resolvera P021, wyjścia ani limitu sektora P022, emisji, innych zagrożeń, generatora, rezerwy, długu, zapisu lub prezentacji. Nie zmieniaj BFS i kroków pakietu. Nie generuj assetów ani treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1` opisanego w raportach P018 i P018-03.
+Nie implementuj P020-02, sortowania kontaktów całej fazy, resolvera, wyjścia, limitu sektora, emisji, generatora, rezerwy, długu, zapisu ani prezentacji. Nie zmieniaj BFS, kroków pakietu, `move_player` ani kontraktu `advance_pulses`. Nie generuj assetów i treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1` opisanego w raportach P018 i P018-03.
 
 ## Weryfikacja i przekazanie
 
-Zapisz `history/P020.md`, zaktualizuj README i ARCHITECTURE zgodnie z rzeczywistym zakresem. Przy podziale ustaw STATE/NEXT na pierwsze dziecko; przy implementacji przejdź do P021 dopiero po kryteriach. Dla kodu wykonaj konfigurację, build, CTest Debug/Release i formatowanie według [README](../../README.md). Zawsze uruchom walidator i kontrole diff, wykonaj lokalny commit wyłącznie własnych zmian oraz sprawdź hash i zakres. Zatrzymaj się przed kolejnym ID.
+Wykonaj konfigurację, build i CTest Debug/Release oraz formatowanie według [README](../../README.md). Zaktualizuj README i ARCHITECTURE zgodnie z rzeczywistym wynikiem. Zapisz `history/P020-01.md`; STATE i NEXT przestaw na P020-02 dopiero po kryteriach. Uruchom walidator i kontrole diff, wykonaj lokalny commit wyłącznie własnych zmian i sprawdź hash oraz zakres. Zatrzymaj się przed kolejnym ID.

@@ -18,7 +18,9 @@ P018 zamknięto jako wpis planistyczny: dostawę pakietu rozbito na zadania P018
 
 P019 zamknięto wyłącznie jako podział planu. Wszystkie trzy dzieci są zaimplementowane: `GameState::pulses` przechowuje impulsy z `EntityId` i pozycją `NodeId`, `pulse_occupies` odczytuje zajęcie, a `next_pulse_step` wybiera jedną krawędź BFS do bieżącej pozycji gracza bez mutacji stanu. Zajęty pierwszy krok oznacza czekanie, bez objazdu. Impuls pozwala graczowi wejść na swoje pole; osobna flaga `blocked_nodes` nadal blokuje ruch gracza. `advance_pulses` przesuwa każdy impuls najwyżej raz w rosnącej kolejności ID, zachowuje kolejność kolekcji i czyta zajęcie po wcześniejszych ruchach. Jednostka, która czekała, nie ponawia próby. Kontakt i obrażenia pozostają w P020. [Raport P019](docs/workflow/history/P019.md) · [Raport P019-03](docs/workflow/history/P019-03.md)
 
-Następne zadanie to **P020 — kontakt i obrażenia**, najpierw z oceną rozmiaru kroku. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P020 zamknięto wyłącznie jako podział planu: P020-01 obsłuży pojedynczy kontakt i lokalny limit obrażeń, a P020-02 połączy kontakty z ruchem impulsów. Kontakt przed ruchem i po każdym ruchu ma od razu usuwać jednostkę, ze wspólnym limitem jednego obrażenia w fazie. P021 zależy od P020-02. Żadne dziecko P020 nie jest jeszcze zaimplementowane. [Raport P020](docs/workflow/history/P020.md)
+
+Następne zadanie to **P020-01 — pojedynczy kontakt i limit obrażeń**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
