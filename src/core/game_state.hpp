@@ -44,6 +44,8 @@ struct GameState
     // Receivers of the sector: the nodes that packets are sent to. Their
     // NodeId sets the order in which they are targeted.
     std::array<bool, node_count> receiver_nodes{};
+    // Packet starting node; empty until the sector supplies an entry.
+    std::optional<NodeId> sector_entry{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

@@ -28,6 +28,7 @@ GameState open_board(NodeId player_position)
 {
     GameState state{.player_position = player_position,
                     .turns_taken = TurnIndex{7}};
+    state.sector_entry = center;
     state.ports.fill(all_ports);
     state.rotatable_nodes[center.value()] = true;
     state.blocked_nodes[0] = true;
@@ -42,6 +43,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.packet == right.packet &&
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
+           left.sector_entry == right.sector_entry &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,

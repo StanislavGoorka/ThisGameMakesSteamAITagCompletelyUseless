@@ -26,6 +26,7 @@ GameState enclosed_board(NodeId player_position, std::uint8_t integrity)
     GameState state{.player_position = player_position,
                     .player_integrity = integrity,
                     .turns_taken = TurnIndex{7}};
+    state.sector_entry = center;
     state.ports.fill(all_ports);
     state.ports[player_position.value()] = PortMask{};
     state.rotatable_nodes.fill(true);
@@ -43,6 +44,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.packet == right.packet &&
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
+           left.sector_entry == right.sector_entry &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,

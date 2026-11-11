@@ -39,6 +39,7 @@ GameState board_with_receivers(std::initializer_list<int> receivers)
     state.ports[26] = ports(PortMask::west_bit);
     state.rotatable_nodes[25] = true;
     state.blocked_nodes[0] = true;
+    state.sector_entry = node(24);
     for (const auto receiver : receivers)
     {
         state.receiver_nodes[node(receiver).value()] = true;
@@ -54,6 +55,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.packet == right.packet &&
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
+           left.sector_entry == right.sector_entry &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,

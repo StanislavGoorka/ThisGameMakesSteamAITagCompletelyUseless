@@ -34,7 +34,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
         state->player_integrity != 3 ||
         state->player_integrity != GameState::initial_player_integrity ||
         !state->player_alive() || state->turns_taken != TurnIndex{0} ||
-        state->packet ||
+        state->packet || state->sector_entry ||
         std::ranges::any_of(state->powered_nodes,
                             [](bool powered) { return powered; }) ||
         std::ranges::any_of(state->receiver_nodes,
@@ -49,7 +49,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
         std::cerr
             << "Initial state must preserve board and a living player with "
                "full integrity at turn zero, without a packet, a powered "
-               "target or a receiver\n";
+               "target, a receiver or a sector entry\n";
         return false;
     }
     return true;
@@ -104,6 +104,7 @@ bool changing_inputs_and_copy_preserves_original_state()
     copy.packet = Packet{.position = start, .target = next_position};
     copy.powered_nodes.back() = true;
     copy.receiver_nodes.front() = true;
+    copy.sector_entry = start;
     auto second_copy = copy;
     second_copy.packet->position = next_position;
     second_copy.packet->target = start;
@@ -111,6 +112,7 @@ bool changing_inputs_and_copy_preserves_original_state()
     second_copy.powered_nodes.front() = true;
     second_copy.receiver_nodes.front() = false;
     second_copy.receiver_nodes.back() = true;
+    second_copy.sector_entry = next_position;
 
     if (!rotated || copy.ports.back().bits() != PortMask::east_bit ||
         copy.player_alive() || original->packet ||
@@ -123,7 +125,9 @@ bool changing_inputs_and_copy_preserves_original_state()
                             [](bool receiver) { return receiver; }) ||
         !copy.receiver_nodes.front() || copy.receiver_nodes.back() ||
         second_copy.receiver_nodes.front() ||
-        !second_copy.receiver_nodes.back() ||
+        !second_copy.receiver_nodes.back() || original->sector_entry ||
+        copy.sector_entry != start ||
+        second_copy.sector_entry != next_position ||
         copy.packet != Packet{.position = start, .target = next_position} ||
         second_copy.packet !=
             Packet{.position = next_position, .target = start} ||

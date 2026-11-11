@@ -41,6 +41,7 @@ GameState corridor_board()
     state.ports[26] = ports(PortMask::west_bit);
     state.rotatable_nodes[25] = true;
     state.blocked_nodes[0] = true;
+    state.sector_entry = node(24);
     return state;
 }
 
@@ -65,6 +66,7 @@ GameState open_board(int player, int packet, int target)
     state.ports.fill(ports(15));
     state.rotatable_nodes[24] = true;
     state.blocked_nodes[0] = true;
+    state.sector_entry = node(24);
     return state;
 }
 
@@ -76,6 +78,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.packet == right.packet &&
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
+           left.sector_entry == right.sector_entry &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,
