@@ -16,6 +16,7 @@ using closed_circuit::PortMask;
 using closed_circuit::resolve_turn;
 using closed_circuit::RotateCommand;
 using closed_circuit::RunSeed;
+using closed_circuit::SectorOutcome;
 using closed_circuit::SplitMix64;
 using closed_circuit::TurnIndex;
 using closed_circuit::WaitCommand;
@@ -70,13 +71,15 @@ bool same_state(const GameState &left, const GameState &right)
 }
 
 bool expect_turn(const GameState &state, const Command &command, bool accepted,
-                 const GameState &expected, std::string_view context)
+                 const GameState &expected, std::string_view context,
+                 SectorOutcome outcome = SectorOutcome::ongoing)
 {
     const auto before = state;
     const auto command_before = command;
     const auto result = resolve_turn(state, command);
-    if (result.accepted != accepted || !same_state(result.state, expected) ||
-        !same_state(state, before) || command != command_before)
+    if (result.accepted != accepted || result.outcome != outcome ||
+        !same_state(result.state, expected) || !same_state(state, before) ||
+        command != command_before)
     {
         std::cerr << context
                   << ": unexpected result or modified input state/command\n";
@@ -112,7 +115,7 @@ bool illegal_commands_run_no_phase_or_cost()
              MoveCommand{node(25)}, RotateCommand{node(24)}, WaitCommand{}})
     {
         if (!expect_turn(state, command, false, state,
-                         "dead player runs no phase"))
+                         "dead player runs no phase", SectorOutcome::death))
         {
             return false;
         }
@@ -216,13 +219,15 @@ bool delivery_and_turn_cost_survive_death_in_threat_phase()
     expected.player_integrity = 0;
     expected.turns_taken = TurnIndex{8};
     return expect_turn(state, WaitCommand{}, true, expected,
-                       "delivery precedes death and accepted turn is charged");
+                       "delivery precedes death and accepted turn is charged",
+                       SectorOutcome::death);
 }
 
 bool next_packet_waits_for_the_next_accepted_turn()
 {
     auto state = board();
     state.player_position = node(48);
+    state.sector_exit = node(47);
     state.packet.reset();
     state.sector_entry = node(0);
     state.receiver_nodes.fill(false);
@@ -280,6 +285,7 @@ bool accepted_and_rejected_results_own_independent_state()
         result.state.pulses.push_back({*EntityId::from_value(99), node(46)});
         result.state.packet->position = node(9);
         result.state.powered_nodes[3] = false;
+        result.state.sector_exit = node(0);
         auto expected = state;
         if (untouched_result.accepted)
         {
@@ -289,6 +295,126 @@ bool accepted_and_rejected_results_own_independent_state()
             !same_state(untouched_result.state, expected))
         {
             std::cerr << "Every result must independently own its state\n";
+            return false;
+        }
+    }
+    return true;
+}
+
+bool last_turn_classifies_after_delivery_threats_and_cost()
+{
+    auto state = board();
+    state.turns_taken = TurnIndex{47};
+    state.sector_exit = node(25);
+    state.packet = Packet{node(24), node(25)};
+    state.receiver_nodes[25] = true;
+    state.powered_nodes[1] = true;
+    auto expected = state;
+    expected.player_position = node(25);
+    expected.packet.reset();
+    expected.powered_nodes[25] = true;
+    expected.turns_taken = TurnIndex{48};
+    if (!expect_turn(state, MoveCommand{node(25)}, true, expected,
+                     "last turn completes after second delivery",
+                     SectorOutcome::completed))
+    {
+        return false;
+    }
+
+    state.player_position = node(25);
+    state.player_integrity = 1;
+    state.pulses = {{high_id, node(25)}, {low_id, node(24)}};
+    expected.player_integrity = 0;
+    expected.pulses.clear();
+    if (!expect_turn(state, WaitCommand{}, true, expected,
+                     "last turn death precedes exit despite delivery and cost",
+                     SectorOutcome::death))
+    {
+        return false;
+    }
+
+    state = board();
+    state.turns_taken = TurnIndex{47};
+    if (!expect_turn(state, MoveCommand{node(26)}, false, state,
+                     "invalid move preserves the last available turn"))
+    {
+        return false;
+    }
+    expected = state;
+    expected.turns_taken = TurnIndex{48};
+    return expect_turn(state, WaitCommand{}, true, expected,
+                       "last turn overload is read after the turn cost",
+                       SectorOutcome::overload);
+}
+
+bool terminal_sectors_reject_all_commands_and_own_the_returned_state()
+{
+    SplitMix64 random{RunSeed{0xfedcba98}};
+    static_cast<void>(random.next_u64());
+    auto reference = random;
+    for (const auto outcome : {SectorOutcome::completed, SectorOutcome::death,
+                               SectorOutcome::overload})
+    {
+        for (const auto turn : {TurnIndex{12}, TurnIndex{48}, TurnIndex{49}})
+        {
+            if (outcome == SectorOutcome::completed && turn == TurnIndex{49})
+            {
+                continue;
+            }
+            auto state = board();
+            state.turns_taken = turn;
+            state.packet.reset();
+            state.sector_entry = node(24);
+            state.pulses = {{high_id, node(24)}, {low_id, node(25)}};
+            state.receiver_nodes[25] = true;
+            if (outcome == SectorOutcome::completed)
+            {
+                state.sector_exit = node(24);
+                state.powered_nodes[1] = true;
+                state.powered_nodes[48] = true;
+            }
+            else if (outcome == SectorOutcome::death)
+            {
+                state.player_integrity = 0;
+            }
+            else if (turn == TurnIndex{12})
+            {
+                continue;
+            }
+            for (const auto &command :
+                 std::array<Command, 3>{MoveCommand{node(25)},
+                                        RotateCommand{node(24)}, WaitCommand{}})
+            {
+                if (closed_circuit::is_command_legal(state, command) ||
+                    !expect_turn(state, command, false, state,
+                                 "terminal input runs no phase or turn 49",
+                                 outcome))
+                {
+                    return false;
+                }
+                const auto before = state;
+                auto result = resolve_turn(state, command);
+                const auto untouched = resolve_turn(state, command);
+                result.state.sector_exit.reset();
+                result.state.pulses.front().position = node(47);
+                result.state.pulses.push_back({spare_id, node(46)});
+                result.state.packet = Packet{node(0), node(1)};
+                if (!same_state(state, before) ||
+                    !same_state(untouched.state, before) ||
+                    untouched.outcome != outcome || untouched.accepted)
+                {
+                    std::cerr
+                        << "Terminal result must own an independent state\n";
+                    return false;
+                }
+            }
+        }
+    }
+    for (int draw = 0; draw < 8; ++draw)
+    {
+        if (random.next_u64() != reference.next_u64())
+        {
+            std::cerr << "Terminal rejection must not consume external RNG\n";
             return false;
         }
     }
@@ -334,6 +460,8 @@ int main()
         delivery_and_turn_cost_survive_death_in_threat_phase() &&
         next_packet_waits_for_the_next_accepted_turn() &&
         accepted_and_rejected_results_own_independent_state() &&
+        last_turn_classifies_after_delivery_threats_and_cost() &&
+        terminal_sectors_reject_all_commands_and_own_the_returned_state() &&
         resolver_leaves_external_rng_sequence_untouched();
     return passed ? 0 : 1;
 }

@@ -17,6 +17,7 @@ struct TurnResult
 {
     GameState state;
     bool accepted;
+    SectorOutcome outcome;
 };
 
 // A rejected command runs no phase. The result owns its state in both cases;
@@ -25,7 +26,7 @@ struct TurnResult
                                              const Command &command)
 {
     const bool accepted = is_command_legal(state, command);
-    TurnResult result{state, accepted};
+    TurnResult result{state, accepted, sector_outcome(state)};
     if (!accepted)
     {
         return result;
@@ -52,6 +53,7 @@ struct TurnResult
     static_cast<void>(deliver_packet(next));
     resolve_pulse_phase(next);
     charge_turn(next);
+    result.outcome = sector_outcome(next);
     return result;
 }
 

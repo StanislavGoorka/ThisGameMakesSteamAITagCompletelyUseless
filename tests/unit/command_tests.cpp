@@ -19,6 +19,8 @@ using closed_circuit::Packet;
 using closed_circuit::PortMask;
 using closed_circuit::rotate_from_player;
 using closed_circuit::RotateCommand;
+using closed_circuit::sector_outcome;
+using closed_circuit::SectorOutcome;
 using closed_circuit::TurnIndex;
 using closed_circuit::wait_player;
 using closed_circuit::WaitCommand;
@@ -107,7 +109,8 @@ bool expect_legality(const GameState &state, const Command &command,
             }
         },
         command);
-    if (actual != (state.player_alive() && helper_result))
+    if (actual !=
+        (sector_outcome(state) == SectorOutcome::ongoing && helper_result))
     {
         std::cerr << description << ": legality disagrees with action rules\n";
         return false;
@@ -251,6 +254,41 @@ bool ready_packet_is_not_introduced_by_repeated_validation()
     return true;
 }
 
+bool every_command_rejects_terminal_sectors_without_mutation()
+{
+    for (const auto outcome : {SectorOutcome::completed, SectorOutcome::death,
+                               SectorOutcome::overload})
+    {
+        auto state = rich_board();
+        state.packet.reset();
+        state.receiver_nodes[30] = true;
+        state.pulses.push_back({*EntityId::from_value(99), node(24)});
+        if (outcome == SectorOutcome::completed)
+        {
+            state.sector_exit = node(24);
+            state.powered_nodes[1] = true;
+        }
+        else if (outcome == SectorOutcome::death)
+        {
+            state.player_integrity = 0;
+        }
+        else
+        {
+            state.turns_taken = TurnIndex{48};
+        }
+        for (const auto &command : std::array<Command, 3>{
+                 MoveCommand{node(25)}, RotateCommand{node(24)}, WaitCommand{}})
+        {
+            if (!expect_legality(state, command, false,
+                                 "terminal sector rejects every command"))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 } // namespace
 
 int main()
@@ -260,6 +298,7 @@ int main()
         absent_or_one_way_edges_reject_move() &&
         rotation_checks_range_and_rotatability_without_ports_or_occupancy() &&
         wait_needs_only_life_and_all_commands_reject_death() &&
-        ready_packet_is_not_introduced_by_repeated_validation();
+        ready_packet_is_not_introduced_by_repeated_validation() &&
+        every_command_rejects_terminal_sectors_without_mutation();
     return passed ? 0 : 1;
 }

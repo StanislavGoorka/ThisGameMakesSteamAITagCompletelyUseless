@@ -2,6 +2,7 @@
 
 #include "core/player_movement.hpp"
 #include "core/player_rotation.hpp"
+#include "core/sector_outcome.hpp"
 
 #include <type_traits>
 #include <variant>
@@ -34,12 +35,12 @@ struct WaitCommand
 using Command = std::variant<MoveCommand, RotateCommand, WaitCommand>;
 
 // Reuse the action rules on a private copy. Unlike the action-only move and
-// rotation helpers, every command requires a living player. Wait has no
+// rotation helpers, every command requires an ongoing sector. Wait has no
 // board effect and checking it never charges a turn.
 [[nodiscard]] inline bool is_command_legal(const GameState &state,
                                            const Command &command)
 {
-    if (!state.player_alive())
+    if (sector_outcome(state) != SectorOutcome::ongoing)
     {
         return false;
     }
