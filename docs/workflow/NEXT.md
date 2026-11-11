@@ -1,40 +1,38 @@
 # Następny mały krok
 
-Task: P019-03
+Task: P020
 
 ## Cel
 
-Dodaj jeden krok przesuwający impulsy w rosnącej kolejności `EntityId`, na bieżącym stanie po wcześniejszych ruchach. P019-01 i P019-02 są zaimplementowane; P019 jest ukończonym podziałem planu. Nie zaczynaj kontaktu i obrażeń P020.
+Oceń rozmiar kontaktu i obrażeń przed implementacją P020. P019 i jego trzy dzieci są ukończone; reprezentacja, wybór kroku i ruch impulsów działają. P020 łączy kontakt przed fazą zagrożeń, znikanie jednostek po ruchu oraz wspólny limit jednego obrażenia w turze. Jeśli to więcej niż jeden mały kontrakt, tym krokiem jest wyłącznie podział P020 na dzieci i przepięcie P021 na ostatnie wymagane dziecko. Nie zaczynaj wtedy implementacji pierwszego dziecka.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P019-02](history/P019-02.md), [raport podziału P019](history/P019.md), wpis P019-03 i jego zależność w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [wybór kroku](../../src/core/pulse_chase.hpp), [predykat zajęcia](../../src/core/pulse_occupancy.hpp), [BFS](../../src/core/grid_pathfinding.hpp), [testy wyboru](../../tests/unit/pulse_chase_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), sekcję „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P019-03](history/P019-03.md), wpis P020 i jego zależność w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [ruch impulsów](../../src/core/pulse_movement.hpp), [wybór kroku](../../src/core/pulse_chase.hpp), [ruch gracza](../../src/core/player_movement.hpp), [testy ruchu impulsów](../../tests/unit/pulse_movement_tests.cpp), [testy gracza](../../tests/unit/player_movement_tests.cpp), [ARCHITECTURE](../ARCHITECTURE.md), sekcję „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
 
 ## Stan zastany
 
-`GameState::pulses` to wartościowy `std::vector<Pulse>`; impuls ma `EntityId id` i `NodeId position`. Poprawny stan ma unikalne ID i najwyżej jeden impuls na polu. Kolejność przechowywania nie określa kolejności działania. Impulsy nie są wpisywane do `blocked_nodes`; gracz i pakiet mogą współdzielić ich pole.
+`advance_pulses(GameState&)` działa raz na każdej jednostce w rosnącej kolejności `EntityId`, z wyborem na stanie po wcześniejszych ruchach. Buduje osobną listę ID i zachowuje kolejność `GameState::pulses`. Zajęte pierwsze pole oznacza czekanie bez objazdu; niższe ID może zwolnić pole wyższemu, ale wcześniejszy impuls nie ponawia próby. Funkcja zmienia tylko pozycje. Impuls na graczu pozostaje w kolekcji i blokuje wejście innych impulsów; integralność oraz tura są zachowane.
 
-`next_pulse_step(const GameState&, EntityId)` zwraca jeden krok istniejącego BFS do bieżącej pozycji gracza albo pusty wynik. Uwzględnia aktualne porty i zajęcie pierwszego kroku przez impuls, z remisami N, E, S, W. Brak wskazanego ID, brak trasy i impuls już na graczu oznaczają czekanie. Zajęty pierwszy krok oznacza czekanie bez objazdu, nawet gdy istnieje dłuższa wolna trasa. Funkcja nie mutuje stanu i nie nalicza tury. Kontakt jeszcze nie zmienia integralności ani nie usuwa impulsów. Ostatni wynik P019-02 to 17/17 CTest w Debug i Release; test wykrył usunięcie kontroli zajęcia, a mutację wycofano.
+`move_player` pozwala wejść na impuls po legalnej krawędzi, bez obrażeń i usuwania jednostki. Osobne `blocked_nodes` nadal blokuje ruch gracza. Poprawny stan ma unikalne ID impulsów i najwyżej jedną jednostkę na polu. Gracz i pakiet mogą z nią współdzielić pole. Ostatnie testy to 18/18 CTest Debug i Release; kontrolowana mutacja odwracająca kolejność ID została wykryta i wycofana.
 
-## Wykonaj
+## Kontrakt do zachowania w P020
 
-Jeden kontrakt: przesuń każdy impuls najwyżej raz, w rosnącej kolejności `EntityId`, zachowując kolejność przechowywania kolekcji.
-
-- Użyj `next_pulse_step` dla każdej jednostki dopiero w jej kolejce. Wybór musi czytać stan po wszystkich wcześniejszych ruchach; nie obliczaj całej listy zamiarów z początkowego obrazu zajęcia.
-- Niższe ID może zwolnić pole wyższemu. Jednostka, która czekała z powodu blokady, nie ponawia próby po późniejszym zwolnieniu pola. Przy wspólnym celu pierwszeństwo ma niższe ID.
-- Pusta kolekcja i brak możliwych ruchów zachowują cały stan. Zmieniaj wyłącznie pozycje impulsów, bez zmiany ich ID, kolejności, pozostałych pól stanu lub licznika tur. Nazwę funkcji i ewentualny wynik wybiera wykonawca.
-- Nie usuwaj impulsów i nie zmieniaj integralności, nawet po dojściu na pole gracza. Kontakt i obrażenia należą do P020.
+- Wejście gracza na impuls musi zostać rozpoznane przed ruchem zagrożeń, nawet gdy impuls mógłby później odejść. Kontakt po wejściu impulsu na gracza również usuwa jednostkę.
+- Znikanie kontaktującego impulsu powinno od razu zwolnić pole dla późniejszych ID. Samo `advance_pulses`, a potem zbiorczy kontakt, może błędnie blokować drugi impuls. Nie obliczaj całej listy zamiarów ze stanu początkowego. Zachowaj deterministyczny porządek i kolejność pozostałych jednostek w kolekcji.
+- Jeden wspólny limit obrażeń ma obejmować kontakty przed ruchem i po ruchu w tej samej turze. Nie przechowuj bez potrzeby drugiej kopii zajęcia ani licznika kontaktów w `GameState`. Reset limitu na granicy tury będzie odpowiedzialnością resolvera P021.
+- Wiele kontaktów usuwa wszystkie odpowiednie impulsy, lecz zabiera najwyżej jeden punkt integralności. Integralność nie może spaść poniżej zera; śmierć musi być rozpoznawalna przed przyszłym sprawdzeniem wyjścia. Dostawa nie leczy. Nie naliczaj tury wewnątrz kontaktu.
 
 ## Dowód sukcesu i test błędu
 
-Testuj jeden ruch najwyżej o krawędź, pustą kolekcję, brak trasy oraz pełny stan przy czekaniu. Dla kilku permutacji tego samego zestawu jednostek oczekiwane pozycje według ID muszą być takie same, a kolejność kolekcji zachowana. Osobne scenariusze mają wykazać: niższe ID zwalnia pole wyższemu; niższe ID czeka, po czym wyższe zwalnia pole i nie powoduje powtórnej próby; wspólny cel przyznawany niższemu ID; zajęcie nie prowadzi do objazdu. Kontakt nie usuwa impulsu, nie zmienia integralności ani tury. Porównuj pełny stan z oczekiwanym, z niepustym pakietem i pozostałymi polami.
+Przy podziale zachowaj niezmienne ID, porządek topologiczny i pierwotne kryteria P020 w dzieciach. Walidator ma odrzucać rozpoczęcie dziecka z nieukończoną zależnością i P021 przed ostatnim dzieckiem; testuj na izolowanej kopii, bez zmiany roboczego stanu. Sam podział nie wymaga CMake/CTest.
 
-Dodaj nowy test w trzech miejscach CMake. Celowa mutacja produkcyjna ma potwierdzić istotny test negatywny, np. odwrócenie kolejności ID lub użycie kolejności kolekcji. Wymuś `/t:Rebuild` odpowiedniego celu i potwierdź rekompilację w logu. Przywróć kod i przebuduj cel przed końcowymi testami Debug/Release.
+Jeśli ocena uzasadni jeden wąski krok implementacyjny, testuj legalne wejście gracza na impuls, wejście impulsu na gracza, kontakt przed fazą ruchu oraz wiele kontaktów w obu momentach przy wspólnym limicie. Uwzględnij integralność 1 i 0, brak kontaktu, powtórzenie kroku oraz zwolnienie pola dla późniejszego ID. Porównuj pełny stan, w tym pakiet, dostawy i turę. Celowa mutacja ma ujawnić istotny błąd; wymuś rekompilację celowanego testu i przywróć kod przed końcowymi Debug/Release.
 
 ## Nie rozszerzaj
 
-Nie implementuj kontaktu, obrażeń, usuwania jednostek, emisji, innych zagrożeń, resolvera, generatora, wyjścia, rezerwy, długu, zapisu ani prezentacji. Nie zmieniaj BFS i kroków pakietu. Nie generuj assetów ani treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1` opisanego w raportach P018 i P018-03.
+Nie implementuj resolvera P021, wyjścia ani limitu sektora P022, emisji, innych zagrożeń, generatora, rezerwy, długu, zapisu lub prezentacji. Nie zmieniaj BFS i kroków pakietu. Nie generuj assetów ani treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1` opisanego w raportach P018 i P018-03.
 
 ## Weryfikacja i przekazanie
 
-Wykonaj konfigurację, build i CTest Debug/Release oraz formatowanie według [README](../../README.md). Zaktualizuj README i ARCHITECTURE zgodnie z wynikiem. Zapisz `history/P019-03.md`, a STATE i NEXT przestaw na P020 dopiero po spełnieniu kryteriów. Następca ma ocenić rozmiar P020 przed implementacją zgodnie z workflow. Uruchom walidator i `git diff --check`, wykonaj lokalny commit własnych zmian, sprawdź hash i zakres. Zatrzymaj się przed P020.
+Zapisz `history/P020.md`, zaktualizuj README i ARCHITECTURE zgodnie z rzeczywistym zakresem. Przy podziale ustaw STATE/NEXT na pierwsze dziecko; przy implementacji przejdź do P021 dopiero po kryteriach. Dla kodu wykonaj konfigurację, build, CTest Debug/Release i formatowanie według [README](../../README.md). Zawsze uruchom walidator i kontrole diff, wykonaj lokalny commit wyłącznie własnych zmian oraz sprawdź hash i zakres. Zatrzymaj się przed kolejnym ID.
