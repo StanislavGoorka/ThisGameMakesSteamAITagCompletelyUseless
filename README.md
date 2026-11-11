@@ -14,7 +14,9 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016 i krok pakietu po najkrótszej trasie w P017. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwanaście testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P017](docs/workflow/history/P017.md)
 
-Następne zadanie to **P018 — dostawa pakietu**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P018 zamknięto jako wpis planistyczny: dostawę pakietu rozbito na zadania P018-01, P018-02 i P018-03. Żadne z nich nie jest jeszcze zaimplementowane, a P019 zależy od ostatniego. [Raport P018](docs/workflow/history/P018.md)
+
+Następne zadanie to **P018-01 — dostawa pakietu na celu**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 

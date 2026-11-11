@@ -204,10 +204,43 @@
                       "id":  "P018",
                       "phase":  "M2",
                       "title":  "Dostawa pakietu",
-                      "scope":  "Dodaj dostawę do celu i odroczone wprowadzenie następnego pakietu.",
-                      "acceptance":  "Nie ma dwóch ruchów nowego pakietu w jednej turze; dostawa tylko raz.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij dostawę do celu i odroczone wprowadzenie następnego pakietu na dzieci P018-01, P018-02 i P018-03; bez implementacji.",
+                      "acceptance":  "Dzieci pokrywają oba warunki: dostawa tylko raz; nie ma dwóch ruchów nowego pakietu w jednej turze. P019 zależy od ostatniego dziecka.",
                       "depends_on":  [
                                          "P017"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P018-01",
+                      "phase":  "M2",
+                      "title":  "Dostawa pakietu na celu",
+                      "scope":  "Dodaj krok dostawy: pakiet stojący na celu znika z planszy, a jego cel zostaje zapisany w stanie jako zasilony; bez odbiorników, wejścia i wprowadzania następnego pakietu.",
+                      "acceptance":  "Dostawa tylko raz: powtórzony krok, pakiet poza celem i brak pakietu nie zmieniają stanu; po dostawie plansza zostaje bez pakietu; brak naliczenia tury.",
+                      "depends_on":  [
+                                         "P018"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P018-02",
+                      "phase":  "M2",
+                      "title":  "Cel następnego pakietu",
+                      "scope":  "Dodaj odbiorniki sektora do stanu i predykat wskazujący kolejny niezasilony odbiornik według identyfikatorów; bez umieszczania pakietu.",
+                      "acceptance":  "Najniższy niezasilony identyfikator; zasilone pominięte; brak wyniku bez odbiorników i po zasileniu wszystkich; stan bez zmian.",
+                      "depends_on":  [
+                                         "P018-01"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P018-03",
+                      "phase":  "M2",
+                      "title":  "Odroczone wprowadzenie pakietu",
+                      "scope":  "Dodaj wejście sektora do stanu i osobny krok początku tury, który po dostawie umieszcza następny pakiet na wejściu z celem z P018-02.",
+                      "acceptance":  "Nie ma dwóch ruchów nowego pakietu w jednej turze: żadnego w turze dostawy, najwyżej jeden w turze wprowadzenia; brak wprowadzenia przy aktywnym pakiecie i bez niezasilonego odbiornika; brak naliczenia tury.",
+                      "depends_on":  [
+                                         "P018-02"
                                      ],
                       "gate":  null
                   },
@@ -218,7 +251,7 @@
                       "scope":  "Dodaj jeden typ zagrożenia podążający po grafie.",
                       "acceptance":  "N E S W w remisach, brak trasy, stabilne blokowanie innym impulsem.",
                       "depends_on":  [
-                                         "P018"
+                                         "P018-03"
                                      ],
                       "gate":  null
                   },

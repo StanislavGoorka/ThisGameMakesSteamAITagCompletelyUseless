@@ -6,7 +6,7 @@ Autorytatywne wpisy, zależności, zakres i test każdego zadania: [tasks.json](
 | --- | --- | --- |
 | M0 Plan | P000 | Koncepcja, reguły treści, kolejka, skills, walidator i publiczne repo |
 | M1 Fundament | P001–P005 | Rzeczywisty toolchain, minimalny C++20 + CTest, format, presety i CI Windows |
-| M2 Obieg | P006–P025 | Porty, BFS, komendy, pakiet, impuls, transakcja tury, replay i niewizualny dowód wyróżnika |
+| M2 Obieg | P006–P025 + dzieci | Porty, BFS, komendy, pakiet, impuls, transakcja tury, replay i niewizualny dowód wyróżnika |
 | M3 Run | P026–P035 | Overdrive, dług, generator z certyfikatem, dwa moduły i trzy sektory |
 | M4 Trwałość | P036–P054 | Checkpointy, profil, pięć lokalnych achievementów; pełna bramka headless |
 | M5 Pochodzenie | P055–P061 | Dossier, konkretna zgoda, jeden import, manifesty i blokada placeholderów |
