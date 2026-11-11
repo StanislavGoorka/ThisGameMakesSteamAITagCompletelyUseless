@@ -8,6 +8,7 @@
 
 using closed_circuit::GameState;
 using closed_circuit::NodeId;
+using closed_circuit::Packet;
 using closed_circuit::PortMask;
 using closed_circuit::rotate_node;
 using closed_circuit::TurnIndex;
@@ -33,6 +34,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
         state->player_integrity != 3 ||
         state->player_integrity != GameState::initial_player_integrity ||
         !state->player_alive() || state->turns_taken != TurnIndex{0} ||
+        state->packet ||
         !std::ranges::equal(state->ports, ports, {}, &PortMask::bits,
                             &PortMask::bits) ||
         state->rotatable_nodes != rotatable_nodes ||
@@ -42,7 +44,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
     {
         std::cerr
             << "Initial state must preserve board and a living player with "
-               "full integrity at turn zero\n";
+               "full integrity at turn zero, without a packet\n";
         return false;
     }
     return true;
@@ -94,9 +96,16 @@ bool changing_inputs_and_copy_preserves_original_state()
     copy.player_position = next_position;
     copy.player_integrity = 0;
     copy.turns_taken = TurnIndex{1};
+    copy.packet = Packet{.position = start, .target = next_position};
+    auto second_copy = copy;
+    second_copy.packet->position = next_position;
+    second_copy.packet->target = start;
 
     if (!rotated || copy.ports.back().bits() != PortMask::east_bit ||
-        copy.player_alive() ||
+        copy.player_alive() || original->packet ||
+        copy.packet != Packet{.position = start, .target = next_position} ||
+        second_copy.packet !=
+            Packet{.position = next_position, .target = start} ||
         original->ports.back().bits() != PortMask::north_bit ||
         !original->rotatable_nodes.back() || original->blocked_nodes.back() ||
         original->player_position != start ||

@@ -13,6 +13,17 @@
 namespace closed_circuit
 {
 
+// A packet occupies a node without blocking it and keeps its target until
+// delivery.
+struct Packet
+{
+    NodeId position;
+    NodeId target;
+
+    [[nodiscard]] constexpr bool
+    operator==(const Packet &) const noexcept = default;
+};
+
 struct GameState
 {
     static constexpr std::size_t node_count = NodeId::max_value + 1;
@@ -26,6 +37,8 @@ struct GameState
     // Zero means a dead player. No action restores integrity.
     std::uint8_t player_integrity{initial_player_integrity};
     TurnIndex turns_taken{};
+    // The single active packet; empty while no packet is on the board.
+    std::optional<Packet> packet{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

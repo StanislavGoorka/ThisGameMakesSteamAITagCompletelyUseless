@@ -1,19 +1,29 @@
 # Następny mały krok
 
-Task: P017
+Task: P018
 
 ## Cel
 
-Dodaj jeden pakiet przemieszczany po BFS o jedną krawędź. Zależność P016 jest ukończona.
+Dodaj dostawę pakietu do celu i odroczone wprowadzenie następnego pakietu. Zależność P017 jest ukończona.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [STATE.json](STATE.json), [raport P016](history/P016.md), wpis P017 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [najkrótszą trasę](../../src/core/grid_pathfinding.hpp), [obrót węzła](../../src/core/node_rotation.hpp), [ARCHITECTURE.md](../ARCHITECTURE.md), [GAME_DESIGN.md](../GAME_DESIGN.md) i [TESTING.md](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [STATE.json](STATE.json), [raport P017](history/P017.md), wpis P018 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [krok pakietu](../../src/core/packet_movement.hpp), [testy kroku pakietu](../../tests/unit/packet_movement_tests.cpp), [ARCHITECTURE.md](../ARCHITECTURE.md), [GAME_DESIGN.md](../GAME_DESIGN.md) i [TESTING.md](../TESTING.md).
+
+## Stan zastany
+
+`GameState::packet` to `std::optional<Packet>` z pozycją i celem; puste pole oznacza brak pakietu. `advance_packet` przesuwa pakiet o jedną krawędź i zwraca `false`, gdy pakietu nie ma, nie ma trasy albo pakiet stoi na celu. Pakiet na celu pozostaje na planszy: nic go jeszcze nie dostarcza. Stan nie zawiera wejścia sektora, listy odbiorników, licznika dostaw ani znacznika oczekującego pakietu. `GameState::initial` tworzy stan bez pakietu.
 
 ## Wykonaj
 
-Udowodnij, że pakiet przesuwa się o dokładnie jedną krawędź najkrótszej trasy do celu w bieżącej topologii, z remisami N, E, S, W z istniejącego BFS. Obrót węzła musi zmienić wybraną trasę. Pakiet bez trasy czeka: nie znika, nie zmienia celu i nie zmienia reszty stanu. Pakiet nie blokuje gracza, więc nie zapisuj go w `blocked_nodes`. Obecny `GameState` nie zawiera pakietu ani celu: dodaj tylko minimalny kontrakt potrzebny temu warunkowi, zgodnie z testami inicjalizacji i kopiowania stanu, oraz rozszerz porównania pełnego stanu w testach akcji o nowe pola. Krok pakietu nie nalicza tury; licznik zmienia wyłącznie `charge_turn`. Nie dodawaj dostawy, drugiego pakietu, zagrożeń, resolvera tury ani prezentacji.
+Udowodnij dwa warunki z wpisu P018. Dostawa następuje dokładnie raz: pakiet stojący na celu zostaje zdjęty z planszy, dostawa zostaje zapisana, a ponowne wywołanie kroku dostawy niczego nie zmienia. Następny pakiet pojawia się na wejściu dopiero w osobnym kroku przeznaczonym na początek następnej tury, więc w turze dostawy nie wykonuje żadnego ruchu, a w turze wprowadzenia najwyżej jeden. Cel nowego pakietu to kolejny niezasilony odbiornik według identyfikatorów, zgodnie z [regułami](../GAME_DESIGN.md).
+
+Dodaj do `GameState` tylko pola potrzebne tym warunkom i rozszerz o nie testy inicjalizacji i kopiowania oraz cztery helpery `same_state` w testach `player_movement`, `player_rotation`, `player_wait` i `packet_movement`. Kroki dostawy i wprowadzenia nie naliczają tury; licznik zmienia wyłącznie `charge_turn`. Potwierdź nowe testy celowym błędem w kodzie produkcyjnym i zapisz wynik w raporcie.
+
+Jeżeli dostawa razem z wprowadzeniem następnego pakietu przekracza limit jednego kroku z [WORKFLOW.md](../WORKFLOW.md), tym krokiem jest wyłącznie rozbicie P018 na dzieci, na przykład dostawę i osobno odroczone wprowadzenie, z przepięciem zależności P019 na ostatnie dziecko.
+
+Nie dodawaj rezerwy ani jej przyrostu za dostawę, długu, ukończenia sektora, wyjścia, zagrożeń, resolvera tury, zdarzeń domenowych, achievementów ani prezentacji. Nie zmieniaj reguły trasy pakietu.
 
 ## Weryfikacja i przekazanie
 
-Uruchom konfigurację, build i CTest w Debug i Release zgodnie z [README](../../README.md). Sprawdź formatowanie zmienionych plików C++, wykonaj walidator projektu i `git diff --check`. Zapisz wyniki w `history/P017.md`, zaktualizuj STATE i NEXT, a następnie sprawdź hash i zakres lokalnego commitu.
+Uruchom konfigurację, build i CTest w Debug i Release zgodnie z [README](../../README.md). Sprawdź formatowanie zmienionych plików C++, wykonaj walidator projektu i `git diff --check`. Zapisz wyniki w `history/P018.md`, zaktualizuj STATE i NEXT, a następnie sprawdź hash i zakres lokalnego commitu.
