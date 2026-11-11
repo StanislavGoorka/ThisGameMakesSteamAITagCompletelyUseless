@@ -41,6 +41,9 @@ struct GameState
     std::optional<Packet> packet{};
     // Delivery record: targets that already received a packet.
     std::array<bool, node_count> powered_nodes{};
+    // Receivers of the sector: the nodes that packets are sent to. Their
+    // NodeId sets the order in which they are targeted.
+    std::array<bool, node_count> receiver_nodes{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

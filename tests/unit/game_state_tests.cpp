@@ -37,6 +37,8 @@ bool initial_state_preserves_input_and_starts_at_zero()
         state->packet ||
         std::ranges::any_of(state->powered_nodes,
                             [](bool powered) { return powered; }) ||
+        std::ranges::any_of(state->receiver_nodes,
+                            [](bool receiver) { return receiver; }) ||
         !std::ranges::equal(state->ports, ports, {}, &PortMask::bits,
                             &PortMask::bits) ||
         state->rotatable_nodes != rotatable_nodes ||
@@ -46,8 +48,8 @@ bool initial_state_preserves_input_and_starts_at_zero()
     {
         std::cerr
             << "Initial state must preserve board and a living player with "
-               "full integrity at turn zero, without a packet or a powered "
-               "target\n";
+               "full integrity at turn zero, without a packet, a powered "
+               "target or a receiver\n";
         return false;
     }
     return true;
@@ -101,11 +103,14 @@ bool changing_inputs_and_copy_preserves_original_state()
     copy.turns_taken = TurnIndex{1};
     copy.packet = Packet{.position = start, .target = next_position};
     copy.powered_nodes.back() = true;
+    copy.receiver_nodes.front() = true;
     auto second_copy = copy;
     second_copy.packet->position = next_position;
     second_copy.packet->target = start;
     second_copy.powered_nodes.back() = false;
     second_copy.powered_nodes.front() = true;
+    second_copy.receiver_nodes.front() = false;
+    second_copy.receiver_nodes.back() = true;
 
     if (!rotated || copy.ports.back().bits() != PortMask::east_bit ||
         copy.player_alive() || original->packet ||
@@ -114,6 +119,11 @@ bool changing_inputs_and_copy_preserves_original_state()
         !copy.powered_nodes.back() || copy.powered_nodes.front() ||
         second_copy.powered_nodes.back() ||
         !second_copy.powered_nodes.front() ||
+        std::ranges::any_of(original->receiver_nodes,
+                            [](bool receiver) { return receiver; }) ||
+        !copy.receiver_nodes.front() || copy.receiver_nodes.back() ||
+        second_copy.receiver_nodes.front() ||
+        !second_copy.receiver_nodes.back() ||
         copy.packet != Packet{.position = start, .target = next_position} ||
         second_copy.packet !=
             Packet{.position = next_position, .target = start} ||

@@ -47,6 +47,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.turns_taken == right.turns_taken &&
            left.packet == right.packet &&
            left.powered_nodes == right.powered_nodes &&
+           left.receiver_nodes == right.receiver_nodes &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,
