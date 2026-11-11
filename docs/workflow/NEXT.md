@@ -1,44 +1,37 @@
 # Następny mały krok
 
-Task: P024-01
+Task: P024-02
 
 ## Cel i lektura
 
-Dodaj jeden niemutujący hash pełnego GameState jako narzędzie deweloperskie. P024 jest ukończonym podziałem planu, bez implementacji dzieci. P023 dostarcza preview; ostatnie Debug i Release zaliczyły po 24/24 CTest. Walidator po podziale ma 131 zadań.
+Dodaj jedną czystą fabrykę syntetycznego niewyświetlanego GameState z RunSeed jako narzędzie deweloperskie. P024-01 dostarcza pełny kanoniczny hash v1; Debug i Release zaliczyły po25/25 CTest, walidator ma131 zadań. P024 to ukończony podział, nie działający replay.
 
-Przeczytaj [AGENTS](../../AGENTS.md), [next-step](../../.agents/skills/next-step/SKILL.md), [cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE](STATE.json), [raport P024](history/P024.md), wpisy P024/P024-01 i zależność P023 w [kolejce](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [PortMask](../../src/core/port_mask.hpp), [testy podglądu](../../tests/unit/turn_preview_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), [GAME_DESIGN](../GAME_DESIGN.md), [TESTING](../TESTING.md) i komendy w [README](../../README.md).
+Przeczytaj [AGENTS](../../AGENTS.md), [next-step](../../.agents/skills/next-step/SKILL.md), [cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE](STATE.json), [raport P024-01](history/P024-01.md), [raport P024](history/P024.md), P024-02 i jego zależność w [kolejce](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [porty](../../src/core/port_mask.hpp), [RNG](../../src/core/splitmix64.hpp), [hash](../../tools/replay/state_hash.hpp), [test hasha](../../tests/unit/state_hash_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), [GAME_DESIGN](../GAME_DESIGN.md), [TESTING](../TESTING.md) i komendy [README](../../README.md).
 
 ## Wykonaj
 
-Jeden kontrakt: const GameState → uint64_t, bez mutacji. Umieść mały nagłówek pod tools/; core nie zależy od narzędzi. CMake udostępnia go tylko właściwemu celowi testowemu. Nazwy funkcji i pliku wybiera wykonawca.
+Jeden kontrakt: RunSeed → niezależny wartościowy GameState, bez usług lub efektów ubocznych. Dodaj mały nagłówek pod tools/replay/, poza core i paczką gry. Nazwę wybierz sam. Nie zmieniaj resolvera ani GameState.
 
-Użyj FNV-1a 64-bit: początek 14695981039346656037, dla każdego bajtu XOR, następnie mnożenie przez 1099511628211 modulo 2^64. To hash niekryptograficzny do regresji, bez gwarancji braku kolizji. Nie haszuj surowej pamięci, paddingu, adresów ani std::hash; nie dodawaj ogólnego serializatora lub plików.
+Stały scenariusz numeryczny:
 
-Jawny format bajtów v1, w tej kolejności:
+- Węzły0/1/7/8 mają maski odpowiednio E|S, W|S, N|E, N|W; wszystkie inne maski0.
+- Gracz0, HP3, tura0; wejście0, odbiorniki1/8, wyjście8.
+- Impuls EntityId1 na7; brak pakietu, dostaw i blocked_nodes.
+- Tylko węzeł1 jest obrotowy; wszystkie inne flagi rotatable_nodes fałszywe.
+- Lokalny SplitMix64 z wejściowego seeda wywołuje next_in_range(0,3); wynik0–3 wyznacza liczbę początkowych obrotów węzła1. Żadne inne pole nie jest seedowane.
 
-1. Wersja kodowania 1 jako uint32 little-endian.
-2. ports: 49 bajtów bits() w kolejności NodeId 0…48.
-3. rotatable_nodes i potem blocked_nodes: po 49 bajtów 0/1.
-4. player_position jako uint8, player_integrity jako uint8, turns_taken jako uint32 little-endian.
-5. packet: tag 0/1; przy 1 position i target jako po jednym uint8.
-6. powered_nodes i potem receiver_nodes: po 49 bajtów 0/1.
-7. sector_entry i potem sector_exit: osobny tag 0/1; przy 1 jeden uint8 NodeId. Brak i NodeId 0 muszą dawać różne kodowanie.
-8. Liczba pulses jako uint64 little-endian, następnie dla każdego elementu w kolejności przechowywania EntityId jako uint32 little-endian i position jako uint8.
-
-Kolejność impulsów jest częścią dokładnego wartościowego stanu, jak w helperach same_state. Nie sortuj kolekcji w hashu ani w stanie; identyczne zachowanie symulacji po permutacji nie oznacza identycznej reprezentacji. Wynik sektora jest wyliczany, więc nie dodawaj jego kopii do strumienia. Nie dokładaj seeda/RNG do GameState.
+To pojedynczy fixture headless do replay, nie plansza do wyświetlania, generator sektorów P028, solver ani certyfikat wygrywalności. Różne seedy mogą dać identyczny stan. RNG nie wchodzi do API resolvera ani GameState.
 
 ## Dowód sukcesu i błędu
 
-Dodaj test do trzech miejsc CMake wzorem testu preview. Ustal stałe oczekiwane hashe co najmniej dla minimalnego i pełnego stanu. Oblicz wektory niezależnie od produkcyjnej funkcji i zapisz odtwarzalny sposób w raporcie; samo porównanie funkcji z nią samą nie dowodzi formatu.
+Test zarejestruj w CMake z prywatnym include tools, opcjami MSVC oraz add_test wzorem developer_state_hash_tests. Sprawdź pełne jawne oczekiwane stany dla seeda0 i UINT64_MAX oraz dobranych znanych seedów dających różne orientacje. Wektory orientacji ustal niezależnie lub oprzyj o istniejące znane wektory RNG; oczekiwania nie mogą być obliczane przez fabrykę pod testem. Ustal również stałe oczekiwane hashe przez state_hash v1, zapisując sposób obliczenia w raporcie.
 
-Sprawdź każde pole i każdy indeks tablic przez kontrolowaną zmianę względem kopii. Obejmij tagi optional (brak/NodeId 0/48), pola pakietu, ID impulsów 0/UINT32_MAX, pozycje 0/48, zmianę liczby i kolejności impulsów, HP 0/3/255, licznik 0/48/UINT32_MAX. Korpus ma wykrywać pominięcie pola; nie dowodzi braku wszystkich kolizji. Każde wywołanie porównuje cały stan przed/po z niepustym pakietem i impulsami w pełnym scenariuszu. Powtórzenie i niezależna kopia muszą dawać ten sam hash.
+Porównuj wszystkie pola stanu, nie sam hash lub obrócony węzeł. Ten sam seed powtórzony daje ten sam stan i hash; mutacja jednej zwróconej wartości nie wpływa na kolejną lub wcześniejszą. Zewnętrzny RNG względem kopii pozostaje nietknięty, bo fabryka używa tylko własnego generatora.
 
-Celowo pomiń pole w produkcyjnym hashu i wykaż oczekiwany błąd CTest po /t:Rebuild właściwego celu z potwierdzoną rekompilacją. Przywróć kod i przebuduj przed końcowymi testami.
+Celowo zignoruj seed albo wyzeruj orientację w produkcyjnej fabryce. Wymuś /t:Rebuild właściwego celu, potwierdź rekompilację i oczekiwany błąd CTest. Przywróć kod oraz przebuduj przed końcowymi testami.
 
 ## Weryfikacja i przekazanie
 
-Konfiguracja, build i pełne CTest Debug/Release, formatter, walidator projektu i kontrole diff. Zaktualizuj README/ARCHITECTURE zgodnie z faktem, zapisz history/P024-01.md, STATE/NEXT przestaw na P024-02 po kryteriach. Lokalny commit własnych zmian i sprawdzenie hasha, zakresu oraz czystości są obowiązkowe; bez pushu. Zatrzymaj się przed kolejnym ID.
+Konfiguracja, build i pełne CTest Debug/Release, formatter src/tests/tools, walidator projektu oraz kontrole diff. Zaktualizuj README/ARCHITECTURE, zapisz history/P024-02.md, a STATE/NEXT przestaw na P024-03 po kryteriach. P024-03 będzie wartościowym runnerem: wersja1 + seed + komendy, początkowy hash i accepted/outcome/hash po każdej próbie, niezależny stan końcowy, jawna odmowa obcej wersji bez częściowego wyniku. Nie implementuj go w tym kroku.
 
-P024-02 ma później zbudować jeden stały syntetyczny fixture headless: pola 0/1/7/8 tworzą kwadrat, z maskami odpowiednio E|S, W|S, N|E, N|W; pozostałe maski 0. Gracz startuje na 0 z HP3 i turą0, wejście0, odbiorniki1/8, wyjście8, impuls EntityId1 na7; brak pakietu, dostaw i blocked_nodes. Tylko węzeł1 jest obrotowy, a lokalny SplitMix64 z seeda wybierze przez next_in_range(0,3) liczbę jego początkowych obrotów. Te dane nie są planszą do wyświetlania ani generatorem sektorów P028.
-
-Nie implementuj teraz fabryki, runnera, CLI, P025, generatora, runu, overdrive, zapisu ani prezentacji. Nie generuj assetów lub treści dla gracza. Znany błąd scripts/Test-ProjectValidator.ps1 pozostaje poza zakresem.
+Obowiązkowy lokalny commit wyłącznie własnych zmian, sprawdź hash, zakres i czystość; bez pushu. Nie dodawaj CLI, eksperymentu P025, generatora, runu, overdrive, zapisu ani prezentacji. Nie generuj assetów lub treści dla gracza. Znany błąd scripts/Test-ProjectValidator.ps1 pozostaje poza zakresem. Zatrzymaj się przed kolejnym ID.
