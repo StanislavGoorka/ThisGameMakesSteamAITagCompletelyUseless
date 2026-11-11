@@ -4,6 +4,7 @@
 #include <array>
 #include <iostream>
 
+using closed_circuit::EntityId;
 using closed_circuit::GameState;
 using closed_circuit::NodeId;
 using closed_circuit::PortMask;
@@ -28,6 +29,7 @@ GameState disconnected_board(NodeId player_position, NodeId target)
     GameState state{.player_position = player_position,
                     .turns_taken = TurnIndex{7}};
     state.sector_entry = center;
+    state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
     state.ports[target.value()] = north_port;
     state.rotatable_nodes.fill(true);
     state.rotatable_nodes[48] = false;
@@ -45,6 +47,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,

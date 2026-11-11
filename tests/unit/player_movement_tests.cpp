@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <iostream>
 
+using closed_circuit::EntityId;
 using closed_circuit::GameState;
 using closed_circuit::move_player;
 using closed_circuit::NodeId;
@@ -29,6 +30,7 @@ GameState open_board(NodeId player_position)
     GameState state{.player_position = player_position,
                     .turns_taken = TurnIndex{7}};
     state.sector_entry = center;
+    state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
     state.ports.fill(all_ports);
     state.rotatable_nodes[center.value()] = true;
     state.blocked_nodes[0] = true;
@@ -44,6 +46,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,
@@ -150,13 +153,42 @@ bool blocking_unit_rejects_move_until_target_is_free()
     return true;
 }
 
+bool pulse_allows_contact_but_separate_blocking_flag_rejects_movement()
+{
+    auto state = open_board(center);
+    state.pulses = {{*EntityId::from_value(3), east}};
+    state.packet = closed_circuit::Packet{.position = east, .target = east};
+    const auto original = state;
+    auto expected = state;
+    expected.player_position = east;
+    if (!move_player(state, east) || !same_state(state, expected))
+    {
+        std::cerr << "A pulse must allow player entry without damage or "
+                     "removing the pulse or packet\n";
+        return false;
+    }
+
+    state = original;
+    state.blocked_nodes[east.value()] = true;
+    const auto blocked = state;
+    if (move_player(state, east) || !same_state(state, blocked))
+    {
+        std::cerr << "A separate blocking flag must reject player entry "
+                     "even when a pulse occupies the target\n";
+        return false;
+    }
+    return true;
+}
+
 } // namespace
 
 int main()
 {
-    const bool passed = legal_move_changes_only_position_in_each_direction() &&
-                        missing_reciprocal_edge_preserves_state() &&
-                        non_neighbor_and_wrapped_moves_preserve_state() &&
-                        blocking_unit_rejects_move_until_target_is_free();
+    const bool passed =
+        legal_move_changes_only_position_in_each_direction() &&
+        missing_reciprocal_edge_preserves_state() &&
+        non_neighbor_and_wrapped_moves_preserve_state() &&
+        blocking_unit_rejects_move_until_target_is_free() &&
+        pulse_allows_contact_but_separate_blocking_flag_rejects_movement();
     return passed ? 0 : 1;
 }

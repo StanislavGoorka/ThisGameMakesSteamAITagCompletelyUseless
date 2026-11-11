@@ -8,6 +8,7 @@
 
 using closed_circuit::advance_packet;
 using closed_circuit::deliver_packet;
+using closed_circuit::EntityId;
 using closed_circuit::GameState;
 using closed_circuit::introduce_packet;
 using closed_circuit::NodeId;
@@ -41,6 +42,7 @@ GameState corridor_board()
     state.receiver_nodes[26] = true;
     state.receiver_nodes[25] = true;
     state.sector_entry = node(24);
+    state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
     return state;
 }
 
@@ -53,6 +55,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
            std::ranges::equal(left.ports, right.ports, {}, &PortMask::bits,
@@ -233,6 +236,7 @@ bool entry_on_target_leaves_delivery_to_its_own_step()
 {
     auto state = corridor_board();
     state.sector_entry = node(25);
+    state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
     if (!introduces_at(state, 25, 25) || !movement_is_refused(state) ||
         !delivers_to(state, 25) || !movement_is_refused(state))
     {

@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <optional>
 #include <span>
+#include <vector>
 
 namespace closed_circuit
 {
@@ -24,6 +25,17 @@ struct Packet
     operator==(const Packet &) const noexcept = default;
 };
 
+// A pulse does not block the player or a packet. Valid states have unique
+// pulse IDs and at most one pulse per node.
+struct Pulse
+{
+    EntityId id;
+    NodeId position;
+
+    [[nodiscard]] constexpr bool
+    operator==(const Pulse &) const noexcept = default;
+};
+
 struct GameState
 {
     static constexpr std::size_t node_count = NodeId::max_value + 1;
@@ -31,7 +43,8 @@ struct GameState
 
     std::array<PortMask, node_count> ports{};
     std::array<bool, node_count> rotatable_nodes{};
-    // Occupancy by blocking units only; packets do not block movement.
+    // Occupancy by blocking units only; packets and pulses do not block
+    // player movement.
     std::array<bool, node_count> blocked_nodes{};
     NodeId player_position;
     // Zero means a dead player. No action restores integrity.
@@ -46,6 +59,8 @@ struct GameState
     std::array<bool, node_count> receiver_nodes{};
     // Packet starting node; empty until the sector supplies an entry.
     std::optional<NodeId> sector_entry{};
+    // Value-owned units; their positions are the only pulse occupancy record.
+    std::vector<Pulse> pulses{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

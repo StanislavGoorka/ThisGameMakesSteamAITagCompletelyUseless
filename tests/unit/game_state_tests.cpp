@@ -5,11 +5,14 @@
 #include <array>
 #include <iostream>
 #include <span>
+#include <vector>
 
+using closed_circuit::EntityId;
 using closed_circuit::GameState;
 using closed_circuit::NodeId;
 using closed_circuit::Packet;
 using closed_circuit::PortMask;
+using closed_circuit::Pulse;
 using closed_circuit::rotate_node;
 using closed_circuit::TurnIndex;
 
@@ -34,7 +37,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
         state->player_integrity != 3 ||
         state->player_integrity != GameState::initial_player_integrity ||
         !state->player_alive() || state->turns_taken != TurnIndex{0} ||
-        state->packet || state->sector_entry ||
+        state->packet || state->sector_entry || !state->pulses.empty() ||
         std::ranges::any_of(state->powered_nodes,
                             [](bool powered) { return powered; }) ||
         std::ranges::any_of(state->receiver_nodes,
@@ -49,7 +52,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
         std::cerr
             << "Initial state must preserve board and a living player with "
                "full integrity at turn zero, without a packet, a powered "
-               "target, a receiver or a sector entry\n";
+               "target, a receiver, a sector entry or a pulse\n";
         return false;
     }
     return true;
@@ -144,12 +147,45 @@ bool changing_inputs_and_copy_preserves_original_state()
     return true;
 }
 
+bool nonempty_pulse_collection_copies_ids_and_positions_independently()
+{
+    const Pulse first{*EntityId::from_value(0), *NodeId::from_value(0)};
+    const Pulse last{*EntityId::from_value(EntityId::max_value), start};
+    GameState original{.player_position = start, .pulses = {first, last}};
+    auto copy = original;
+    auto second_copy = copy;
+    if (copy.pulses != original.pulses || second_copy.pulses != copy.pulses)
+    {
+        std::cerr << "Copies must preserve every pulse ID and position\n";
+        return false;
+    }
+
+    copy.pulses.front().id = *EntityId::from_value(7);
+    copy.pulses.back().position = next_position;
+    second_copy.pulses.erase(second_copy.pulses.begin());
+    second_copy.pulses.front().id = *EntityId::from_value(9);
+    second_copy.pulses.front().position = *NodeId::from_value(1);
+    if (original.pulses != std::vector<Pulse>{first, last} ||
+        copy.pulses !=
+            std::vector<Pulse>{{*EntityId::from_value(7), first.position},
+                               {last.id, next_position}} ||
+        second_copy.pulses != std::vector<Pulse>{{*EntityId::from_value(9),
+                                                  *NodeId::from_value(1)}})
+    {
+        std::cerr << "Two successive copies must own their pulse collections\n";
+        return false;
+    }
+    return true;
+}
+
 } // namespace
 
 int main()
 {
-    const bool passed = initial_state_preserves_input_and_starts_at_zero() &&
-                        invalid_initial_inputs_are_rejected() &&
-                        changing_inputs_and_copy_preserves_original_state();
+    const bool passed =
+        initial_state_preserves_input_and_starts_at_zero() &&
+        invalid_initial_inputs_are_rejected() &&
+        changing_inputs_and_copy_preserves_original_state() &&
+        nonempty_pulse_collection_copies_ids_and_positions_independently();
     return passed ? 0 : 1;
 }
