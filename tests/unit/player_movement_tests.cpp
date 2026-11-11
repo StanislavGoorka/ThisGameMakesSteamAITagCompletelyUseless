@@ -37,6 +37,7 @@ GameState open_board(NodeId player_position)
 bool same_state(const GameState &left, const GameState &right)
 {
     return left.player_position == right.player_position &&
+           left.player_integrity == right.player_integrity &&
            left.turns_taken == right.turns_taken &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&

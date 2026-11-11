@@ -1,19 +1,19 @@
 # Następny mały krok
 
-Task: P016
+Task: P017
 
 ## Cel
 
-Dodaj akcję `wait` bez regeneracji zasobów. Zależność P015 jest ukończona.
+Dodaj jeden pakiet przemieszczany po BFS o jedną krawędź. Zależność P016 jest ukończona.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [STATE.json](STATE.json), [raport P015](history/P015.md), wpis P016 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [ruch gracza](../../src/core/player_movement.hpp), [obrót gracza](../../src/core/player_rotation.hpp), [ARCHITECTURE.md](../ARCHITECTURE.md), [GAME_DESIGN.md](../GAME_DESIGN.md) i [TESTING.md](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [STATE.json](STATE.json), [raport P016](history/P016.md), wpis P017 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [najkrótszą trasę](../../src/core/grid_pathfinding.hpp), [obrót węzła](../../src/core/node_rotation.hpp), [ARCHITECTURE.md](../ARCHITECTURE.md), [GAME_DESIGN.md](../GAME_DESIGN.md) i [TESTING.md](../TESTING.md).
 
 ## Wykonaj
 
-Udowodnij, że `wait` żywego gracza kosztuje dokładnie jedną turę, nie regeneruje zasobów i zachowuje planszę oraz pozycję. Martwy gracz musi odrzucić akcję bez żadnej zmiany stanu. Obecny `GameState` nie zawiera jeszcze integralności gracza: dodaj tylko minimalny kontrakt potrzebny temu warunkowi, zgodnie z regułami i testami inicjalizacji oraz kopiowania stanu. Ustal jawnie odpowiedzialność za koszt tury; istniejące `move_player` i `rotate_from_player` wykonują tylko akcję. Nie dodawaj pełnej symulacji pakietów, zagrożeń, overdrive ani prezentacji.
+Udowodnij, że pakiet przesuwa się o dokładnie jedną krawędź najkrótszej trasy do celu w bieżącej topologii, z remisami N, E, S, W z istniejącego BFS. Obrót węzła musi zmienić wybraną trasę. Pakiet bez trasy czeka: nie znika, nie zmienia celu i nie zmienia reszty stanu. Pakiet nie blokuje gracza, więc nie zapisuj go w `blocked_nodes`. Obecny `GameState` nie zawiera pakietu ani celu: dodaj tylko minimalny kontrakt potrzebny temu warunkowi, zgodnie z testami inicjalizacji i kopiowania stanu, oraz rozszerz porównania pełnego stanu w testach akcji o nowe pola. Krok pakietu nie nalicza tury; licznik zmienia wyłącznie `charge_turn`. Nie dodawaj dostawy, drugiego pakietu, zagrożeń, resolvera tury ani prezentacji.
 
 ## Weryfikacja i przekazanie
 
-Uruchom konfigurację, build i CTest w Debug i Release zgodnie z [README](../../README.md). Sprawdź formatowanie zmienionych plików C++, wykonaj walidator projektu i `git diff --check`. Zapisz wyniki w `history/P016.md`, zaktualizuj STATE i NEXT, a następnie sprawdź hash i zakres lokalnego commitu.
+Uruchom konfigurację, build i CTest w Debug i Release zgodnie z [README](../../README.md). Sprawdź formatowanie zmienionych plików C++, wykonaj walidator projektu i `git diff --check`. Zapisz wyniki w `history/P017.md`, zaktualizuj STATE i NEXT, a następnie sprawdź hash i zakres lokalnego commitu.

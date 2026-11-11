@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <cstdint>
 #include <optional>
 #include <span>
 
@@ -15,13 +16,21 @@ namespace closed_circuit
 struct GameState
 {
     static constexpr std::size_t node_count = NodeId::max_value + 1;
+    static constexpr std::uint8_t initial_player_integrity = 3;
 
     std::array<PortMask, node_count> ports{};
     std::array<bool, node_count> rotatable_nodes{};
     // Occupancy by blocking units only; packets do not block movement.
     std::array<bool, node_count> blocked_nodes{};
     NodeId player_position;
+    // Zero means a dead player. No action restores integrity.
+    std::uint8_t player_integrity{initial_player_integrity};
     TurnIndex turns_taken{};
+
+    [[nodiscard]] constexpr bool player_alive() const noexcept
+    {
+        return player_integrity > 0;
+    }
 
     // Both input sequences follow NodeId order. An empty position signals
     // a missing or invalid starting node.

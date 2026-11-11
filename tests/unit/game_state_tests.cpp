@@ -30,7 +30,9 @@ bool initial_state_preserves_input_and_starts_at_zero()
 
     const auto state = GameState::initial(ports, rotatable_nodes, start);
     if (!state || state->player_position != start ||
-        state->turns_taken != TurnIndex{0} ||
+        state->player_integrity != 3 ||
+        state->player_integrity != GameState::initial_player_integrity ||
+        !state->player_alive() || state->turns_taken != TurnIndex{0} ||
         !std::ranges::equal(state->ports, ports, {}, &PortMask::bits,
                             &PortMask::bits) ||
         state->rotatable_nodes != rotatable_nodes ||
@@ -39,7 +41,8 @@ bool initial_state_preserves_input_and_starts_at_zero()
         state->ports[1].bits() != 0)
     {
         std::cerr
-            << "Initial state must preserve board and player at turn zero\n";
+            << "Initial state must preserve board and a living player with "
+               "full integrity at turn zero\n";
         return false;
     }
     return true;
@@ -89,13 +92,16 @@ bool changing_inputs_and_copy_preserves_original_state()
     copy.rotatable_nodes.back() = false;
     copy.blocked_nodes.back() = true;
     copy.player_position = next_position;
+    copy.player_integrity = 0;
     copy.turns_taken = TurnIndex{1};
 
     if (!rotated || copy.ports.back().bits() != PortMask::east_bit ||
+        copy.player_alive() ||
         original->ports.back().bits() != PortMask::north_bit ||
         !original->rotatable_nodes.back() || original->blocked_nodes.back() ||
         original->player_position != start ||
-        original->turns_taken != TurnIndex{0})
+        original->player_integrity != GameState::initial_player_integrity ||
+        !original->player_alive() || original->turns_taken != TurnIndex{0})
     {
         std::cerr
             << "Initial state must own its board and copy independently\n";
