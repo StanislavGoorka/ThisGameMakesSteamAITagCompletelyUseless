@@ -34,6 +34,7 @@ GameState board()
                     .turns_taken = TurnIndex{7},
                     .packet = Packet{.position = node(24), .target = node(48)},
                     .sector_entry = node(0),
+                    .sector_exit = *NodeId::from_value(48),
                     .pulses = {{low_id, node(0)},
                                {middle_id, node(24)},
                                {high_id, node(48)}}};
@@ -53,6 +54,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.sector_exit == right.sector_exit &&
            left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&

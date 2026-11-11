@@ -30,6 +30,7 @@ GameState open_board(NodeId player_position)
     GameState state{.player_position = player_position,
                     .turns_taken = TurnIndex{7}};
     state.sector_entry = center;
+    state.sector_exit = *NodeId::from_value(48);
     state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
     state.ports.fill(all_ports);
     state.rotatable_nodes[center.value()] = true;
@@ -46,6 +47,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.sector_exit == right.sector_exit &&
            left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&

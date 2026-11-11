@@ -39,6 +39,7 @@ GameState board()
                     .turns_taken = TurnIndex{7},
                     .packet = Packet{node(8), node(1)},
                     .sector_entry = node(8),
+                    .sector_exit = *NodeId::from_value(48),
                     .pulses = {{spare_id, node(48)}, {low_id, node(0)}}};
     state.ports[24] = *PortMask::from_bits(PortMask::east_bit);
     state.ports[25] = *PortMask::from_bits(PortMask::west_bit);
@@ -60,6 +61,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.sector_exit == right.sector_exit &&
            left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&

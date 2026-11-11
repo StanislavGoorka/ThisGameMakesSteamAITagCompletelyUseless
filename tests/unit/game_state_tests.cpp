@@ -37,7 +37,8 @@ bool initial_state_preserves_input_and_starts_at_zero()
         state->player_integrity != 3 ||
         state->player_integrity != GameState::initial_player_integrity ||
         !state->player_alive() || state->turns_taken != TurnIndex{0} ||
-        state->packet || state->sector_entry || !state->pulses.empty() ||
+        state->packet || state->sector_entry || state->sector_exit ||
+        !state->pulses.empty() ||
         std::ranges::any_of(state->powered_nodes,
                             [](bool powered) { return powered; }) ||
         std::ranges::any_of(state->receiver_nodes,
@@ -52,7 +53,7 @@ bool initial_state_preserves_input_and_starts_at_zero()
         std::cerr
             << "Initial state must preserve board and a living player with "
                "full integrity at turn zero, without a packet, a powered "
-               "target, a receiver, a sector entry or a pulse\n";
+               "target, a receiver, a sector entry, an exit or a pulse\n";
         return false;
     }
     return true;
@@ -178,6 +179,27 @@ bool nonempty_pulse_collection_copies_ids_and_positions_independently()
     return true;
 }
 
+bool exit_copies_preserve_value_and_change_independently()
+{
+    GameState original{.player_position = start, .sector_exit = start};
+    auto copy = original;
+    auto second_copy = copy;
+    if (copy.sector_exit != start || second_copy.sector_exit != start)
+    {
+        std::cerr << "Two successive copies must preserve a nonempty exit\n";
+        return false;
+    }
+    copy.sector_exit = *NodeId::from_value(0);
+    second_copy.sector_exit.reset();
+    if (original.sector_exit != start ||
+        copy.sector_exit != *NodeId::from_value(0) || second_copy.sector_exit)
+    {
+        std::cerr << "Changing copied exits must preserve the other copies\n";
+        return false;
+    }
+    return true;
+}
+
 } // namespace
 
 int main()
@@ -186,6 +208,7 @@ int main()
         initial_state_preserves_input_and_starts_at_zero() &&
         invalid_initial_inputs_are_rejected() &&
         changing_inputs_and_copy_preserves_original_state() &&
-        nonempty_pulse_collection_copies_ids_and_positions_independently();
+        nonempty_pulse_collection_copies_ids_and_positions_independently() &&
+        exit_copies_preserve_value_and_change_independently();
     return passed ? 0 : 1;
 }

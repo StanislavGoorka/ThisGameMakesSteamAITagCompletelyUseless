@@ -59,6 +59,8 @@ struct GameState
     std::array<bool, node_count> receiver_nodes{};
     // Packet starting node; empty until the sector supplies an entry.
     std::optional<NodeId> sector_entry{};
+    // Optional exit; sector completion is derived from the current state.
+    std::optional<NodeId> sector_exit{};
     // Value-owned units; their positions are the only pulse occupancy record.
     std::vector<Pulse> pulses{};
 

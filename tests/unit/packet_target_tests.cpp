@@ -41,6 +41,7 @@ GameState board_with_receivers(std::initializer_list<int> receivers)
     state.rotatable_nodes[25] = true;
     state.blocked_nodes[0] = true;
     state.sector_entry = node(24);
+    state.sector_exit = *NodeId::from_value(48);
     state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
     for (const auto receiver : receivers)
     {
@@ -58,6 +59,7 @@ bool same_state(const GameState &left, const GameState &right)
            left.powered_nodes == right.powered_nodes &&
            left.receiver_nodes == right.receiver_nodes &&
            left.sector_entry == right.sector_entry &&
+           left.sector_exit == right.sector_exit &&
            left.pulses == right.pulses &&
            left.rotatable_nodes == right.rotatable_nodes &&
            left.blocked_nodes == right.blocked_nodes &&
