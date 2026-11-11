@@ -358,10 +358,32 @@
                       "id":  "P022",
                       "phase":  "M2",
                       "title":  "Limit i wyjście",
-                      "scope":  "Dodaj ukończenie sektora i limit 48 tur.",
-                      "acceptance":  "Wygrana na ostatniej turze, śmierć na wyjściu i limit bez dostaw.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij dane wyjścia i niemutującą klasyfikację wyniku sektora oraz integrację wyniku z transakcją i blokadą dalszych komend na dzieci P022-01 i P022-02; bez implementacji.",
+                      "acceptance":  "Dzieci pokrywają dwie dostawy do odbiorników, wygraną na ostatniej 48. turze, śmierć na wyjściu, limit bez dostaw i odmowę komendy po końcu sektora. P023 zależy od ostatniego dziecka; zamknięcie P022 nie oznacza działającego limitu ani wyjścia.",
                       "depends_on":  [
                                          "P021-02"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P022-01",
+                      "phase":  "M2",
+                      "title":  "Wyjście i niemutująca klasyfikacja sektora",
+                      "scope":  "Dodaj opcjonalny NodeId wyjścia w GameState oraz jedną funkcję const GameState do wartościowego wyniku: sektor trwa, ukończony, śmierć lub przeciążenie. Wynik wyliczaj z HP, pozycji, wyjścia, zasilonych odbiorników i liczby tur, bez trwałego pola wyniku ani drugiego licznika dostaw. Bez integracji z komendami i resolverem.",
+                      "acceptance":  "GameState::initial zachowuje sygnaturę i pozostawia wyjście puste; kopie niezależnie zachowują wyjście, a wszystkie helpery same_state je porównują. HP=0 ma pierwszeństwo. Żywy gracz na wyjściu z co najmniej dwoma zasilonymi odbiornikami wygrywa do 48. tury włącznie, przed przeciążeniem na 48. turze. Bez sukcesu przy co najmniej 48 turach wynik to przeciążenie; po przekroczeniu limitu nie ma spóźnionej wygranej. Brak wyjścia, inna pozycja, mniej niż dwie dostawy i zasilone węzły spoza odbiorników nie dają sukcesu. Granice 47/48/49, wyjścia NodeId 0/48 i pełna niezmienność stanu są przetestowane.",
+                      "depends_on":  [
+                                         "P022"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P022-02",
+                      "phase":  "M2",
+                      "title":  "Wynik sektora w resolverze i blokada komend",
+                      "scope":  "Podepnij klasyfikację P022-01 do TurnResult oraz is_command_legal i resolve_turn. Wynik sektora obliczaj po zagrożeniach i końcowym koszcie zaakceptowanej tury; stan wejściowy już terminalny odrzuca każdą komendę przed fazami. Zachowaj dotychczasowe kontrakty niskopoziomowych helperów.",
+                      "acceptance":  "Tura 47 do 48 pozwala wygrać na wyjściu po drugiej dostawie, ale śmierć od kontaktu ma pierwszeństwo; bez sukcesu tura 48 kończy się przeciążeniem. Dostawa i koszt zachodzą również w turze śmierci. TurnResult podaje klasyfikację także przy odmowie, bez utrwalania jej w GameState. Każda komenda po ukończeniu, śmierci lub przeciążeniu jest nielegalna, accepted=false i zachowuje cały stan, komendę oraz RNG poza API; brak wprowadzenia pakietu, ruchu impulsów i tury 49. Odmowa zwykłej błędnej akcji na turze 47 nie zużywa ostatniej tury. Wynik nadal posiada niezależną kopię; legalny krok przed końcem zachowuje dotychczasową kolejność i jeden koszt.",
+                      "depends_on":  [
+                                         "P022-01"
                                      ],
                       "gate":  null
                   },
@@ -372,7 +394,7 @@
                       "scope":  "Dodaj preview wywołujące ten sam resolver bez efektów ubocznych.",
                       "acceptance":  "Preview=commit dla korpusu komend; brak zmian live state.",
                       "depends_on":  [
-                                         "P022"
+                                         "P022-02"
                                      ],
                       "gate":  null
                   },

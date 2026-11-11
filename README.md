@@ -22,7 +22,9 @@ P020 zamknięto wyłącznie jako podział planu; wszystkie dzieci są zaimplemen
 
 P021 zamknięto jako podział planu; oba zadania potomne są zaimplementowane. P021-01 implementuje `Command` jako wartościowe warianty `MoveCommand`, `RotateCommand` i `WaitCommand`, z silnym `NodeId` dla celów. `is_command_legal` wymaga żywego gracza i sprawdza istniejące reguły ruchu/obrotu na niezależnej kopii; wait nie nalicza tury podczas odczytu. P021-02 implementuje `resolve_turn(const GameState&, const Command&)` zwracające `TurnResult` z niezależnym `state` i `accepted`. Odmowa zachowuje cały stan bez faz. Sukces wykonuje wprowadzenie pakietu, akcję, ruch pakietu, dostawę, jedną fazę impulsów i końcowy koszt jednej tury, również po śmierci. Wejściowy stan i komenda pozostają nietknięte. Resolver nie przyjmuje RNG i nie losuje. Wyjście i limit sektora pozostają do P022. Ostatnie Debug i Release zaliczyły po 22/22 CTest. [Raport P021](docs/workflow/history/P021.md) · [Raport P021-02](docs/workflow/history/P021-02.md)
 
-Następne zadanie to **P022 — limit i wyjście**, najpierw z oceną zakresu i ewentualnym podziałem. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P022 zamknięto wyłącznie jako podział planu: P022-01 doda wyjście i niemutującą klasyfikację sektora, a P022-02 połączy ją z wynikiem tury i odrzucaniem komend po końcu sektora. Żadne dziecko nie jest jeszcze zaimplementowane. Limit 48 tur i wyjście nadal nie działają w resolverze. [Raport P022](docs/workflow/history/P022.md)
+
+Następne zadanie to **P022-01 — wyjście i niemutująca klasyfikacja sektora**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 

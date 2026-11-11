@@ -1,40 +1,46 @@
 # Następny mały krok
 
-Task: P022
+Task: P022-01
 
-## Cel i ocena zakresu
+## Cel
 
-Oceń zadanie „Limit i wyjście” przed implementacją. Resolver P021-02 już łączy zaakceptowaną turę, ale nie ma reprezentacji wyjścia ani wyniku sektora. Jeżeli dodanie danych, ocena zakończenia i integracja z transakcją stanowią osobne kontrakty, tym krokiem ma być wyłącznie podział P022 na małe dzieci, z kryteriami i testami, bez rozpoczynania pierwszego dziecka. Przepnij P023 na ostatnie wymagane dziecko i zachowaj porządek topologiczny. Zamknięcie rodzica planistycznego nie oznacza implementacji.
+Dodaj opcjonalne wyjście sektora i jeden niemutujący odczyt jego wyniku. P022 jest ukończonym podziałem planu, nie implementacją limitu ani wyjścia. P021-02 już zapewnia transakcję tury; integracja klasyfikacji z komendami i resolverem należy dopiero do P022-02.
 
 ## Przeczytaj
 
-[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P021-02](history/P021-02.md), [podział P021](history/P021.md), wpis P022 i jego zależność w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [komendy](../../src/core/command.hpp), [resolver](../../src/core/turn_resolver.hpp), [testy resolvera](../../tests/unit/turn_resolver_tests.cpp), [dostawę](../../src/core/packet_delivery.hpp), [odbiorniki](../../src/core/packet_target.hpp), [fazę impulsów](../../src/core/pulse_phase.hpp), [koszt tury](../../src/core/turn_cost.hpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), „Plansza i stan początkowy” oraz „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) i [TESTING](../TESTING.md).
+[AGENTS.md](../../AGENTS.md), [skill next-step](../../.agents/skills/next-step/SKILL.md), [skill cpp-core-step](../../.agents/skills/cpp-core-step/SKILL.md), [WORKFLOW](../WORKFLOW.md), [STATE.json](STATE.json), [raport P022](history/P022.md), [raport P021-02](history/P021-02.md), wpisy P022 i P022-01 w [tasks.json](../plan/tasks.json), [GameState](../../src/core/game_state.hpp), [identyfikatory](../../src/core/identifiers.hpp), [testy stanu](../../tests/unit/game_state_tests.cpp), [dostawę](../../src/core/packet_delivery.hpp), [odbiorniki](../../src/core/packet_target.hpp), [resolver](../../src/core/turn_resolver.hpp), [testy resolvera](../../tests/unit/turn_resolver_tests.cpp), [CMake](../../CMakeLists.txt), [ARCHITECTURE](../ARCHITECTURE.md), sekcje „Plansza i stan początkowy” i „Kolejność tury” w [GAME_DESIGN](../GAME_DESIGN.md) oraz [TESTING](../TESTING.md).
 
 ## Stan zastany
 
-`resolve_turn(const GameState&, const Command&)` zwraca wartościowy `TurnResult { GameState state; bool accepted; }`. Najpierw wywołuje `is_command_legal`; odmowa zwraca niezależną, niezmienioną kopię, bez faz i kosztu. Sukces na kopii wykonuje jedno wprowadzenie pakietu, akcję gracza, ruch pakietu, dostawę, jedną pełną fazę impulsów i końcowy `charge_turn`, także po śmierci. Wejście i komenda pozostają nietknięte. Wait nie uruchamia dodatkowo kosztującego `wait_player`. Kolejny pakiet czeka do następnej zaakceptowanej tury. Resolver nie przyjmuje RNG i nie losuje.
+GameState ma HP, pozycję gracza, licznik tur, flagi `receiver_nodes` i `powered_nodes`, opcjonalne wejście i pakiet oraz wartościową kolekcję impulsów. Nie ma wyjścia ani trwałego wyniku sektora. `deliver_packet` może zasilić cel niebędący odbiornikiem, więc sama liczba wszystkich flag zasilenia nie dowodzi dwóch dostaw do odbiorników.
 
-GameState przechowuje życie, licznik tur, flagi odbiorników i dostaw oraz wejście sektora, lecz nie wyjście ani trwały wynik sektora. `is_command_legal` wymaga żywego gracza; nie rozpoznaje ukończenia sektora i limitu. `deliver_packet` zapisuje cel jako zasilony bez kontroli flagi odbiornika; testy mają także zasilone węzły niebędące odbiornikami. Nie dodawaj kolejnego licznika dostaw bez potrzeby. Przyszłą reprezentację wyniku i warunek zatrzymania dalszych komend trzeba jasno ustalić w małym kontrakcie lub podziale, bez zmiany wizji gry.
+`resolve_turn` zwraca `TurnResult { state, accepted }`. Nielegalna komenda nie wykonuje faz; sukces wykonuje wprowadzenie pakietu, akcję, ruch pakietu, dostawę, jedną fazę impulsów i końcowy koszt jednej tury. Wejście pozostaje niezmienione. `is_command_legal` wymaga żywego gracza, ale jeszcze nie sprawdza końca sektora. Ostatnie lokalne Debug i Release zaliczyły po 22/22 CTest w P021-02; podział P022 nie uruchamiał testów gry.
 
-Ostatnie lokalne Debug i Release zaliczyły po **22/22 CTest**. Mutacja usuwająca wczesne odrzucenie komendy została wykryta na stanie gotowym do wprowadzenia pakietu i z kontaktami; kod przywrócono i przebudowano.
+## Wykonaj
 
-## Kontrakt do pokrycia w implementacji lub dzieciach
+Jeden kontrakt: dla pełnego stanu zwróć wartościową klasyfikację sektora bez mutacji. Nazwy typu i funkcji wybiera wykonawca.
 
-- Bazowy sektor wymaga dwóch dostaw do odbiorników i żywego gracza na wyjściu. Brak wyjścia, za mało dostaw lub inna pozycja nie mogą dawać sukcesu. Dowolna flaga zasilonego węzła poza odbiornikami nie zastępuje wymaganej dostawy.
-- Wynik oceniaj po zagrożeniach i końcowym naliczeniu zaakceptowanej tury. HP=0 ma pierwszeństwo przed wyjściem. Żywy gracz z wymaganymi dostawami wygrywa również na ostatniej, 48. turze; w przeciwnym razie limit oznacza przeciążenie. Samo osiągnięcie wyjścia nie pomija kontaktu.
-- Ustal i przetestuj zachowanie kolejnej komendy po terminalnym wyniku. Odmowa nie uruchamia faz, nie zmienia pakietu, impulsów ani kosztu; zachowaj wartościowy wynik i niezmienność wejścia.
-- Ewentualne nowe pola GameState uwzględnij w inicjalizacji, kopiowaniu i wszystkich porównaniach pełnego stanu. Wyszukaj je przez `rg -l 'bool same_state' tests` — obecnie jest 14 helperów, w tym nowe testy komend i resolvera. Nie ograniczaj aktualizacji do pierwotnych siedmiu helperów.
+- Dodaj do GameState opcjonalny `NodeId` wyjścia. `GameState::initial` zachowuje sygnaturę i pozostawia go pustym; kopie niezależnie zachowują wyjście. Nie dodawaj fabryki sektora.
+- Wynik ma cztery rozłączne możliwości: sektor trwa, ukończony, śmierć i przeciążenie. Nie zapisuj go jako kolejnego trwałego pola GameState; ma wynikać z danych.
+- HP=0 zawsze daje śmierć, także na wyjściu po dostawach i przy limicie.
+- Żywy gracz na istniejącym wyjściu z co najmniej dwoma zasilonymi odbiornikami wygrywa, gdy licznik tur nie przekroczył 48. Licz tylko indeksy z obiema flagami `receiver_nodes` i `powered_nodes`; osobny licznik dostaw jest zbędny. Na 48. turze sukces ma pierwszeństwo przed przeciążeniem.
+- Bez sukcesu licznik co najmniej 48 oznacza przeciążenie; wcześniej sektor trwa. Stan syntetyczny po 48. turze nie może uzyskać spóźnionej wygranej. Brak wyjścia, inna pozycja i za mało dostaw nie dają sukcesu.
+- Funkcja przyjmuje stałą referencję i odczytuje wyłącznie potrzebne dane; nie rozwiązuje zaległego kontaktu, dostawy ani fazy. Integracja P022-02 uruchomi ją po zagrożeniach i końcowym koszcie oraz zablokuje dalsze komendy. W tym kroku resolver i legalność komend zachowują swoje kontrakty.
+
+Nowe pole uwzględnij w inicjalizacji, dwóch kolejnych niezależnych kopiach i wszystkich helperach `same_state`. Znajdź je przez `rg -l 'bool same_state' tests` — obecnie jest 14 helperów. W fabrykach testowych ustaw niepuste wyjście, aby dotychczasowe operacje nie mogły go po cichu zerować. Nowy test dodaj do trzech miejsc CMake wzorem testu resolvera.
 
 ## Dowód sukcesu i test błędu
 
-Kryteria muszą pokrywać wygraną na 48. zaakceptowanej turze, brak wygranej na wyjściu bez dwóch dostaw, śmierć na wyjściu mimo dostaw i limit bez dostaw. Sprawdź też granicę przed limitem, zasilony węzeł poza odbiornikami oraz zachowanie pełnego stanu po odmowie dalszej komendy. Wyniki nie mogą zależeć od przypadkowego naliczania wait dwa razy.
+Sprawdź wyjścia NodeId 0 i 48, brak wyjścia, inną pozycję, zero/jedną/dwie dostawy, dodatkowe zasilone węzły poza odbiornikami oraz granice 47/48/49 tur. Żywy gracz z dwiema dostawami na wyjściu wygrywa na 48. turze; identyczny stan z HP=0 daje śmierć, a bez sukcesu 48 i 49 dają przeciążenie. Na 47. turze bez sukcesu sektor trwa. Wygrana wymaga co najmniej dwóch odbiorników również wtedy, gdy wszystkie flagi istniejącego jednego odbiornika są zasilone.
 
-Przy samym podziale wystarczy walidator, kontrola dokładnego grafu i negatywne próby pominięcia dzieci na izolowanej kopii; nie pozoruj testów gry. Przy implementacji wykonaj Debug/Release i celową mutację istotnej reguły z potwierdzeniem rekompilacji właściwego testu, a potem przywróć kod.
+Każde wywołanie porównuje pełny stan przed/po, z niepustymi impulsami, pakietem i pozostałymi polami. Sama obecność impulsu na graczu nie zmienia klasyfikacji, dopóki faza nie zaktualizowała HP; funkcja tylko odczytuje stan.
+
+Celowa mutacja produkcyjna ma wykazać istotny przypadek negatywny, np. zaliczenie zasilonego węzła niebędącego odbiornikiem. Wymuś `/t:Rebuild` właściwego celu, potwierdź rekompilację i oczekiwany błąd CTest. Przywróć kod przed końcowymi testami Debug/Release.
 
 ## Nie rozszerzaj
 
-Nie implementuj preview P023, generatora, całego runu, overdrive, rezerwy, długu, zapisu ani prezentacji. Nie twórz ogólnej magistrali zdarzeń i nowych zagrożeń. Nie generuj assetów ani treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1` z raportów P018 i P018-03.
+Nie zmieniaj TurnResult, `resolve_turn`, `is_command_legal` ani niskopoziomowych helperów. Integracja wyniku i odmowa komend terminalnych należą do P022-02; nie deklaruj po tym kroku, że resolver już egzekwuje limit. Nie implementuj preview P023, generatora, runu, overdrive, rezerwy, długu, zapisu ani prezentacji. Nie generuj assetów i treści dla gracza. Nie naprawiaj przy okazji znanego błędu `scripts/Test-ProjectValidator.ps1`.
 
 ## Weryfikacja i przekazanie
 
-Wykonaj odpowiednie kontrole według [README](../../README.md) i [TESTING](../TESTING.md), zaktualizuj README i ARCHITECTURE zgodnie z faktem. Zapisz `history/P022.md` lub raport bieżącego dziecka, jeżeli podział nastąpi osobnym krokiem; STATE i NEXT muszą wskazywać ten sam następny Task ID i rzeczywiście gotowe zależności. Po samym podziale ustaw pierwsze dziecko jako następne. Uruchom walidator i kontrole diff, wykonaj lokalny commit wyłącznie własnych zmian, sprawdź hash, zakres oraz czystość. Zatrzymaj się przed kolejnym ID.
+Wykonaj konfigurację, build i CTest Debug/Release oraz formatter według [README](../../README.md). Zaktualizuj README i ARCHITECTURE zgodnie z faktem. Zapisz `history/P022-01.md`, a STATE i NEXT przestaw na P022-02 dopiero po spełnieniu kryteriów. Uruchom walidator projektu i kontrole diff, wykonaj lokalny commit własnych zmian, sprawdź hash, zakres i czystość. Zatrzymaj się przed kolejnym ID.
