@@ -20,7 +20,9 @@ P019 zamknięto wyłącznie jako podział planu. Wszystkie trzy dzieci są zaimp
 
 P020 zamknięto wyłącznie jako podział planu; wszystkie dzieci są zaimplementowane. P020-01 implementuje `resolve_pulse_contact(GameState&, EntityId, bool&)`: kontakt usuwa wskazany impuls i odbiera jeden HP tylko przy świeżej blokadzie i dodatniej integralności. P020-02 dodaje `resolve_pulse_phase(GameState&)`: najpierw usuwa wszystkie kontakty zastane, potem wykonuje po jednym ruchu ocalałych według ID i natychmiast usuwa nowe kontakty. Jedna lokalna blokada ogranicza wszystkie obrażenia do jednego HP na fazę, także po śmierci impulsy nadal znikają. Kolejna faza ma świeży limit; granice tur ustali P021. [Raport P020](docs/workflow/history/P020.md) · [Raport P020-02](docs/workflow/history/P020-02.md)
 
-Następne zadanie to **P021 — resolver tury**, najpierw z oceną zakresu i ewentualnym podziałem. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
+P021 zamknięto wyłącznie jako podział planu: P021-01 dostarczy komendy `move`/`rotate`/`wait` i niemutującą walidację, a P021-02 wartościowy wynik oraz resolver pełnej tury. P022 zależy od drugiego dziecka. Komendy i resolver nie są jeszcze zaimplementowane; ostatnie 20/20 CTest w Debug i Release pochodzi z P020-02. [Raport P021](docs/workflow/history/P021.md)
+
+Następne zadanie to **P021-01 — komendy podstawowe i niemutująca walidacja**. Polecenie **„Zrealizuj następny krok”** uruchamia pracę zgodnie z instrukcjami projektu. [AGENTS.md](AGENTS.md) · [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 

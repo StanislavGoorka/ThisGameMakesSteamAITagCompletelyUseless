@@ -325,10 +325,32 @@
                       "id":  "P021",
                       "phase":  "M2",
                       "title":  "Resolver tury",
-                      "scope":  "Połącz istniejące kroki w jedną transakcję w ustalonej kolejności.",
-                      "acceptance":  "Nielegalna komenda zachowuje cały stan i RNG; test kolejności zdarzeń.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij reprezentację i niemutującą walidację komend oraz wartościowy resolver pełnej tury na dzieci P021-01 i P021-02; bez implementacji.",
+                      "acceptance":  "Dzieci pokrywają legalne i nielegalne move/rotate/wait, odrzucenie przed mutacją stanu i bez zużycia zewnętrznego RNG oraz obserwowalną kolejność kroków i jednokrotny koszt tury. P022 zależy od ostatniego dziecka; zamknięcie P021 nie oznacza działającego resolvera.",
                       "depends_on":  [
                                          "P020-02"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P021-01",
+                      "phase":  "M2",
+                      "title":  "Komendy podstawowe i niemutująca walidacja",
+                      "scope":  "Dodaj wartościową reprezentację wyłącznie move, rotate i wait, z silnym NodeId dla celów, oraz jeden predykat legalności przyjmujący const GameState&. Zachowaj reguły istniejących helperów; każda komenda wymaga żywego gracza. Bez wykonania komendy, naliczenia tury i resolvera.",
+                      "acceptance":  "Legalny move po wzajemnej krawędzi, rotate własnego pola lub ortogonalnego obrotowego sąsiada i wait żywego gracza są przyjmowane. Brak krawędzi, blokująca flaga, zły zasięg, nieruchomy cel i każda komenda przy HP=0 są odrzucane. Impuls sam nie blokuje legalnego move. Wszystkie odczyty zachowują pełny stan i turę, także przy niepustych impulsach i gotowym do wprowadzenia pakiecie; nie używają RNG. Testy wykazują zgodność warunków z helperami bez zmiany ich kontraktów.",
+                      "depends_on":  [
+                                         "P021"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P021-02",
+                      "phase":  "M2",
+                      "title":  "Wartościowy resolver zaakceptowanej tury",
+                      "scope":  "Dodaj jedną transakcję const GameState i Command do wartościowego TurnResult z nowym stanem i informacją o przyjęciu. Najpierw waliduj, potem na kopii wykonaj wprowadzenie pakietu, akcję gracza, ruch pakietu, dostawę, jedną pełną fazę impulsów i końcowy koszt dokładnie jednej tury. Bez wyjścia, limitu sektora i preview.",
+                      "acceptance":  "Odrzucenie każdej nielegalnej komendy, także przy HP=0, zwraca niezmieniony pełny stan bez wprowadzenia pakietu, fazy impulsów i kosztu. Wejście pozostaje niezmienione także po sukcesie; wynik posiada niezależną kopię. Legalne move/rotate/wait dają dokładnie jedną turę, również przy śmierci w fazie. Testy obserwowalnej kolejności wykazują obrót przed trasą pakietu i impulsu, kontakt po wejściu gracza, dostawę mimo śmierci w zagrożeniach, brak podwójnej fazy i następny pakiet dopiero w kolejnej zaakceptowanej turze. Resolver nie przyjmuje RNG ani nie losuje; zachowanie zewnętrznego SplitMix64 sprawdź przez porównanie dalszej sekwencji z kopią, bez deklaracji implementacji rollbacku RNG. Wynik domenowy wystarcza do testów kolejności, bez ogólnej magistrali zdarzeń.",
+                      "depends_on":  [
+                                         "P021-01"
                                      ],
                       "gate":  null
                   },
@@ -339,7 +361,7 @@
                       "scope":  "Dodaj ukończenie sektora i limit 48 tur.",
                       "acceptance":  "Wygrana na ostatniej turze, śmierć na wyjściu i limit bez dostaw.",
                       "depends_on":  [
-                                         "P021"
+                                         "P021-02"
                                      ],
                       "gate":  null
                   },
