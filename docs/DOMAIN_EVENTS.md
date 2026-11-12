@@ -33,6 +33,10 @@ samodzielnie do globalnej trwałej deduplikacji. P044 musi ustalić kontekst
 próby oraz regułę ponownego odtwarzania przed dispatch do usług; obecny profil
 i checkpoint nie przechowują outboxu, kluczy ani identyfikatora instancji runu.
 
+P044-01 ustala [kontrakt dispatchu](DOMAIN_DISPATCH.md): jawny zakres próby
+i gałęzi, świeży evaluator po restore, pamięciowe retry oraz trwałą idempotencję
+zbioru profilu. To nie jest globalna deduplikacja zdarzeń po seedzie.
+
 P041-02 wdraża `resolve_run_turn_events`, wartościowy wrapper resolvera runu;
 zwraca `RunTurnEventsResult` z wynikiem i listą,
 bez mutacji wejścia i bez publikacji do usług. Istniejący preview_run_turn

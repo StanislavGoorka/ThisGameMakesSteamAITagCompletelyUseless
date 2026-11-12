@@ -115,6 +115,12 @@ wyłącznie ścieżkę profilu i deleguje do unlock_profile_file, bez cache, sie
 i Steam SDK. Instancje odczytują ten sam trwały zbiór. Dispatch i predykaty
 pozostają przyszłymi krokami; symulacja i preview nie otrzymują tego portu.
 
+P044-01: [dispatch v1](DOMAIN_DISPATCH.md) definiuje DeliveryScope z tokenami
+próby/gałęzi i początkową granicą sektora. AchievementEvaluator zwraca fixed
+maskę kandydatów bez IO i wyjątków. Cache dispatchu będzie pamięciowy, a trwała
+idempotencja pozostaje zbiorem ID profilu. Checkpoint nie zachowuje historii
+evaluatora; brak historii nie oznacza spełnienia predykatu runu bez overdrive.
+
 ## Styl i budżety
 
 4 spacje; `snake_case` dla funkcji i pól, `PascalCase` dla typów; RAII dla COM, uchwytów i pamięci. MSVC `/W4`, `/permissive-`, ostrzeżenia jako błędy dla własnego kodu w CI. Debug i Release. Osobna konfiguracja AddressSanitizer po sprawdzeniu obsługi toolchainu.

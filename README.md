@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P044-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P044-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -276,3 +276,5 @@ P042-03: Test trwałych odblokowań uruchamia 24 osobne procesy dla pięciu ID. 
 P043: Dodano port AchievementSink z wynikami unlocked/already_unlocked/invalid/unavailable i lokalny adapter profilu Windows bez cache. Fake testuje kontrakt, a dwa lokalne obiekty potwierdzają trwały zbiór, duplikaty, odmowę i retry offline. Symulacja i preview nie otrzymują usług. [Raport P043](docs/workflow/history/P043.md)
 
 P044: P044 zamknięto wyłącznie jako podział na kontrakt próby i gałęzi, dispatcher z retry oraz dowód restore/restart. P045 zależy od P044-03. Profil utrwala zbiór ID, nie outbox; seed nie identyfikuje próby. Bez implementacji dzieci. [Raport P044](docs/workflow/history/P044.md)
+
+P044-01: Dodano DeliveryScope z odrębnymi tokenami próby i gałęzi oraz granicą sektora, wyniki dispatchu i port AchievementEvaluator zwracający fixed maskę. Specyfikacja określa kolejność, retry, konflikty i granice gwarancji po restore. Testuje tokeny, kopie, fake i wszystkie 65536 masek. Bez dispatchu i predykatów. [Raport P044-01](docs/workflow/history/P044-01.md)

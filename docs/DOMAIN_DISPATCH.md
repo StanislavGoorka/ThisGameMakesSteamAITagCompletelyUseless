@@ -1,0 +1,51 @@
+# Dispatch zdarzeń v1
+
+P044-01 wdraża typy i ten kontrakt. Dispatcher należy do P044-02, dowód
+restore/restart do P044-03. Predykaty pięciu achievementów definiuje P045.
+
+DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
+oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są
+niezerowymi wartościami uint64, przydzielanymi przez przyszłą sesję aplikacji.
+Nowy run otrzymuje nowy token próby, nawet przy tym samym seedzie. Każdy restore
+otrzymuje nowy token gałęzi i świeży dispatcher oraz evaluator; pierwszy sektor
+zakresu jest sektorem odtworzonej granicy. Tokenów nie wolno ponownie używać
+w obrębie żyjącej sesji. Nie są trwałym globalnym ID ani częścią checkpointu.
+Dispatcher porównuje pełny zakres przy każdym wywołaniu, a seed zdarzenia
+musi pasować do zakresu. Nie deduplikuje globalnie samym seedem.
+
+Wywołujący publikuje pełny strumień wyłącznie zaakceptowanych, wybranych tur
+z resolve_run_turn_events, po przyjęciu nowego stanu. Preview nie dostaje
+dispatchera ani sinka. Kolejność zdarzeń pochodzi z DOMAIN_EVENTS; pierwsze
+zdarzenie to akcja tury1 pierwszego sektora zakresu. Kolejne ordinal są ciągłe,
+rodzaje rosną w obrębie tury, tury rosną o1. Następny sektor zaczyna turą1
+po SectorCompleted; po RunEnded nie przyjmuje się nowych zdarzeń. To kontrola
+ciągłości protokołu, nie ponowna walidacja reguł symulacji.
+
+AchievementEvaluator jest portem bez usług i IO. Jedno evaluate otrzymuje
+zdarzenie i zwraca uint16 maski kandydatów: bit ID−1, znane wyłącznie 0x1f.
+Może aktualizować prywatny tracker, ale nie rzuca, nie alokuje i nie odblokowuje
+ID samodzielnie. Świeży evaluator po restore nie zna wcześniejszej historii
+akcji; nie wolno domniemywać np. braku wcześniejszego overdrive. P045 musi
+ustalić konserwatywną obsługę nieznanej historii przed implementacją predykatów.
+
+Dispatcher zachowuje kopię klucza, payloadu i wyniku evaluate w pamięci.
+Przygotowuje miejsce na rekord przed evaluate, aby błąd alokacji nie wykonał
+trackera bez zapamiętania wyniku. Dokładny duplikat nie wywołuje evaluate drugi
+raz. Ten sam klucz z innym payloadem jest konfliktem bez skutku. Błędny zakres,
+kształt lub kolejność zdarzenia są odrzucane przed evaluatorem i sinkiem.
+Niepoprawna maska evaluatora jest zapamiętanym błędem kontraktu: brak publikacji,
+brak ponownej oceny, zablokowane dalsze zdarzenia tego zakresu.
+
+Kandydaci trafiają do AchievementSink w rosnącej kolejności ID. unlocked oraz
+already_unlocked potwierdzają bit; pozostałe odpowiedzi zachowują go do retry.
+Wyjątek sinka propaguje się z zachowaniem pending. Retry nie ocenia ponownie
+zdarzenia ani nie ponawia potwierdzonych ID. Nowe zdarzenie czeka na zakończenie
+pending poprzednika. Całość ma jednego właściciela, działa szeregowo i bez
+reentrancji; evaluator i sink muszą żyć dłużej od dispatchera.
+
+Gwarancja jednokrotnej oceny dotyczy tylko żyjącego zakresu. Nie ma trwałego
+outboxu, zapisu trackera ani gwarancji dostarczenia zdarzenia utraconego przy
+crashu przed zapisem profilu. Po restore/restart zdarzenia mogą być ocenione
+ponownie w świeżym zakresie, a lokalny trwały zbiór ID zapobiega powtórnemu
+odblokowaniu i zapisowi duplikatu. Nie jest to dokładnie jednokrotne wykonanie
+dowolnych efektów zewnętrznych. Profil/checkpoint i ich wersje pozostają bez zmian.

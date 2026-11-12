@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P044-01
+Task: P044-02
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044-01 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P044-01: specyfikacja i małe typy DeliveryScope (seed, token próby, token gałęzi, sektor początkowej granicy), wyniki oraz port evaluatora z fixed maską. Nowy zakres i świeży evaluator po nowej próbie lub restore; cache tylko w pamięci, trwała idempotencja przez zbiór profilu. Test wartości, granic i fake. Bez dispatchu i predykatów.
+P044-02: EventDispatcher według DOMAIN_DISPATCH. Cache kopii zdarzenia i maski przed sinkiem, jednokrotna ocena na zakres, retry tylko pending ID. Waliduj kształt/kontekst/kolejność i konflikt payloadu; błąd maski zamraża zakres. Test fake sinka, częściowego potwierdzenia i wyjątku po trwałym skutku. Bez IO i predykatów.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator
