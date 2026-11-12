@@ -56,6 +56,10 @@ P038-02: `windows_checkpoint_stage` sprawdza dokładne bajty staging, retry,
 resztki poprzedniego staging, odmowę złej wartości, blokadę i brak katalogu.
 Istniejące main i bak pozostają niezmienione.
 
+P038-03: `windows_checkpoint_save` sprawdza publikację i kolejne backupy,
+niepoprawny/niedostępny main, blokady każdej ścieżki oraz retry. Zły staging,
+ta sama ścieżka i publikacja do innego katalogu są odrzucane.
+
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 
 Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą poprawkę, jeśli połączenie byłoby zbyt duże. Testy screenshotowe wolno opierać tylko na zatwierdzonych assetach; ich wzorce i raporty nie są dowodem non-AI.

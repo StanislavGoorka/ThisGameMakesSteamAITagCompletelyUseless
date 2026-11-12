@@ -64,6 +64,19 @@ P028 implementuje SectorTopology i generate_sector_topology(RunSeed) w core/sect
 
 Oddziel `profile` (odblokowania, achievementy, ustawienia) od `run_checkpoint` (seed, granica sektora, reguły, moduły, HP, rezerwa, dług). Pliki w katalogu użytkownika, nie przy exe. Zapis tymczasowy → bezpieczna zamiana → backup ostatniego poprawnego pliku. Schema version, limity rozmiaru i walidacja wartości. Uszkodzony zapis nie nadpisuje poprawnego backupu. Bez serializacji wskaźników.
 
+P038-01..03: adapter `platform/windows/checkpoint_*.hpp` czyta dokładnie40
+bajtów i zapisuje `main.tmp` z kontrolą WriteFile/FlushFileBuffers/CloseHandle.
+Przy istniejącym poprawnym main przygotowuje `main.bak.tmp` z jego wartości,
+publikuje go jako `main.bak`, a potem `main.tmp` jako main. Publikacja używa
+[MoveFileExW](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw)
+z REPLACE_EXISTING i WRITE_THROUGH w tym samym katalogu, bez copy/delete.
+Uszkodzony/niedostępny main blokuje zapis i nie narusza backupu.
+Odmowa może pozostawić staging; retry go zastępuje. Przy odmowie ostatniej
+zamiany backup może już zawierać nadal aktualny main. Kontrakt wymaga jednego
+zapisującego w prywatnym katalogu lokalnym; nie jest transakcją dwóch nazw
+ani gwarancją wobec zaniku zasilania. Wybór katalogu użytkownika i wywołania
+z sesji są nadal planem; odzyskiwanie z backupu pozostaje P039.
+
 ## Achievementy
 
 Lokalny evaluator reaguje na zdarzenia domenowe. Stałe identyfikatory, np. `ACH_FIRST_DELIVERY`, nie są etykietami dla gracza. Pięć MVP: dostawa, sektor, run bez overdrive, dostawa po rekonfiguracji, ukończenie runu. P045 precyzuje predykaty i resetowanie; implementować każdy oddzielnie.
