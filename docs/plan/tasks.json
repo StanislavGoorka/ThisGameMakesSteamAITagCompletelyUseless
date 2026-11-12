@@ -1,1601 +1,1632 @@
 {
-    "schema_version":  1,
-    "rule":  "Jedno wznowienie realizuje jeden mały wpis. Wpisy rozbijające zakres nie implementują swoich dzieci.",
-    "tasks":  [
-                  {
-                      "id":  "P000",
-                      "phase":  "M0",
-                      "title":  "Pakiet planowania",
-                      "scope":  "Plan, polityka treści, workflow i skills; bez implementacji gry.",
-                      "acceptance":  "Walidator planu i kontrola publikowanych plików.",
-                      "depends_on":  [
-
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P001",
-                      "phase":  "M1",
-                      "title":  "Inwentaryzacja narzędzi",
-                      "scope":  "Utwórz docs/TOOLCHAIN.md z rzeczywistymi wersjami MSVC, SDK, CMake i formattera; niczego nie instaluj.",
-                      "acceptance":  "Uruchom wykrywanie vswhere i wersji; odróżnij brak narzędzia od braku PATH.",
-                      "depends_on":  [
-                                         "P000"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P002",
-                      "phase":  "M1",
-                      "title":  "Minimalny build core",
-                      "scope":  "Dodaj CMakeLists i jeden test C++20 wykonywany przez CTest, bez okna i treści gry.",
-                      "acceptance":  "Build oraz test Debug i Release, błąd testu daje niezerowy exit.",
-                      "depends_on":  [
-                                         "P001"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P003",
-                      "phase":  "M1",
-                      "title":  "Konfiguracja stylu",
-                      "scope":  "Dodaj .clang-format i .editorconfig zgodne z architekturą.",
-                      "acceptance":  "Formatter na małej próbce; ponowne formatowanie nie zmienia wyniku.",
-                      "depends_on":  [
-                                         "P002"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P004",
-                      "phase":  "M1",
-                      "title":  "Presety Windows",
-                      "scope":  "Dodaj presety windows-msvc, windows-debug i windows-release oraz działające komendy README.",
-                      "acceptance":  "Configure, build i CTest obu konfiguracji z repo root.",
-                      "depends_on":  [
-                                         "P003"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P005",
-                      "phase":  "M1",
-                      "title":  "CI Windows",
-                      "scope":  "Dodaj jeden workflow Windows budujący i testujący Debug/Release bez assetów.",
-                      "acceptance":  "Kontrola YAML, komendy lokalne; wynik zdalny zgłoś dopiero po faktycznym uruchomieniu.",
-                      "depends_on":  [
-                                         "P004"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P006",
-                      "phase":  "M2",
-                      "title":  "Identyfikatory domeny",
-                      "scope":  "Dodaj silne typy NodeId i EntityId, bez innych systemów.",
-                      "acceptance":  "Granice i niedozwolone konwersje; build Debug/Release.",
-                      "depends_on":  [
-                                         "P005"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P007",
-                      "phase":  "M2",
-                      "title":  "Maska portów",
-                      "scope":  "Dodaj 4-bitową maskę portów i wyliczenie rotacji, bez GameState.",
-                      "acceptance":  "Wszystkie 16 masek, cztery obroty i zachowanie liczby bitów.",
-                      "depends_on":  [
-                                         "P006"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P008",
-                      "phase":  "M2",
-                      "title":  "Sąsiedztwo grafu",
-                      "scope":  "Dodaj połączenia wyłącznie przez wzajemne porty.",
-                      "acceptance":  "Wzajemność, granice siatki, brak zawijania i brak jednostronnych krawędzi.",
-                      "depends_on":  [
-                                         "P007"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P009",
-                      "phase":  "M2",
-                      "title":  "Komenda obrotu węzła",
-                      "scope":  "Dodaj zmianę orientacji pojedynczego obrotowego węzła.",
-                      "acceptance":  "Węzeł nieruchomy odrzucany, cztery obroty przywracają topologię.",
-                      "depends_on":  [
-                                         "P008"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P010",
-                      "phase":  "M2",
-                      "title":  "BFS z remisami",
-                      "scope":  "Dodaj jedną funkcję najkrótszej trasy z porządkiem N E S W.",
-                      "acceptance":  "Brak trasy, start=cel, granice i symetryczne remisy.",
-                      "depends_on":  [
-                                         "P009"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P011",
-                      "phase":  "M2",
-                      "title":  "PRNG i wektory",
-                      "scope":  "Wybierz i opisz mały deterministyczny PRNG; implementuj sam generator.",
-                      "acceptance":  "Znane wektory i powtarzalność identycznego seeda.",
-                      "depends_on":  [
-                                         "P010"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P012",
-                      "phase":  "M2",
-                      "title":  "Losowanie zakresu",
-                      "scope":  "Dodaj deterministyczny wybór liczby z zakresu bez modulo bias.",
-                      "acceptance":  "Zakres 1, granice, błędny zakres i powtarzalność wektorów.",
-                      "depends_on":  [
-                                         "P011"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P013",
-                      "phase":  "M2",
-                      "title":  "Wartościowy GameState",
-                      "scope":  "Dodaj minimalny stan planszy, gracza i licznik tur.",
-                      "acceptance":  "Kopia niezależna od oryginału i walidacja początkowego stanu.",
-                      "depends_on":  [
-                                         "P012"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P014",
-                      "phase":  "M2",
-                      "title":  "Walidacja ruchu",
-                      "scope":  "Dodaj move po legalnej wzajemnej krawędzi.",
-                      "acceptance":  "Brak krawędzi, granica, blokada i niezmienność stanu przy błędzie.",
-                      "depends_on":  [
-                                         "P013"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P015",
-                      "phase":  "M2",
-                      "title":  "Zasięg rotate",
-                      "scope":  "Dodaj akcję rotate na własnym lub ortogonalnym sąsiednim węźle.",
-                      "acceptance":  "Cel daleki i nieruchomy odrzucony bez zużycia tury.",
-                      "depends_on":  [
-                                         "P014"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P016",
-                      "phase":  "M2",
-                      "title":  "Akcja wait",
-                      "scope":  "Dodaj wait bez regeneracji zasobów.",
-                      "acceptance":  "Jedna tura; martwy gracz nie przyjmuje akcji.",
-                      "depends_on":  [
-                                         "P015"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P017",
-                      "phase":  "M2",
-                      "title":  "Ruch pakietu",
-                      "scope":  "Dodaj jeden pakiet przemieszczany po BFS o jedną krawędź.",
-                      "acceptance":  "Obrót zmienia trasę; odcięty pakiet czeka; brak blokowania gracza.",
-                      "depends_on":  [
-                                         "P016"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P018",
-                      "phase":  "M2",
-                      "title":  "Dostawa pakietu",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij dostawę do celu i odroczone wprowadzenie następnego pakietu na dzieci P018-01, P018-02 i P018-03; bez implementacji.",
-                      "acceptance":  "Dzieci pokrywają oba warunki: dostawa tylko raz; nie ma dwóch ruchów nowego pakietu w jednej turze. P019 zależy od ostatniego dziecka.",
-                      "depends_on":  [
-                                         "P017"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P018-01",
-                      "phase":  "M2",
-                      "title":  "Dostawa pakietu na celu",
-                      "scope":  "Dodaj krok dostawy: pakiet stojący na celu znika z planszy, a jego cel zostaje zapisany w stanie jako zasilony; bez odbiorników, wejścia i wprowadzania następnego pakietu.",
-                      "acceptance":  "Dostawa tylko raz: powtórzony krok, pakiet poza celem i brak pakietu nie zmieniają stanu; po dostawie plansza zostaje bez pakietu; brak naliczenia tury.",
-                      "depends_on":  [
-                                         "P018"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P018-02",
-                      "phase":  "M2",
-                      "title":  "Cel następnego pakietu",
-                      "scope":  "Dodaj odbiorniki sektora do stanu i predykat wskazujący kolejny niezasilony odbiornik według identyfikatorów; bez umieszczania pakietu.",
-                      "acceptance":  "Najniższy niezasilony identyfikator; zasilone pominięte; brak wyniku bez odbiorników i po zasileniu wszystkich; stan bez zmian.",
-                      "depends_on":  [
-                                         "P018-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P018-03",
-                      "phase":  "M2",
-                      "title":  "Odroczone wprowadzenie pakietu",
-                      "scope":  "Dodaj wejście sektora do stanu i osobny krok początku tury, który po dostawie umieszcza następny pakiet na wejściu z celem z P018-02.",
-                      "acceptance":  "Nie ma dwóch ruchów nowego pakietu w jednej turze: żadnego w turze dostawy, najwyżej jeden w turze wprowadzenia; brak wprowadzenia przy aktywnym pakiecie i bez niezasilonego odbiornika; brak naliczenia tury.",
-                      "depends_on":  [
-                                         "P018-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P019",
-                      "phase":  "M2",
-                      "title":  "Impuls pościgowy",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij reprezentację impulsów i ich zajęcia, wybór kroku pościgu oraz ruch w kolejności ID na dzieci P019-01, P019-02 i P019-03; bez implementacji.",
-                      "acceptance":  "Dzieci pokrywają remisy N E S W, czekanie bez trasy i stabilne blokowanie innym impulsem, ze spójnym kontraktem zajęcia. P020 zależy od ostatniego dziecka; zamknięcie P019 nie oznacza działającego impulsu.",
-                      "depends_on":  [
-                                         "P018-03"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P019-01",
-                      "phase":  "M2",
-                      "title":  "Reprezentacja i zajęcie impulsów",
-                      "scope":  "Dodaj wartościową kolekcję impulsów z EntityId i NodeId oraz jeden predykat zajęcia pola przez impuls. Impulsy są oddzielne od blocked_nodes: blokują inne impulsy, lecz pozwalają graczowi wejść na swoje pole dla przyszłego kontaktu P020. Bez ruchu, obrażeń i emisji.",
-                      "acceptance":  "Stan początkowy ma pustą kolekcję; kopie są niezależne. Predykat wykrywa zajęte pole, odrzuca wolne i pustą kolekcję niezależnie od kolejności zapisu, także dla NodeId 0 i 48; nie mutuje stanu ani tury. Ruch gracza na impuls jest legalny po krawędzi, a osobna flaga blocked_nodes nadal go blokuje. Nowe pola uwzględnione w testach inicjalizacji, kopiowania i wszystkich helperach same_state; unikalne ID i pozycje opisane jako warunki poprawnego stanu.",
-                      "depends_on":  [
-                                         "P019"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P019-02",
-                      "phase":  "M2",
-                      "title":  "Wybór kroku pościgu",
-                      "scope":  "Dodaj jedną funkcję tylko do odczytu, która dla EntityId impulsu wskazuje następny NodeId po BFS do bieżącej pozycji gracza albo brak ruchu. Korzystaj z istniejącego BFS i predykatu zajęcia z P019-01; nie przesuwaj jednostek.",
-                      "acceptance":  "Wynik to dokładnie jedna krawędź najkrótszej trasy, z remisami N E S W. Brak impulsu o podanym ID, brak trasy, pozycja już na graczu lub następne pole zajęte przez inny impuls daje brak ruchu. Zajęty pierwszy krok oznacza czekanie, bez objazdu nawet gdy istnieje dłuższa wolna trasa; zmiana topologii lub pozycji gracza zmienia wynik. Cały stan i tura pozostają niezmienione.",
-                      "depends_on":  [
-                                         "P019-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P019-03",
-                      "phase":  "M2",
-                      "title":  "Ruch impulsów w kolejności ID",
-                      "scope":  "Dodaj krok przesuwający każdy impuls najwyżej raz w rosnącej kolejności EntityId. Wybór z P019-02 obliczaj na bieżącym stanie po wcześniejszych ruchach, zachowując kolejność przechowywania kolekcji; bez kontaktów, obrażeń, usuwania jednostek i naliczenia tury.",
-                      "acceptance":  "Jeden impuls idzie o jedną krawędź; pusta kolekcja i brak możliwych ruchów zachowują stan. Wynik według ID nie zależy od kolejności zapisu: niższe ID może zwolnić pole wyższemu, a impuls zablokowany w swoim kroku nie rusza ponownie po późniejszym zwolnieniu pola. Przy wspólnym celu pierwszeństwo ma niższe ID; zajęcie nie powoduje objazdu. Pełny stan różni się tylko oczekiwanymi pozycjami impulsów, bez zmiany integralności i tury; kontakt pozostaje do P020.",
-                      "depends_on":  [
-                                         "P019-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P020",
-                      "phase":  "M2",
-                      "title":  "Kontakt i obrażenia",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij pojedynczy kontakt z limitem obrażeń oraz fazę impulsów z kontaktami na dzieci P020-01 i P020-02; bez implementacji.",
-                      "acceptance":  "Dzieci pokrywają wejście gracza na impuls przed ruchem, wejście impulsu na gracza, natychmiastowe zwolnienie pola, wspólny limit jednego obrażenia i HP=0. P021 zależy od ostatniego dziecka; zamknięcie P020 nie oznacza działających kontaktów.",
-                      "depends_on":  [
-                                         "P019-03"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P020-01",
-                      "phase":  "M2",
-                      "title":  "Pojedynczy kontakt i limit obrażeń",
-                      "scope":  "Dodaj jedną funkcję obsługującą kontakt impulsu wskazanego EntityId z graczem: usuń jednostkę stojącą na graczu i odejmij najwyżej jeden punkt integralności według przekazanej przez referencję lokalnej blokady obrażeń. Blokada należy do wywołującego, poza GameState. Bez ruchu i pełnej fazy zagrożeń.",
-                      "acceptance":  "Kontakt usuwa wyłącznie wskazany impuls i zachowuje kolejność pozostałych. Pierwszy kontakt przy HP\u003e0 zmniejsza HP o 1 i zużywa blokadę; kolejne z tą samą blokadą nadal usuwają impulsy bez obrażeń. Przy HP=1 gracz umiera, a przy HP=0 nie ma underflow. Brak ID, brak kontaktu i ponowienie po usunięciu zachowują pełny stan i blokadę. Legalny move_player na impuls, potem kontakt, daje oczekiwany stan bez naliczenia tury. Wszystkie pozostałe pola, w tym pakiet, są zachowane.",
-                      "depends_on":  [
-                                         "P020"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P020-02",
-                      "phase":  "M2",
-                      "title":  "Faza impulsów z natychmiastowym kontaktem",
-                      "scope":  "Dodaj jedną fazę impulsów ze wspólną lokalną blokadą obrażeń z P020-01. Najpierw rozwiąż wszystkie kontakty zastane po akcji gracza, następnie wykonaj najwyżej jeden krok każdego pozostałego impulsu w rosnącej kolejności ID i natychmiast rozwiąż jego kontakt. Używaj next_pulse_step na bieżącym stanie. Bez resolvera tury i naliczenia kosztu.",
-                      "acceptance":  "Wejście gracza na impuls jest rozpoznane przed jakimkolwiek ruchem, niezależnie od ID kontaktującej jednostki. Impuls po wejściu na gracza znika od razu, więc późniejsze ID widzą zwolnione pole i też mogą wejść oraz zniknąć. Kontakty przed ruchem i po ruchu używają łącznie najwyżej jednego HP; wszystkie kontakty są usuwane także po spadku HP do zera. Nowe wywołanie fazy ma świeży limit. Permutacje kolekcji dają ten sam wynik według ID, zachowując kolejność ocalałych; brak kontaktu zachowuje reguły ruchu, blokady i braku retry. Pełny stan zmienia tylko pozycje lub usunięcie impulsów i ewentualnie HP; tura pozostaje niezmieniona.",
-                      "depends_on":  [
-                                         "P020-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P021",
-                      "phase":  "M2",
-                      "title":  "Resolver tury",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij reprezentację i niemutującą walidację komend oraz wartościowy resolver pełnej tury na dzieci P021-01 i P021-02; bez implementacji.",
-                      "acceptance":  "Dzieci pokrywają legalne i nielegalne move/rotate/wait, odrzucenie przed mutacją stanu i bez zużycia zewnętrznego RNG oraz obserwowalną kolejność kroków i jednokrotny koszt tury. P022 zależy od ostatniego dziecka; zamknięcie P021 nie oznacza działającego resolvera.",
-                      "depends_on":  [
-                                         "P020-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P021-01",
-                      "phase":  "M2",
-                      "title":  "Komendy podstawowe i niemutująca walidacja",
-                      "scope":  "Dodaj wartościową reprezentację wyłącznie move, rotate i wait, z silnym NodeId dla celów, oraz jeden predykat legalności przyjmujący const GameState\u0026. Zachowaj reguły istniejących helperów; każda komenda wymaga żywego gracza. Bez wykonania komendy, naliczenia tury i resolvera.",
-                      "acceptance":  "Legalny move po wzajemnej krawędzi, rotate własnego pola lub ortogonalnego obrotowego sąsiada i wait żywego gracza są przyjmowane. Brak krawędzi, blokująca flaga, zły zasięg, nieruchomy cel i każda komenda przy HP=0 są odrzucane. Impuls sam nie blokuje legalnego move. Wszystkie odczyty zachowują pełny stan i turę, także przy niepustych impulsach i gotowym do wprowadzenia pakiecie; nie używają RNG. Testy wykazują zgodność warunków z helperami bez zmiany ich kontraktów.",
-                      "depends_on":  [
-                                         "P021"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P021-02",
-                      "phase":  "M2",
-                      "title":  "Wartościowy resolver zaakceptowanej tury",
-                      "scope":  "Dodaj jedną transakcję const GameState i Command do wartościowego TurnResult z nowym stanem i informacją o przyjęciu. Najpierw waliduj, potem na kopii wykonaj wprowadzenie pakietu, akcję gracza, ruch pakietu, dostawę, jedną pełną fazę impulsów i końcowy koszt dokładnie jednej tury. Bez wyjścia, limitu sektora i preview.",
-                      "acceptance":  "Odrzucenie każdej nielegalnej komendy, także przy HP=0, zwraca niezmieniony pełny stan bez wprowadzenia pakietu, fazy impulsów i kosztu. Wejście pozostaje niezmienione także po sukcesie; wynik posiada niezależną kopię. Legalne move/rotate/wait dają dokładnie jedną turę, również przy śmierci w fazie. Testy obserwowalnej kolejności wykazują obrót przed trasą pakietu i impulsu, kontakt po wejściu gracza, dostawę mimo śmierci w zagrożeniach, brak podwójnej fazy i następny pakiet dopiero w kolejnej zaakceptowanej turze. Resolver nie przyjmuje RNG ani nie losuje; zachowanie zewnętrznego SplitMix64 sprawdź przez porównanie dalszej sekwencji z kopią, bez deklaracji implementacji rollbacku RNG. Wynik domenowy wystarcza do testów kolejności, bez ogólnej magistrali zdarzeń.",
-                      "depends_on":  [
-                                         "P021-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P022",
-                      "phase":  "M2",
-                      "title":  "Limit i wyjście",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij dane wyjścia i niemutującą klasyfikację wyniku sektora oraz integrację wyniku z transakcją i blokadą dalszych komend na dzieci P022-01 i P022-02; bez implementacji.",
-                      "acceptance":  "Dzieci pokrywają dwie dostawy do odbiorników, wygraną na ostatniej 48. turze, śmierć na wyjściu, limit bez dostaw i odmowę komendy po końcu sektora. P023 zależy od ostatniego dziecka; zamknięcie P022 nie oznacza działającego limitu ani wyjścia.",
-                      "depends_on":  [
-                                         "P021-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P022-01",
-                      "phase":  "M2",
-                      "title":  "Wyjście i niemutująca klasyfikacja sektora",
-                      "scope":  "Dodaj opcjonalny NodeId wyjścia w GameState oraz jedną funkcję const GameState do wartościowego wyniku: sektor trwa, ukończony, śmierć lub przeciążenie. Wynik wyliczaj z HP, pozycji, wyjścia, zasilonych odbiorników i liczby tur, bez trwałego pola wyniku ani drugiego licznika dostaw. Bez integracji z komendami i resolverem.",
-                      "acceptance":  "GameState::initial zachowuje sygnaturę i pozostawia wyjście puste; kopie niezależnie zachowują wyjście, a wszystkie helpery same_state je porównują. HP=0 ma pierwszeństwo. Żywy gracz na wyjściu z co najmniej dwoma zasilonymi odbiornikami wygrywa do 48. tury włącznie, przed przeciążeniem na 48. turze. Bez sukcesu przy co najmniej 48 turach wynik to przeciążenie; po przekroczeniu limitu nie ma spóźnionej wygranej. Brak wyjścia, inna pozycja, mniej niż dwie dostawy i zasilone węzły spoza odbiorników nie dają sukcesu. Granice 47/48/49, wyjścia NodeId 0/48 i pełna niezmienność stanu są przetestowane.",
-                      "depends_on":  [
-                                         "P022"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P022-02",
-                      "phase":  "M2",
-                      "title":  "Wynik sektora w resolverze i blokada komend",
-                      "scope":  "Podepnij klasyfikację P022-01 do TurnResult oraz is_command_legal i resolve_turn. Wynik sektora obliczaj po zagrożeniach i końcowym koszcie zaakceptowanej tury; stan wejściowy już terminalny odrzuca każdą komendę przed fazami. Zachowaj dotychczasowe kontrakty niskopoziomowych helperów.",
-                      "acceptance":  "Tura 47 do 48 pozwala wygrać na wyjściu po drugiej dostawie, ale śmierć od kontaktu ma pierwszeństwo; bez sukcesu tura 48 kończy się przeciążeniem. Dostawa i koszt zachodzą również w turze śmierci. TurnResult podaje klasyfikację także przy odmowie, bez utrwalania jej w GameState. Każda komenda po ukończeniu, śmierci lub przeciążeniu jest nielegalna, accepted=false i zachowuje cały stan, komendę oraz RNG poza API; brak wprowadzenia pakietu, ruchu impulsów i tury 49. Odmowa zwykłej błędnej akcji na turze 47 nie zużywa ostatniej tury. Wynik nadal posiada niezależną kopię; legalny krok przed końcem zachowuje dotychczasową kolejność i jeden koszt.",
-                      "depends_on":  [
-                                         "P022-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P023",
-                      "phase":  "M2",
-                      "title":  "Podgląd na kopii",
-                      "scope":  "Dodaj preview wywołujące ten sam resolver bez efektów ubocznych.",
-                      "acceptance":  "Preview=commit dla korpusu komend; brak zmian live state.",
-                      "depends_on":  [
-                                         "P022-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P024",
-                      "phase":  "M2",
-                      "title":  "Replay bez prezentacji",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij kanoniczny hash stanu, syntetyczną fabrykę deweloperską z seeda, wykonanie wersjonowanego replay i adapter CLI na dzieci P024-01 do P024-04; bez implementacji.",
-                      "acceptance":  "Dzieci określają pełne kodowanie stanu, powtarzalny seedowany fixture headless i replay seed+wersja+komendy ze zgodnymi hashami oraz jawną odmową nieobsługiwanej wersji. P025 zależy od P024-04; ukończenie rodzica nie oznacza działającego replay ani generatora P028.",
-                      "depends_on":  [
-                                         "P023"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P024-01",
-                      "phase":  "M2",
-                      "title":  "Kanoniczny hash pełnego stanu",
-                      "scope":  "Dodaj jeden niemutujący hash pełnego GameState w narzędziach deweloperskich, poza core i paczką gry. Stosuj jawny strumień bajtów i FNV-1a 64-bit, bez surowej pamięci, std::hash lub serializatora ogólnego przeznaczenia. Zachowaj kolejność przechowywania impulsów jako część dokładnego stanu.",
-                      "acceptance":  "Udokumentowane kodowanie ma wersję, stałe szerokości little-endian, wszystkie pola, tagi optional, liczbę i kolejność impulsów. Znane wektory obliczone niezależnie zgadzają się w Debug/Release. Zmiany każdego pola i elementów tablic, puste/wypełnione optional, granice ID/liczników i permutacja impulsów są rozróżniane w korpusie; wywołanie zachowuje cały stan. Mutacja pomijająca pole jest wykryta po potwierdzonym Rebuild. Hash jest niekryptograficzny, bez obietnicy braku kolizji.",
-                      "depends_on":  [
-                                         "P024"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P024-02",
-                      "phase":  "M2",
-                      "title":  "Seedowany fixture deweloperski",
-                      "scope":  "Dodaj jedną czystą fabrykę niewyświetlanego syntetycznego GameState z RunSeed w narzędziach deweloperskich. Jeden stały scenariusz ma tylko seedowaną początkową orientację jednego węzła przez lokalny SplitMix64; to fixture replay, bez generatora sektorów P028, solvera ani RNG w resolverze.",
-                      "acceptance":  "Jawny stały układ numeryczny obejmuje gracza, wejście, dwóch odbiorników, wyjście i impuls. Seed wybiera 0-3 obroty dokładnie wskazanego węzła; wszystkie inne pola są stałe. Seedy 0 i UINT64_MAX oraz znane różne orientacje mają oczekiwane pełne stany i hashe P024-01. Ten sam seed odtwarza ten sam stan, kopie są niezależne, zewnętrzny RNG nietknięty. Nie wymaga się unikalności stanu dla każdego seeda ani wygrywalności fixture. Mutacja ignorująca seed jest wykryta po Rebuild.",
-                      "depends_on":  [
-                                         "P024-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P024-03",
-                      "phase":  "M2",
-                      "title":  "Wersjonowane wykonanie replay",
-                      "scope":  "Dodaj jeden wartościowy runner deweloperski: wersja reguł, RunSeed i sekwencja Command. Wersja 1 korzysta z fixture P024-02, tego samego resolve_turn oraz hasha P024-01; zwraca początkowy hash, ślad accepted/outcome/hash po każdej próbie i niezależny stan końcowy. Bez parsera, plików i prezentacji.",
-                      "acceptance":  "Nieobsługiwana wersja jest jawnie odrzucona bez wyniku częściowego. Identyczny replay daje identyczny pełny stan i ślad hashy, a znany korpus zgadza się z jawnymi oczekiwaniami oraz bezpośrednim resolverem. Obejmuje pustą sekwencję, legalne i błędne move/rotate/wait oraz komendy po końcu sektora. Odrzucona komenda tworzy wpis z niezmienionym hashem i nie zatrzymuje następnych prób. Wejściowe komendy i inne wyniki pozostają nietknięte. Mutacja pomijająca bramkę wersji lub komendę jest wykryta po Rebuild.",
-                      "depends_on":  [
-                                         "P024-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P024-04",
-                      "phase":  "M2",
-                      "title":  "Adapter CLI replay",
-                      "scope":  "Dodaj małe narzędzie CLI poza paczką gry, przyjmujące dziesiętne version seed i opcjonalne tokeny wait, move:NodeId, rotate:NodeId. Parse całego wejścia przed uruchomieniem runnera P024-03; wypisz stabilny numeryczny ślad początkowego i kolejnych hashy, accepted i outcome. Bez formatu zapisu gry, importu JSON ani wyświetlania planszy.",
-                      "acceptance":  "CTest uruchamia rzeczywiste exe w Debug/Release: dwa identyczne wywołania dają identyczny stdout i kod 0. Pusta sekwencja jest dozwolona, seed 0 i UINT64_MAX poprawne. Brak argumentu, zły token, trailing junk, znak minus, przepełnienie liczby, NodeId 49 i nieobsługiwana wersja dają niezerowy kod bez częściowego śladu sukcesu. Test wskazuje konkretny oczekiwany wynik i wykrywa celowo zmieniony parser lub kod wyjścia po Rebuild. README podaje działającą komendę; narzędzie i diagnostyka są wyłącznie deweloperskie.",
-                      "depends_on":  [
-                                         "P024-03"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P025",
-                      "phase":  "M2",
-                      "title":  "Eksperyment rdzenia",
-                      "scope":  "Przeanalizuj jeden niewyświetlany scenariusz z trzema sekwencjami decyzji; zapisz dowód wyróżnika.",
-                      "acceptance":  "Trasy pakietu i impulsu reagują na tę samą zmianę; raport nie udaje playtestu.",
-                      "depends_on":  [
-                                         "P024-04"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P026",
-                      "phase":  "M3",
-                      "title":  "Overdrive",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij dane rezerwy/długu i wersjonowanie pełnego hasha, regenerację po dostawie, atomowy helper overdrive, integrację komendy z turą oraz adapter CLI na dzieci P026-01 do P026-05; bez implementacji.",
-                      "acceptance":  "Dzieci pokrywają rezerwę startową 2 i limit 3, dług startowy 0, dostawę +1, dwa obroty z kosztem jednej rezerwy i +1 długu, jedną turę oraz pełną niezmienność odmowy. Hash i replay mają jawny plan wersji. P027 zależy od P026-05; ukończenie rodzica nie oznacza działającego overdrive.",
-                      "depends_on":  [
-                                         "P025"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P026-01",
-                      "phase":  "M3",
-                      "title":  "Dane rezerwy i długu z pełnym hashem",
-                      "scope":  "Dodaj wartościowe pola GameState reserve uint8 (start 2, limit gry 3) i overload_debt uint32 (start 0), bez zmiany sygnatury initial. Rozszerz pełny hash do kodowania v2 i jawnie przełącz runner na replay 2; stare wersje odrzucaj, bez emulacji. Nie zmieniaj dostawy, komend ani resolvera.",
-                      "acceptance":  "Inicjalizacja i dwie niezależne kopie zachowują zasoby; wszystkie same_state i fabryki testów chronią oba pola. Hash v2 zachowuje format v1 poza prefiksem wersji 2 i dodaniem na końcu reserve uint8 oraz overload_debt uint32 LE. Niezależne wektory, granice pól i mutacja pominięcia zasobu dowodzą pełnego odczytu. Runner/CLI przyjmują wyłącznie replay 2 z nowymi pełnymi wektorami; replay 1 odrzucony bez wyniku/stdout. Debug/Release przechodzą, a dostawa i akcje nadal nie zmieniają zasobów.",
-                      "depends_on":  [
-                                         "P026"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P026-02",
-                      "phase":  "M3",
-                      "title":  "Regeneracja rezerwy po dostawie",
-                      "scope":  "Rozszerz istniejący deliver_packet o dokładnie jeden przyrost reserve przy rzeczywistej dostawie, z limitem 3. Zmiana reguł przełącza replay na wersję 3, bez zmiany kodowania hasha v2. Nie implementuj overdrive ani runu.",
-                      "acceptance":  "Dostawa dla rezerwy 0/1/2 daje 1/2/3, a przy 3 zachowuje 3. Brak pakietu, poza celem, zasilony cel i powtórzenie dostawy nie regenerują. Dług i reszta stanu poza dotychczasowym efektem dostawy pozostają niezmienione; HP nie rośnie i koszt tury nie należy do helpera. Resolver i preview zachowują zgodność, także przy dostawie w turze śmierci. Replay 3 przyjęty, 1/2 odrzucone; jawne hashe i negatywna mutacja przyrostu są sprawdzone po Rebuild.",
-                      "depends_on":  [
-                                         "P026-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P026-03",
-                      "phase":  "M3",
-                      "title":  "Atomowy helper dwóch obrotów",
-                      "scope":  "Dodaj jeden helper akcji overdrive dla GameState i NodeId: warunki celu jak rotate_from_player, reserve co najmniej 1, dwa obroty zgodnie z zegarem, -1 reserve i +1 overload_debt. Brak kosztu tury i faz; brak nowego wariantu Command. Przy długu UINT32_MAX odrzuć przed mutacją zamiast zawijania.",
-                      "acceptance":  "Pełny stan po sukcesie zmienia tylko maskę celu, reserve i overload_debt; pola w zasięgu, wszystkie maski oraz granice rezerwy 0/1/3 i długu 0/MAX-1/MAX są przetestowane. Brak rezerwy, zły zasięg, zawinięcie wiersza, nieruchomy cel i przepełnienie długu zachowują cały stan. Nie wymagaj połączenia ani wolnego pola; helper jak rotate nie dodaje kontroli życia/końca sektora. Mutacja pojedynczego obrotu lub kosztu wykryta po Rebuild. Replay pozostaje 3, bo helper nie jest jeszcze częścią wykonywanej komendy.",
-                      "depends_on":  [
-                                         "P026-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P026-04",
-                      "phase":  "M3",
-                      "title":  "Overdrive w komendzie i transakcji tury",
-                      "scope":  "Dodaj wartościowy OverdriveCommand z NodeId do Command, legalności i resolve_turn przez helper P026-03. Zasoby zużyj w akcji przed dostawą, fazy wykonaj raz i charge_turn raz na końcu. Preview nadal deleguje. Przełącz replay na wersję 4 z korpusem nowej komendy, bez parsera CLI.",
-                      "acceptance":  "Legalna akcja daje dwa obroty, -1 rezerwy, +1 długu i jedną turę. Dostawa w tej samej turze regeneruje po koszcie (reserve 3 daje po akcji 2 i po dostawie 3), a impuls widzi topologię po obu obrotach. Preview=resolver dla sukcesu, odmowy, śmierci i granicy 47→48. Brak rezerwy/długu MAX/zły cel/terminalny stan odrzucają przed wszystkimi fazami, bez mutacji stanu, komendy i zewnętrznego RNG. Replay 4 przyjmuje nowy wariant i jawne ślady; 1/2/3 odrzuca. CLI pozostaje przy dotychczasowych tokenach, ale używa wersji 4; istotna mutacja kolejności/kosztu wykryta po Rebuild.",
-                      "depends_on":  [
-                                         "P026-03"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P026-05",
-                      "phase":  "M3",
-                      "title":  "Token overdrive w CLI replay",
-                      "scope":  "Rozszerz wyłącznie adapter CLI o overdrive:NodeId mapowane na istniejący OverdriveCommand. Zachowaj pełny parse przed runnerem i reguły liczb 0-48; bez zmiany wersji 4 i reguł gry.",
-                      "acceptance":  "CTest uruchamia rzeczywiste exe Debug/Release: dokładny ślad legalnego overdrive, odmowa bez rezerwy jako poprawny wpis i powtarzalność stdout. Zły/brakujący cel, 49, minus, plus, trailing junk i overflow odrzucają bez częściowego stdout, także po poprawnych tokenach. Oczekiwany hash i koszt zgadzają się z runnerem oraz jawnym wynikiem; celowa mutacja parsera lub kodu wyjścia wykryta po Rebuild. README zawiera rzeczywiście uruchomioną komendę deweloperską.",
-                      "depends_on":  [
-                                         "P026-04"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P027",
-                      "phase":  "M3",
-                      "title":  "Dług między sektorami",
-                      "scope":  "Wpis nadrzędny: wyłącznie rozbij wybór wolnego EntityId i atomowy spawn długu na wejściu następnego sektora na P027-01 i P027-02; bez implementacji.",
-                      "acceptance":  "Dzieci definiują deterministyczny ID, granice2/3/6 i zachowanie długu za niewykonany spawn. Jedno wejście mieści jeden impuls, więc6 daje jeden spawn i resztę3; zajęcie nie kasuje długu. P028 zależy od P027-02. Run i wywołanie na granicy sektora pozostają przyszłym etapem.",
-                      "depends_on":  [
-                                         "P026-05"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P027-01",
-                      "phase":  "M3",
-                      "title":  "Deterministyczny wybór wolnego ID impulsu",
-                      "scope":  "Dodaj available_pulse_id(const GameState\u0026) zwracający najmniejszy niewykorzystany EntityId lub nullopt po wyczerpaniu reprezentacji; bez mutacji, spawnu i zużycia długu.",
-                      "acceptance":  "Pusta kolekcja daje0, luka i ciągły prefiks dają najmniejszy wolny ID niezależnie od kolejności; graniczne ID0/MAX, wszystkie49 jednostek i permutacje. Pełny stan i zewnętrzny RNG zachowane. Brak zawijania reprezentacji. Debug/Release oraz negatywna mutacja po Rebuild.",
-                      "depends_on":  [
-                                         "P027"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P027-02",
-                      "phase":  "M3",
-                      "title":  "Pojedynczy spawn długu na wejściu sektora",
-                      "scope":  "Dodaj spawn_debt_pulse(GameState\u0026): dla debt\u003e=3 i wolnego sector_entry dopisz jeden Pulse z available_pulse_id, potem odejmij3 długu. Wywołanie tylko na granicy sektora przez przyszły run, bez integracji resolvera i bez runu.",
-                      "acceptance":  "Debt0/1/2 odmawia;3 daje jeden spawn i0;4/5 zostawia1/2;6 daje jeden spawn i3, bo wejście mieści tylko jeden impuls. Zajęte wejście (impuls lub blocked_nodes), brak wejścia i ponowienie zachowują cały stan/dług. Gracz i pakiet nie blokują impulsu jak w obecnym core. Unikalne najmniejsze ID, kolejność starych jednostek, reserve/HP/tura/topologia bez zmian. Push do kolekcji przed odjęciem długu chroni błąd alokacji. Testy wejść0/48, granic długu w tym MAX, pełnego stanu i mutacji kosztu po Rebuild; Debug/Release. Replay4/hashv2 bez zmian, bo helper nie jest wywoływany przez turę/fixture.",
-                      "depends_on":  [
-                                         "P027-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P028",
-                      "phase":  "M3",
-                      "title":  "Generator topologii",
-                      "scope":  "Dodaj ograniczony seedowany generator samej siatki, bez artworku.",
-                      "acceptance":  "Rozmiar, porty, przyłącza i powtarzalność; wyłącznie dane headless.",
-                      "depends_on":  [
-                                         "P027-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P029",
-                      "phase":  "M3",
-                      "title":  "Certyfikat rozwiązania",
-                      "scope":  "Dodaj walidację legalnej sekwencji rozwiązującej sektor lub ograniczony solver.",
-                      "acceptance":  "Odróżnia osiągalność grafu od wygranej w limicie i przy zagrożeniach.",
-                      "depends_on":  [
-                                         "P028"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P030",
-                      "phase":  "M3",
-                      "title":  "Korpus seedów",
-                      "scope":  "Wyłącznie podziel korpus na stałe seedy i składanie bazowego stanu, świadka ograniczonej rodziny, kontrolę spawnów i raport wykonywalny. Bez implementacji dzieci.",
-                      "acceptance":  "Cztery małe dzieci; P031 zależy od ostatniego dziecka; stan i przekazanie wskazują pierwsze dziecko.",
-                      "depends_on":  [
-                                         "P029"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P030-01",
-                      "phase":  "M3",
-                      "title":  "Stały korpus i stan bazowy",
-                      "scope":  "Zapisz 1000 unikalnych seedów i jeden deweloperski adapter topologii P028 do bazowego GameState, bez długu i impulsów.",
-                      "acceptance":  "Dokładnie 1000 stałych seedów z granicami 0/MAX; pełne stany dla obu rodzin, powtarzalność i niezależność kopii.",
-                      "depends_on":  [
-                                         "P030"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P030-02",
-                      "phase":  "M3",
-                      "title":  "Świadek ograniczonej rodziny",
-                      "scope":  "Dodaj wyłącznie deweloperski konstruktor sekwencji dla bazowych stanów rodziny P028; odmawiaj poza kontraktem, bez filtrowania seedów.",
-                      "acceptance":  "Sekwencja przechodzi validate_solution; ucięcie i nieobsługiwany stan są odrzucane; pełny stan i wejście niezmienne.",
-                      "depends_on":  [
-                                         "P030-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P030-03",
-                      "phase":  "M3",
-                      "title":  "Kontrola legalności spawnów",
-                      "scope":  "Dodaj deweloperski predykat legalnego rozstawienia i osobne scenariusze spawn_debt_pulse na wygenerowanych sektorach, bez runu.",
-                      "acceptance":  "Wykrywa powtórzone ID/pozycje i blokujące pola; współdzielenie z graczem legalne; debt0/2/3/6, zajęte i brak wejścia; pełny stan przy odmowie.",
-                      "depends_on":  [
-                                         "P030-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P030-04",
-                      "phase":  "M3",
-                      "title":  "Wykonywalny raport korpusu",
-                      "scope":  "Dodaj narzędzie testowe sprawdzające wszystkie 1000 zapisanych seedów: bazowy certyfikat i odrębne scenariusze długu/spawnów, ze stabilnym raportem odrzuceń.",
-                      "acceptance":  "Każdy seed raportowany z przyczyną; brak pomijania nielegalnych wyników; CTest prawdziwego exe i błędnego przypadku, identyczny raport Debug/Release.",
-                      "depends_on":  [
-                                         "P030-03"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P031",
-                      "phase":  "M3",
-                      "title":  "Kontrakt modułu",
-                      "scope":  "Wyłącznie podziel kontrakt modułów na wartościowy zestaw, stan/hash/replay i port reguł obrotu. Bez implementacji dzieci ani efektów modułów.",
-                      "acceptance":  "Trzy dzieci o osobnych kontraktach; P032 zależy od ostatniego; jawna decyzja o wersji pełnego stanu.",
-                      "depends_on":  [
-                                         "P030-04"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P031-01",
-                      "phase":  "M3",
-                      "title":  "Identyfikatory i sloty modułów",
-                      "scope":  "Dodaj wartościowy zestaw do dwóch modułów o stabilnych numerycznych ID1/2, bez GameState i efektów.",
-                      "acceptance":  "Pusty zestaw, poprawne dodanie, kanoniczny porządek, odrzucenie duplikatu/obcego ID/przekroczenia slotów bez mutacji.",
-                      "depends_on":  [
-                                         "P031"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P031-02",
-                      "phase":  "M3",
-                      "title":  "Moduły w stanie i pełnym hashu",
-                      "scope":  "Dodaj pusty zestaw modułów do GameState i pełnego hasha; jawny hashv3/replay5 bez efektów reguł.",
-                      "acceptance":  "Kopie i odmowy zachowują zestaw; niezależne wektory hasha dla pustych/pojedynczych/pełnych slotów; stare replay odrzucane; korpus bez zmian wyników.",
-                      "depends_on":  [
-                                         "P031-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P031-03",
-                      "phase":  "M3",
-                      "title":  "Port reguł obrotu",
-                      "scope":  "Dodaj jeden czysty port reguł obrotu z zestawu modułów i użyj go w istniejącym helperze, bez aktywacji efektów P032/P033.",
-                      "acceptance":  "Pusty i zarejestrowane zestawy zachowują bazowy zasięg1 oraz odmowę nieruchomych; komenda, preview i commit zgodne; pełny stan i brak RNG.",
-                      "depends_on":  [
-                                         "P031-02"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P032",
-                      "phase":  "M3",
-                      "title":  "Moduł zasięgu",
-                      "scope":  "Dodaj tylko moduł zwiększający zasięg rotate.",
-                      "acceptance":  "Nowy legalny cel i nielegalny poza nową granicą; brak zmian bez modułu.",
-                      "depends_on":  [
-                                         "P031-03"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P033",
-                      "phase":  "M3",
-                      "title":  "Moduł końcówki",
-                      "scope":  "Dodaj tylko jednorazowy obrót nieruchomej końcówki w sektorze.",
-                      "acceptance":  "Pierwszy obrót legalny, drugi odrzucony, reset na granicy sektora.",
-                      "depends_on":  [
-                                         "P032"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P034",
-                      "phase":  "M3",
-                      "title":  "Wybór nagrody",
-                      "scope":  "Dodaj logiczny wybór jednego z dwóch dostępnych modułów.",
-                      "acceptance":  "Brak duplikatu i nielegalnego wyboru; deterministyczna oferta.",
-                      "depends_on":  [
-                                         "P033"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P035",
-                      "phase":  "M3",
-                      "title":  "Trzysektorowy run",
-                      "scope":  "Dodaj maszynę stanów runu i przenoszenie zasobów.",
-                      "acceptance":  "Sektor 1 do 3, śmierć kończy run; brak permanentnego bonusu HP.",
-                      "depends_on":  [
-                                         "P034"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P036",
-                      "phase":  "M4",
-                      "title":  "Schemat checkpointu",
-                      "scope":  "Opisz wersjonowany format checkpointu i limity rozmiaru, bez IO.",
-                      "acceptance":  "Round-trip projektu pól względem GameState; odrzucenie nieznanej wersji w specyfikacji.",
-                      "depends_on":  [
-                                         "P035"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P037",
-                      "phase":  "M4",
-                      "title":  "Kodek checkpointu",
-                      "scope":  "Dodaj serializację i walidację checkpointu w pamięci.",
-                      "acceptance":  "Round-trip, ucięcie, złe zakresy, nadmiar danych, zła wersja.",
-                      "depends_on":  [
-                                         "P036"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P038",
-                      "phase":  "M4",
-                      "title":  "Atomowy zapis Windows",
-                      "scope":  "Dodaj zapis temp+zamiana z zachowaniem backupu.",
-                      "acceptance":  "Przerwanie zapisu i niedostępny katalog nie niszczą poprzedniego pliku.",
-                      "depends_on":  [
-                                         "P037"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P039",
-                      "phase":  "M4",
-                      "title":  "Odzyskiwanie zapisu",
-                      "scope":  "Dodaj odczyt poprawnego backupu przy uszkodzonym głównym pliku.",
-                      "acceptance":  "Uszkodzenie obu plików, brak pliku i brak nadpisania dobrego backupu.",
-                      "depends_on":  [
-                                         "P038"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P040",
-                      "phase":  "M4",
-                      "title":  "Profil lokalny",
-                      "scope":  "Dodaj trwały profil odblokowań i ustawień oddzielny od runu.",
-                      "acceptance":  "Round-trip i niezależność usunięcia runu od profilu.",
-                      "depends_on":  [
-                                         "P039"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P041",
-                      "phase":  "M4",
-                      "title":  "Zdarzenia domenowe",
-                      "scope":  "Ustabilizuj kontrakt zdarzeń potrzebnych achievementom.",
-                      "acceptance":  "Stałe identyfikatory i kolejność; preview nie emituje zdarzeń do usług.",
-                      "depends_on":  [
-                                         "P040"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P042",
-                      "phase":  "M4",
-                      "title":  "Trwały zbiór odblokowań",
-                      "scope":  "Dodaj zapis zbioru lokalnie zdobytych achievement ID.",
-                      "acceptance":  "Powtórne odblokowanie nie duplikuje; restart procesu zachowuje stan.",
-                      "depends_on":  [
-                                         "P041"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P043",
-                      "phase":  "M4",
-                      "title":  "Port AchievementSink",
-                      "scope":  "Dodaj interfejs i lokalny adapter bez Steam SDK.",
-                      "acceptance":  "Test kontraktu z fake adapterem i działanie offline.",
-                      "depends_on":  [
-                                         "P042"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P044",
-                      "phase":  "M4",
-                      "title":  "Idempotentny dispatch",
-                      "scope":  "Dodaj dostarczanie zdarzeń do evaluatorów bez podwójnego skutku.",
-                      "acceptance":  "Powtórzenie zdarzenia i powtórny odczyt checkpointu.",
-                      "depends_on":  [
-                                         "P043"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P045",
-                      "phase":  "M4",
-                      "title":  "Predykaty achievementów",
-                      "scope":  "Uściślij wyłącznie specyfikację pięciu predykatów MVP, bez ich implementacji.",
-                      "acceptance":  "Każdy ma przykład pozytywny, negatywny i granicę resetowania.",
-                      "depends_on":  [
-                                         "P044"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P046",
-                      "phase":  "M4",
-                      "title":  "Achievement dostawy",
-                      "scope":  "Implementuj wyłącznie pierwszy predykat dostawy.",
-                      "acceptance":  "Przypadki pozytywne, negatywne i trwałość.",
-                      "depends_on":  [
-                                         "P045"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P047",
-                      "phase":  "M4",
-                      "title":  "Achievement sektora",
-                      "scope":  "Implementuj wyłącznie predykat ukończenia sektora.",
-                      "acceptance":  "Porażka na wyjściu nie odblokowuje; sukces dokładnie raz.",
-                      "depends_on":  [
-                                         "P046"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P048",
-                      "phase":  "M4",
-                      "title":  "Achievement bez overdrive",
-                      "scope":  "Implementuj wyłącznie predykat runu bez overdrive.",
-                      "acceptance":  "Reset runu i jeden użyty overdrive wykluczają odblokowanie.",
-                      "depends_on":  [
-                                         "P047"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P049",
-                      "phase":  "M4",
-                      "title":  "Achievement rekonfiguracji",
-                      "scope":  "Implementuj wyłącznie predykat dostawy po zmianie połączenia.",
-                      "acceptance":  "Rozróżnia obrót bez zmiany trasy i spełniony warunek specyfikacji.",
-                      "depends_on":  [
-                                         "P048"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P050",
-                      "phase":  "M4",
-                      "title":  "Achievement runu",
-                      "scope":  "Implementuj wyłącznie predykat ukończenia całego runu.",
-                      "acceptance":  "Sektor pośredni nie wystarcza; śmierć nie odblokowuje.",
-                      "depends_on":  [
-                                         "P049"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P051",
-                      "phase":  "M4",
-                      "title":  "Integracja core",
-                      "scope":  "Dodaj jeden scenariusz całego headless runu z checkpointem i odblokowaniem.",
-                      "acceptance":  "Powtórka po restarcie daje ten sam wynik i brak duplikatów.",
-                      "depends_on":  [
-                                         "P050"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P052",
-                      "phase":  "M4",
-                      "title":  "Pomiar podglądu",
-                      "scope":  "Dodaj benchmark resolvera na opisanym korpusie stanów.",
-                      "acceptance":  "Raport sprzętu, p50 i p95; wynik nie jest testem grywalności.",
-                      "depends_on":  [
-                                         "P051"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P053",
-                      "phase":  "M4",
-                      "title":  "Inwarianty losowych komend",
-                      "scope":  "Dodaj ograniczony fuzz test sekwencji legalnych i nielegalnych akcji.",
-                      "acceptance":  "Stałe seedy, powtarzalny reproducer błędu, niezmienniki HP/portów/ID.",
-                      "depends_on":  [
-                                         "P052"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P054",
-                      "phase":  "M4",
-                      "title":  "Brama headless",
-                      "scope":  "Przejrzyj wyniki core bez dodawania funkcji; zapisz decyzję przejścia lub korekty.",
-                      "acceptance":  "Debug/Release, seedy, replay, zapisy i znane ograniczenia; brak udawanego QA wizualnego.",
-                      "depends_on":  [
-                                         "P053"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P055",
-                      "phase":  "M5",
-                      "title":  "Dossier bazowych assetów",
-                      "scope":  "Zweryfikuj jeden konkretny pakiet bez pobierania i bez zapisywania preview.",
-                      "acceptance":  "Licencja gry i publicznego Git, autorstwo konkretnej wersji i braki non-AI.",
-                      "depends_on":  [
-                                         "P054"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P056",
-                      "phase":  "M5",
-                      "title":  "Zgoda na pakiet bazowy",
-                      "scope":  "Przedstaw konkretny wniosek o pobranie zweryfikowanego pakietu; nie pobieraj.",
-                      "acceptance":  "Rzeczywista odpowiedź w approvals; brak zgody pozostawia blocked.",
-                      "depends_on":  [
-                                         "P055"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P057",
-                      "phase":  "M5",
-                      "title":  "Import jednego pakietu",
-                      "scope":  "Po zgodzie pobierz wyłącznie wskazany pakiet i przyjmij minimalny zestaw plików.",
-                      "acceptance":  "Hash, licencja, non-AI, zgodny zakres zgody i brak nieznanych plików.",
-                      "depends_on":  [
-                                         "P056"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P058",
-                      "phase":  "M5",
-                      "title":  "Odczyt manifestu",
-                      "scope":  "Dodaj parser zatwierdzonych odwołań do assetów bez renderowania.",
-                      "acceptance":  "Zły hash/ID/ścieżka i brak pliku dają kontrolowany błąd.",
-                      "depends_on":  [
-                                         "P057"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P059",
-                      "phase":  "M5",
-                      "title":  "Walidacja paczki assetów",
-                      "scope":  "Dodaj bramkę odrzucającą nieśledzone i niezatwierdzone zasoby.",
-                      "acceptance":  "Negatywne próbki: plik bez rejestru, zła zgoda, zmieniony hash.",
-                      "depends_on":  [
-                                         "P058"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P060",
-                      "phase":  "M5",
-                      "title":  "Kontrakt tekstów runtime",
-                      "scope":  "Dodaj wąski katalog tekstów, bez finalnych tekstów AI.",
-                      "acceptance":  "Każdy generated visible string wymaga prefiksu; brak fallbacku z ID.",
-                      "depends_on":  [
-                                         "P059"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P061",
-                      "phase":  "M5",
-                      "title":  "Blokada placeholderów",
-                      "scope":  "Dodaj rozdzielenie developer/public build i bramkę placeholderów.",
-                      "acceptance":  "Developer dopuszcza oznaczone teksty; public package je odrzuca.",
-                      "depends_on":  [
-                                         "P060"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P062",
-                      "phase":  "M6",
-                      "title":  "Cykl okna Win32",
-                      "scope":  "Dodaj minimalny cykl okna bez rysowania gry; tytuł jako oznaczony placeholder.",
-                      "acceptance":  "Start, zamknięcie, focus i poprawne zwolnienie zasobów.",
-                      "depends_on":  [
-                                         "P061"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P063",
-                      "phase":  "M6",
-                      "title":  "Mapowanie klawiatury",
-                      "scope":  "Dodaj wejście przekładane na komendy, bez nowych widoków.",
-                      "acceptance":  "Repeat klawisza i focus loss nie generują niekontrolowanych tur.",
-                      "depends_on":  [
-                                         "P062"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P064",
-                      "phase":  "M6",
-                      "title":  "Urządzenie Direct2D",
-                      "scope":  "Dodaj lifecycle zasobów renderer backend, bez tworzenia artworku.",
-                      "acceptance":  "Resize i odtworzenie urządzenia; brak proceduralnych assetów.",
-                      "depends_on":  [
-                                         "P063"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P065",
-                      "phase":  "M6",
-                      "title":  "Dekodowanie WIC",
-                      "scope":  "Dodaj odczyt jednego zatwierdzonego PNG.",
-                      "acceptance":  "Poprawny plik, plik uszkodzony i brak zasobu bez generowanego fallbacku.",
-                      "depends_on":  [
-                                         "P064"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P066",
-                      "phase":  "M6",
-                      "title":  "Prezentacja płytek",
-                      "scope":  "Wyświetl wyłącznie planszę z zatwierdzonych bitmap, bez postaci i HUD.",
-                      "acceptance":  "Orientacja i współrzędne; pokrycie portów przez gotowe assety.",
-                      "depends_on":  [
-                                         "P065"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P067",
-                      "phase":  "M6",
-                      "title":  "Prezentacja jednostek",
-                      "scope":  "Dodaj render gracza, pakietu i bazowego impulsu gotowymi elementami.",
-                      "acceptance":  "Stan po turze zgodny z core; nie dodawaj grafiki brakujących obiektów.",
-                      "depends_on":  [
-                                         "P066"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P068",
-                      "phase":  "M6",
-                      "title":  "Podgląd gotowymi symbolami",
-                      "scope":  "Dodaj ścieżkę podglądu używając zatwierdzonych znaczników.",
-                      "acceptance":  "Wygląd odpowiada preview; brak generowanych strzałek i linii artystycznych.",
-                      "depends_on":  [
-                                         "P067"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P069",
-                      "phase":  "M6",
-                      "title":  "Tekst developer",
-                      "scope":  "Dodaj DirectWrite dla jednego oznaczonego tekstu katalogu.",
-                      "acceptance":  "Każda wyświetlana wartość zachowuje prefiks, poprawne UTF-8/UTF-16.",
-                      "depends_on":  [
-                                         "P068"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P070",
-                      "phase":  "M6",
-                      "title":  "Minimalny HUD",
-                      "scope":  "Dodaj tylko stan HP, tur i dostaw z zatwierdzonych elementów i oznaczonych etykiet.",
-                      "acceptance":  "Czytelność przy resize/DPI, żadnych nieoznaczonych napisów.",
-                      "depends_on":  [
-                                         "P069"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P071",
-                      "phase":  "M6",
-                      "title":  "Start i restart",
-                      "scope":  "Dodaj przejście start-\u003erun-\u003ewynik-\u003erestart bez nowych mechanik.",
-                      "acceptance":  "Nowy run resetuje stan i zachowuje profil.",
-                      "depends_on":  [
-                                         "P070"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P072",
-                      "phase":  "M6",
-                      "title":  "Widok wyboru modułu",
-                      "scope":  "Dodaj jeden ekran istniejącej oferty modułów.",
-                      "acceptance":  "Nielegalny wybór odrzucony; fokus i teksty zgodne z polityką.",
-                      "depends_on":  [
-                                         "P071"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P073",
-                      "phase":  "M6",
-                      "title":  "Lokalne powiadomienie",
-                      "scope":  "Dodaj prezentację jednego istniejącego achievementu, bez nowych predykatów.",
-                      "acceptance":  "Brak duplikacji powiadomień i wyłącznie zatwierdzone grafiki.",
-                      "depends_on":  [
-                                         "P072"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P074",
-                      "phase":  "M6",
-                      "title":  "Wznowienie sesji",
-                      "scope":  "Dodaj w UI odczyt istniejącego checkpointu i kontrolowane błędy.",
-                      "acceptance":  "Zamknięcie i restart; zły zapis nie pokazuje wewnętrznych tekstów bez prefiksu.",
-                      "depends_on":  [
-                                         "P073"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P075",
-                      "phase":  "M6",
-                      "title":  "Backend audio",
-                      "scope":  "Dodaj tylko lifecycle urządzenia i kontrakt odtwarzania, bez dźwięku zastępczego.",
-                      "acceptance":  "Brak urządzenia nie blokuje gry; brak syntezy i wbudowanych nagrań.",
-                      "depends_on":  [
-                                         "P074"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P076",
-                      "phase":  "M6",
-                      "title":  "Dossier i wniosek audio",
-                      "scope":  "Sprawdź jeden pakiet audio i wystąp o konkretną zgodę bez pobierania.",
-                      "acceptance":  "Dokumentacja wersji, non-AI, licencji i faktycznej odpowiedzi.",
-                      "depends_on":  [
-                                         "P075"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P077",
-                      "phase":  "M6",
-                      "title":  "Import audio",
-                      "scope":  "Po zgodzie przyjmij minimalny zestaw plików z jednego pakietu.",
-                      "acceptance":  "Hash każdego WAV, dowody i zgodność z rejestrem zgód.",
-                      "depends_on":  [
-                                         "P076"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P078",
-                      "phase":  "M6",
-                      "title":  "Odtwarzanie jednego zdarzenia",
-                      "scope":  "Podepnij jeden zatwierdzony sygnał do dostawy.",
-                      "acceptance":  "Jedno zdarzenie daje jedno odtworzenie; mute i brak pliku obsłużone.",
-                      "depends_on":  [
-                                         "P077"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P079",
-                      "phase":  "M6",
-                      "title":  "Zmiana sterowania",
-                      "scope":  "Dodaj zmianę przypisania jednej akcji i zapis ustawienia.",
-                      "acceptance":  "Konflikt przypisań, restart, utrata focusu.",
-                      "depends_on":  [
-                                         "P078"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P080",
-                      "phase":  "M6",
-                      "title":  "Dostępność MVP",
-                      "scope":  "Zweryfikuj jedną macierz DPI i rozpoznawanie stanów bez polegania na kolorze.",
-                      "acceptance":  "Zapisz rzeczywiste wyniki; pojedynczy problem napraw osobnym krokiem.",
-                      "depends_on":  [
-                                         "P079"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P081",
-                      "phase":  "M6",
-                      "title":  "Brama grywalnego MVP",
-                      "scope":  "Wykonaj i opisz obserwowane przejście trzech sektorów, bez nowej zawartości.",
-                      "acceptance":  "Run, zapis, restart, achievementy i czytelność; bot nie zastępuje obserwacji.",
-                      "depends_on":  [
-                                         "P080"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P082",
-                      "phase":  "M7",
-                      "title":  "Emiter okresowy",
-                      "scope":  "Dodaj wyłącznie logiczny typ okresowego emitera; jeśli zbyt duże, ten krok tylko rozbija zadanie.",
-                      "acceptance":  "Specyfikacja fazy, telegraph=wynik, granice zasięgu; nowy asset wymaga osobnej zgody.",
-                      "depends_on":  [
-                                         "P081"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P083",
-                      "phase":  "M7",
-                      "title":  "Kondensator",
-                      "scope":  "Dodaj wyłącznie logiczny typ opóźnionego kondensatora.",
-                      "acceptance":  "Jawne opóźnienie, rotacja między fazami, brak podwójnego wybuchu.",
-                      "depends_on":  [
-                                         "P082"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P084",
-                      "phase":  "M7",
-                      "title":  "Końcowy sektor",
-                      "scope":  "Dodaj wariant ostatniego sektora z trzema dostawami bez osobnego bossa.",
-                      "acceptance":  "Win/lose i certyfikat ukończenia w limicie.",
-                      "depends_on":  [
-                                         "P083"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P084-01",
-                      "phase":  "M7",
-                      "title":  "Run szesciu sektorow",
-                      "scope":  "Rozszerz konfiguracje runu z trzech do szesciu sektorow, uzywajac istniejacego generatora i wariantu finalnego; bez nowego artworku.",
-                      "acceptance":  "Progresja sektorow 1-6, dokladnie jeden final, zachowanie checkpointow i achievementow; replay tej samej konfiguracji.",
-                      "depends_on":  [
-                                         "P084"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P085",
-                      "phase":  "M7",
-                      "title":  "Rozbij rozszerzenie modułów",
-                      "scope":  "Wyłącznie zaplanuj dzieci dla brakujących modułów do maksymalnie 12; po jednym na dziecko.",
-                      "acceptance":  "Dzieci mają predykaty i testy, a konsumenci zależą od wszystkich wymaganych dzieci.",
-                      "depends_on":  [
-                                         "P084-01"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P086",
-                      "phase":  "M7",
-                      "title":  "Rozbij konfiguracje startu",
-                      "scope":  "Wyłącznie zaplanuj oddzielne dzieci dla dwóch dodatkowych konfiguracji.",
-                      "acceptance":  "Każda równorzędna, bez permanentnych bonusów; zależności domknięte.",
-                      "depends_on":  [
-                                         "P085"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P087",
-                      "phase":  "M7",
-                      "title":  "Rozbij trudności",
-                      "scope":  "Wyłącznie zaplanuj dzieci dla trzech modyfikatorów trudności.",
-                      "acceptance":  "Jeden modyfikator na zadanie, testy i brak wymagania nowych assetów bez zgody.",
-                      "depends_on":  [
-                                         "P086"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P088",
-                      "phase":  "M7",
-                      "title":  "Rozbij achievementy 1.0",
-                      "scope":  "Wyłącznie zaplanuj dzieci dla siedmiu dodatkowych predykatów do 12.",
-                      "acceptance":  "Każdy ma test +/−, reset i stabilne ID; tekst i ikona pozyskiwane osobno.",
-                      "depends_on":  [
-                                         "P087"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P089",
-                      "phase":  "M7",
-                      "title":  "Jeden eksperyment balansu",
-                      "scope":  "Zmierz jedną hipotezę dominującej strategii; zmień najwyżej jeden parametr.",
-                      "acceptance":  "Stały korpus, porównanie przed/po, bez twierdzenia o opinii graczy.",
-                      "depends_on":  [
-                                         "P088"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P090",
-                      "phase":  "M8",
-                      "title":  "Audyt brakujących treści",
-                      "scope":  "Sporządź listę wszystkich braków finalnych napisów i grafiki, bez ich generowania.",
-                      "acceptance":  "Każdy ekran, błąd, ikona, tutorial i achievement uwzględniony.",
-                      "depends_on":  [
-                                         "P089"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P091",
-                      "phase":  "M8",
-                      "title":  "Źródło finalnych tekstów",
-                      "scope":  "Zweryfikuj i poproś o zgodę na jeden legalny korpus ludzkich tekstów, bez pobierania.",
-                      "acceptance":  "Dowód autora, non-AI, licencja, zakres; gdy brak źródła pozostaw blokadę.",
-                      "depends_on":  [
-                                         "P090"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P092",
-                      "phase":  "M8",
-                      "title":  "Rozbij wymianę placeholderów",
-                      "scope":  "Wyłącznie zaplanuj małe dzieci importu zatwierdzonego korpusu i wymiany etykiet po kategorii.",
-                      "acceptance":  "Brak wygenerowanych finalnych napisów; konsumenci zależą od rzeczywistej wymiany.",
-                      "depends_on":  [
-                                         "P091"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P093",
-                      "phase":  "M8",
-                      "title":  "Noty i credits",
-                      "scope":  "Wyświetl wymagane, wiernie skopiowane zatwierdzone noty licencyjne.",
-                      "acceptance":  "Zgodność z rejestrem; brak dopisanych przez AI finalnych opisów.",
-                      "depends_on":  [
-                                         "P092"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P094",
-                      "phase":  "M9",
-                      "title":  "Dostęp do Steam SDK",
-                      "scope":  "Sprawdź legalny dostęp właściciela i warunki lokalnego użycia SDK; nie publikuj SDK.",
-                      "acceptance":  "Bez SDK zadanie blocked; gra lokalna nadal działa.",
-                      "depends_on":  [
-                                         "P093"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P095",
-                      "phase":  "M9",
-                      "title":  "Inicjalizacja adaptera Steam",
-                      "scope":  "Dodaj opcjonalną inicjalizację i zamknięcie Steam backend.",
-                      "acceptance":  "Build bez SDK i z legalnym lokalnym SDK; brak klienta nie blokuje gry.",
-                      "depends_on":  [
-                                         "P094"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P096",
-                      "phase":  "M9",
-                      "title":  "Gotowość statystyk",
-                      "scope":  "Dodaj obsługę aktualnego API gotowości statystyk według wersji SDK.",
-                      "acceptance":  "Sukces, błąd i niegotowy klient; bez przedwczesnych odblokowań.",
-                      "depends_on":  [
-                                         "P095"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P097",
-                      "phase":  "M9",
-                      "title":  "Synchronizacja odblokowania",
-                      "scope":  "Podepnij jeden lokalny achievement do SetAchievement/StoreStats lub aktualnego odpowiednika.",
-                      "acceptance":  "Idempotencja i potwierdzenie; fake adapter plus rzeczywisty test gdy dostępny App ID.",
-                      "depends_on":  [
-                                         "P096"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P098",
-                      "phase":  "M9",
-                      "title":  "Retry Steam",
-                      "scope":  "Dodaj trwałą kolejkę oczekujących odblokowań i retry z limitem.",
-                      "acceptance":  "Restart offline, powrót online, błąd usługi, brak duplikatów.",
-                      "depends_on":  [
-                                         "P097"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P099",
-                      "phase":  "M9",
-                      "title":  "Test offline i restartu Steam",
-                      "scope":  "Wykonaj jedną macierz integracyjną bez nowych funkcji.",
-                      "acceptance":  "Steam otwarty/zamknięty/offline i restart procesu; raport rzeczywistych wyników.",
-                      "depends_on":  [
-                                         "P098"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P100",
-                      "phase":  "M9",
-                      "title":  "Mapowanie App ID",
-                      "scope":  "Zweryfikuj prawdziwy App ID i mapowanie achievementów z backendem partnera.",
-                      "acceptance":  "Brak fikcyjnych ID i sekretów w Git; każde ID oraz finalna nazwa/ikona zgodne.",
-                      "depends_on":  [
-                                         "P099"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P101",
-                      "phase":  "M10",
-                      "title":  "Allowlista paczki",
-                      "scope":  "Dodaj paczkowanie tylko exe, potrzebnych bibliotek i zatwierdzonej treści.",
-                      "acceptance":  "Dokumentacja, tests, placeholdery, SDK i kwarantanna nie trafiają do paczki.",
-                      "depends_on":  [
-                                         "P100"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P102",
-                      "phase":  "M10",
-                      "title":  "Audyt zawartości paczki",
-                      "scope":  "Sprawdź jeden gotowy artefakt względem rejestrów i listy treści.",
-                      "acceptance":  "Hashy, wszystkie ekrany/napisy, licencje, non-AI; skan regex nie jest pełnym audytem.",
-                      "depends_on":  [
-                                         "P101"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P103",
-                      "phase":  "M10",
-                      "title":  "Czysty Windows",
-                      "scope":  "Uruchom build na czystej maszynie lub VM bez toolchainu.",
-                      "acceptance":  "Standardowy użytkownik, polskie znaki ścieżki, instalacja i odinstalowanie bez szkód.",
-                      "depends_on":  [
-                                         "P102"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P104",
-                      "phase":  "M10",
-                      "title":  "Macierz urządzeń",
-                      "scope":  "Sprawdź jeden wpis macierzy DPI/resize/audio; rozszerzenia jako oddzielne dzieci.",
-                      "acceptance":  "Rzeczywiste logi i reprodukcja błędów; nie oznaczaj całej macierzy po jednym wpisie.",
-                      "depends_on":  [
-                                         "P103"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P105",
-                      "phase":  "M10",
-                      "title":  "Weryfikacja budżetów",
-                      "scope":  "Zmierz podgląd, FPS i RAM na opisanym sprzęcie.",
-                      "acceptance":  "p95/p99 i porównanie budżetów; bez niezmierzonych wymagań minimalnych.",
-                      "depends_on":  [
-                                         "P104"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P106",
-                      "phase":  "M11",
-                      "title":  "Ponowna kontrola polityki",
-                      "scope":  "Przeczytaj aktualne zasady Steam i audytuj deklarację AI względem rzeczywistego produktu.",
-                      "acceptance":  "Prawdziwa ankieta; problem treści blokuje brak disclosure, nie jest ukrywany.",
-                      "depends_on":  [
-                                         "P105"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P107",
-                      "phase":  "M11",
-                      "title":  "Dossier materiałów sklepu",
-                      "scope":  "Wyłącznie audytuj dostępność ludzkich grafik, opisów i brandingu; rozbij pozyskanie na dzieci.",
-                      "acceptance":  "Zgody przed każdym pobraniem; brak AI capsule/trailera/tłumaczeń; brak źródeł=blocked.",
-                      "depends_on":  [
-                                         "P106"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P108",
-                      "phase":  "M11",
-                      "title":  "Formalności właściciela",
-                      "scope":  "Sprawdź wykonane formalności Steamworks i aktualne terminy, nie podpisuj za właściciela.",
-                      "acceptance":  "Konto, opłata, dane prawne i podatkowe, uprawnienia; bez danych prywatnych w Git.",
-                      "depends_on":  [
-                                         "P107"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P109",
-                      "phase":  "M11",
-                      "title":  "Build beta do przeglądu",
-                      "scope":  "Przygotuj weryfikowalny build i instrukcję depotu; upload dopiero w udzielonym zakresie.",
-                      "acceptance":  "Brak placeholderów; audyt treści i zgoda na konkretną operację zewnętrzną.",
-                      "depends_on":  [
-                                         "P108"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P110",
-                      "phase":  "M11",
-                      "title":  "Jedna regresja beta",
-                      "scope":  "Odtwórz jeden potwierdzony problem bety; jeśli brak, udokumentuj jeden scenariusz QA.",
-                      "acceptance":  "Reproducer i mała poprawka lub osobne dziecko; żadnych wymyślonych wyników testerów.",
-                      "depends_on":  [
-                                         "P109"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P111",
-                      "phase":  "M11",
-                      "title":  "Dossier premiery",
-                      "scope":  "Zbierz konkretne dowody builda, review, praw, achievementów i rollbacku.",
-                      "acceptance":  "Wszystkie wymagane dzieci ukończone; brak blokad treści i nieuczciwej deklaracji.",
-                      "depends_on":  [
-                                         "P110"
-                                     ],
-                      "gate":  null
-                  },
-                  {
-                      "id":  "P112",
-                      "phase":  "M11",
-                      "title":  "Operacja wydania",
-                      "scope":  "Wykonaj wyłącznie zatwierdzoną operację premiery po spełnieniu warunków partnera.",
-                      "acceptance":  "Faktyczny stan publikacji i sprawdzony artefakt; bez zgody/praw pozostaw blocked.",
-                      "depends_on":  [
-                                         "P111"
-                                     ],
-                      "gate":  "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
-                  },
-                  {
-                      "id":  "P113",
-                      "phase":  "M12",
-                      "title":  "Pierwsza kontrola po premierze",
-                      "scope":  "Wykonaj jeden rzeczywisty scenariusz smoke opublikowanej wersji.",
-                      "acceptance":  "Start, zapis, achievement; ewentualna poprawka w oddzielnym małym zadaniu.",
-                      "depends_on":  [
-                                         "P112"
-                                     ],
-                      "gate":  null
-                  }
-              ]
+    "schema_version": 1,
+    "rule": "Jedno wznowienie realizuje jeden mały wpis. Wpisy rozbijające zakres nie implementują swoich dzieci.",
+    "tasks": [
+        {
+            "id": "P000",
+            "phase": "M0",
+            "title": "Pakiet planowania",
+            "scope": "Plan, polityka treści, workflow i skills; bez implementacji gry.",
+            "acceptance": "Walidator planu i kontrola publikowanych plików.",
+            "depends_on": [],
+            "gate": null
+        },
+        {
+            "id": "P001",
+            "phase": "M1",
+            "title": "Inwentaryzacja narzędzi",
+            "scope": "Utwórz docs/TOOLCHAIN.md z rzeczywistymi wersjami MSVC, SDK, CMake i formattera; niczego nie instaluj.",
+            "acceptance": "Uruchom wykrywanie vswhere i wersji; odróżnij brak narzędzia od braku PATH.",
+            "depends_on": [
+                "P000"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P002",
+            "phase": "M1",
+            "title": "Minimalny build core",
+            "scope": "Dodaj CMakeLists i jeden test C++20 wykonywany przez CTest, bez okna i treści gry.",
+            "acceptance": "Build oraz test Debug i Release, błąd testu daje niezerowy exit.",
+            "depends_on": [
+                "P001"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P003",
+            "phase": "M1",
+            "title": "Konfiguracja stylu",
+            "scope": "Dodaj .clang-format i .editorconfig zgodne z architekturą.",
+            "acceptance": "Formatter na małej próbce; ponowne formatowanie nie zmienia wyniku.",
+            "depends_on": [
+                "P002"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P004",
+            "phase": "M1",
+            "title": "Presety Windows",
+            "scope": "Dodaj presety windows-msvc, windows-debug i windows-release oraz działające komendy README.",
+            "acceptance": "Configure, build i CTest obu konfiguracji z repo root.",
+            "depends_on": [
+                "P003"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P005",
+            "phase": "M1",
+            "title": "CI Windows",
+            "scope": "Dodaj jeden workflow Windows budujący i testujący Debug/Release bez assetów.",
+            "acceptance": "Kontrola YAML, komendy lokalne; wynik zdalny zgłoś dopiero po faktycznym uruchomieniu.",
+            "depends_on": [
+                "P004"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P006",
+            "phase": "M2",
+            "title": "Identyfikatory domeny",
+            "scope": "Dodaj silne typy NodeId i EntityId, bez innych systemów.",
+            "acceptance": "Granice i niedozwolone konwersje; build Debug/Release.",
+            "depends_on": [
+                "P005"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P007",
+            "phase": "M2",
+            "title": "Maska portów",
+            "scope": "Dodaj 4-bitową maskę portów i wyliczenie rotacji, bez GameState.",
+            "acceptance": "Wszystkie 16 masek, cztery obroty i zachowanie liczby bitów.",
+            "depends_on": [
+                "P006"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P008",
+            "phase": "M2",
+            "title": "Sąsiedztwo grafu",
+            "scope": "Dodaj połączenia wyłącznie przez wzajemne porty.",
+            "acceptance": "Wzajemność, granice siatki, brak zawijania i brak jednostronnych krawędzi.",
+            "depends_on": [
+                "P007"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P009",
+            "phase": "M2",
+            "title": "Komenda obrotu węzła",
+            "scope": "Dodaj zmianę orientacji pojedynczego obrotowego węzła.",
+            "acceptance": "Węzeł nieruchomy odrzucany, cztery obroty przywracają topologię.",
+            "depends_on": [
+                "P008"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P010",
+            "phase": "M2",
+            "title": "BFS z remisami",
+            "scope": "Dodaj jedną funkcję najkrótszej trasy z porządkiem N E S W.",
+            "acceptance": "Brak trasy, start=cel, granice i symetryczne remisy.",
+            "depends_on": [
+                "P009"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P011",
+            "phase": "M2",
+            "title": "PRNG i wektory",
+            "scope": "Wybierz i opisz mały deterministyczny PRNG; implementuj sam generator.",
+            "acceptance": "Znane wektory i powtarzalność identycznego seeda.",
+            "depends_on": [
+                "P010"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P012",
+            "phase": "M2",
+            "title": "Losowanie zakresu",
+            "scope": "Dodaj deterministyczny wybór liczby z zakresu bez modulo bias.",
+            "acceptance": "Zakres 1, granice, błędny zakres i powtarzalność wektorów.",
+            "depends_on": [
+                "P011"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P013",
+            "phase": "M2",
+            "title": "Wartościowy GameState",
+            "scope": "Dodaj minimalny stan planszy, gracza i licznik tur.",
+            "acceptance": "Kopia niezależna od oryginału i walidacja początkowego stanu.",
+            "depends_on": [
+                "P012"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P014",
+            "phase": "M2",
+            "title": "Walidacja ruchu",
+            "scope": "Dodaj move po legalnej wzajemnej krawędzi.",
+            "acceptance": "Brak krawędzi, granica, blokada i niezmienność stanu przy błędzie.",
+            "depends_on": [
+                "P013"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P015",
+            "phase": "M2",
+            "title": "Zasięg rotate",
+            "scope": "Dodaj akcję rotate na własnym lub ortogonalnym sąsiednim węźle.",
+            "acceptance": "Cel daleki i nieruchomy odrzucony bez zużycia tury.",
+            "depends_on": [
+                "P014"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P016",
+            "phase": "M2",
+            "title": "Akcja wait",
+            "scope": "Dodaj wait bez regeneracji zasobów.",
+            "acceptance": "Jedna tura; martwy gracz nie przyjmuje akcji.",
+            "depends_on": [
+                "P015"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P017",
+            "phase": "M2",
+            "title": "Ruch pakietu",
+            "scope": "Dodaj jeden pakiet przemieszczany po BFS o jedną krawędź.",
+            "acceptance": "Obrót zmienia trasę; odcięty pakiet czeka; brak blokowania gracza.",
+            "depends_on": [
+                "P016"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P018",
+            "phase": "M2",
+            "title": "Dostawa pakietu",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij dostawę do celu i odroczone wprowadzenie następnego pakietu na dzieci P018-01, P018-02 i P018-03; bez implementacji.",
+            "acceptance": "Dzieci pokrywają oba warunki: dostawa tylko raz; nie ma dwóch ruchów nowego pakietu w jednej turze. P019 zależy od ostatniego dziecka.",
+            "depends_on": [
+                "P017"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P018-01",
+            "phase": "M2",
+            "title": "Dostawa pakietu na celu",
+            "scope": "Dodaj krok dostawy: pakiet stojący na celu znika z planszy, a jego cel zostaje zapisany w stanie jako zasilony; bez odbiorników, wejścia i wprowadzania następnego pakietu.",
+            "acceptance": "Dostawa tylko raz: powtórzony krok, pakiet poza celem i brak pakietu nie zmieniają stanu; po dostawie plansza zostaje bez pakietu; brak naliczenia tury.",
+            "depends_on": [
+                "P018"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P018-02",
+            "phase": "M2",
+            "title": "Cel następnego pakietu",
+            "scope": "Dodaj odbiorniki sektora do stanu i predykat wskazujący kolejny niezasilony odbiornik według identyfikatorów; bez umieszczania pakietu.",
+            "acceptance": "Najniższy niezasilony identyfikator; zasilone pominięte; brak wyniku bez odbiorników i po zasileniu wszystkich; stan bez zmian.",
+            "depends_on": [
+                "P018-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P018-03",
+            "phase": "M2",
+            "title": "Odroczone wprowadzenie pakietu",
+            "scope": "Dodaj wejście sektora do stanu i osobny krok początku tury, który po dostawie umieszcza następny pakiet na wejściu z celem z P018-02.",
+            "acceptance": "Nie ma dwóch ruchów nowego pakietu w jednej turze: żadnego w turze dostawy, najwyżej jeden w turze wprowadzenia; brak wprowadzenia przy aktywnym pakiecie i bez niezasilonego odbiornika; brak naliczenia tury.",
+            "depends_on": [
+                "P018-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P019",
+            "phase": "M2",
+            "title": "Impuls pościgowy",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij reprezentację impulsów i ich zajęcia, wybór kroku pościgu oraz ruch w kolejności ID na dzieci P019-01, P019-02 i P019-03; bez implementacji.",
+            "acceptance": "Dzieci pokrywają remisy N E S W, czekanie bez trasy i stabilne blokowanie innym impulsem, ze spójnym kontraktem zajęcia. P020 zależy od ostatniego dziecka; zamknięcie P019 nie oznacza działającego impulsu.",
+            "depends_on": [
+                "P018-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P019-01",
+            "phase": "M2",
+            "title": "Reprezentacja i zajęcie impulsów",
+            "scope": "Dodaj wartościową kolekcję impulsów z EntityId i NodeId oraz jeden predykat zajęcia pola przez impuls. Impulsy są oddzielne od blocked_nodes: blokują inne impulsy, lecz pozwalają graczowi wejść na swoje pole dla przyszłego kontaktu P020. Bez ruchu, obrażeń i emisji.",
+            "acceptance": "Stan początkowy ma pustą kolekcję; kopie są niezależne. Predykat wykrywa zajęte pole, odrzuca wolne i pustą kolekcję niezależnie od kolejności zapisu, także dla NodeId 0 i 48; nie mutuje stanu ani tury. Ruch gracza na impuls jest legalny po krawędzi, a osobna flaga blocked_nodes nadal go blokuje. Nowe pola uwzględnione w testach inicjalizacji, kopiowania i wszystkich helperach same_state; unikalne ID i pozycje opisane jako warunki poprawnego stanu.",
+            "depends_on": [
+                "P019"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P019-02",
+            "phase": "M2",
+            "title": "Wybór kroku pościgu",
+            "scope": "Dodaj jedną funkcję tylko do odczytu, która dla EntityId impulsu wskazuje następny NodeId po BFS do bieżącej pozycji gracza albo brak ruchu. Korzystaj z istniejącego BFS i predykatu zajęcia z P019-01; nie przesuwaj jednostek.",
+            "acceptance": "Wynik to dokładnie jedna krawędź najkrótszej trasy, z remisami N E S W. Brak impulsu o podanym ID, brak trasy, pozycja już na graczu lub następne pole zajęte przez inny impuls daje brak ruchu. Zajęty pierwszy krok oznacza czekanie, bez objazdu nawet gdy istnieje dłuższa wolna trasa; zmiana topologii lub pozycji gracza zmienia wynik. Cały stan i tura pozostają niezmienione.",
+            "depends_on": [
+                "P019-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P019-03",
+            "phase": "M2",
+            "title": "Ruch impulsów w kolejności ID",
+            "scope": "Dodaj krok przesuwający każdy impuls najwyżej raz w rosnącej kolejności EntityId. Wybór z P019-02 obliczaj na bieżącym stanie po wcześniejszych ruchach, zachowując kolejność przechowywania kolekcji; bez kontaktów, obrażeń, usuwania jednostek i naliczenia tury.",
+            "acceptance": "Jeden impuls idzie o jedną krawędź; pusta kolekcja i brak możliwych ruchów zachowują stan. Wynik według ID nie zależy od kolejności zapisu: niższe ID może zwolnić pole wyższemu, a impuls zablokowany w swoim kroku nie rusza ponownie po późniejszym zwolnieniu pola. Przy wspólnym celu pierwszeństwo ma niższe ID; zajęcie nie powoduje objazdu. Pełny stan różni się tylko oczekiwanymi pozycjami impulsów, bez zmiany integralności i tury; kontakt pozostaje do P020.",
+            "depends_on": [
+                "P019-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P020",
+            "phase": "M2",
+            "title": "Kontakt i obrażenia",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij pojedynczy kontakt z limitem obrażeń oraz fazę impulsów z kontaktami na dzieci P020-01 i P020-02; bez implementacji.",
+            "acceptance": "Dzieci pokrywają wejście gracza na impuls przed ruchem, wejście impulsu na gracza, natychmiastowe zwolnienie pola, wspólny limit jednego obrażenia i HP=0. P021 zależy od ostatniego dziecka; zamknięcie P020 nie oznacza działających kontaktów.",
+            "depends_on": [
+                "P019-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P020-01",
+            "phase": "M2",
+            "title": "Pojedynczy kontakt i limit obrażeń",
+            "scope": "Dodaj jedną funkcję obsługującą kontakt impulsu wskazanego EntityId z graczem: usuń jednostkę stojącą na graczu i odejmij najwyżej jeden punkt integralności według przekazanej przez referencję lokalnej blokady obrażeń. Blokada należy do wywołującego, poza GameState. Bez ruchu i pełnej fazy zagrożeń.",
+            "acceptance": "Kontakt usuwa wyłącznie wskazany impuls i zachowuje kolejność pozostałych. Pierwszy kontakt przy HP>0 zmniejsza HP o 1 i zużywa blokadę; kolejne z tą samą blokadą nadal usuwają impulsy bez obrażeń. Przy HP=1 gracz umiera, a przy HP=0 nie ma underflow. Brak ID, brak kontaktu i ponowienie po usunięciu zachowują pełny stan i blokadę. Legalny move_player na impuls, potem kontakt, daje oczekiwany stan bez naliczenia tury. Wszystkie pozostałe pola, w tym pakiet, są zachowane.",
+            "depends_on": [
+                "P020"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P020-02",
+            "phase": "M2",
+            "title": "Faza impulsów z natychmiastowym kontaktem",
+            "scope": "Dodaj jedną fazę impulsów ze wspólną lokalną blokadą obrażeń z P020-01. Najpierw rozwiąż wszystkie kontakty zastane po akcji gracza, następnie wykonaj najwyżej jeden krok każdego pozostałego impulsu w rosnącej kolejności ID i natychmiast rozwiąż jego kontakt. Używaj next_pulse_step na bieżącym stanie. Bez resolvera tury i naliczenia kosztu.",
+            "acceptance": "Wejście gracza na impuls jest rozpoznane przed jakimkolwiek ruchem, niezależnie od ID kontaktującej jednostki. Impuls po wejściu na gracza znika od razu, więc późniejsze ID widzą zwolnione pole i też mogą wejść oraz zniknąć. Kontakty przed ruchem i po ruchu używają łącznie najwyżej jednego HP; wszystkie kontakty są usuwane także po spadku HP do zera. Nowe wywołanie fazy ma świeży limit. Permutacje kolekcji dają ten sam wynik według ID, zachowując kolejność ocalałych; brak kontaktu zachowuje reguły ruchu, blokady i braku retry. Pełny stan zmienia tylko pozycje lub usunięcie impulsów i ewentualnie HP; tura pozostaje niezmieniona.",
+            "depends_on": [
+                "P020-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P021",
+            "phase": "M2",
+            "title": "Resolver tury",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij reprezentację i niemutującą walidację komend oraz wartościowy resolver pełnej tury na dzieci P021-01 i P021-02; bez implementacji.",
+            "acceptance": "Dzieci pokrywają legalne i nielegalne move/rotate/wait, odrzucenie przed mutacją stanu i bez zużycia zewnętrznego RNG oraz obserwowalną kolejność kroków i jednokrotny koszt tury. P022 zależy od ostatniego dziecka; zamknięcie P021 nie oznacza działającego resolvera.",
+            "depends_on": [
+                "P020-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P021-01",
+            "phase": "M2",
+            "title": "Komendy podstawowe i niemutująca walidacja",
+            "scope": "Dodaj wartościową reprezentację wyłącznie move, rotate i wait, z silnym NodeId dla celów, oraz jeden predykat legalności przyjmujący const GameState&. Zachowaj reguły istniejących helperów; każda komenda wymaga żywego gracza. Bez wykonania komendy, naliczenia tury i resolvera.",
+            "acceptance": "Legalny move po wzajemnej krawędzi, rotate własnego pola lub ortogonalnego obrotowego sąsiada i wait żywego gracza są przyjmowane. Brak krawędzi, blokująca flaga, zły zasięg, nieruchomy cel i każda komenda przy HP=0 są odrzucane. Impuls sam nie blokuje legalnego move. Wszystkie odczyty zachowują pełny stan i turę, także przy niepustych impulsach i gotowym do wprowadzenia pakiecie; nie używają RNG. Testy wykazują zgodność warunków z helperami bez zmiany ich kontraktów.",
+            "depends_on": [
+                "P021"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P021-02",
+            "phase": "M2",
+            "title": "Wartościowy resolver zaakceptowanej tury",
+            "scope": "Dodaj jedną transakcję const GameState i Command do wartościowego TurnResult z nowym stanem i informacją o przyjęciu. Najpierw waliduj, potem na kopii wykonaj wprowadzenie pakietu, akcję gracza, ruch pakietu, dostawę, jedną pełną fazę impulsów i końcowy koszt dokładnie jednej tury. Bez wyjścia, limitu sektora i preview.",
+            "acceptance": "Odrzucenie każdej nielegalnej komendy, także przy HP=0, zwraca niezmieniony pełny stan bez wprowadzenia pakietu, fazy impulsów i kosztu. Wejście pozostaje niezmienione także po sukcesie; wynik posiada niezależną kopię. Legalne move/rotate/wait dają dokładnie jedną turę, również przy śmierci w fazie. Testy obserwowalnej kolejności wykazują obrót przed trasą pakietu i impulsu, kontakt po wejściu gracza, dostawę mimo śmierci w zagrożeniach, brak podwójnej fazy i następny pakiet dopiero w kolejnej zaakceptowanej turze. Resolver nie przyjmuje RNG ani nie losuje; zachowanie zewnętrznego SplitMix64 sprawdź przez porównanie dalszej sekwencji z kopią, bez deklaracji implementacji rollbacku RNG. Wynik domenowy wystarcza do testów kolejności, bez ogólnej magistrali zdarzeń.",
+            "depends_on": [
+                "P021-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P022",
+            "phase": "M2",
+            "title": "Limit i wyjście",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij dane wyjścia i niemutującą klasyfikację wyniku sektora oraz integrację wyniku z transakcją i blokadą dalszych komend na dzieci P022-01 i P022-02; bez implementacji.",
+            "acceptance": "Dzieci pokrywają dwie dostawy do odbiorników, wygraną na ostatniej 48. turze, śmierć na wyjściu, limit bez dostaw i odmowę komendy po końcu sektora. P023 zależy od ostatniego dziecka; zamknięcie P022 nie oznacza działającego limitu ani wyjścia.",
+            "depends_on": [
+                "P021-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P022-01",
+            "phase": "M2",
+            "title": "Wyjście i niemutująca klasyfikacja sektora",
+            "scope": "Dodaj opcjonalny NodeId wyjścia w GameState oraz jedną funkcję const GameState do wartościowego wyniku: sektor trwa, ukończony, śmierć lub przeciążenie. Wynik wyliczaj z HP, pozycji, wyjścia, zasilonych odbiorników i liczby tur, bez trwałego pola wyniku ani drugiego licznika dostaw. Bez integracji z komendami i resolverem.",
+            "acceptance": "GameState::initial zachowuje sygnaturę i pozostawia wyjście puste; kopie niezależnie zachowują wyjście, a wszystkie helpery same_state je porównują. HP=0 ma pierwszeństwo. Żywy gracz na wyjściu z co najmniej dwoma zasilonymi odbiornikami wygrywa do 48. tury włącznie, przed przeciążeniem na 48. turze. Bez sukcesu przy co najmniej 48 turach wynik to przeciążenie; po przekroczeniu limitu nie ma spóźnionej wygranej. Brak wyjścia, inna pozycja, mniej niż dwie dostawy i zasilone węzły spoza odbiorników nie dają sukcesu. Granice 47/48/49, wyjścia NodeId 0/48 i pełna niezmienność stanu są przetestowane.",
+            "depends_on": [
+                "P022"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P022-02",
+            "phase": "M2",
+            "title": "Wynik sektora w resolverze i blokada komend",
+            "scope": "Podepnij klasyfikację P022-01 do TurnResult oraz is_command_legal i resolve_turn. Wynik sektora obliczaj po zagrożeniach i końcowym koszcie zaakceptowanej tury; stan wejściowy już terminalny odrzuca każdą komendę przed fazami. Zachowaj dotychczasowe kontrakty niskopoziomowych helperów.",
+            "acceptance": "Tura 47 do 48 pozwala wygrać na wyjściu po drugiej dostawie, ale śmierć od kontaktu ma pierwszeństwo; bez sukcesu tura 48 kończy się przeciążeniem. Dostawa i koszt zachodzą również w turze śmierci. TurnResult podaje klasyfikację także przy odmowie, bez utrwalania jej w GameState. Każda komenda po ukończeniu, śmierci lub przeciążeniu jest nielegalna, accepted=false i zachowuje cały stan, komendę oraz RNG poza API; brak wprowadzenia pakietu, ruchu impulsów i tury 49. Odmowa zwykłej błędnej akcji na turze 47 nie zużywa ostatniej tury. Wynik nadal posiada niezależną kopię; legalny krok przed końcem zachowuje dotychczasową kolejność i jeden koszt.",
+            "depends_on": [
+                "P022-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P023",
+            "phase": "M2",
+            "title": "Podgląd na kopii",
+            "scope": "Dodaj preview wywołujące ten sam resolver bez efektów ubocznych.",
+            "acceptance": "Preview=commit dla korpusu komend; brak zmian live state.",
+            "depends_on": [
+                "P022-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P024",
+            "phase": "M2",
+            "title": "Replay bez prezentacji",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij kanoniczny hash stanu, syntetyczną fabrykę deweloperską z seeda, wykonanie wersjonowanego replay i adapter CLI na dzieci P024-01 do P024-04; bez implementacji.",
+            "acceptance": "Dzieci określają pełne kodowanie stanu, powtarzalny seedowany fixture headless i replay seed+wersja+komendy ze zgodnymi hashami oraz jawną odmową nieobsługiwanej wersji. P025 zależy od P024-04; ukończenie rodzica nie oznacza działającego replay ani generatora P028.",
+            "depends_on": [
+                "P023"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P024-01",
+            "phase": "M2",
+            "title": "Kanoniczny hash pełnego stanu",
+            "scope": "Dodaj jeden niemutujący hash pełnego GameState w narzędziach deweloperskich, poza core i paczką gry. Stosuj jawny strumień bajtów i FNV-1a 64-bit, bez surowej pamięci, std::hash lub serializatora ogólnego przeznaczenia. Zachowaj kolejność przechowywania impulsów jako część dokładnego stanu.",
+            "acceptance": "Udokumentowane kodowanie ma wersję, stałe szerokości little-endian, wszystkie pola, tagi optional, liczbę i kolejność impulsów. Znane wektory obliczone niezależnie zgadzają się w Debug/Release. Zmiany każdego pola i elementów tablic, puste/wypełnione optional, granice ID/liczników i permutacja impulsów są rozróżniane w korpusie; wywołanie zachowuje cały stan. Mutacja pomijająca pole jest wykryta po potwierdzonym Rebuild. Hash jest niekryptograficzny, bez obietnicy braku kolizji.",
+            "depends_on": [
+                "P024"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P024-02",
+            "phase": "M2",
+            "title": "Seedowany fixture deweloperski",
+            "scope": "Dodaj jedną czystą fabrykę niewyświetlanego syntetycznego GameState z RunSeed w narzędziach deweloperskich. Jeden stały scenariusz ma tylko seedowaną początkową orientację jednego węzła przez lokalny SplitMix64; to fixture replay, bez generatora sektorów P028, solvera ani RNG w resolverze.",
+            "acceptance": "Jawny stały układ numeryczny obejmuje gracza, wejście, dwóch odbiorników, wyjście i impuls. Seed wybiera 0-3 obroty dokładnie wskazanego węzła; wszystkie inne pola są stałe. Seedy 0 i UINT64_MAX oraz znane różne orientacje mają oczekiwane pełne stany i hashe P024-01. Ten sam seed odtwarza ten sam stan, kopie są niezależne, zewnętrzny RNG nietknięty. Nie wymaga się unikalności stanu dla każdego seeda ani wygrywalności fixture. Mutacja ignorująca seed jest wykryta po Rebuild.",
+            "depends_on": [
+                "P024-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P024-03",
+            "phase": "M2",
+            "title": "Wersjonowane wykonanie replay",
+            "scope": "Dodaj jeden wartościowy runner deweloperski: wersja reguł, RunSeed i sekwencja Command. Wersja 1 korzysta z fixture P024-02, tego samego resolve_turn oraz hasha P024-01; zwraca początkowy hash, ślad accepted/outcome/hash po każdej próbie i niezależny stan końcowy. Bez parsera, plików i prezentacji.",
+            "acceptance": "Nieobsługiwana wersja jest jawnie odrzucona bez wyniku częściowego. Identyczny replay daje identyczny pełny stan i ślad hashy, a znany korpus zgadza się z jawnymi oczekiwaniami oraz bezpośrednim resolverem. Obejmuje pustą sekwencję, legalne i błędne move/rotate/wait oraz komendy po końcu sektora. Odrzucona komenda tworzy wpis z niezmienionym hashem i nie zatrzymuje następnych prób. Wejściowe komendy i inne wyniki pozostają nietknięte. Mutacja pomijająca bramkę wersji lub komendę jest wykryta po Rebuild.",
+            "depends_on": [
+                "P024-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P024-04",
+            "phase": "M2",
+            "title": "Adapter CLI replay",
+            "scope": "Dodaj małe narzędzie CLI poza paczką gry, przyjmujące dziesiętne version seed i opcjonalne tokeny wait, move:NodeId, rotate:NodeId. Parse całego wejścia przed uruchomieniem runnera P024-03; wypisz stabilny numeryczny ślad początkowego i kolejnych hashy, accepted i outcome. Bez formatu zapisu gry, importu JSON ani wyświetlania planszy.",
+            "acceptance": "CTest uruchamia rzeczywiste exe w Debug/Release: dwa identyczne wywołania dają identyczny stdout i kod 0. Pusta sekwencja jest dozwolona, seed 0 i UINT64_MAX poprawne. Brak argumentu, zły token, trailing junk, znak minus, przepełnienie liczby, NodeId 49 i nieobsługiwana wersja dają niezerowy kod bez częściowego śladu sukcesu. Test wskazuje konkretny oczekiwany wynik i wykrywa celowo zmieniony parser lub kod wyjścia po Rebuild. README podaje działającą komendę; narzędzie i diagnostyka są wyłącznie deweloperskie.",
+            "depends_on": [
+                "P024-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P025",
+            "phase": "M2",
+            "title": "Eksperyment rdzenia",
+            "scope": "Przeanalizuj jeden niewyświetlany scenariusz z trzema sekwencjami decyzji; zapisz dowód wyróżnika.",
+            "acceptance": "Trasy pakietu i impulsu reagują na tę samą zmianę; raport nie udaje playtestu.",
+            "depends_on": [
+                "P024-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P026",
+            "phase": "M3",
+            "title": "Overdrive",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij dane rezerwy/długu i wersjonowanie pełnego hasha, regenerację po dostawie, atomowy helper overdrive, integrację komendy z turą oraz adapter CLI na dzieci P026-01 do P026-05; bez implementacji.",
+            "acceptance": "Dzieci pokrywają rezerwę startową 2 i limit 3, dług startowy 0, dostawę +1, dwa obroty z kosztem jednej rezerwy i +1 długu, jedną turę oraz pełną niezmienność odmowy. Hash i replay mają jawny plan wersji. P027 zależy od P026-05; ukończenie rodzica nie oznacza działającego overdrive.",
+            "depends_on": [
+                "P025"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P026-01",
+            "phase": "M3",
+            "title": "Dane rezerwy i długu z pełnym hashem",
+            "scope": "Dodaj wartościowe pola GameState reserve uint8 (start 2, limit gry 3) i overload_debt uint32 (start 0), bez zmiany sygnatury initial. Rozszerz pełny hash do kodowania v2 i jawnie przełącz runner na replay 2; stare wersje odrzucaj, bez emulacji. Nie zmieniaj dostawy, komend ani resolvera.",
+            "acceptance": "Inicjalizacja i dwie niezależne kopie zachowują zasoby; wszystkie same_state i fabryki testów chronią oba pola. Hash v2 zachowuje format v1 poza prefiksem wersji 2 i dodaniem na końcu reserve uint8 oraz overload_debt uint32 LE. Niezależne wektory, granice pól i mutacja pominięcia zasobu dowodzą pełnego odczytu. Runner/CLI przyjmują wyłącznie replay 2 z nowymi pełnymi wektorami; replay 1 odrzucony bez wyniku/stdout. Debug/Release przechodzą, a dostawa i akcje nadal nie zmieniają zasobów.",
+            "depends_on": [
+                "P026"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P026-02",
+            "phase": "M3",
+            "title": "Regeneracja rezerwy po dostawie",
+            "scope": "Rozszerz istniejący deliver_packet o dokładnie jeden przyrost reserve przy rzeczywistej dostawie, z limitem 3. Zmiana reguł przełącza replay na wersję 3, bez zmiany kodowania hasha v2. Nie implementuj overdrive ani runu.",
+            "acceptance": "Dostawa dla rezerwy 0/1/2 daje 1/2/3, a przy 3 zachowuje 3. Brak pakietu, poza celem, zasilony cel i powtórzenie dostawy nie regenerują. Dług i reszta stanu poza dotychczasowym efektem dostawy pozostają niezmienione; HP nie rośnie i koszt tury nie należy do helpera. Resolver i preview zachowują zgodność, także przy dostawie w turze śmierci. Replay 3 przyjęty, 1/2 odrzucone; jawne hashe i negatywna mutacja przyrostu są sprawdzone po Rebuild.",
+            "depends_on": [
+                "P026-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P026-03",
+            "phase": "M3",
+            "title": "Atomowy helper dwóch obrotów",
+            "scope": "Dodaj jeden helper akcji overdrive dla GameState i NodeId: warunki celu jak rotate_from_player, reserve co najmniej 1, dwa obroty zgodnie z zegarem, -1 reserve i +1 overload_debt. Brak kosztu tury i faz; brak nowego wariantu Command. Przy długu UINT32_MAX odrzuć przed mutacją zamiast zawijania.",
+            "acceptance": "Pełny stan po sukcesie zmienia tylko maskę celu, reserve i overload_debt; pola w zasięgu, wszystkie maski oraz granice rezerwy 0/1/3 i długu 0/MAX-1/MAX są przetestowane. Brak rezerwy, zły zasięg, zawinięcie wiersza, nieruchomy cel i przepełnienie długu zachowują cały stan. Nie wymagaj połączenia ani wolnego pola; helper jak rotate nie dodaje kontroli życia/końca sektora. Mutacja pojedynczego obrotu lub kosztu wykryta po Rebuild. Replay pozostaje 3, bo helper nie jest jeszcze częścią wykonywanej komendy.",
+            "depends_on": [
+                "P026-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P026-04",
+            "phase": "M3",
+            "title": "Overdrive w komendzie i transakcji tury",
+            "scope": "Dodaj wartościowy OverdriveCommand z NodeId do Command, legalności i resolve_turn przez helper P026-03. Zasoby zużyj w akcji przed dostawą, fazy wykonaj raz i charge_turn raz na końcu. Preview nadal deleguje. Przełącz replay na wersję 4 z korpusem nowej komendy, bez parsera CLI.",
+            "acceptance": "Legalna akcja daje dwa obroty, -1 rezerwy, +1 długu i jedną turę. Dostawa w tej samej turze regeneruje po koszcie (reserve 3 daje po akcji 2 i po dostawie 3), a impuls widzi topologię po obu obrotach. Preview=resolver dla sukcesu, odmowy, śmierci i granicy 47→48. Brak rezerwy/długu MAX/zły cel/terminalny stan odrzucają przed wszystkimi fazami, bez mutacji stanu, komendy i zewnętrznego RNG. Replay 4 przyjmuje nowy wariant i jawne ślady; 1/2/3 odrzuca. CLI pozostaje przy dotychczasowych tokenach, ale używa wersji 4; istotna mutacja kolejności/kosztu wykryta po Rebuild.",
+            "depends_on": [
+                "P026-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P026-05",
+            "phase": "M3",
+            "title": "Token overdrive w CLI replay",
+            "scope": "Rozszerz wyłącznie adapter CLI o overdrive:NodeId mapowane na istniejący OverdriveCommand. Zachowaj pełny parse przed runnerem i reguły liczb 0-48; bez zmiany wersji 4 i reguł gry.",
+            "acceptance": "CTest uruchamia rzeczywiste exe Debug/Release: dokładny ślad legalnego overdrive, odmowa bez rezerwy jako poprawny wpis i powtarzalność stdout. Zły/brakujący cel, 49, minus, plus, trailing junk i overflow odrzucają bez częściowego stdout, także po poprawnych tokenach. Oczekiwany hash i koszt zgadzają się z runnerem oraz jawnym wynikiem; celowa mutacja parsera lub kodu wyjścia wykryta po Rebuild. README zawiera rzeczywiście uruchomioną komendę deweloperską.",
+            "depends_on": [
+                "P026-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P027",
+            "phase": "M3",
+            "title": "Dług między sektorami",
+            "scope": "Wpis nadrzędny: wyłącznie rozbij wybór wolnego EntityId i atomowy spawn długu na wejściu następnego sektora na P027-01 i P027-02; bez implementacji.",
+            "acceptance": "Dzieci definiują deterministyczny ID, granice2/3/6 i zachowanie długu za niewykonany spawn. Jedno wejście mieści jeden impuls, więc6 daje jeden spawn i resztę3; zajęcie nie kasuje długu. P028 zależy od P027-02. Run i wywołanie na granicy sektora pozostają przyszłym etapem.",
+            "depends_on": [
+                "P026-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P027-01",
+            "phase": "M3",
+            "title": "Deterministyczny wybór wolnego ID impulsu",
+            "scope": "Dodaj available_pulse_id(const GameState&) zwracający najmniejszy niewykorzystany EntityId lub nullopt po wyczerpaniu reprezentacji; bez mutacji, spawnu i zużycia długu.",
+            "acceptance": "Pusta kolekcja daje0, luka i ciągły prefiks dają najmniejszy wolny ID niezależnie od kolejności; graniczne ID0/MAX, wszystkie49 jednostek i permutacje. Pełny stan i zewnętrzny RNG zachowane. Brak zawijania reprezentacji. Debug/Release oraz negatywna mutacja po Rebuild.",
+            "depends_on": [
+                "P027"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P027-02",
+            "phase": "M3",
+            "title": "Pojedynczy spawn długu na wejściu sektora",
+            "scope": "Dodaj spawn_debt_pulse(GameState&): dla debt>=3 i wolnego sector_entry dopisz jeden Pulse z available_pulse_id, potem odejmij3 długu. Wywołanie tylko na granicy sektora przez przyszły run, bez integracji resolvera i bez runu.",
+            "acceptance": "Debt0/1/2 odmawia;3 daje jeden spawn i0;4/5 zostawia1/2;6 daje jeden spawn i3, bo wejście mieści tylko jeden impuls. Zajęte wejście (impuls lub blocked_nodes), brak wejścia i ponowienie zachowują cały stan/dług. Gracz i pakiet nie blokują impulsu jak w obecnym core. Unikalne najmniejsze ID, kolejność starych jednostek, reserve/HP/tura/topologia bez zmian. Push do kolekcji przed odjęciem długu chroni błąd alokacji. Testy wejść0/48, granic długu w tym MAX, pełnego stanu i mutacji kosztu po Rebuild; Debug/Release. Replay4/hashv2 bez zmian, bo helper nie jest wywoływany przez turę/fixture.",
+            "depends_on": [
+                "P027-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P028",
+            "phase": "M3",
+            "title": "Generator topologii",
+            "scope": "Dodaj ograniczony seedowany generator samej siatki, bez artworku.",
+            "acceptance": "Rozmiar, porty, przyłącza i powtarzalność; wyłącznie dane headless.",
+            "depends_on": [
+                "P027-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P029",
+            "phase": "M3",
+            "title": "Certyfikat rozwiązania",
+            "scope": "Dodaj walidację legalnej sekwencji rozwiązującej sektor lub ograniczony solver.",
+            "acceptance": "Odróżnia osiągalność grafu od wygranej w limicie i przy zagrożeniach.",
+            "depends_on": [
+                "P028"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P030",
+            "phase": "M3",
+            "title": "Korpus seedów",
+            "scope": "Wyłącznie podziel korpus na stałe seedy i składanie bazowego stanu, świadka ograniczonej rodziny, kontrolę spawnów i raport wykonywalny. Bez implementacji dzieci.",
+            "acceptance": "Cztery małe dzieci; P031 zależy od ostatniego dziecka; stan i przekazanie wskazują pierwsze dziecko.",
+            "depends_on": [
+                "P029"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P030-01",
+            "phase": "M3",
+            "title": "Stały korpus i stan bazowy",
+            "scope": "Zapisz 1000 unikalnych seedów i jeden deweloperski adapter topologii P028 do bazowego GameState, bez długu i impulsów.",
+            "acceptance": "Dokładnie 1000 stałych seedów z granicami 0/MAX; pełne stany dla obu rodzin, powtarzalność i niezależność kopii.",
+            "depends_on": [
+                "P030"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P030-02",
+            "phase": "M3",
+            "title": "Świadek ograniczonej rodziny",
+            "scope": "Dodaj wyłącznie deweloperski konstruktor sekwencji dla bazowych stanów rodziny P028; odmawiaj poza kontraktem, bez filtrowania seedów.",
+            "acceptance": "Sekwencja przechodzi validate_solution; ucięcie i nieobsługiwany stan są odrzucane; pełny stan i wejście niezmienne.",
+            "depends_on": [
+                "P030-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P030-03",
+            "phase": "M3",
+            "title": "Kontrola legalności spawnów",
+            "scope": "Dodaj deweloperski predykat legalnego rozstawienia i osobne scenariusze spawn_debt_pulse na wygenerowanych sektorach, bez runu.",
+            "acceptance": "Wykrywa powtórzone ID/pozycje i blokujące pola; współdzielenie z graczem legalne; debt0/2/3/6, zajęte i brak wejścia; pełny stan przy odmowie.",
+            "depends_on": [
+                "P030-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P030-04",
+            "phase": "M3",
+            "title": "Wykonywalny raport korpusu",
+            "scope": "Dodaj narzędzie testowe sprawdzające wszystkie 1000 zapisanych seedów: bazowy certyfikat i odrębne scenariusze długu/spawnów, ze stabilnym raportem odrzuceń.",
+            "acceptance": "Każdy seed raportowany z przyczyną; brak pomijania nielegalnych wyników; CTest prawdziwego exe i błędnego przypadku, identyczny raport Debug/Release.",
+            "depends_on": [
+                "P030-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P031",
+            "phase": "M3",
+            "title": "Kontrakt modułu",
+            "scope": "Wyłącznie podziel kontrakt modułów na wartościowy zestaw, stan/hash/replay i port reguł obrotu. Bez implementacji dzieci ani efektów modułów.",
+            "acceptance": "Trzy dzieci o osobnych kontraktach; P032 zależy od ostatniego; jawna decyzja o wersji pełnego stanu.",
+            "depends_on": [
+                "P030-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P031-01",
+            "phase": "M3",
+            "title": "Identyfikatory i sloty modułów",
+            "scope": "Dodaj wartościowy zestaw do dwóch modułów o stabilnych numerycznych ID1/2, bez GameState i efektów.",
+            "acceptance": "Pusty zestaw, poprawne dodanie, kanoniczny porządek, odrzucenie duplikatu/obcego ID/przekroczenia slotów bez mutacji.",
+            "depends_on": [
+                "P031"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P031-02",
+            "phase": "M3",
+            "title": "Moduły w stanie i pełnym hashu",
+            "scope": "Dodaj pusty zestaw modułów do GameState i pełnego hasha; jawny hashv3/replay5 bez efektów reguł.",
+            "acceptance": "Kopie i odmowy zachowują zestaw; niezależne wektory hasha dla pustych/pojedynczych/pełnych slotów; stare replay odrzucane; korpus bez zmian wyników.",
+            "depends_on": [
+                "P031-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P031-03",
+            "phase": "M3",
+            "title": "Port reguł obrotu",
+            "scope": "Dodaj jeden czysty port reguł obrotu z zestawu modułów i użyj go w istniejącym helperze, bez aktywacji efektów P032/P033.",
+            "acceptance": "Pusty i zarejestrowane zestawy zachowują bazowy zasięg1 oraz odmowę nieruchomych; komenda, preview i commit zgodne; pełny stan i brak RNG.",
+            "depends_on": [
+                "P031-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P032",
+            "phase": "M3",
+            "title": "Moduł zasięgu",
+            "scope": "Dodaj tylko moduł zwiększający zasięg rotate.",
+            "acceptance": "Nowy legalny cel i nielegalny poza nową granicą; brak zmian bez modułu.",
+            "depends_on": [
+                "P031-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P033",
+            "phase": "M3",
+            "title": "Moduł końcówki",
+            "scope": "Wyłącznie podziel zadanie na małe kontrakty: zużycie w stanie i hashu; jednorazowa akcja; reset. Bez implementacji dzieci.",
+            "acceptance": "Trzy dzieci; P034 zależy od ostatniego; przekazanie wskazuje pierwsze.",
+            "depends_on": [
+                "P032"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P033-01",
+            "phase": "M3",
+            "title": "Zużycie modułu w stanie",
+            "scope": "Dodaj wyłącznie flagę zużycia terminal_rotation do GameState, kopii i pełnego hasha; jawny hashv4/replay7 bez efektu obrotu.",
+            "acceptance": "Domyślnie false; odmowy i kopie zachowują flagę; niezależne wektory hasha obu wartości; wcześniejsze replay odrzucane.",
+            "depends_on": [
+                "P033"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P033-02",
+            "phase": "M3",
+            "title": "Jednorazowa akcja końcówki",
+            "scope": "Pozwól modułowi obrócić nieruchomą maskę z dokładnie jednym portem raz na sektor, wspólnie dla rotate i overdrive.",
+            "acceptance": "Pierwszy sukces zużywa flagę; kolejna nieruchoma końcówka odrzucana; zwykły obrót nie zużywa; pełny stan odmów, pary modułów, preview/commit.",
+            "depends_on": [
+                "P033-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P033-03",
+            "phase": "M3",
+            "title": "Reset zużycia sektora",
+            "scope": "Dodaj jawny helper resetujący wyłącznie zużycie modułu przy granicy sektora; integracja runu dopiero P035.",
+            "acceptance": "Reset przywraca jednorazową akcję, jest idempotentny i zachowuje pozostały pełny stan; bez automatycznej granicy w istniejącej turze.",
+            "depends_on": [
+                "P033-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P034",
+            "phase": "M3",
+            "title": "Wybór nagrody",
+            "scope": "Dodaj logiczny wybór jednego z dwóch dostępnych modułów.",
+            "acceptance": "Brak duplikatu i nielegalnego wyboru; deterministyczna oferta.",
+            "depends_on": [
+                "P033-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035",
+            "phase": "M3",
+            "title": "Trzysektorowy run",
+            "scope": "Dodaj maszynę stanów runu i przenoszenie zasobów.",
+            "acceptance": "Sektor 1 do 3, śmierć kończy run; brak permanentnego bonusu HP.",
+            "depends_on": [
+                "P034"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P036",
+            "phase": "M4",
+            "title": "Schemat checkpointu",
+            "scope": "Opisz wersjonowany format checkpointu i limity rozmiaru, bez IO.",
+            "acceptance": "Round-trip projektu pól względem GameState; odrzucenie nieznanej wersji w specyfikacji.",
+            "depends_on": [
+                "P035"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P037",
+            "phase": "M4",
+            "title": "Kodek checkpointu",
+            "scope": "Dodaj serializację i walidację checkpointu w pamięci.",
+            "acceptance": "Round-trip, ucięcie, złe zakresy, nadmiar danych, zła wersja.",
+            "depends_on": [
+                "P036"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P038",
+            "phase": "M4",
+            "title": "Atomowy zapis Windows",
+            "scope": "Dodaj zapis temp+zamiana z zachowaniem backupu.",
+            "acceptance": "Przerwanie zapisu i niedostępny katalog nie niszczą poprzedniego pliku.",
+            "depends_on": [
+                "P037"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P039",
+            "phase": "M4",
+            "title": "Odzyskiwanie zapisu",
+            "scope": "Dodaj odczyt poprawnego backupu przy uszkodzonym głównym pliku.",
+            "acceptance": "Uszkodzenie obu plików, brak pliku i brak nadpisania dobrego backupu.",
+            "depends_on": [
+                "P038"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040",
+            "phase": "M4",
+            "title": "Profil lokalny",
+            "scope": "Dodaj trwały profil odblokowań i ustawień oddzielny od runu.",
+            "acceptance": "Round-trip i niezależność usunięcia runu od profilu.",
+            "depends_on": [
+                "P039"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P041",
+            "phase": "M4",
+            "title": "Zdarzenia domenowe",
+            "scope": "Ustabilizuj kontrakt zdarzeń potrzebnych achievementom.",
+            "acceptance": "Stałe identyfikatory i kolejność; preview nie emituje zdarzeń do usług.",
+            "depends_on": [
+                "P040"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P042",
+            "phase": "M4",
+            "title": "Trwały zbiór odblokowań",
+            "scope": "Dodaj zapis zbioru lokalnie zdobytych achievement ID.",
+            "acceptance": "Powtórne odblokowanie nie duplikuje; restart procesu zachowuje stan.",
+            "depends_on": [
+                "P041"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P043",
+            "phase": "M4",
+            "title": "Port AchievementSink",
+            "scope": "Dodaj interfejs i lokalny adapter bez Steam SDK.",
+            "acceptance": "Test kontraktu z fake adapterem i działanie offline.",
+            "depends_on": [
+                "P042"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P044",
+            "phase": "M4",
+            "title": "Idempotentny dispatch",
+            "scope": "Dodaj dostarczanie zdarzeń do evaluatorów bez podwójnego skutku.",
+            "acceptance": "Powtórzenie zdarzenia i powtórny odczyt checkpointu.",
+            "depends_on": [
+                "P043"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P045",
+            "phase": "M4",
+            "title": "Predykaty achievementów",
+            "scope": "Uściślij wyłącznie specyfikację pięciu predykatów MVP, bez ich implementacji.",
+            "acceptance": "Każdy ma przykład pozytywny, negatywny i granicę resetowania.",
+            "depends_on": [
+                "P044"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P046",
+            "phase": "M4",
+            "title": "Achievement dostawy",
+            "scope": "Implementuj wyłącznie pierwszy predykat dostawy.",
+            "acceptance": "Przypadki pozytywne, negatywne i trwałość.",
+            "depends_on": [
+                "P045"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P047",
+            "phase": "M4",
+            "title": "Achievement sektora",
+            "scope": "Implementuj wyłącznie predykat ukończenia sektora.",
+            "acceptance": "Porażka na wyjściu nie odblokowuje; sukces dokładnie raz.",
+            "depends_on": [
+                "P046"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P048",
+            "phase": "M4",
+            "title": "Achievement bez overdrive",
+            "scope": "Implementuj wyłącznie predykat runu bez overdrive.",
+            "acceptance": "Reset runu i jeden użyty overdrive wykluczają odblokowanie.",
+            "depends_on": [
+                "P047"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P049",
+            "phase": "M4",
+            "title": "Achievement rekonfiguracji",
+            "scope": "Implementuj wyłącznie predykat dostawy po zmianie połączenia.",
+            "acceptance": "Rozróżnia obrót bez zmiany trasy i spełniony warunek specyfikacji.",
+            "depends_on": [
+                "P048"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P050",
+            "phase": "M4",
+            "title": "Achievement runu",
+            "scope": "Implementuj wyłącznie predykat ukończenia całego runu.",
+            "acceptance": "Sektor pośredni nie wystarcza; śmierć nie odblokowuje.",
+            "depends_on": [
+                "P049"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P051",
+            "phase": "M4",
+            "title": "Integracja core",
+            "scope": "Dodaj jeden scenariusz całego headless runu z checkpointem i odblokowaniem.",
+            "acceptance": "Powtórka po restarcie daje ten sam wynik i brak duplikatów.",
+            "depends_on": [
+                "P050"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P052",
+            "phase": "M4",
+            "title": "Pomiar podglądu",
+            "scope": "Dodaj benchmark resolvera na opisanym korpusie stanów.",
+            "acceptance": "Raport sprzętu, p50 i p95; wynik nie jest testem grywalności.",
+            "depends_on": [
+                "P051"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P053",
+            "phase": "M4",
+            "title": "Inwarianty losowych komend",
+            "scope": "Dodaj ograniczony fuzz test sekwencji legalnych i nielegalnych akcji.",
+            "acceptance": "Stałe seedy, powtarzalny reproducer błędu, niezmienniki HP/portów/ID.",
+            "depends_on": [
+                "P052"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P054",
+            "phase": "M4",
+            "title": "Brama headless",
+            "scope": "Przejrzyj wyniki core bez dodawania funkcji; zapisz decyzję przejścia lub korekty.",
+            "acceptance": "Debug/Release, seedy, replay, zapisy i znane ograniczenia; brak udawanego QA wizualnego.",
+            "depends_on": [
+                "P053"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P055",
+            "phase": "M5",
+            "title": "Dossier bazowych assetów",
+            "scope": "Zweryfikuj jeden konkretny pakiet bez pobierania i bez zapisywania preview.",
+            "acceptance": "Licencja gry i publicznego Git, autorstwo konkretnej wersji i braki non-AI.",
+            "depends_on": [
+                "P054"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P056",
+            "phase": "M5",
+            "title": "Zgoda na pakiet bazowy",
+            "scope": "Przedstaw konkretny wniosek o pobranie zweryfikowanego pakietu; nie pobieraj.",
+            "acceptance": "Rzeczywista odpowiedź w approvals; brak zgody pozostawia blocked.",
+            "depends_on": [
+                "P055"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P057",
+            "phase": "M5",
+            "title": "Import jednego pakietu",
+            "scope": "Po zgodzie pobierz wyłącznie wskazany pakiet i przyjmij minimalny zestaw plików.",
+            "acceptance": "Hash, licencja, non-AI, zgodny zakres zgody i brak nieznanych plików.",
+            "depends_on": [
+                "P056"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P058",
+            "phase": "M5",
+            "title": "Odczyt manifestu",
+            "scope": "Dodaj parser zatwierdzonych odwołań do assetów bez renderowania.",
+            "acceptance": "Zły hash/ID/ścieżka i brak pliku dają kontrolowany błąd.",
+            "depends_on": [
+                "P057"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P059",
+            "phase": "M5",
+            "title": "Walidacja paczki assetów",
+            "scope": "Dodaj bramkę odrzucającą nieśledzone i niezatwierdzone zasoby.",
+            "acceptance": "Negatywne próbki: plik bez rejestru, zła zgoda, zmieniony hash.",
+            "depends_on": [
+                "P058"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P060",
+            "phase": "M5",
+            "title": "Kontrakt tekstów runtime",
+            "scope": "Dodaj wąski katalog tekstów, bez finalnych tekstów AI.",
+            "acceptance": "Każdy generated visible string wymaga prefiksu; brak fallbacku z ID.",
+            "depends_on": [
+                "P059"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P061",
+            "phase": "M5",
+            "title": "Blokada placeholderów",
+            "scope": "Dodaj rozdzielenie developer/public build i bramkę placeholderów.",
+            "acceptance": "Developer dopuszcza oznaczone teksty; public package je odrzuca.",
+            "depends_on": [
+                "P060"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P062",
+            "phase": "M6",
+            "title": "Cykl okna Win32",
+            "scope": "Dodaj minimalny cykl okna bez rysowania gry; tytuł jako oznaczony placeholder.",
+            "acceptance": "Start, zamknięcie, focus i poprawne zwolnienie zasobów.",
+            "depends_on": [
+                "P061"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P063",
+            "phase": "M6",
+            "title": "Mapowanie klawiatury",
+            "scope": "Dodaj wejście przekładane na komendy, bez nowych widoków.",
+            "acceptance": "Repeat klawisza i focus loss nie generują niekontrolowanych tur.",
+            "depends_on": [
+                "P062"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P064",
+            "phase": "M6",
+            "title": "Urządzenie Direct2D",
+            "scope": "Dodaj lifecycle zasobów renderer backend, bez tworzenia artworku.",
+            "acceptance": "Resize i odtworzenie urządzenia; brak proceduralnych assetów.",
+            "depends_on": [
+                "P063"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P065",
+            "phase": "M6",
+            "title": "Dekodowanie WIC",
+            "scope": "Dodaj odczyt jednego zatwierdzonego PNG.",
+            "acceptance": "Poprawny plik, plik uszkodzony i brak zasobu bez generowanego fallbacku.",
+            "depends_on": [
+                "P064"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P066",
+            "phase": "M6",
+            "title": "Prezentacja płytek",
+            "scope": "Wyświetl wyłącznie planszę z zatwierdzonych bitmap, bez postaci i HUD.",
+            "acceptance": "Orientacja i współrzędne; pokrycie portów przez gotowe assety.",
+            "depends_on": [
+                "P065"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P067",
+            "phase": "M6",
+            "title": "Prezentacja jednostek",
+            "scope": "Dodaj render gracza, pakietu i bazowego impulsu gotowymi elementami.",
+            "acceptance": "Stan po turze zgodny z core; nie dodawaj grafiki brakujących obiektów.",
+            "depends_on": [
+                "P066"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068",
+            "phase": "M6",
+            "title": "Podgląd gotowymi symbolami",
+            "scope": "Dodaj ścieżkę podglądu używając zatwierdzonych znaczników.",
+            "acceptance": "Wygląd odpowiada preview; brak generowanych strzałek i linii artystycznych.",
+            "depends_on": [
+                "P067"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P069",
+            "phase": "M6",
+            "title": "Tekst developer",
+            "scope": "Dodaj DirectWrite dla jednego oznaczonego tekstu katalogu.",
+            "acceptance": "Każda wyświetlana wartość zachowuje prefiks, poprawne UTF-8/UTF-16.",
+            "depends_on": [
+                "P068"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P070",
+            "phase": "M6",
+            "title": "Minimalny HUD",
+            "scope": "Dodaj tylko stan HP, tur i dostaw z zatwierdzonych elementów i oznaczonych etykiet.",
+            "acceptance": "Czytelność przy resize/DPI, żadnych nieoznaczonych napisów.",
+            "depends_on": [
+                "P069"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P071",
+            "phase": "M6",
+            "title": "Start i restart",
+            "scope": "Dodaj przejście start->run->wynik->restart bez nowych mechanik.",
+            "acceptance": "Nowy run resetuje stan i zachowuje profil.",
+            "depends_on": [
+                "P070"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P072",
+            "phase": "M6",
+            "title": "Widok wyboru modułu",
+            "scope": "Dodaj jeden ekran istniejącej oferty modułów.",
+            "acceptance": "Nielegalny wybór odrzucony; fokus i teksty zgodne z polityką.",
+            "depends_on": [
+                "P071"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P073",
+            "phase": "M6",
+            "title": "Lokalne powiadomienie",
+            "scope": "Dodaj prezentację jednego istniejącego achievementu, bez nowych predykatów.",
+            "acceptance": "Brak duplikacji powiadomień i wyłącznie zatwierdzone grafiki.",
+            "depends_on": [
+                "P072"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074",
+            "phase": "M6",
+            "title": "Wznowienie sesji",
+            "scope": "Dodaj w UI odczyt istniejącego checkpointu i kontrolowane błędy.",
+            "acceptance": "Zamknięcie i restart; zły zapis nie pokazuje wewnętrznych tekstów bez prefiksu.",
+            "depends_on": [
+                "P073"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P075",
+            "phase": "M6",
+            "title": "Backend audio",
+            "scope": "Dodaj tylko lifecycle urządzenia i kontrakt odtwarzania, bez dźwięku zastępczego.",
+            "acceptance": "Brak urządzenia nie blokuje gry; brak syntezy i wbudowanych nagrań.",
+            "depends_on": [
+                "P074"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P076",
+            "phase": "M6",
+            "title": "Dossier i wniosek audio",
+            "scope": "Sprawdź jeden pakiet audio i wystąp o konkretną zgodę bez pobierania.",
+            "acceptance": "Dokumentacja wersji, non-AI, licencji i faktycznej odpowiedzi.",
+            "depends_on": [
+                "P075"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P077",
+            "phase": "M6",
+            "title": "Import audio",
+            "scope": "Po zgodzie przyjmij minimalny zestaw plików z jednego pakietu.",
+            "acceptance": "Hash każdego WAV, dowody i zgodność z rejestrem zgód.",
+            "depends_on": [
+                "P076"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P078",
+            "phase": "M6",
+            "title": "Odtwarzanie jednego zdarzenia",
+            "scope": "Podepnij jeden zatwierdzony sygnał do dostawy.",
+            "acceptance": "Jedno zdarzenie daje jedno odtworzenie; mute i brak pliku obsłużone.",
+            "depends_on": [
+                "P077"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P079",
+            "phase": "M6",
+            "title": "Zmiana sterowania",
+            "scope": "Dodaj zmianę przypisania jednej akcji i zapis ustawienia.",
+            "acceptance": "Konflikt przypisań, restart, utrata focusu.",
+            "depends_on": [
+                "P078"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P080",
+            "phase": "M6",
+            "title": "Dostępność MVP",
+            "scope": "Zweryfikuj jedną macierz DPI i rozpoznawanie stanów bez polegania na kolorze.",
+            "acceptance": "Zapisz rzeczywiste wyniki; pojedynczy problem napraw osobnym krokiem.",
+            "depends_on": [
+                "P079"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P081",
+            "phase": "M6",
+            "title": "Brama grywalnego MVP",
+            "scope": "Wykonaj i opisz obserwowane przejście trzech sektorów, bez nowej zawartości.",
+            "acceptance": "Run, zapis, restart, achievementy i czytelność; bot nie zastępuje obserwacji.",
+            "depends_on": [
+                "P080"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082",
+            "phase": "M7",
+            "title": "Emiter okresowy",
+            "scope": "Dodaj wyłącznie logiczny typ okresowego emitera; jeśli zbyt duże, ten krok tylko rozbija zadanie.",
+            "acceptance": "Specyfikacja fazy, telegraph=wynik, granice zasięgu; nowy asset wymaga osobnej zgody.",
+            "depends_on": [
+                "P081"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083",
+            "phase": "M7",
+            "title": "Kondensator",
+            "scope": "Dodaj wyłącznie logiczny typ opóźnionego kondensatora.",
+            "acceptance": "Jawne opóźnienie, rotacja między fazami, brak podwójnego wybuchu.",
+            "depends_on": [
+                "P082"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084",
+            "phase": "M7",
+            "title": "Końcowy sektor",
+            "scope": "Dodaj wariant ostatniego sektora z trzema dostawami bez osobnego bossa.",
+            "acceptance": "Win/lose i certyfikat ukończenia w limicie.",
+            "depends_on": [
+                "P083"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-01",
+            "phase": "M7",
+            "title": "Run szesciu sektorow",
+            "scope": "Rozszerz konfiguracje runu z trzech do szesciu sektorow, uzywajac istniejacego generatora i wariantu finalnego; bez nowego artworku.",
+            "acceptance": "Progresja sektorow 1-6, dokladnie jeden final, zachowanie checkpointow i achievementow; replay tej samej konfiguracji.",
+            "depends_on": [
+                "P084"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085",
+            "phase": "M7",
+            "title": "Rozbij rozszerzenie modułów",
+            "scope": "Wyłącznie zaplanuj dzieci dla brakujących modułów do maksymalnie 12; po jednym na dziecko.",
+            "acceptance": "Dzieci mają predykaty i testy, a konsumenci zależą od wszystkich wymaganych dzieci.",
+            "depends_on": [
+                "P084-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086",
+            "phase": "M7",
+            "title": "Rozbij konfiguracje startu",
+            "scope": "Wyłącznie zaplanuj oddzielne dzieci dla dwóch dodatkowych konfiguracji.",
+            "acceptance": "Każda równorzędna, bez permanentnych bonusów; zależności domknięte.",
+            "depends_on": [
+                "P085"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087",
+            "phase": "M7",
+            "title": "Rozbij trudności",
+            "scope": "Wyłącznie zaplanuj dzieci dla trzech modyfikatorów trudności.",
+            "acceptance": "Jeden modyfikator na zadanie, testy i brak wymagania nowych assetów bez zgody.",
+            "depends_on": [
+                "P086"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088",
+            "phase": "M7",
+            "title": "Rozbij achievementy 1.0",
+            "scope": "Wyłącznie zaplanuj dzieci dla siedmiu dodatkowych predykatów do 12.",
+            "acceptance": "Każdy ma test +/−, reset i stabilne ID; tekst i ikona pozyskiwane osobno.",
+            "depends_on": [
+                "P087"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P089",
+            "phase": "M7",
+            "title": "Jeden eksperyment balansu",
+            "scope": "Zmierz jedną hipotezę dominującej strategii; zmień najwyżej jeden parametr.",
+            "acceptance": "Stały korpus, porównanie przed/po, bez twierdzenia o opinii graczy.",
+            "depends_on": [
+                "P088"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P090",
+            "phase": "M8",
+            "title": "Audyt brakujących treści",
+            "scope": "Sporządź listę wszystkich braków finalnych napisów i grafiki, bez ich generowania.",
+            "acceptance": "Każdy ekran, błąd, ikona, tutorial i achievement uwzględniony.",
+            "depends_on": [
+                "P089"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P091",
+            "phase": "M8",
+            "title": "Źródło finalnych tekstów",
+            "scope": "Zweryfikuj i poproś o zgodę na jeden legalny korpus ludzkich tekstów, bez pobierania.",
+            "acceptance": "Dowód autora, non-AI, licencja, zakres; gdy brak źródła pozostaw blokadę.",
+            "depends_on": [
+                "P090"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P092",
+            "phase": "M8",
+            "title": "Rozbij wymianę placeholderów",
+            "scope": "Wyłącznie zaplanuj małe dzieci importu zatwierdzonego korpusu i wymiany etykiet po kategorii.",
+            "acceptance": "Brak wygenerowanych finalnych napisów; konsumenci zależą od rzeczywistej wymiany.",
+            "depends_on": [
+                "P091"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P093",
+            "phase": "M8",
+            "title": "Noty i credits",
+            "scope": "Wyświetl wymagane, wiernie skopiowane zatwierdzone noty licencyjne.",
+            "acceptance": "Zgodność z rejestrem; brak dopisanych przez AI finalnych opisów.",
+            "depends_on": [
+                "P092"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P094",
+            "phase": "M9",
+            "title": "Dostęp do Steam SDK",
+            "scope": "Sprawdź legalny dostęp właściciela i warunki lokalnego użycia SDK; nie publikuj SDK.",
+            "acceptance": "Bez SDK zadanie blocked; gra lokalna nadal działa.",
+            "depends_on": [
+                "P093"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P095",
+            "phase": "M9",
+            "title": "Inicjalizacja adaptera Steam",
+            "scope": "Dodaj opcjonalną inicjalizację i zamknięcie Steam backend.",
+            "acceptance": "Build bez SDK i z legalnym lokalnym SDK; brak klienta nie blokuje gry.",
+            "depends_on": [
+                "P094"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P096",
+            "phase": "M9",
+            "title": "Gotowość statystyk",
+            "scope": "Dodaj obsługę aktualnego API gotowości statystyk według wersji SDK.",
+            "acceptance": "Sukces, błąd i niegotowy klient; bez przedwczesnych odblokowań.",
+            "depends_on": [
+                "P095"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P097",
+            "phase": "M9",
+            "title": "Synchronizacja odblokowania",
+            "scope": "Podepnij jeden lokalny achievement do SetAchievement/StoreStats lub aktualnego odpowiednika.",
+            "acceptance": "Idempotencja i potwierdzenie; fake adapter plus rzeczywisty test gdy dostępny App ID.",
+            "depends_on": [
+                "P096"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P098",
+            "phase": "M9",
+            "title": "Retry Steam",
+            "scope": "Dodaj trwałą kolejkę oczekujących odblokowań i retry z limitem.",
+            "acceptance": "Restart offline, powrót online, błąd usługi, brak duplikatów.",
+            "depends_on": [
+                "P097"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P099",
+            "phase": "M9",
+            "title": "Test offline i restartu Steam",
+            "scope": "Wykonaj jedną macierz integracyjną bez nowych funkcji.",
+            "acceptance": "Steam otwarty/zamknięty/offline i restart procesu; raport rzeczywistych wyników.",
+            "depends_on": [
+                "P098"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P100",
+            "phase": "M9",
+            "title": "Mapowanie App ID",
+            "scope": "Zweryfikuj prawdziwy App ID i mapowanie achievementów z backendem partnera.",
+            "acceptance": "Brak fikcyjnych ID i sekretów w Git; każde ID oraz finalna nazwa/ikona zgodne.",
+            "depends_on": [
+                "P099"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P101",
+            "phase": "M10",
+            "title": "Allowlista paczki",
+            "scope": "Dodaj paczkowanie tylko exe, potrzebnych bibliotek i zatwierdzonej treści.",
+            "acceptance": "Dokumentacja, tests, placeholdery, SDK i kwarantanna nie trafiają do paczki.",
+            "depends_on": [
+                "P100"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P102",
+            "phase": "M10",
+            "title": "Audyt zawartości paczki",
+            "scope": "Sprawdź jeden gotowy artefakt względem rejestrów i listy treści.",
+            "acceptance": "Hashy, wszystkie ekrany/napisy, licencje, non-AI; skan regex nie jest pełnym audytem.",
+            "depends_on": [
+                "P101"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P103",
+            "phase": "M10",
+            "title": "Czysty Windows",
+            "scope": "Uruchom build na czystej maszynie lub VM bez toolchainu.",
+            "acceptance": "Standardowy użytkownik, polskie znaki ścieżki, instalacja i odinstalowanie bez szkód.",
+            "depends_on": [
+                "P102"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P104",
+            "phase": "M10",
+            "title": "Macierz urządzeń",
+            "scope": "Sprawdź jeden wpis macierzy DPI/resize/audio; rozszerzenia jako oddzielne dzieci.",
+            "acceptance": "Rzeczywiste logi i reprodukcja błędów; nie oznaczaj całej macierzy po jednym wpisie.",
+            "depends_on": [
+                "P103"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P105",
+            "phase": "M10",
+            "title": "Weryfikacja budżetów",
+            "scope": "Zmierz podgląd, FPS i RAM na opisanym sprzęcie.",
+            "acceptance": "p95/p99 i porównanie budżetów; bez niezmierzonych wymagań minimalnych.",
+            "depends_on": [
+                "P104"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P106",
+            "phase": "M11",
+            "title": "Ponowna kontrola polityki",
+            "scope": "Przeczytaj aktualne zasady Steam i audytuj deklarację AI względem rzeczywistego produktu.",
+            "acceptance": "Prawdziwa ankieta; problem treści blokuje brak disclosure, nie jest ukrywany.",
+            "depends_on": [
+                "P105"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P107",
+            "phase": "M11",
+            "title": "Dossier materiałów sklepu",
+            "scope": "Wyłącznie audytuj dostępność ludzkich grafik, opisów i brandingu; rozbij pozyskanie na dzieci.",
+            "acceptance": "Zgody przed każdym pobraniem; brak AI capsule/trailera/tłumaczeń; brak źródeł=blocked.",
+            "depends_on": [
+                "P106"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P108",
+            "phase": "M11",
+            "title": "Formalności właściciela",
+            "scope": "Sprawdź wykonane formalności Steamworks i aktualne terminy, nie podpisuj za właściciela.",
+            "acceptance": "Konto, opłata, dane prawne i podatkowe, uprawnienia; bez danych prywatnych w Git.",
+            "depends_on": [
+                "P107"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P109",
+            "phase": "M11",
+            "title": "Build beta do przeglądu",
+            "scope": "Przygotuj weryfikowalny build i instrukcję depotu; upload dopiero w udzielonym zakresie.",
+            "acceptance": "Brak placeholderów; audyt treści i zgoda na konkretną operację zewnętrzną.",
+            "depends_on": [
+                "P108"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P110",
+            "phase": "M11",
+            "title": "Jedna regresja beta",
+            "scope": "Odtwórz jeden potwierdzony problem bety; jeśli brak, udokumentuj jeden scenariusz QA.",
+            "acceptance": "Reproducer i mała poprawka lub osobne dziecko; żadnych wymyślonych wyników testerów.",
+            "depends_on": [
+                "P109"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P111",
+            "phase": "M11",
+            "title": "Dossier premiery",
+            "scope": "Zbierz konkretne dowody builda, review, praw, achievementów i rollbacku.",
+            "acceptance": "Wszystkie wymagane dzieci ukończone; brak blokad treści i nieuczciwej deklaracji.",
+            "depends_on": [
+                "P110"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P112",
+            "phase": "M11",
+            "title": "Operacja wydania",
+            "scope": "Wykonaj wyłącznie zatwierdzoną operację premiery po spełnieniu warunków partnera.",
+            "acceptance": "Faktyczny stan publikacji i sprawdzony artefakt; bez zgody/praw pozostaw blocked.",
+            "depends_on": [
+                "P111"
+            ],
+            "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P113",
+            "phase": "M12",
+            "title": "Pierwsza kontrola po premierze",
+            "scope": "Wykonaj jeden rzeczywisty scenariusz smoke opublikowanej wersji.",
+            "acceptance": "Start, zapis, achievement; ewentualna poprawka w oddzielnym małym zadaniu.",
+            "depends_on": [
+                "P112"
+            ],
+            "gate": null
+        }
+    ]
 }

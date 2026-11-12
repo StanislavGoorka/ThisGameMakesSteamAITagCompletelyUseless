@@ -1,9 +1,9 @@
-# NastÄ™pny maĹ‚y krok
+# Następny mały krok
 
-Task: P033
+Task: P033-01
 
-Przeczytaj AGENTS, next-step i cpp-core-step, WORKFLOW, STATE, raport P032, bieĹĽÄ…cy wpis i zaleĹĽnoĹ›ci w tasks.json, ARCHITECTURE, GAME_DESIGN, TESTING oraz README. Rozpocznij od git status i walidatora; potwierdĹş zaleĹĽnoĹ›ci completed.
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P033, bieżący wpis i jego zależności w tasks.json. Rozpocznij od git status i walidatora; potwierdź completed dla wszystkich zależności.
 
-P033: tylko jednorazowy obrót nieruchomej końcówki w sektorze. Przeczytaj ModuleLoadout, rotation_rules, rotate_from_player/overdrive, GameState, hash/replay i dotychczasowe testy. Ustal dokładny warunek końcówki i zużycia, uwzględnij pierwszy sukces, drugą odmowę i reset. Run nie istnieje: nie deklaruj automatycznej granicy sektora. Jeśli wymagane są oddzielnie flaga/hash, akcja i reset, w tym kroku wykonaj wyłącznie podział na dzieci i przepnij P034. Nie implementuj P034/P035.
+P033-01: dodaj terminal_rotation_used=false do GameState, pełnego porównania stanu oraz hasha v4 (bajt na końcu); replay7. Zaktualizuj niezależne wektory i rzeczywiste CLI. Bez efektu modułu i resetu.
 
-Wykonaj wyĹ‚Ä…cznie ten maĹ‚y kontrakt. Dla kodu: cmake --preset windows-msvc; build i peĹ‚ne CTest Debug/Release; formatter src/tests/tools. Test pozytywny, wĹ‚aĹ›ciwa odmowa, peĹ‚ny stan i mutacja po wymuszonym Rebuild. Walidator i git diff --check. Raport, STATE/NEXT, README, lokalny commit i kontrola hash/zakresu/czystoĹ›ci. Bez pushu, assetĂłw i prezentacji. Zmiana reguĹ‚ lub peĹ‚nego stanu wymaga jawnej decyzji o wersji replay/hasha.
+Dla kodu przeczytaj cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README. Wykonaj wyłącznie jeden mały kontrakt; za duży zakres rozbij bez implementacji. Wymagane cmake --preset windows-msvc, build i pełne CTest Debug/Release, clang-format dla src/tests/tools, pozytywny i negatywny przypadek oraz pełny stan. Zweryfikuj wykrywanie celowej mutacji po wymuszonym Rebuild. Decyzję o zmianie replay/hasha zapisz jawnie. Raport, STATE/NEXT, README, walidator, diff --check, lokalny commit i kontrola hash/zakresu/czystości. Bez pushu, assetów i prezentacji.

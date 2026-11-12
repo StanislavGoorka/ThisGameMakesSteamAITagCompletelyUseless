@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P030-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P033-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -189,3 +189,6 @@ P031-02 dodaje pusty GameState::modules. Pełny hashv3 koduje dwa kanoniczne baj
 P031-03 podłącza wspólny czysty port RotationRules do helpera obrotu. Wszystkie zestawy nadal mają bazowy zasięg1.19208 przypadków geometrii oraz pełne stany komendy/podglądu/wykonania:43/43 CTest Debug/Release. [Raport P031-03](docs/workflow/history/P031-03.md)
 
 P032 aktywuje rotation_range: rotate i overdrive w odległości Manhattan2; bez modułu1, nieruchome odrzucane. Pakiet i impuls korzystają z nowo otwartej trasy w teście pełnego stanu. Bieżący replay6/hashv3;44/44 CTest Debug/Release. Korpus1000+7000 bez zmian. Zakończono10 osobno commitowanych kroków; następny P033. [Raport P032](docs/workflow/history/P032.md)
+
+
+P033: P033 zamknięto jako podział planu na flagę/hash, akcję i reset. Nieruchoma końcówka oznacza maskę z dokładnie jednym portem; wspólny limit dla rotate i overdrive. P034 zależy od P033-03. Nie dodano kodu ani efektu modułu. [Raport P033](docs/workflow/history/P033.md)
