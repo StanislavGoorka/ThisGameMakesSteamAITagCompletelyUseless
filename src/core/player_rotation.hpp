@@ -2,6 +2,7 @@
 
 #include "core/game_state.hpp"
 #include "core/node_rotation.hpp"
+#include "core/rotation_rules.hpp"
 
 namespace closed_circuit
 {
@@ -17,12 +18,12 @@ namespace closed_circuit
 
     const int source = state.player_position.value();
     const int destination = target.value();
-    const int offset = destination - source;
-    const bool horizontal_neighbor =
-        source / grid_size == destination / grid_size &&
-        (offset == -1 || offset == 1);
-    if (offset != 0 && offset != -grid_size && offset != grid_size &&
-        !horizontal_neighbor)
+    const auto absolute = [](int value) { return value < 0 ? -value : value; };
+    const int distance =
+        absolute(source / grid_size - destination / grid_size) +
+        absolute(source % grid_size - destination % grid_size);
+    const auto rules = rotation_rules(state.modules);
+    if (distance > rules.maximum_distance)
     {
         return false;
     }
