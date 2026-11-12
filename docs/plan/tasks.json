@@ -741,10 +741,32 @@
             "id": "P034",
             "phase": "M3",
             "title": "Wybór nagrody",
-            "scope": "Dodaj logiczny wybór jednego z dwóch dostępnych modułów.",
-            "acceptance": "Brak duplikatu i nielegalnego wyboru; deterministyczna oferta.",
+            "scope": "Wyłącznie podziel zadanie na małe kontrakty: Deterministyczna oferta modułów; Atomowy wybór modułu. Bez implementacji dzieci.",
+            "acceptance": "Osobne dzieci i topologiczne zależności; konsument zależy od ostatniego dziecka; przekazanie wskazuje pierwsze.",
             "depends_on": [
                 "P033-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P034-01",
+            "phase": "M3",
+            "title": "Deterministyczna oferta modułów",
+            "scope": "Dodaj czysty odczyt najwyżej dwóch nieposiadanych ModuleId w kanonicznym porządku; bez RNG i bez instalacji.",
+            "acceptance": "Pusty zestaw daje ID1/2, pojedynczy tylko brakujący, pełny pustą ofertę. Wejście i kopie niezmienne.",
+            "depends_on": [
+                "P034"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P034-02",
+            "phase": "M3",
+            "title": "Atomowy wybór modułu",
+            "scope": "Dodaj wybór jednego modułu z bieżącej oferty, zmieniający wyłącznie GameState.modules. Bramkowanie po sektorze dopiero w P035.",
+            "acceptance": "Wybór dodaje dokładnie jeden moduł; duplikat/obcy ID/pełny zestaw odrzucone bez mutacji; nie korzystaj z nieaktualnej oferty.",
+            "depends_on": [
+                "P034-01"
             ],
             "gate": null
         },
@@ -755,7 +777,7 @@
             "scope": "Dodaj maszynę stanów runu i przenoszenie zasobów.",
             "acceptance": "Sektor 1 do 3, śmierć kończy run; brak permanentnego bonusu HP.",
             "depends_on": [
-                "P034"
+                "P034-02"
             ],
             "gate": null
         },

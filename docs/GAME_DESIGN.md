@@ -63,3 +63,5 @@ Seed, dobór modułów, połączeń i spawnów to algorytm reguł bez modeli gen
 Headless proof musi wykazać zgodność podglądu z wynikiem i co najmniej trzy sensowne sekwencje decyzji w ustalonym scenariuszu. Symulacje wykrywają dominację czekania oraz nieosiągalne dostawy; nie dowodzą przyjemności z grania. Po MVP osobno ocenić czytelność obrotów, różnorodność tras i rzeczywistą grywalność. Jeśli dowody są słabe, agent zmniejsza planszę lub liczbę zagrożeń i zapisuje ADR, bez zmiany gatunku i dodawania fabuły.
 
 Poza zakresem: multiplayer, modding, live AI, mikrotransakcje, dubbing, ogólny silnik, porty na inne platformy, edytor dla graczy i domyślna telemetria sieciowa.
+
+MVP ma dwa zarejestrowane moduły. Nagroda oferuje najwyżej dwa nieposiadane ID w kanonicznym porządku. Jeden posiadany moduł pozostawia jedną opcję; pełny zestaw daje pustą ofertę i w przyszłym runie przejście bez nagrody. Nie dodajemy duplikatów ani zastępczej waluty.
