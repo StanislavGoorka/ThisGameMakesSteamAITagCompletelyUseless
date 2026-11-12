@@ -108,6 +108,14 @@ dostawę z przeciążeniem oraz śmierć po dostawie na wyjściu. Kolejność,
 payload i ciągłe ordinal są sprawdzane jawnie. Nie zastępuje to korpusu
 pełnych sekwencji P041-03 ani testów trwałego dispatchu P044.
 
+P041-03 rozszerza `core_run_integration`: cztery root seedy i obie kolejności
+modułów, dwukrotnie pełny run. Każda granica przechodzi capture/encode/decode/
+restore, a następnie dwa odtworzenia wszystkich komend z porównaniem każdego
+pełnego stanu i listy kluczy/payloadów. Obejmuje opłacony impuls długu,
+śmierć i przeciążenie. Każdy podgląd jest powtarzany i zachowuje wejście oraz
+oczekującą listę; typ RunResult nie udostępnia zdarzeń. Bez usług i trwałej
+deduplikacji pomiędzy odrębnymi próbami lub gałęziami.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

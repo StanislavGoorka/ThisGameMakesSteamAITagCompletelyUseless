@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P041-03
+Task: P042
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P041-02 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P041-03 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P041-03: wyłącznie test integracyjny pełnych sekwencji runu przez resolve_run_turn_events. Wykorzystaj istniejące świadki run_tests i checkpoint restore; porównaj listy kluczy/payloadów i pełne stany po powtórzeniu od granicy sektora, sprawdź preview bez publikacji. Bez nowego kodu produkcyjnego, evaluatorów i dispatchu. Seed nie jest ID instancji próby ani gałęzi. Czytaj DOMAIN_EVENTS, run_turn_events, run_checks, testy runu i checkpointu. P042 zależy od tego dziecka.
+P042: trwały zbiór achievementów. Przeczytaj LocalProfile, PROFILE_FORMAT, adaptery profile_read/save i testy profilu. Rozdziel czystą idempotentną aktualizację od trwałego zapisu i restartu, jeśli zakres przekracza jeden mały kontrakt. Bez predykatów, Steam i dispatchu.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator

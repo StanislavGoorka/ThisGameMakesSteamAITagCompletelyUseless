@@ -37,7 +37,7 @@ P041-02 wdraża `resolve_run_turn_events`, wartościowy wrapper resolvera runu;
 zwraca `RunTurnEventsResult` z wynikiem i listą,
 bez mutacji wejścia i bez publikacji do usług. Istniejący preview_run_turn
 pozostaje czystym podglądem stanu, bez dostępu do tego kanału publikacji.
-P041-03 sprawdzi pełne sekwencje, restore i izolację preview. Wybór aktywnego
+P041-03 sprawdza pełne sekwencje, restore i izolację preview. Wybór aktywnego
 stanu i publikacja listy należą do przyszłej aplikacji, nie do symulacji.
 
 Wrapper wywołuje wspólny resolver raz i po akceptacji odczytuje nowe flagi

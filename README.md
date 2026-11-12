@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P041-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P042**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -262,3 +262,5 @@ P041: P041 rozbito wyłącznie planistycznie na trzy dzieci: model/specyfikacja,
 P041-01: Dodano wartościowe DomainEvent, payloady i klucz wystąpienia seed/sektor/tura/ordinal. Stałe ID rodzajów1..4 i powodów końca1..3 są niezależne od indeksów variant. Specyfikacja ustala kolejność i ograniczenia klucza; testy chronią ID, równość, porządek kluczy i niezależność kopii pełnych komend. Bez emisji i usług. [Raport P041-01](docs/workflow/history/P041-01.md)
 
 P041-02: resolve_run_turn_events wywołuje wspólny resolver runu raz i zwraca listę wartości: akcja, dostawa, sukces sektora, koniec runu. Brak usług i zmian core/preview. Testy każdej komendy, odmów i terminalnych wejść sprawdzają pełne stany, klucze, payloady, kolejność i niezależność kopii przy3 powtórzeniach. Trzy sektory obejmują sukces w turze48, dostawę z przeciążeniem i śmierć na wyjściu po dostawie bez sukcesu sektora. Korpus pełnych sekwencji i restore pozostaje P041-03. [Raport P041-02](docs/workflow/history/P041-02.md)
+
+P041-03: Korpus pełnych runów porównuje każdą listę kluczy i payloadów oraz pełny stan po dwóch odtworzeniach checkpointu granicy. Cztery seedy, obie kolejności modułów, opłacony impuls, śmierć i overload; powtarzane preview bez kanału zdarzeń. Bez kodu produkcyjnego. [Raport P041-03](docs/workflow/history/P041-03.md)
