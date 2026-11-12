@@ -1,9 +1,9 @@
 # Następny mały krok
 
-Task: P026-03
+Task: P026-04
 
-Przeczytaj AGENTS.md, .agents/skills/next-step/SKILL.md, .agents/skills/cpp-core-step/SKILL.md, docs/WORKFLOW.md, STATE.json, history/P026-02.md, bieżący wpis i zależności w docs/plan/tasks.json, docs/ARCHITECTURE.md, docs/GAME_DESIGN.md, docs/TESTING.md i README.md. Rozpocznij od git status i walidatora.
+Przeczytaj AGENTS.md, .agents/skills/next-step/SKILL.md, .agents/skills/cpp-core-step/SKILL.md, docs/WORKFLOW.md, STATE.json, history/P026-03.md, bieżący wpis i zależności w docs/plan/tasks.json, docs/ARCHITECTURE.md, docs/GAME_DESIGN.md, docs/TESTING.md i README.md. Rozpocznij od git status i walidatora.
 
-Dodaj jeden helper overdrive_from_player(GameState&, NodeId) w src/core/player_overdrive.hpp. Cel/zasięg dokładnie jak rotate_from_player, reserve>=1, dług<UINT32_MAX. Dwa obroty zgodnie z zegarem oraz -1 reserve/+1 debt atomowo, bez kosztu tury i bez kontroli HP/terminalności. Można wykonać pierwszy obrót dopiero po kontroli zasobów; drugi nie może zawieść po pierwszym, bo nie zmieniają się zasięg i rotatable. Bez Command/resolvera/CLI i spawnu; replay pozostaje 3. Dodaj test celu, wszystkie 16 masek, granice rezerwy 0/1/3 oraz długu 0/MAX-1/MAX, pełny stan i mutację pojedynczego obrotu po Rebuild.
+Dodaj OverdriveCommand{NodeId target} do Command i obsłuż przez overdrive_from_player w legalności i resolverze, przed ruchem/dostawą/zagrożeniami, z jednym wspólnym charge_turn. Preview deleguje bez zmiany. Replay 4, hash v2. Testy muszą wykazać koszt przed regeneracją (reserve3→2→3), topologię po obu obrotach, jedną turę, odmowy zasobów/celu/terminalności przed fazami, preview=resolver dla sukcesu/odmowy/śmierci/47→48 oraz pełną niezmienność stanu, komendy i zewnętrznego RNG. Czytaj command.hpp, turn_resolver.hpp, turn_preview.hpp, odpowiednie testy oraz replay_runner i CLI. Dodaj jawny korpus replay nowej komendy, odrzuć 1/2/3 bez wyniku/stdout. CLI w tym kroku nadal bez tokenu overdrive. Mutacja kosztu lub kolejności po Rebuild wymagana. Bez spawnu długu/runu.
 
 Wykonaj wyłącznie ten kontrakt. Konfiguracja CMake, build i pełne CTest Debug/Release, formatter src/tests/tools, walidator i git diff --check. Przy zmianie zachowania potwierdź właściwy przypadek odmowy, pełny stan i negatywną mutację po wymuszonym Rebuild. Zapisz raport, zaktualizuj STATE/NEXT i README, wykonaj lokalny commit własnych zmian, sprawdź hash/zakres/czystość. Bez pushu, prezentacji, assetów i treści dla gracza. Nie realizuj kolejnego ID w tym samym kroku.
