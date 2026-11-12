@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P041-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P041-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -258,3 +258,5 @@ P040-05: save_profile_file publikuje poprzedni poprawny main jako backup, potem 
 P040-06: Test integracyjny uruchamia12 osobnych procesów dla4 wektorów: writer i reader przed/po usunięciu runu. Po usunięciu4 jawnych nazw checkpointu wszystkie bajty profilu, backupu i obu staging pozostają identyczne. Pełne wartości i Unicode potwierdzone. Cały zakres dzieci profilu zakończony; bez produkcyjnego delete i integracji sesji. [Raport P040-06](docs/workflow/history/P040-06.md)
 
 P041: P041 rozbito wyłącznie planistycznie na trzy dzieci: model/specyfikacja, wartościowe zdarzenia zaakceptowanej tury oraz korpus sekwencji/restartu/preview. P042 zależy od P041-03. Nie zmieniono resolvera ani nie dodano usług. [Raport P041](docs/workflow/history/P041.md)
+
+P041-01: Dodano wartościowe DomainEvent, payloady i klucz wystąpienia seed/sektor/tura/ordinal. Stałe ID rodzajów1..4 i powodów końca1..3 są niezależne od indeksów variant. Specyfikacja ustala kolejność i ograniczenia klucza; testy chronią ID, równość, porządek kluczy i niezależność kopii pełnych komend. Bez emisji i usług. [Raport P041-01](docs/workflow/history/P041-01.md)
