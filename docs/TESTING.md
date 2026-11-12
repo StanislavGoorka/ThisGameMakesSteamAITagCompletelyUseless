@@ -116,6 +116,12 @@ pełnego stanu i listy kluczy/payloadów. Obejmuje opłacony impuls długu,
 oczekującą listę; typ RunResult nie udostępnia zdarzeń. Bez usług i trwałej
 deduplikacji pomiędzy odrębnymi próbami lub gałęziami.
 
+P042-01/02: `application_profile_unlock` sprawdza 32 maski ×256 ID z dwoma
+zestawami ustawień, duplikaty i invalid profile. `windows_profile_unlock`
+sprawdza pięć kolejnych odblokowań, zachowanie ustawień, dokładną niezmienność
+czterech nazw przy duplikacie, blokady main/temp/bak/bak.tmp, odmowę publikacji,
+retry, uszkodzony main, brak rodzica i nieznane ID. Restart procesu to P042-03.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

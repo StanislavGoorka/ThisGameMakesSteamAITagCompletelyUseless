@@ -62,3 +62,11 @@ P040-06 potwierdza trwałość przez zamknięcie writera i nowy proces readera.
 Usunięcie czterech nazw runu zachowuje dokładne bajty wszystkich nazw profilu,
 również pozostawionych staging. Jest to dowód integracyjny oddzielnych plików;
 produkcyjny wybór katalogu, reset runu oraz podłączenie sesji nadal nie istnieją.
+
+P042-02: `unlock_profile_file` czyta bieżący zbiór z dysku, zmienia jeden bit
+i publikuje przez istniejący save. Wyniki rozróżniają nowe odblokowanie,
+duplikat, obce ID, błąd odczytu i błąd zapisu. Tylko ERROR_FILE_NOT_FOUND
+pozwala utworzyć domyślny profil. Duplikat nie zapisuje żadnej z czterech nazw.
+Nie ma resetu invalid main ani fallbacku do starszego backupu. Warunek jednego
+zapisującego nadal obowiązuje; aplikacja po błędzie może ponowić tę samą operację.
+Przerwanie po udanym rename, przed odpowiedzią daje przy retry duplikat.
