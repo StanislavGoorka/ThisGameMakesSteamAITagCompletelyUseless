@@ -30,7 +30,8 @@ int main()
     for (unsigned mask = 0; mask < 4; ++mask)
     {
         const auto modules = loadout(mask);
-        if (rotation_rules(modules).maximum_distance != 1)
+        const int limit = (mask == 1 || mask == 3) ? 2 : 1;
+        if (rotation_rules(modules).maximum_distance != limit)
             return 1;
         for (int source = 0; source < 49; ++source)
             for (int destination = 0; destination < 49; ++destination)
@@ -42,7 +43,7 @@ int main()
                     state.rotatable_nodes[destination] = rotatable;
                     auto expected = state;
                     const bool legal =
-                        rotatable && distance(source, destination) <= 1;
+                        rotatable && distance(source, destination) <= limit;
                     if (legal)
                         expected.ports[destination] = *PortMask::from_bits(4);
                     if (rotate_from_player(state, node(destination)) != legal ||
@@ -70,7 +71,7 @@ int main()
                 const Command command =
                     overdrive ? Command{OverdriveCommand{node(target)}}
                               : Command{RotateCommand{node(target)}};
-                const bool legal = distance(24, target) <= 1;
+                const bool legal = distance(24, target) <= limit;
                 auto expected = state;
                 if (legal)
                 {

@@ -9,11 +9,10 @@ struct RotationRules
     int maximum_distance{1};
 };
 
-// One deterministic port for rotation rule changes. Registered module IDs
-// carry no effects until their own implementation steps.
+// One deterministic port for implemented rotation rule changes.
 [[nodiscard]] constexpr RotationRules
-rotation_rules(const ModuleLoadout &) noexcept
+rotation_rules(const ModuleLoadout &modules) noexcept
 {
-    return {};
+    return {modules.contains(ModuleId::rotation_range) ? 2 : 1};
 }
 } // namespace closed_circuit

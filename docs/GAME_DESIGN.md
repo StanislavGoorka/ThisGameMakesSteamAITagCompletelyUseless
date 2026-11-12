@@ -28,6 +28,8 @@ Przykład decyzji: obrót rozgałęzienia zapewnia dostawę za dwie tury, ale wp
 
 Nielegalna komenda nie zmienia stanu, czasu ani RNG. Co 3 długu powstaje dodatkowy impuls na wejściu następnego sektora, po czym dług maleje o 3. Przy przejściu do sektora jest jedna próba spawnu na wejściu: impuls lub blocked_nodes blokują ją, a gracz i pakiet mogą współdzielić pole. Przy braku miejsca dług pozostaje; dług 6 daje jeden impuls i resztę 3, bo wejście mieści jedną jednostkę. Brak pasywnego farmienia zasobów. Overdrive dołączamy dopiero po walidacji podstawowego obiegu.
 
+Moduł `rotation_range` zwiększa zasięg celu `rotate` i `overdrive` z 1 do 2 kroków Manhattan na siatce 7×7. Obejmuje także przesunięcie o jedno pole w obu osiach; granice planszy nie zawijają się. Połączenie i wolne pole nadal nie są wymagane, a nieruchomy węzeł pozostaje niedozwolony. Moduł `terminal_rotation` czeka na osobny krok P033.
+
 ## Kolejność tury
 
 1. Waliduj komendę; przy błędzie zwróć wynik bez mutacji.

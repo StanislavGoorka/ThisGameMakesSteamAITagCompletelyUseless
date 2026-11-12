@@ -26,7 +26,7 @@ P022 zamknięto jako podział planu; oba dzieci są zaimplementowane. P022-01 im
 
 P023 implementuje `preview_turn(const GameState&, const Command&)`, które deleguje do wartościowego resolvera bez dodatkowej kopii i bez dostępu do zapisu, achievementów oraz RNG. Podgląd i wykonanie tury zwracają identyczne state/accepted/outcome; wyniki posiadają niezależne kopie. Korpus testów chroni pełny live state i komendę przy powtórzeniach, legalnych akcjach, odmowach oraz końcu sektora. Debug i Release po P023 zaliczyły po 24/24 CTest. [Raport P023](docs/workflow/history/P023.md)
 
-P024 zamknięto jako podział planu. P024-01 implementuje deweloperskie `state_hash(const GameState&)`: FNV-1a 64-bit jawnego kodowania v3 wszystkich pól, ze stałymi szerokościami little-endian, tagami optional i zachowaniem kolejności impulsów. Hash służy regresji, jest niekryptograficzny i nie gwarantuje braku kolizji. P024-02 implementuje `seeded_fixture(RunSeed)`: niewyświetlany stały kwadrat węzłów 0/1/7/8, z lokalnym SplitMix64 wybierającym wyłącznie orientację węzła 1. P024-03 implementuje `run_replay(version, seed, commands)`: wersja 5 zwraca początkowy hash, accepted/outcome/hash po każdej próbie i niezależny stan końcowy; obca wersja nie zwraca wyniku. Runner używa tego samego resolvera i nie przerywa po odmowie. P024-04 implementuje `developer_replay.exe`: pełne parsowanie argumentów przed runnerem oraz stabilny numeryczny ślad. Błędne argumenty lub obca wersja dają niezerowy kod i pusty stdout. Narzędzie jest budowane przy BUILD_TESTING i pozostaje poza paczką gry. Fixture jest odrębny od generatora sektorów P028 i nie obiecuje wygrywalności. Debug i Release po P024-04 zaliczyły po 28/28 CTest. [Raport P024-04](docs/workflow/history/P024-04.md) [Raport P024-03](docs/workflow/history/P024-03.md) [Raport P024-02](docs/workflow/history/P024-02.md) · [Raport P024](docs/workflow/history/P024.md) · [Raport P024-01](docs/workflow/history/P024-01.md)
+P024 zamknięto jako podział planu. P024-01 implementuje deweloperskie `state_hash(const GameState&)`: FNV-1a 64-bit jawnego kodowania v3 wszystkich pól, ze stałymi szerokościami little-endian, tagami optional i zachowaniem kolejności impulsów. Hash służy regresji, jest niekryptograficzny i nie gwarantuje braku kolizji. P024-02 implementuje `seeded_fixture(RunSeed)`: niewyświetlany stały kwadrat węzłów 0/1/7/8, z lokalnym SplitMix64 wybierającym wyłącznie orientację węzła 1. P024-03 implementuje `run_replay(version, seed, commands)`: wersja 6 zwraca początkowy hash, accepted/outcome/hash po każdej próbie i niezależny stan końcowy; obca wersja nie zwraca wyniku. Runner używa tego samego resolvera i nie przerywa po odmowie. P024-04 implementuje `developer_replay.exe`: pełne parsowanie argumentów przed runnerem oraz stabilny numeryczny ślad. Błędne argumenty lub obca wersja dają niezerowy kod i pusty stdout. Narzędzie jest budowane przy BUILD_TESTING i pozostaje poza paczką gry. Fixture jest odrębny od generatora sektorów P028 i nie obiecuje wygrywalności. Debug i Release po P024-04 zaliczyły po 28/28 CTest. [Raport P024-04](docs/workflow/history/P024-04.md) [Raport P024-03](docs/workflow/history/P024-03.md) [Raport P024-02](docs/workflow/history/P024-02.md) · [Raport P024](docs/workflow/history/P024.md) · [Raport P024-01](docs/workflow/history/P024-01.md)
 
 P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema sekwencjami po trzy tury. Obrót węzła 7 otwiera krawędź dla pakietu i impulsu: pakiet zostaje dostarczony, a zagrożenie rusza do gracza. Kolejny obrót zamyka pościg i zachowuje HP. Pełne dane, trasy i ograniczenia zawiera [raport P025](docs/workflow/history/P025.md). To dowód działania reguł w syntetycznym scenariuszu, bez oceny grywalności lub balansu. Debug i Release zaliczyły po 29/29 CTest.
 
@@ -128,10 +128,10 @@ Obie konfiguracje korzystają z katalogu `build/windows-msvc/`, ignorowanego prz
 Deweloperskie CLI jest dostępne w buildzie z `BUILD_TESTING=ON` (domyślnie). Uruchomiona lokalnie komenda:
 
 ```powershell
-.\build\windows-msvc\Debug\developer_replay.exe 5 0 rotate:1
+.\build\windows-msvc\Debug\developer_replay.exe 6 0 rotate:1
 ```
 
-Argumenty to dziesiętne `version seed`, potem dowolna liczba `wait`, `move:NodeId` `rotate:NodeId` lub `overdrive:NodeId`. Wersja 5, seed 0–18446744073709551615, NodeId 0–48; liczby wymagają wyłącznie cyfr, bez znaku lub białych znaków. Początkowa linia ma format `0 initial_hash`; każda następna `numer_próby accepted outcome hash` (próby od 1, accepted 0/1). Jawne numery outcome: 0=ongoing, 1=completed, 2=death, 3=overload. Każda linia kończy się nową linią. Dla powyższej komendy wynik to:
+Argumenty to dziesiętne `version seed`, potem dowolna liczba `wait`, `move:NodeId` `rotate:NodeId` lub `overdrive:NodeId`. Wersja 6, seed 0–18446744073709551615, NodeId 0–48; liczby wymagają wyłącznie cyfr, bez znaku lub białych znaków. Początkowa linia ma format `0 initial_hash`; każda następna `numer_próby accepted outcome hash` (próby od 1, accepted 0/1). Jawne numery outcome: 0=ongoing, 1=completed, 2=death, 3=overload. Każda linia kończy się nową linią. Dla powyższej komendy wynik to:
 
 ```text
 0 4293707461699098855
@@ -159,7 +159,7 @@ Projekt nie wymaga Pythona. Skrypty utrzymaniowe korzystają z Windows PowerShel
 Dodatkowa uruchomiona komenda replay overdrive:
 
 ```powershell
-.\build\windows-msvc\Debug\developer_replay.exe 5 0 overdrive:1 overdrive:1 overdrive:1 overdrive:1 overdrive:1
+.\build\windows-msvc\Debug\developer_replay.exe 6 0 overdrive:1 overdrive:1 overdrive:1 overdrive:1 overdrive:1
 ```
 
 Cztery przyjęte akcje kończą się reserve0/debt4/tura4; piąta jest odmową i zachowuje hash 8740532863352877095.
@@ -187,3 +187,5 @@ P031-01 implementuje ModuleLoadout: dwa kanoniczne sloty i stabilne ModuleId1/2,
 P031-02 dodaje pusty GameState::modules. Pełny hashv3 koduje dwa kanoniczne bajty slotów; bieżąca wersja replay5 odrzuca poprzednie. Cztery niezależne wektory modułów i niezmieniony korpus;42/42 CTest Debug/Release. [Raport P031-02](docs/workflow/history/P031-02.md)
 
 P031-03 podłącza wspólny czysty port RotationRules do helpera obrotu. Wszystkie zestawy nadal mają bazowy zasięg1.19208 przypadków geometrii oraz pełne stany komendy/podglądu/wykonania:43/43 CTest Debug/Release. [Raport P031-03](docs/workflow/history/P031-03.md)
+
+P032 aktywuje rotation_range: rotate i overdrive w odległości Manhattan2; bez modułu1, nieruchome odrzucane. Pakiet i impuls korzystają z nowo otwartej trasy w teście pełnego stanu. Bieżący replay6/hashv3;44/44 CTest Debug/Release. Korpus1000+7000 bez zmian. Zakończono10 osobno commitowanych kroków; następny P033. [Raport P032](docs/workflow/history/P032.md)
