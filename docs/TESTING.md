@@ -46,7 +46,7 @@ i 40 800 zmian pojedynczego bajtu bez odnowienia checksumy. Dodatkowo 32 768 zmi
 pól z odnowioną checksumą i 65 536 par slotów sprawdza semantykę i kanoniczność.
 Raport P037-04 opisuje wymuszony Rebuild z celowo pominiętą walidacją reserved.
 
-## Ocena grywalności
+## Adapter checkpointu Windows
 
 P038-01: `windows_checkpoint_read` sprawdza rzeczywiste pliki40 bajtów,
 literalne wektory i pełne restore, ucięcia, nadmiar do1MiB, uszkodzenie,
@@ -59,6 +59,19 @@ Istniejące main i bak pozostają niezmienione.
 P038-03: `windows_checkpoint_save` sprawdza publikację i kolejne backupy,
 niepoprawny/niedostępny main, blokady każdej ścieżki oraz retry. Zły staging,
 ta sama ścieżka i publikacja do innego katalogu są odrzucane.
+
+P038-04: `windows_checkpoint_interrupt` uruchamia rzeczywisty save w osobnym
+procesie i kończy go przez TerminateProcess po sygnale zdarzenia. Testowe
+przechwycenie wywołań Win32 w jednej jednostce kompilacji pozwala zatrzymać
+proces po17 zapisanych bajtach, po flush40 bajtów oraz po rename bak i main.
+Cztery literalne wektory dają16 przerwań na uruchomienie. Dokładne main/bak/temp,
+pełny RunState po restore i retry są sprawdzane w ścieżce z polskimi znakami.
+Testuje też brak katalogu i katalog blokujący temp. Mutacja zapisu bezpośrednio
+do main jest wykrywana po pierwszym przerwaniu. Szczegóły w raporcie P038-04.
+To test zakończenia procesu między wywołaniami API; nie zaniku zasilania,
+awarii nośnika, wnętrza syscall ani konkurencyjnych zapisów.
+
+## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 

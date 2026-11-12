@@ -1,6 +1,7 @@
 # Checkpoint granicy sektora v1
 
-Specyfikacja P036; kodek pamięciowy wdrożono w P037-01..04, IO pozostaje P038/P039. Checkpoint odtwarza
+Specyfikacja P036; kodek pamięciowy wdrożono w P037-01..04, adapter plików Windows w P038-01..04.
+Automatyczne odzyskiwanie pozostaje P039. Checkpoint odtwarza
 początek bieżącego sektora po starcie lub przejściu, przed pierwszą akcją.
 Zamknięcie w trakcie sektora wznawia ten początek. Nie zapisujemy profilu,
 achievementów, ustawień ani stanu okna. To dane wewnętrzne, bez tekstów dla gracza.
@@ -91,4 +92,7 @@ zasobów i zestawów, pełna rekonstrukcja początku każdego sektora, obie rodz
 topologii, powtórzenia i niezależność kopii. Każde ucięcie0..39, nadmiar danych,
 pojedyncze zmiany bajtów, błędne pola z ponownie policzoną checksumą, obie obce
 wersje. Impuls/dług po resume ma zachować dokładnie jeden już opłacony spawn.
-Zapis temp, zamiana i backup pozostają P038/P039; ten format nie jest dowodem IO.
+P038-01..04 wdraża ograniczony reader, staging z flush i publikację ze
+zwalidowanym backupem. Testy plikowe i przerwania procesu opisuje
+[TESTING](TESTING.md); sam format nie jest dowodem IO. Odzyskiwanie P039
+pozostaje osobnym zadaniem. Schema1/run_rules1, hashv4/replay8 bez zmian.
