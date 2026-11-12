@@ -8,7 +8,7 @@
 namespace closed_circuit::developer
 {
 
-// Synthetic, undisplayed developer data for replay v1, not a sector generator.
+// Synthetic, undisplayed developer data for replay v2, not a sector generator.
 // Only node 1's initial orientation depends on the seed.
 [[nodiscard]] inline GameState seeded_fixture(RunSeed seed)
 {

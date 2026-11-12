@@ -40,6 +40,7 @@ struct GameState
 {
     static constexpr std::size_t node_count = NodeId::max_value + 1;
     static constexpr std::uint8_t initial_player_integrity = 3;
+    static constexpr std::uint8_t reserve_limit = 3;
 
     std::array<PortMask, node_count> ports{};
     std::array<bool, node_count> rotatable_nodes{};
@@ -63,6 +64,8 @@ struct GameState
     std::optional<NodeId> sector_exit{};
     // Value-owned units; their positions are the only pulse occupancy record.
     std::vector<Pulse> pulses{};
+    std::uint8_t reserve{2};
+    std::uint32_t overload_debt{0};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

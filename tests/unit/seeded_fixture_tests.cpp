@@ -25,7 +25,9 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.player_position == right.player_position &&
+    return left.reserve == right.reserve &&
+           left.overload_debt == right.overload_debt &&
+           left.player_position == right.player_position &&
            left.player_integrity == right.player_integrity &&
            left.turns_taken == right.turns_taken &&
            left.packet == right.packet &&
@@ -71,10 +73,10 @@ struct Vector
 // Independent BigInteger SplitMix64 and canonical byte stream calculations;
 // see history/P024-02.md. These four seeds cover every initial orientation.
 constexpr std::array vectors{
-    Vector{RunSeed{0}, 6, 7229561696845526205ULL},
-    Vector{RunSeed{1}, 9, 18006929851103986098ULL},
-    Vector{RunSeed{2}, 3, 826881297037723540ULL},
-    Vector{RunSeed{UINT64_MAX}, 12, 18070937588695573379ULL}};
+    Vector{RunSeed{0}, 6, 2662686785220386338ULL},
+    Vector{RunSeed{1}, 9, 17930603895420106755ULL},
+    Vector{RunSeed{2}, 3, 10898806915939585789ULL},
+    Vector{RunSeed{UINT64_MAX}, 12, 15288789527669922352ULL}};
 
 bool vectors_repeat_without_changing_external_rng()
 {
@@ -111,6 +113,8 @@ bool values_are_independent()
         const auto before = seeded_fixture(vector.seed);
         auto changed = seeded_fixture(vector.seed);
         auto copy = changed;
+        changed.reserve = 0;
+        changed.overload_debt = 13;
         changed.ports[0] = *PortMask::from_bits(0);
         changed.rotatable_nodes[1] = false;
         changed.blocked_nodes[48] = true;

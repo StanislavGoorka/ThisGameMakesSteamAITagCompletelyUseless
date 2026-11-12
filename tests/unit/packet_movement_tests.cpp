@@ -45,6 +45,8 @@ GameState corridor_board()
     state.sector_entry = node(24);
     state.sector_exit = *NodeId::from_value(48);
     state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
+    state.reserve = 0;
+    state.overload_debt = 17;
     return state;
 }
 
@@ -57,6 +59,8 @@ GameState detour_board()
     state.ports[18] = ports(PortMask::east_bit | PortMask::west_bit);
     state.ports[19] = ports(PortMask::south_bit | PortMask::west_bit);
     state.ports[26] = ports(PortMask::north_bit | PortMask::west_bit);
+    state.reserve = 1;
+    state.overload_debt = 17;
     return state;
 }
 
@@ -72,12 +76,16 @@ GameState open_board(int player, int packet, int target)
     state.sector_entry = node(24);
     state.sector_exit = *NodeId::from_value(48);
     state.pulses = {{*EntityId::from_value(11), *NodeId::from_value(48)}};
+    state.reserve = 2;
+    state.overload_debt = 17;
     return state;
 }
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.player_position == right.player_position &&
+    return left.reserve == right.reserve &&
+           left.overload_debt == right.overload_debt &&
+           left.player_position == right.player_position &&
            left.player_integrity == right.player_integrity &&
            left.turns_taken == right.turns_taken &&
            left.packet == right.packet &&

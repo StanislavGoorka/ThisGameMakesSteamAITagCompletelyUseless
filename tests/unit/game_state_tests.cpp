@@ -33,7 +33,8 @@ bool initial_state_preserves_input_and_starts_at_zero()
     rotatable_nodes.back() = true;
 
     const auto state = GameState::initial(ports, rotatable_nodes, start);
-    if (!state || state->player_position != start ||
+    if (!state || state->reserve != 2 || state->overload_debt != 0 ||
+        GameState::reserve_limit != 3 || state->player_position != start ||
         state->player_integrity != 3 ||
         state->player_integrity != GameState::initial_player_integrity ||
         !state->player_alive() || state->turns_taken != TurnIndex{0} ||
@@ -187,6 +188,16 @@ bool exit_copies_preserve_value_and_change_independently()
     if (copy.sector_exit != start || second_copy.sector_exit != start)
     {
         std::cerr << "Two successive copies must preserve a nonempty exit\n";
+        return false;
+    }
+    copy.reserve = 0;
+    copy.overload_debt = 7;
+    second_copy.reserve = 3;
+    second_copy.overload_debt = UINT32_MAX;
+    if (original.reserve != 2 || original.overload_debt != 0 ||
+        copy.reserve != 0 || copy.overload_debt != 7 ||
+        second_copy.reserve != 3 || second_copy.overload_debt != UINT32_MAX)
+    {
         return false;
     }
     copy.sector_exit = *NodeId::from_value(0);

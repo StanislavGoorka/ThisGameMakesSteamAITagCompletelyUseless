@@ -47,12 +47,16 @@ GameState board_with_receivers(std::initializer_list<int> receivers)
     {
         state.receiver_nodes[node(receiver).value()] = true;
     }
+    state.reserve = 0;
+    state.overload_debt = 17;
     return state;
 }
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.player_position == right.player_position &&
+    return left.reserve == right.reserve &&
+           left.overload_debt == right.overload_debt &&
+           left.player_position == right.player_position &&
            left.player_integrity == right.player_integrity &&
            left.turns_taken == right.turns_taken &&
            left.packet == right.packet &&

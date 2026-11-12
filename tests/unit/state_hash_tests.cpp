@@ -24,7 +24,9 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.player_position == right.player_position &&
+    return left.reserve == right.reserve &&
+           left.overload_debt == right.overload_debt &&
+           left.player_position == right.player_position &&
            left.player_integrity == right.player_integrity &&
            left.turns_taken == right.turns_taken &&
            left.packet == right.packet &&
@@ -216,17 +218,39 @@ int main()
     const GameState minimal{.player_position = node(0)};
     const auto full = full_state();
     // Independently constructed byte vectors, computed with PowerShell
-    // BigInteger. See history/P024-01.md for the complete reference
+    // BigInteger. See history/P026-01.md for the complete reference
     // calculation.
-    if (checked_hash(minimal) != 13972979675829650943ULL)
+    if (checked_hash(minimal) != 5454325680132315250ULL)
     {
-        std::cerr << "Minimal state must match canonical v1 vector\n";
+        std::cerr << "Minimal state must match canonical v2 vector\n";
         return 1;
     }
-    if (checked_hash(full) != 5610859398122436359ULL)
+    if (checked_hash(full) != 4935712927553997098ULL)
     {
-        std::cerr << "Full state must match canonical v1 vector\n";
+        std::cerr << "Full state must match canonical v2 vector\n";
         return 1;
+    }
+    struct ResourceVector
+    {
+        std::uint8_t reserve;
+        std::uint32_t debt;
+        std::uint64_t hash;
+    };
+    const ResourceVector resources[]{
+        {0, 0, 3626490588065760172ULL},         {1, 0, 4540408134099037711ULL},
+        {2, 0, 5454325680132315250ULL},         {3, 0, 6368243226165592789ULL},
+        {255, 0, 16998467472476921585ULL},      {2, 1, 16982041028146599171ULL},
+        {2, UINT32_MAX, 1363861989478843342ULL}};
+    for (const auto &vector : resources)
+    {
+        auto value = minimal;
+        value.reserve = vector.reserve;
+        value.overload_debt = vector.debt;
+        if (checked_hash(value) != vector.hash)
+        {
+            std::cerr << "Resource vector mismatch\n";
+            return 1;
+        }
     }
     for (int repeat = 0; repeat < 3; ++repeat)
     {
