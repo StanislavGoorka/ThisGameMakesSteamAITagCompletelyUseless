@@ -175,3 +175,5 @@ P030 zamknięto wyłącznie jako podział korpusu na cztery dzieci: stałe seedy
 P030-01 zapisuje korpus v1 (0…998 i MAX) i bazowy adapter sektora bez długu/impulsów. Dwa niezależne pełne wektory i unikalność seedów:36/36 CTest Debug/Release. [Raport P030-01](docs/workflow/history/P030-01.md)
 
 P030-02 dodaje deweloperskiego świadka wyłącznie bazowej rodziny P028. Cztery certyfikaty i pełne stany końcowe, odmowy spoza kontraktu:37/37 CTest Debug/Release. [Raport P030-02](docs/workflow/history/P030-02.md)
+
+P030-03 dodaje kontrolę początkowych spawnów oraz odrębne scenariusze długu. Duplikaty i niedozwolone pola odrzucane; pełne stany sprawdzone.38/38 CTest Debug/Release. [Raport P030-03](docs/workflow/history/P030-03.md)
