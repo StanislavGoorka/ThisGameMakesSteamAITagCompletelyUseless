@@ -127,6 +127,11 @@ wszystkich pięciu ID. Sprawdza dokładne main/bak i pełne ustawienia po nowym
 odblokowaniu, duplikacie i ponownym odczycie; błąd corrupt/locked main zachowuje
 dane. To restart procesu, bez dowodu zaniku zasilania lub współbieżnych writerów.
 
+P043: `windows_achievement_sink` sprawdza cztery odpowiedzi fake portu,
+polimorficzne wywołanie lokalnego adaptera, dwa obiekty korzystające z tego
+samego profilu, duplikat, nieznane ID, błąd odczytu i retry. Test jest lokalny,
+bez zależności od sieci, klienta Steam albo SDK. Preview nie przyjmuje sinka.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

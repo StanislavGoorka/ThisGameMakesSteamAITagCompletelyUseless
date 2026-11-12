@@ -97,7 +97,7 @@ P041-01/02: [kontrakt zdarzeń v1](DOMAIN_EVENTS.md) definiuje wartościowe
 payloady i klucz wewnątrz próby. `resolve_run_turn_events` wywołuje istniejący
 resolver raz i zwraca listę: akcja, dostawa, sukces sektora, koniec runu.
 Odmowa daje pustą listę; preview nadal zwraca tylko wynik core, bez usług.
-Korpus pełnych sekwencji i restore pozostaje P041-03. Brak evaluatorów,
+Korpus pełnych sekwencji i restore sprawdzono w P041-03. Brak evaluatorów,
 dispatchu, outboxu i globalnej tożsamości prób; seed nie jest unikalnym ID runu.
 
 Port `AchievementSink` ma backend lokalny i później Steam. Najpierw trwały zapis lokalny, potem idempotentna synchronizacja z kolejką i potwierdzeniami. Offline i brak Steam nie blokują gry. [Dokumentacja Steamworks](https://partner.steamgames.com/doc/features/achievements) opisuje odblokowanie i zapis statystyk; aktualne API sprawdzić przy implementacji. Ikony, opisy i nazwy wymagają pochodzenia tak samo jak reszta treści.
@@ -107,6 +107,13 @@ Port `AchievementSink` ma backend lokalny i później Steam. Najpierw trwały za
 Renderer używa wyłącznie zatwierdzonego manifestu. Brak zasobu oznacza kontrolowany błąd lub wyłączenie widoku, nie rysowanie nowej ikony. Panele, ścieżki i znaczniki powstają z pozyskanych elementów. Zwykłe pozycjonowanie i skalowanie gotowych bitmap jest operacją prezentacji; nie daje prawa do twórczego przerabiania artworku.
 
 Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych finalnych tekstów z dowodami pochodzenia. Komunikat błędu pokazywany graczowi również jest treścią. Wewnętrznych nazw nie wyświetlaj jako finalnego tytułu. Binarne identyfikatory nie mogą wyciekać na UI jako nieoznaczone etykiety.
+
+P043: `AchievementSink` jest małym portem application z wynikami unlocked,
+already_unlocked, invalid i unavailable. Oba pierwsze potwierdzają trwały zbiór;
+błąd pozwala na retry tego samego ID. `windows::LocalAchievementSink` posiada
+wyłącznie ścieżkę profilu i deleguje do unlock_profile_file, bez cache, sieci
+i Steam SDK. Instancje odczytują ten sam trwały zbiór. Dispatch i predykaty
+pozostają przyszłymi krokami; symulacja i preview nie otrzymują tego portu.
 
 ## Styl i budżety
 
