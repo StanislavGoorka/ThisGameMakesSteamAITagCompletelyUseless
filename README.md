@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P037-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P037-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -226,3 +226,5 @@ P037: P037 zamknięto wyłącznie jako podział planu na cztery dzieci: projekcj
 P037-01: RunCheckpoint, is_checkpoint_valid, capture_checkpoint i restore_checkpoint działają w application bez IO. Capture odrzuca każdą różnicę lokalnego stanu względem początku wygenerowanego sektora. Restore przenosi HP/rezerwę/dług/moduły i odtwarza opłacony impuls ID0 bez ponownego pobrania3 długu. Hashv4/replay8 bez zmiany; format bajtowy jeszcze niezaimplementowany. [Raport P037-01](docs/workflow/history/P037-01.md)
 
 P037-02: encode_checkpoint zwraca optional kanonicznej tablicy40 bajtów. Jawne LE, magic, schema1/run_rules1, dwa kanoniczne sloty i checksum FNV-1a64. Walidacja wartości poprzedza kodowanie; brak serializacji pamięci C++, brak decoder i IO. Hashv4/replay8 bez zmiany. [Raport P037-02](docs/workflow/history/P037-02.md)
+
+P037-03: decode_checkpoint przyjmuje const span bajtów i po dokładnej kontroli długości40 sprawdza magic, schema1/run_rules1, checksum, reserved, flagę, kanoniczne moduły i zakresy. Zwraca optional RunCheckpoint, bez częściowego wyniku, IO i alokacji zależnych od danych. Hashv4/replay8 i format bez zmiany. [Raport P037-03](docs/workflow/history/P037-03.md)
