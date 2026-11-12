@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P034-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P035**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -202,3 +202,5 @@ P033-03: reset_sector_module_usage(GameState&) odnawia wyłącznie jednorazowy l
 P034: P034 zamknięto wyłącznie jako podział planu na deterministyczną ofertę i atomowy wybór. Oferta zawiera najwyżej dwa nieposiadane moduły; po wyczerpaniu katalogu jest pusta. P035 zależy od P034-02. Bez kodu i bez bramkowania runu. [Raport P034](docs/workflow/history/P034.md)
 
 P034-01: module_offer(const ModuleLoadout&) zwraca wartościową, kompaktową tablicę dwóch optional ModuleId w porządku ID1/2. Zawiera wyłącznie niezainstalowane moduły; pełny zestaw daje pustą ofertę. Odczyt nie zmienia stanu ani RNG. Hashv4/replay8 pozostają bez zmian, bo nie dodano pól ani reguł tury. [Raport P034-01](docs/workflow/history/P034-01.md)
+
+P034-02: choose_module(GameState&, ModuleId) przelicza ofertę z bieżącego zestawu i dodaje dokładnie jeden wskazany moduł. Duplikat, obcy ID i pełny zestaw są odrzucane bez mutacji. Sukces zmienia wyłącznie modules; bramkowanie okna nagrody pozostaje odpowiedzialnością przyszłego runu. Hashv4/replay8 bez zmiany: format GameState i istniejący resolver nie zmieniły się. [Raport P034-02](docs/workflow/history/P034-02.md)
