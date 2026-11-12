@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P038-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P038-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -234,3 +234,5 @@ P037-04: Korpus integracyjny potwierdza pamięciowy kodek checkpointu v1 dla 110
 P038 zamknięto wyłącznie jako podział adaptera Windows na ograniczony odczyt, staging, publikację z backupem i testy przerwania. P039 zależy od P038-04; nie dodano IO. [Raport P038](docs/workflow/history/P038.md)
 
 P038-01: Ograniczony reader Win32 i RAII uchwytu: dokładnie40 bajtów, walidacja, rozróżnienie brak/uszkodzenie/IO. 58/58 CTest Debug/Release. Bez fallbacku i zapisu. [Raport P038-01](docs/workflow/history/P038-01.md)
+
+P038-02: Staging wartości checkpointu: pełny WriteFile, flush i zamknięcie; retry po resztkach/błędzie. 59/59 CTest Debug/Release. Bez publikacji. [Raport P038-02](docs/workflow/history/P038-02.md)

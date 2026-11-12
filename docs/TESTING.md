@@ -52,6 +52,10 @@ P038-01: `windows_checkpoint_read` sprawdza rzeczywiste pliki40 bajtów,
 literalne wektory i pełne restore, ucięcia, nadmiar do1MiB, uszkodzenie,
 brak, katalog i blokadę uchwytu. Odczyt nie zmienia plików.
 
+P038-02: `windows_checkpoint_stage` sprawdza dokładne bajty staging, retry,
+resztki poprzedniego staging, odmowę złej wartości, blokadę i brak katalogu.
+Istniejące main i bak pozostają niezmienione.
+
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 
 Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą poprawkę, jeśli połączenie byłoby zbyt duże. Testy screenshotowe wolno opierać tylko na zatwierdzonych assetach; ich wzorce i raporty nie są dowodem non-AI.
