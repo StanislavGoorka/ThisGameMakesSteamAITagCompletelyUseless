@@ -33,9 +33,9 @@ bool initial_state_preserves_input_and_starts_at_zero()
     rotatable_nodes.back() = true;
 
     const auto state = GameState::initial(ports, rotatable_nodes, start);
-    if (!state || state->reserve != 2 || state->overload_debt != 0 ||
-        GameState::reserve_limit != 3 || state->player_position != start ||
-        state->player_integrity != 3 ||
+    if (!state || state->modules.size() != 0 || state->reserve != 2 ||
+        state->overload_debt != 0 || GameState::reserve_limit != 3 ||
+        state->player_position != start || state->player_integrity != 3 ||
         state->player_integrity != GameState::initial_player_integrity ||
         !state->player_alive() || state->turns_taken != TurnIndex{0} ||
         state->packet || state->sector_entry || state->sector_exit ||

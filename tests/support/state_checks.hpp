@@ -6,7 +6,8 @@ namespace closed_circuit::test
 {
 [[nodiscard]] inline bool same_state(const GameState &a, const GameState &b)
 {
-    return a.reserve == b.reserve && a.overload_debt == b.overload_debt &&
+    return a.modules == b.modules && a.reserve == b.reserve &&
+           a.overload_debt == b.overload_debt &&
            a.player_position == b.player_position &&
            a.player_integrity == b.player_integrity &&
            a.turns_taken == b.turns_taken && a.packet == b.packet &&

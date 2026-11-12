@@ -63,7 +63,7 @@ GameState rich_board()
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.reserve == right.reserve &&
+    return left.modules == right.modules && left.reserve == right.reserve &&
            left.overload_debt == right.overload_debt &&
            left.player_position == right.player_position &&
            left.player_integrity == right.player_integrity &&

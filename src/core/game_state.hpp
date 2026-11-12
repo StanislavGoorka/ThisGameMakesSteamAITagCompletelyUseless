@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/identifiers.hpp"
+#include "core/module_loadout.hpp"
 #include "core/port_mask.hpp"
 
 #include <algorithm>
@@ -66,6 +67,7 @@ struct GameState
     std::vector<Pulse> pulses{};
     std::uint8_t reserve{2};
     std::uint32_t overload_debt{0};
+    ModuleLoadout modules{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

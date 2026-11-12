@@ -8,7 +8,7 @@
 namespace closed_circuit::developer
 {
 
-// Canonical encoding v2: fixed-width little-endian values, explicit optional
+// Canonical encoding v3: fixed-width little-endian values, explicit optional
 // tags, and stored pulse order. FNV-1a is a regression hash, not a security
 // hash.
 [[nodiscard]] inline std::uint64_t state_hash(const GameState &state) noexcept
@@ -43,7 +43,7 @@ namespace closed_circuit::developer
         }
     };
 
-    little_endian(2, 4);
+    little_endian(3, 4);
     for (const auto ports : state.ports)
     {
         byte(ports.bits());
@@ -71,6 +71,10 @@ namespace closed_circuit::developer
     }
     byte(state.reserve);
     little_endian(state.overload_debt, 4);
+    for (const auto slot : state.modules.slots())
+    {
+        byte(slot ? static_cast<std::uint8_t>(*slot) : 0);
+    }
     return hash;
 }
 

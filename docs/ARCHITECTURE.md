@@ -29,6 +29,8 @@ Core nie zależy od prezentacji. Application korzysta z core i portów. Platform
 
 ## Domena i determinizm
 
+- P031-02: `GameState::modules` jest wartościowym `ModuleLoadout` z dwoma kanonicznymi slotami i stabilnymi ID1/2. Domyślnie puste; efekty nie są jeszcze aktywne. Bieżące kodowanie pełnego stanu to hash v3: tag uint32 little-endian 3, dotychczasowe pola w tym samym porządku i na końcu dwa bajty slotów (0=pusty,1/2=ID). Bieżący replay5 odrzuca wcześniejsze wersje. Opisy v2/replay4 poniżej dokumentują wcześniejsze kroki. [Raport P031-02](workflow/history/P031-02.md)
+
 - Silne typy `NodeId`, `EntityId`, `RunSeed`, `TurnIndex`; jawne granice zakresów.
   `NodeId` obejmuje 0–48, po jednej wartości na pole planszy 7×7. `EntityId` obejmuje 0–4 294 967 295, pełny zakres `uint32_t`. `from_value` zwraca pusty `std::optional` dla liczby całkowitej spoza zakresu.
 - Porty jako maska czterech bitów; sąsiedztwo obliczane, bez mutowania obu końców krawędzi.
