@@ -304,7 +304,7 @@
                       "phase":  "M2",
                       "title":  "Pojedynczy kontakt i limit obrażeń",
                       "scope":  "Dodaj jedną funkcję obsługującą kontakt impulsu wskazanego EntityId z graczem: usuń jednostkę stojącą na graczu i odejmij najwyżej jeden punkt integralności według przekazanej przez referencję lokalnej blokady obrażeń. Blokada należy do wywołującego, poza GameState. Bez ruchu i pełnej fazy zagrożeń.",
-                      "acceptance":  "Kontakt usuwa wyłącznie wskazany impuls i zachowuje kolejność pozostałych. Pierwszy kontakt przy HP>0 zmniejsza HP o 1 i zużywa blokadę; kolejne z tą samą blokadą nadal usuwają impulsy bez obrażeń. Przy HP=1 gracz umiera, a przy HP=0 nie ma underflow. Brak ID, brak kontaktu i ponowienie po usunięciu zachowują pełny stan i blokadę. Legalny move_player na impuls, potem kontakt, daje oczekiwany stan bez naliczenia tury. Wszystkie pozostałe pola, w tym pakiet, są zachowane.",
+                      "acceptance":  "Kontakt usuwa wyłącznie wskazany impuls i zachowuje kolejność pozostałych. Pierwszy kontakt przy HP\u003e0 zmniejsza HP o 1 i zużywa blokadę; kolejne z tą samą blokadą nadal usuwają impulsy bez obrażeń. Przy HP=1 gracz umiera, a przy HP=0 nie ma underflow. Brak ID, brak kontaktu i ponowienie po usunięciu zachowują pełny stan i blokadę. Legalny move_player na impuls, potem kontakt, daje oczekiwany stan bez naliczenia tury. Wszystkie pozostałe pola, w tym pakiet, są zachowane.",
                       "depends_on":  [
                                          "P020"
                                      ],
@@ -336,7 +336,7 @@
                       "id":  "P021-01",
                       "phase":  "M2",
                       "title":  "Komendy podstawowe i niemutująca walidacja",
-                      "scope":  "Dodaj wartościową reprezentację wyłącznie move, rotate i wait, z silnym NodeId dla celów, oraz jeden predykat legalności przyjmujący const GameState&. Zachowaj reguły istniejących helperów; każda komenda wymaga żywego gracza. Bez wykonania komendy, naliczenia tury i resolvera.",
+                      "scope":  "Dodaj wartościową reprezentację wyłącznie move, rotate i wait, z silnym NodeId dla celów, oraz jeden predykat legalności przyjmujący const GameState\u0026. Zachowaj reguły istniejących helperów; każda komenda wymaga żywego gracza. Bez wykonania komendy, naliczenia tury i resolvera.",
                       "acceptance":  "Legalny move po wzajemnej krawędzi, rotate własnego pola lub ortogonalnego obrotowego sąsiada i wait żywego gracza są przyjmowane. Brak krawędzi, blokująca flaga, zły zasięg, nieruchomy cel i każda komenda przy HP=0 są odrzucane. Impuls sam nie blokuje legalnego move. Wszystkie odczyty zachowują pełny stan i turę, także przy niepustych impulsach i gotowym do wprowadzenia pakiecie; nie używają RNG. Testy wykazują zgodność warunków z helperami bez zmiany ich kontraktów.",
                       "depends_on":  [
                                          "P021"
@@ -542,26 +542,26 @@
                       "gate":  null
                   },
                   {
-                      "id": "P027-01",
-                      "phase": "M3",
-                      "title": "Deterministyczny wybór wolnego ID impulsu",
-                      "scope": "Dodaj available_pulse_id(const GameState&) zwracający najmniejszy niewykorzystany EntityId lub nullopt po wyczerpaniu reprezentacji; bez mutacji, spawnu i zużycia długu.",
-                      "acceptance": "Pusta kolekcja daje0, luka i ciągły prefiks dają najmniejszy wolny ID niezależnie od kolejności; graniczne ID0/MAX, wszystkie49 jednostek i permutacje. Pełny stan i zewnętrzny RNG zachowane. Brak zawijania reprezentacji. Debug/Release oraz negatywna mutacja po Rebuild.",
-                      "depends_on": [
-                          "P027"
-                      ],
-                      "gate": null
+                      "id":  "P027-01",
+                      "phase":  "M3",
+                      "title":  "Deterministyczny wybór wolnego ID impulsu",
+                      "scope":  "Dodaj available_pulse_id(const GameState\u0026) zwracający najmniejszy niewykorzystany EntityId lub nullopt po wyczerpaniu reprezentacji; bez mutacji, spawnu i zużycia długu.",
+                      "acceptance":  "Pusta kolekcja daje0, luka i ciągły prefiks dają najmniejszy wolny ID niezależnie od kolejności; graniczne ID0/MAX, wszystkie49 jednostek i permutacje. Pełny stan i zewnętrzny RNG zachowane. Brak zawijania reprezentacji. Debug/Release oraz negatywna mutacja po Rebuild.",
+                      "depends_on":  [
+                                         "P027"
+                                     ],
+                      "gate":  null
                   },
                   {
-                      "id": "P027-02",
-                      "phase": "M3",
-                      "title": "Pojedynczy spawn długu na wejściu sektora",
-                      "scope": "Dodaj spawn_debt_pulse(GameState&): dla debt>=3 i wolnego sector_entry dopisz jeden Pulse z available_pulse_id, potem odejmij3 długu. Wywołanie tylko na granicy sektora przez przyszły run, bez integracji resolvera i bez runu.",
-                      "acceptance": "Debt0/1/2 odmawia;3 daje jeden spawn i0;4/5 zostawia1/2;6 daje jeden spawn i3, bo wejście mieści tylko jeden impuls. Zajęte wejście (impuls lub blocked_nodes), brak wejścia i ponowienie zachowują cały stan/dług. Gracz i pakiet nie blokują impulsu jak w obecnym core. Unikalne najmniejsze ID, kolejność starych jednostek, reserve/HP/tura/topologia bez zmian. Push do kolekcji przed odjęciem długu chroni błąd alokacji. Testy wejść0/48, granic długu w tym MAX, pełnego stanu i mutacji kosztu po Rebuild; Debug/Release. Replay4/hashv2 bez zmian, bo helper nie jest wywoływany przez turę/fixture.",
-                      "depends_on": [
-                          "P027-01"
-                      ],
-                      "gate": null
+                      "id":  "P027-02",
+                      "phase":  "M3",
+                      "title":  "Pojedynczy spawn długu na wejściu sektora",
+                      "scope":  "Dodaj spawn_debt_pulse(GameState\u0026): dla debt\u003e=3 i wolnego sector_entry dopisz jeden Pulse z available_pulse_id, potem odejmij3 długu. Wywołanie tylko na granicy sektora przez przyszły run, bez integracji resolvera i bez runu.",
+                      "acceptance":  "Debt0/1/2 odmawia;3 daje jeden spawn i0;4/5 zostawia1/2;6 daje jeden spawn i3, bo wejście mieści tylko jeden impuls. Zajęte wejście (impuls lub blocked_nodes), brak wejścia i ponowienie zachowują cały stan/dług. Gracz i pakiet nie blokują impulsu jak w obecnym core. Unikalne najmniejsze ID, kolejność starych jednostek, reserve/HP/tura/topologia bez zmian. Push do kolekcji przed odjęciem długu chroni błąd alokacji. Testy wejść0/48, granic długu w tym MAX, pełnego stanu i mutacji kosztu po Rebuild; Debug/Release. Replay4/hashv2 bez zmian, bo helper nie jest wywoływany przez turę/fixture.",
+                      "depends_on":  [
+                                         "P027-01"
+                                     ],
+                      "gate":  null
                   },
                   {
                       "id":  "P028",
@@ -589,10 +589,54 @@
                       "id":  "P030",
                       "phase":  "M3",
                       "title":  "Korpus seedów",
-                      "scope":  "Zapisz i sprawdź 1000 stałych seedów w narzędziu testowym.",
-                      "acceptance":  "Brak nielegalnych spawnów; raport odrzuconych seedów i przyczyn.",
+                      "scope":  "Wyłącznie podziel korpus na stałe seedy i składanie bazowego stanu, świadka ograniczonej rodziny, kontrolę spawnów i raport wykonywalny. Bez implementacji dzieci.",
+                      "acceptance":  "Cztery małe dzieci; P031 zależy od ostatniego dziecka; stan i przekazanie wskazują pierwsze dziecko.",
                       "depends_on":  [
                                          "P029"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P030-01",
+                      "phase":  "M3",
+                      "title":  "Stały korpus i stan bazowy",
+                      "scope":  "Zapisz 1000 unikalnych seedów i jeden deweloperski adapter topologii P028 do bazowego GameState, bez długu i impulsów.",
+                      "acceptance":  "Dokładnie 1000 stałych seedów z granicami 0/MAX; pełne stany dla obu rodzin, powtarzalność i niezależność kopii.",
+                      "depends_on":  [
+                                         "P030"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P030-02",
+                      "phase":  "M3",
+                      "title":  "Świadek ograniczonej rodziny",
+                      "scope":  "Dodaj wyłącznie deweloperski konstruktor sekwencji dla bazowych stanów rodziny P028; odmawiaj poza kontraktem, bez filtrowania seedów.",
+                      "acceptance":  "Sekwencja przechodzi validate_solution; ucięcie i nieobsługiwany stan są odrzucane; pełny stan i wejście niezmienne.",
+                      "depends_on":  [
+                                         "P030-01"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P030-03",
+                      "phase":  "M3",
+                      "title":  "Kontrola legalności spawnów",
+                      "scope":  "Dodaj deweloperski predykat legalnego rozstawienia i osobne scenariusze spawn_debt_pulse na wygenerowanych sektorach, bez runu.",
+                      "acceptance":  "Wykrywa powtórzone ID/pozycje i blokujące pola; współdzielenie z graczem legalne; debt0/2/3/6, zajęte i brak wejścia; pełny stan przy odmowie.",
+                      "depends_on":  [
+                                         "P030-02"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P030-04",
+                      "phase":  "M3",
+                      "title":  "Wykonywalny raport korpusu",
+                      "scope":  "Dodaj narzędzie testowe sprawdzające wszystkie 1000 zapisanych seedów: bazowy certyfikat i odrębne scenariusze długu/spawnów, ze stabilnym raportem odrzuceń.",
+                      "acceptance":  "Każdy seed raportowany z przyczyną; brak pomijania nielegalnych wyników; CTest prawdziwego exe i błędnego przypadku, identyczny raport Debug/Release.",
+                      "depends_on":  [
+                                         "P030-03"
                                      ],
                       "gate":  null
                   },
@@ -603,7 +647,7 @@
                       "scope":  "Dodaj jeden port modyfikacji reguł bez implementowania nowych modułów.",
                       "acceptance":  "Pusty zestaw zachowuje bazowe reguły, stabilne ID i limit slotów.",
                       "depends_on":  [
-                                         "P030"
+                                         "P030-04"
                                      ],
                       "gate":  null
                   },
