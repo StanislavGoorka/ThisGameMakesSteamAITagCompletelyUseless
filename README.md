@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P035-06**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P036**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -216,3 +216,5 @@ P035-03: resolve_run_turn i preview_run_turn zwracają niezależny RunResult; ty
 P035-04: choose_run_module bramkuje choose_module fazą choosing_reward i po sukcesie ustawia reward_claimed. Drugi wybór, duplikaty, obce ID i pozostałe fazy nie zmieniają pełnego runu; HP nie jest odnawiane. Hashv4/replay8 bez zmiany: ten sam GameState i resolver. [Raport P035-04](docs/workflow/history/P035-04.md)
 
 P035-05: advance_run zwraca wartościowe przejście wyłącznie z ready_for_next. SektorN bierze N-ty draw root RNG; przenosi HP/rezerwę/dług/moduły bez leczenia. Odtwarza topologię, wejście/wyjście/odbiorniki, zeruje turę/dostawy/pakiet/impulsy/blokady/użycie/nagrodę i raz wywołuje spawn_debt_pulse. Nie ma sektora4. Hashv4/replay8 bez zmiany; metadane runu poza istniejącym replay. [Raport P035-05](docs/workflow/history/P035-05.md)
+
+P035-06: Test integracyjny kończy trzy sektory dla root0/1/2/MAX i obu kolejności modułów, dwukrotnie. Dług3 powstaje przez trzy legalne overdrive w sektorze1; sektor2 ma impuls, który po wait zmniejsza HP3 do2. HP2 przechodzi do trzeciego sektora. Brak sektora4 i dalszych akcji po końcu. Lethal fixture jawnie ustawia HP1 na rzeczywistej granicy z impulsem; 48 wait prowadzi do overload. Bez zmian produkcyjnych i bez oceny grywalności. Hashv4/replay8 bez zmiany. [Raport P035-06](docs/workflow/history/P035-06.md)
