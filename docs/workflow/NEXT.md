@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P044-03
+Task: P045
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044-02 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044-03 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P044-03: tylko test integracyjny resolvera i lokalnego sinka. Pełny run ze świadkiem, duplikaty, porównanie kluczy/payloadów i pełnego stanu po restore sektora2 z nową gałęzią, nowa próba o tym samym seedzie, restart procesu i dokładne bajty main/bak. Preview zachowuje liczniki usług i pliki. Użyj stałego fake evaluatora, bez predykatów P045 i zmian produkcyjnych.
+P045: uściślij wyłącznie pięć predykatów MVP: pozytywny i negatywny przykład, granicę/reset trackera i zachowanie po restore. Nieznana historia sprzed checkpointu nie dowodzi braku overdrive. Sprawdź, czy payloady dostarczają dowodów faktycznej rekonfiguracji trasy; brakujący kontrakt zaplanuj jako osobne małe dziecko przed konsumentem. Czytaj DOMAIN_EVENTS, DOMAIN_DISPATCH, PROFILE_FORMAT, GAME_DESIGN i dalsze P046-P050. Bez implementacji predykatów, assetów i tekstów dla gracza.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator

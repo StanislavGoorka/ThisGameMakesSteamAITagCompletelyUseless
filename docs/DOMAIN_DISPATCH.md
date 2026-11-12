@@ -1,7 +1,7 @@
 # Dispatch zdarzeń v1
 
-P044-01 wdraża typy i ten kontrakt. P044-02 wdraża EventDispatcher; dowód
-restore/restart do P044-03. Predykaty pięciu achievementów definiuje P045.
+P044-01 wdraża typy i ten kontrakt. P044-02 wdraża EventDispatcher, a P044-03
+sprawdza restore/restart. Predykaty pięciu achievementów definiuje P045.
 
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są
@@ -49,3 +49,11 @@ crashu przed zapisem profilu. Po restore/restart zdarzenia mogą być ocenione
 ponownie w świeżym zakresie, a lokalny trwały zbiór ID zapobiega powtórnemu
 odblokowaniu i zapisowi duplikatu. Nie jest to dokładnie jednokrotne wykonanie
 dowolnych efektów zewnętrznych. Profil/checkpoint i ich wersje pozostają bez zmian.
+
+Dowód P044-03 używa stałej maski fake evaluatora, bez reguł achievementów MVP.
+Dla seedów0/1/MAX przechodzi trzy generowane sektory przez resolver i lokalny
+sink. Duplikat jest oceniany raz na zakres. Restore sektora2 porównuje każdą
+listę kluczy/payloadów oraz pełny stan, a nowa gałąź, nowa próba o tym samym
+seedzie i dwa nowe procesy ponownie oceniają zdarzenia bez zmiany main/bak.
+Preview zachowuje liczniki usług i dokładne pliki. Tokeny pozostają zadaniem
+przyszłej sesji, nie zostały dopisane do checkpointu ani profilu.

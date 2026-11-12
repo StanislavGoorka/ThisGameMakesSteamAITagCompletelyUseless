@@ -97,29 +97,33 @@ P041-01/02: [kontrakt zdarzeń v1](DOMAIN_EVENTS.md) definiuje wartościowe
 payloady i klucz wewnątrz próby. `resolve_run_turn_events` wywołuje istniejący
 resolver raz i zwraca listę: akcja, dostawa, sukces sektora, koniec runu.
 Odmowa daje pustą listę; preview nadal zwraca tylko wynik core, bez usług.
-Korpus pełnych sekwencji i restore sprawdzono w P041-03. Brak evaluatorów,
-dispatchu, outboxu i globalnej tożsamości prób; seed nie jest unikalnym ID runu.
+Korpus pełnych sekwencji i restore sprawdzono w P041-03. Predykaty MVP nadal
+czekają na P045 i dalsze dzieci. Brak trwałego outboxu i globalnej tożsamości
+prób; seed nie jest unikalnym ID runu. Dispatch opisano poniżej.
 
 Port `AchievementSink` ma backend lokalny i później Steam. Najpierw trwały zapis lokalny, potem idempotentna synchronizacja z kolejką i potwierdzeniami. Offline i brak Steam nie blokują gry. [Dokumentacja Steamworks](https://partner.steamgames.com/doc/features/achievements) opisuje odblokowanie i zapis statystyk; aktualne API sprawdzić przy implementacji. Ikony, opisy i nazwy wymagają pochodzenia tak samo jak reszta treści.
+
+P043: `AchievementSink` jest małym portem application z wynikami unlocked,
+already_unlocked, invalid i unavailable. Oba pierwsze potwierdzają trwały zbiór;
+błąd pozwala na retry tego samego ID. `windows::LocalAchievementSink` posiada
+wyłącznie ścieżkę profilu i deleguje do unlock_profile_file, bez cache, sieci
+i Steam SDK. Instancje odczytują ten sam trwały zbiór. Predykaty pozostają
+przyszłymi krokami; symulacja i preview nie otrzymują tego portu.
+
+P044-01: [dispatch v1](DOMAIN_DISPATCH.md) definiuje DeliveryScope z tokenami
+próby/gałęzi i początkową granicą sektora. AchievementEvaluator zwraca fixed
+maskę kandydatów bez IO i wyjątków. Cache dispatchu jest pamięciowy, a trwała
+idempotencja pozostaje zbiorem ID profilu. P044-02 wdraża pamięciowy dispatcher
+z zachowaniem wyniku oceny przed sinkiem i retry wyłącznie pending ID.
+P044-03 potwierdza pełne sekwencje resolvera, restore i nowe procesy z lokalnym
+sinkiem; duplikaty nie przesuwają backupu. Checkpoint nie zachowuje historii
+evaluatora; brak historii nie oznacza spełnienia predykatu runu bez overdrive.
 
 ## Prezentacja
 
 Renderer używa wyłącznie zatwierdzonego manifestu. Brak zasobu oznacza kontrolowany błąd lub wyłączenie widoku, nie rysowanie nowej ikony. Panele, ścieżki i znaczniki powstają z pozyskanych elementów. Zwykłe pozycjonowanie i skalowanie gotowych bitmap jest operacją prezentacji; nie daje prawa do twórczego przerabiania artworku.
 
 Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych finalnych tekstów z dowodami pochodzenia. Komunikat błędu pokazywany graczowi również jest treścią. Wewnętrznych nazw nie wyświetlaj jako finalnego tytułu. Binarne identyfikatory nie mogą wyciekać na UI jako nieoznaczone etykiety.
-
-P043: `AchievementSink` jest małym portem application z wynikami unlocked,
-already_unlocked, invalid i unavailable. Oba pierwsze potwierdzają trwały zbiór;
-błąd pozwala na retry tego samego ID. `windows::LocalAchievementSink` posiada
-wyłącznie ścieżkę profilu i deleguje do unlock_profile_file, bez cache, sieci
-i Steam SDK. Instancje odczytują ten sam trwały zbiór. Dispatch i predykaty
-pozostają przyszłymi krokami; symulacja i preview nie otrzymują tego portu.
-
-P044-01: [dispatch v1](DOMAIN_DISPATCH.md) definiuje DeliveryScope z tokenami
-próby/gałęzi i początkową granicą sektora. AchievementEvaluator zwraca fixed
-maskę kandydatów bez IO i wyjątków. Cache dispatchu będzie pamięciowy, a trwała
-idempotencja pozostaje zbiorem ID profilu. Checkpoint nie zachowuje historii
-evaluatora; brak historii nie oznacza spełnienia predykatu runu bez overdrive.
 
 ## Styl i budżety
 

@@ -144,6 +144,15 @@ ciągłość tur/ordinal/sektorów, terminalne wejście i invalid maskę evaluat
 Pełny syntetyczny strumień trzech sektorów jest powtarzany trzykrotnie bez
 dodatkowych ocen i wywołań sinka. To kontrakt transportu, bez predykatów MVP.
 
+P044-03: `windows_event_dispatcher` przechodzi trzy pełne runy dla seedów
+0/1/MAX, używając istniejącego świadka baseline i stałej maski fake evaluatora.
+Każdy event jest powtarzany trzykrotnie. Restore sektora2 porównuje pełne stany
+i listy kluczy/payloadów; świeża gałąź i nowa próba o tym samym seedzie są
+oceniane ponownie, lecz main/bak pozostają identyczne. Sześć osobnych procesów
+odczytuje checkpoint i odtwarza sektor2 z lokalnym sinkiem. Preview sprawdza
+pełny stan, liczniki usług i dokładne pliki. Bez implementacji predykatów,
+trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

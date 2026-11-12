@@ -29,7 +29,7 @@ Seed/sektor/tura/ordinal identyfikuje wystąpienie **wewnątrz jednej próby**.
 Powtórna symulacja lub restore tej samej granicy daje te same klucze dla
 tej samej sekwencji. Seed nie odróżnia dwóch nowych prób o tym samym seedzie
 ani dwóch różnych gałęzi po wczytaniu checkpointu. Nie wolno użyć tego klucza
-samodzielnie do globalnej trwałej deduplikacji. P044 musi ustalić kontekst
+samodzielnie do globalnej trwałej deduplikacji. P044 ustala kontekst
 próby oraz regułę ponownego odtwarzania przed dispatch do usług; obecny profil
 i checkpoint nie przechowują outboxu, kluczy ani identyfikatora instancji runu.
 
