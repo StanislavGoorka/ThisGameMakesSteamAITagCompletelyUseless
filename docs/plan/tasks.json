@@ -1059,11 +1059,44 @@
         {
             "id": "P041",
             "phase": "M4",
-            "title": "Zdarzenia domenowe",
-            "scope": "Ustabilizuj kontrakt zdarzeń potrzebnych achievementom.",
-            "acceptance": "Stałe identyfikatory i kolejność; preview nie emituje zdarzeń do usług.",
+            "title": "Rozbij kontrakt zdarzeń domenowych",
+            "scope": "Wyłącznie zaplanuj wartościowy kontrakt zdarzeń, wytwarzanie po zaakceptowanej turze runu i dowód sekwencji oraz izolacji preview.",
+            "acceptance": "Każde dziecko ma obserwowalny kontrakt; P042 zależy od ostatniego dziecka; bez implementacji zdarzeń.",
             "depends_on": [
                 "P040-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P041-01",
+            "phase": "M4",
+            "title": "Model zdarzeń domenowych",
+            "scope": "Dodaj wyłącznie wartości zdarzeń i specyfikację stabilnych rodzajów, kontekstu i kolejności, bez emisji i usług.",
+            "acceptance": "Silne identyfikatory, równość i niezależne kopie; jawne dane dla akcji, dostawy, sukcesu sektora i końca runu. Seed nie jest globalnym ID próby.",
+            "depends_on": [
+                "P041"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P041-02",
+            "phase": "M4",
+            "title": "Zdarzenia zatwierdzonej tury",
+            "scope": "Dodaj wartościowy wrapper wspólnego resolvera runu, który po akceptacji zwraca uporządkowane zdarzenia bez wywołania usług.",
+            "acceptance": "Odmowa i terminalne wejście dają pustą listę; akcja przed dostawą, potem sukces sektora i koniec runu; śmierć wyklucza sukces sektora, preview pozostaje bez usług.",
+            "depends_on": [
+                "P041-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P041-03",
+            "phase": "M4",
+            "title": "Korpus sekwencji zdarzeń i preview",
+            "scope": "Zweryfikuj integracyjnie sekwencje runu, stabilność kluczy po restore checkpointu i izolację preview, bez nowej logiki produkcyjnej.",
+            "acceptance": "Pełny run ze świadkiem, powtórzenia i restart granicy sektora; zgodność stanów wspólnego resolvera oraz brak emisji do usług przy preview. Bez deklaracji globalnej deduplikacji między różnymi próbami o tym samym seedzie.",
+            "depends_on": [
+                "P041-02"
             ],
             "gate": null
         },
@@ -1074,7 +1107,7 @@
             "scope": "Dodaj zapis zbioru lokalnie zdobytych achievement ID.",
             "acceptance": "Powtórne odblokowanie nie duplikuje; restart procesu zachowuje stan.",
             "depends_on": [
-                "P041"
+                "P041-03"
             ],
             "gate": null
         },
