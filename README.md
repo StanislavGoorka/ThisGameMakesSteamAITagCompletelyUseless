@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P035-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P035-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -210,3 +210,5 @@ P035: P035 zamknięto wyłącznie jako podział runu na sześć kontraktów. P03
 P035-01: RunState posiada root seed, silny SectorNumber1..3, aktywny GameState i reward_claimed. RunPhase jest czystym odczytem: ongoing→playing, death/overload→lost, completed3→won, completed1/2→nagroda albo gotowość przejścia, jeśli odebrana lub zestaw pełny. Zasoby nie są dublowane. Brak startu, akcji runu i przejść. GameState/hashv4/replay8 pozostają bez zmian; metadane runu nie mają jeszcze kodeka ani replay. [Raport P035-01](docs/workflow/history/P035-01.md)
 
 P035-02: start_run(RunSeed) tworzy pierwszy sektor runu z pierwszego next_u64 lokalnego SplitMix64(root seed). Ustawia wejście, wyjście i dwa odbiorniki z topologii; świeży stan ma HP3/reserve2/debt0/turę0, puste moduły, pakiet i impulsy oraz niezużyty limit. Run zaczyna na sektorze1 z nieodebraną nagrodą. Hashv4/replay8 bez zmiany, bo dotychczasowe fixture, reguły tury i format GameState pozostają identyczne. Run nie ma jeszcze resolvera, przejść ani zapisu. [Raport P035-02](docs/workflow/history/P035-02.md)
+
+P035-03: resolve_run_turn i preview_run_turn zwracają niezależny RunResult; tylko playing uruchamia istniejący resolver. Odmowy zachowują pełny run, sukcesy wyliczają nagrodę/gotowość/wygraną, śmierć i overload kończą run. Hashv4/replay8 bez zmiany: GameState i reguły istniejących tur identyczne; metadane runu nie mają replay ani zapisu. [Raport P035-03](docs/workflow/history/P035-03.md)
