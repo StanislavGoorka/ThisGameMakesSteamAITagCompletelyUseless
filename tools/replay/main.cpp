@@ -38,15 +38,23 @@ std::optional<Command> parse_command(std::string_view token)
     }
     const bool move = token.starts_with("move:");
     const bool rotate = token.starts_with("rotate:");
-    if (!move && !rotate)
+    const bool overdrive = token.starts_with("overdrive:");
+    if (!move && !rotate && !overdrive)
     {
         return std::nullopt;
     }
-    const auto value = parse_decimal<std::uint64_t>(token.substr(move ? 5 : 7));
+    const auto value =
+        parse_decimal<std::uint64_t>(token.substr(move     ? 5
+                                                  : rotate ? 7
+                                                           : 10));
     const auto node = value ? NodeId::from_value(*value) : std::nullopt;
     if (!node)
     {
         return std::nullopt;
+    }
+    if (overdrive)
+    {
+        return OverdriveCommand{*node};
     }
     return move ? Command{MoveCommand{*node}} : Command{RotateCommand{*node}};
 }
