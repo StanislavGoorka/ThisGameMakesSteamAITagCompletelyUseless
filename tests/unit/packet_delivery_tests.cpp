@@ -70,6 +70,10 @@ bool same_state(const GameState &left, const GameState &right)
 bool delivers_to(GameState &state, int target)
 {
     auto expected = state;
+    if (expected.reserve < 3)
+    {
+        ++expected.reserve;
+    }
     expected.packet.reset();
     expected.powered_nodes[node(target).value()] = true;
     return deliver_packet(state) && same_state(state, expected);
@@ -222,6 +226,23 @@ bool delivery_ignores_player_and_blocking_units()
 
 int main()
 {
+    for (const auto reserve : {0, 1, 2, 3})
+    {
+        auto state = corridor_board(26, 26);
+        state.reserve = static_cast<std::uint8_t>(reserve);
+        state.player_integrity = 1;
+        if (!delivers_to(state, 26) ||
+            state.reserve != (reserve < 3 ? reserve + 1 : 3) ||
+            !delivery_is_refused(state))
+        {
+            return 1;
+        }
+        state.packet = Packet{node(26), node(26)};
+        if (!delivery_is_refused(state))
+        {
+            return 1;
+        }
+    }
     const bool passed =
         packet_on_target_is_delivered_exactly_once() &&
         packet_off_target_is_not_delivered() &&

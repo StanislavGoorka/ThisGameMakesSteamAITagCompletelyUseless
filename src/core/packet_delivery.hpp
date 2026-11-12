@@ -9,7 +9,8 @@ namespace closed_circuit
 // board, the target becomes powered and the step reports true. Without a
 // packet, off the target or on a target that is already powered, every field
 // of the state stays untouched, so each target is powered at most once and a
-// repeated step delivers nothing. The step never charges a turn.
+// repeated step delivers nothing. A delivery restores one reserve up to the
+// limit. The step never charges a turn.
 [[nodiscard]] constexpr bool deliver_packet(GameState &state) noexcept
 {
     if (!state.packet || state.packet->position != state.packet->target)
@@ -23,6 +24,10 @@ namespace closed_circuit
         return false;
     }
 
+    if (state.reserve < GameState::reserve_limit)
+    {
+        ++state.reserve;
+    }
     powered = true;
     state.packet.reset();
     return true;

@@ -219,6 +219,7 @@ bool delivery_and_turn_cost_survive_death_in_threat_phase()
     auto expected = state;
     expected.packet.reset();
     expected.powered_nodes[25] = true;
+    ++expected.reserve;
     expected.pulses = {{spare_id, node(48)}};
     expected.player_integrity = 0;
     expected.turns_taken = TurnIndex{8};
@@ -244,6 +245,7 @@ bool next_packet_waits_for_the_next_accepted_turn()
     state.pulses = {{spare_id, node(40)}};
     auto first = state;
     first.powered_nodes[1] = true;
+    ++first.reserve;
     first.turns_taken = TurnIndex{8};
     if (!expect_turn(state, WaitCommand{}, true, first,
                      "first packet introduced then delivered") ||
@@ -263,6 +265,7 @@ bool next_packet_waits_for_the_next_accepted_turn()
     auto third = second;
     third.packet.reset();
     third.powered_nodes[2] = true;
+    ++third.reserve;
     third.turns_taken = TurnIndex{10};
     if (!expect_turn(second, WaitCommand{}, true, third,
                      "active second packet is delivered"))
@@ -317,6 +320,7 @@ bool last_turn_classifies_after_delivery_threats_and_cost()
     expected.player_position = node(25);
     expected.packet.reset();
     expected.powered_nodes[25] = true;
+    ++expected.reserve;
     expected.turns_taken = TurnIndex{48};
     if (!expect_turn(state, MoveCommand{node(25)}, true, expected,
                      "last turn completes after second delivery",

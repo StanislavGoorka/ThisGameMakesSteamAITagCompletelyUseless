@@ -144,6 +144,7 @@ bool introduction_delivery_and_movement()
     state.ports[1] = *PortMask::from_bits(PortMask::west_bit);
     auto expected = state;
     expected.powered_nodes[1] = true;
+    ++expected.reserve;
     expected.turns_taken = TurnIndex{8};
     if (!expect_preview(state, WaitCommand{}, true, expected,
                         "packet introduced and delivered"))
@@ -215,6 +216,7 @@ bool last_turn_completion_death_and_overload()
     expected.player_position = node(25);
     expected.packet.reset();
     expected.powered_nodes[25] = true;
+    ++expected.reserve;
     expected.turns_taken = TurnIndex{48};
     if (!expect_preview(state, MoveCommand{node(25)}, true, expected,
                         "last turn completes after delivery",

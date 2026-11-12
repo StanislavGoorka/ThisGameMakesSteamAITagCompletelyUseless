@@ -118,6 +118,7 @@ int main()
         *PortMask::from_bits(PortMask::north_bit | PortMask::east_bit);
     opened.packet.reset();
     opened.powered_nodes[8] = true;
+    opened.reserve = 1;
     opened.pulses[0].position = node(7);
     opened.turns_taken = TurnIndex{1};
 

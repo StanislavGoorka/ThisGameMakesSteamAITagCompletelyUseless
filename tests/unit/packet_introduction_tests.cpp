@@ -185,6 +185,10 @@ bool moves_to(GameState &state, int position)
 bool delivers_to(GameState &state, int target)
 {
     auto expected = state;
+    if (expected.reserve < 3)
+    {
+        ++expected.reserve;
+    }
     expected.packet.reset();
     expected.powered_nodes[node(target).value()] = true;
     return deliver_packet(state) && same_state(state, expected);
