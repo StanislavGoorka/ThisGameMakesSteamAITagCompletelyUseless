@@ -137,6 +137,13 @@ równość pełnego zakresu, niezerowe granice tokenów oraz wszystkie 65536 mas
 kandydatów. Fake portu evaluatora zwraca stałą maskę i zachowuje wejściowe
 zdarzenie. Bez predykatów MVP i bez dispatchu.
 
+P044-02: `application_event_dispatcher` chroni jednokrotną ocenę, zapamiętaną
+maskę, częściowe potwierdzenie, retry odpowiedzi unavailable/invalid oraz
+wyjątku po skutku sinka. Sprawdza konflikty payloadu, błędne zakresy, kształt,
+ciągłość tur/ordinal/sektorów, terminalne wejście i invalid maskę evaluatora.
+Pełny syntetyczny strumień trzech sektorów jest powtarzany trzykrotnie bez
+dodatkowych ocen i wywołań sinka. To kontrakt transportu, bez predykatów MVP.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

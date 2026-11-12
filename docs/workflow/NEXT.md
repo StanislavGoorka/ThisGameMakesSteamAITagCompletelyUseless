@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P044-02
+Task: P044-03
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044-01 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044-02 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P044-02: EventDispatcher według DOMAIN_DISPATCH. Cache kopii zdarzenia i maski przed sinkiem, jednokrotna ocena na zakres, retry tylko pending ID. Waliduj kształt/kontekst/kolejność i konflikt payloadu; błąd maski zamraża zakres. Test fake sinka, częściowego potwierdzenia i wyjątku po trwałym skutku. Bez IO i predykatów.
+P044-03: tylko test integracyjny resolvera i lokalnego sinka. Pełny run ze świadkiem, duplikaty, porównanie kluczy/payloadów i pełnego stanu po restore sektora2 z nową gałęzią, nowa próba o tym samym seedzie, restart procesu i dokładne bajty main/bak. Preview zachowuje liczniki usług i pliki. Użyj stałego fake evaluatora, bez predykatów P045 i zmian produkcyjnych.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator

@@ -1,6 +1,6 @@
 # Dispatch zdarzeń v1
 
-P044-01 wdraża typy i ten kontrakt. Dispatcher należy do P044-02, dowód
+P044-01 wdraża typy i ten kontrakt. P044-02 wdraża EventDispatcher; dowód
 restore/restart do P044-03. Predykaty pięciu achievementów definiuje P045.
 
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
