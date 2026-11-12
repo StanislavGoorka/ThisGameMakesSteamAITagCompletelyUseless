@@ -68,6 +68,9 @@ P040-01..03: `LocalProfile` jest niezależną wartością w application, bez pó
 runu. [Profil v1](PROFILE_FORMAT.md) ma 24 bajty, schema1, stałe ID 1..5,
 maskę wariantów oraz ustawienia volume/mute. `encode_profile` i `decode_profile`
 walidują długość, wersję, reserved, checksum i zakresy; nie korzystają z IO.
+P040-04/05: adapter Windows odczytuje jeden rekord oraz zapisuje przez flush
+i publikację backupu przed main. Odmawia zapisu przy invalid/niedostępnym main;
+zachowuje poprawny backup. Nie wdraża automatycznej naprawy lub fallbacku profilu.
 
 P038-01..03: adapter `platform/windows/checkpoint_*.hpp` czyta dokładnie40
 bajtów i zapisuje `main.tmp` z kontrolą WriteFile/FlushFileBuffers/CloseHandle.

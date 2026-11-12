@@ -87,6 +87,13 @@ wszystkie 256 wartości każdego pola z odnowieniem checksumy. Kontrolują
 nieznane bity, wersję, zakresy, reserved i kanoniczne ponowne kodowanie.
 Nie są testem zapisu plików ani trwałego odblokowania predykatu.
 
+P040-04/05: `windows_profile_read/save/interrupt` sprawdzają rzeczywiste
+pliki, dokładne bajty, Unicode, ograniczenie długości, błędy uchwytów, retry
+i resztki staging. Przerwania rzeczywistego save w procesie potomnym obejmują
+4 wektory ×4 fazy: po9 bajtach, po flush24 bajtów, po rename backupu i main.
+Sprawdzają zachowanie poprawnych main/bak i późniejszy retry.
+To zakończenie procesu między wywołaniami API, bez dowodu zaniku zasilania.
+
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 
 Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą poprawkę, jeśli połączenie byłoby zbyt duże. Testy screenshotowe wolno opierać tylko na zatwierdzonych assetach; ich wzorce i raporty nie są dowodem non-AI.

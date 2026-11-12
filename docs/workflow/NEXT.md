@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P040-05
+Task: P040-06
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P040-04 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P040-05 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P040-05: staging i save_profile_file z backupem poprzedniego poprawnego main; wzorzec checkpoint_save, bez zmiany checkpointu. Jedna prywatna lokalna ścieżka i jeden zapisujący. Testuj invalid wejścia/main, blokady main/temp/bak/bak.tmp, brak katalogu i retry po błędzie lub resztkach temp.
+P040-06: wyłącznie dowód integracyjny niezależności profilu i runu. Uruchom rzeczywisty writer i reader w oddzielnych procesach, porównaj pełne wartości i literalne bajty. Usuń tylko cztery jawne nazwy plików runu w prywatnym katalogu testowym; profil/main/bak/temp pozostają niezmienione. Bez produkcyjnej operacji delete i zmian checkpointu.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator

@@ -1,7 +1,7 @@
 # Profil lokalny v1
 
 P040-01: model i kontrakt; P040-02/03 wdrażają pamięciowy encoder i decoder.
-IO powstaje w kolejnych dzieciach P040.
+P040-04/05 wdrażają odczyt oraz zapis Windows z backupem.
 Profil przechowuje dane konta lokalnego, niezależnie od runu. Nie zawiera
 seedu, HP, długu, modułów, numeru sektora ani stanu planszy. Brak pliku może
 oznaczać nowy profil; błąd lub uszkodzenie nie upoważnia do nadpisania danych.
@@ -40,7 +40,15 @@ nie uwierzytelnia pliku. Nieznana wersja, długość, bit, zakres, niezerowe
 reserved lub checksum oznacza odmowę bez częściowego wyniku. Zmiana zbioru
 obsługiwanych bitów wymaga jawnej zmiany wersji i planu migracji.
 
-Plan IO: oddzielny plik profilu i `.bak`, staging `.tmp` i `.bak.tmp`,
+IO: oddzielny plik profilu i `.bak`, staging `.tmp` i `.bak.tmp`,
 prywatny lokalny katalog, jeden zapisujący. Zapis nie dotyka checkpointu.
 Usunięcie runu obejmuje tylko jego jawnie wskazane nazwy, nigdy cały katalog.
 Wybór katalogu użytkownika i integracja sesji pozostają późniejszym etapem.
+
+`read_profile_file` zwraca optional wartości i DWORD, bez domyślnego profilu
+przy błędzie. `save_profile_file` waliduje poprzedni main, zapisuje/flushuje
+nowy staging, publikuje zwalidowaną kopię poprzedniego main do backupu, potem
+nowy main przez rename w tym samym katalogu. Nie ma okna bez nazwy main.
+Dwie podmiany nazw nie są wspólną transakcją. Zły lub niedostępny main
+blokuje save; poprawny backup pozostaje zachowany. Retry nadpisuje staging.
+Brak automatycznego fallbacku/naprawy profilu i współbieżnych zapisujących.
