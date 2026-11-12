@@ -122,6 +122,11 @@ sprawdza pięć kolejnych odblokowań, zachowanie ustawień, dokładną niezmien
 czterech nazw przy duplikacie, blokady main/temp/bak/bak.tmp, odmowę publikacji,
 retry, uszkodzony main, brak rodzica i nieznane ID. Restart procesu to P042-03.
 
+P042-03: `windows_profile_unlock_restart` uruchamia 24 osobne procesy dla
+wszystkich pięciu ID. Sprawdza dokładne main/bak i pełne ustawienia po nowym
+odblokowaniu, duplikacie i ponownym odczycie; błąd corrupt/locked main zachowuje
+dane. To restart procesu, bez dowodu zaniku zasilania lub współbieżnych writerów.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

@@ -70,3 +70,9 @@ pozwala utworzyć domyślny profil. Duplikat nie zapisuje żadnej z czterech naz
 Nie ma resetu invalid main ani fallbacku do starszego backupu. Warunek jednego
 zapisującego nadal obowiązuje; aplikacja po błędzie może ponowić tę samą operację.
 Przerwanie po udanym rename, przed odpowiedzią daje przy retry duplikat.
+
+P042-03 potwierdza tę operację w 24 osobnych procesach: początkowy reader,
+po cztery procesy na każde z pięciu ID (nowe odblokowanie, reader, duplikat,
+reader), dwa procesy odmowy i końcowy reader. Każdy restart zachowuje pełny
+profil, a main/bak mają dokładne kanoniczne bajty; duplikat nie przesuwa backupu.
+Uszkodzony i zablokowany main są odrzucane bez resetu.

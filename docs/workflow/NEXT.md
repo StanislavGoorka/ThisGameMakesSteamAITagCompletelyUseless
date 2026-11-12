@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P042-03
+Task: P043
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P042-02 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P042-03 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P042-03: wyłącznie test trwałych odblokowań w osobnych procesach. Wszystkie pięć ID, kolejne nowe procesy writer/reader, duplikaty bez zmiany backupu, pełne ustawienia i dokładne bajty main/bak. Odmowa invalid i zablokowanego main bez resetu. Czytaj istniejący profile_independence_tests i profile_unlock. Bez produkcyjnych zmian.
+P043: mały port AchievementSink z jawnymi wynikami i adapter lokalnego profilu Windows oparty o unlock_profile_file, bez cache i Steam SDK. Test kontraktu fake oraz lokalnego adaptera offline, duplikatów i odmów. Bez evaluatorów i dispatchu.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator
