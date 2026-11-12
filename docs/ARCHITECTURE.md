@@ -89,3 +89,5 @@ P033-02: wspólny rotate_from_player stosuje jednorazowe uprawnienie do nierucho
 P035 to podział planu na sześć dzieci, nie gotowy run. Docelowy RunState posiada root seed, SectorNumber1..3, aktywny GameState i reward_claimed. RunPhase jest wyliczany z sector_outcome, numeru i nagrody. Zasoby pozostają wyłącznie w aktywnym sektorze. SektorN używa N-tego wyniku lokalnego SplitMix64(root seed); brak odziedziczonego RNG. Hashv4/replay8 obejmują dotychczasowy GameState i fixture, nie metadane runu. Checkpoint i wersjonowanie runu dopiero P036.
 
 P035-01 implementuje wyłącznie RunState, ograniczony SectorNumber i niemutujący run_phase w core/run_state.hpp. Gotowy odczyt faz nie oznacza działania startu, tury, nagrody ani przejścia runu.
+
+P035-02 implementuje start_run(RunSeed) w core/run_start.hpp: pierwszy seed sektora pochodzi z pierwszego losowania lokalnego SplitMix64. Złożony GameState zaczyna na wejściu z domyślnymi zasobami. API nie przechowuje RNG, nie wywołuje usług i nie wykonuje tury ani przejścia. Pełny run czeka na P035-03..06.
