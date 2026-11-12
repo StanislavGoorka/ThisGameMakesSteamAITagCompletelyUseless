@@ -56,6 +56,8 @@ P026 zamknięto wyłącznie jako podział planu. Łańcuch P026-01…05 oddziela
 
 P027 podzielono na wybór najmniejszego wolnego EntityId i spawn na wejściu sektora. Jedno wejście mieści jeden impuls: debt6 pozostawi3 po jednym spawnie; przy zajęciu nic nie znika. Gracz/pakiet nie są blokerami, blocked_nodes i impulsy są. Wywołanie raz na granicy sektora będzie obowiązkiem przyszłego runu; resolver nie spawnuje długu. P027-01 implementuje available_pulse_id(const GameState&) w pulse_identity.hpp: najmniejszy wolny ID, odczyt bez alokacji i mutacji, szeroki kandydat chroni uint32 przed zawinięciem. P027-02 implementuje spawn_debt_pulse(GameState&): debt>=3 i wolne wejście, append jednego impulsu z wolnym ID, potem -3 długu. Błąd alokacji zachowuje pełny stan. Bez pola granicy sektora i bez wywołania przez resolver. [Raport P027](workflow/history/P027.md)
 
+P028 implementuje SectorTopology i generate_sector_topology(RunSeed) w core/sector_topology.hpp. Lokalny SplitMix64 wybiera jedną z dwóch tras13 pól, odbiorniki na indeksach4/8, entry0 i exit48; przyłącza nieruchome,9 pozostałych węzłów obrotowych. Reszta siatki ma maski0. Zwracane dane są niezależne, bez tworzenia GameState, zagrożeń i runu. To odrębne API od replay fixture, które nie zmienia wersji replay4/hashv2. Certyfikat pozostaje P029. [Raport P028](workflow/history/P028.md)
+
 ## Zapis
 
 Oddziel `profile` (odblokowania, achievementy, ustawienia) od `run_checkpoint` (seed, granica sektora, reguły, moduły, HP, rezerwa, dług). Pliki w katalogu użytkownika, nie przy exe. Zapis tymczasowy → bezpieczna zamiana → backup ostatniego poprawnego pliku. Schema version, limity rozmiaru i walidacja wartości. Uszkodzony zapis nie nadpisuje poprawnego backupu. Bez serializacji wskaźników.
