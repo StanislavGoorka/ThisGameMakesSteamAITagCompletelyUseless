@@ -1,6 +1,7 @@
 # Profil lokalny v1
 
-P040-01: model i kontrakt; kodek oraz IO powstają w kolejnych dzieciach P040.
+P040-01: model i kontrakt; P040-02/03 wdrażają pamięciowy encoder i decoder.
+IO powstaje w kolejnych dzieciach P040.
 Profil przechowuje dane konta lokalnego, niezależnie od runu. Nie zawiera
 seedu, HP, długu, modułów, numeru sektora ani stanu planszy. Brak pliku może
 oznaczać nowy profil; błąd lub uszkodzenie nie upoważnia do nadpisania danych.

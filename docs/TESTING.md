@@ -80,6 +80,13 @@ i nazwę ze spacją oraz polskimi znakami. Nie testuje naprawy ani integracji UI
 
 ## Ocena grywalności
 
+P040-01..03: `application_profile_model/encode/decode` chronią profil v1.
+Cztery niezależne literalne wektory, wszystkie 25 856 poprawne wartości,
+wszystkie ucięcia 0..23 i nadmiary 1..64, każda zmiana jednego bajtu oraz
+wszystkie 256 wartości każdego pola z odnowieniem checksumy. Kontrolują
+nieznane bity, wersję, zakresy, reserved i kanoniczne ponowne kodowanie.
+Nie są testem zapisu plików ani trwałego odblokowania predykatu.
+
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 
 Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą poprawkę, jeśli połączenie byłoby zbyt duże. Testy screenshotowe wolno opierać tylko na zatwierdzonych assetach; ich wzorce i raporty nie są dowodem non-AI.

@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P040-03
+Task: P040-04
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P040-02 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P040-03 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P040-03: decode_profile ze span const bajtów. Dokładna długość24 przed odczytem pól, wersja, checksum, reserved, bity i zakresy. Testuj round-trip całej poprawnej domeny, wszystkie ucięcia i systematyczne uszkodzenia także z odnowioną checksumą.
+P040-04: read_profile_file dla dokładnie24 bajtów, Win32 i FileHandle. Odczyt jednego pliku bez fallbacku i zapisu; wynik optional profilu i DWORD. Testuj literalne pliki, ucięcie, nadmiar, invalid, brak, katalog i blokadę uchwytu, bez mutacji.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator

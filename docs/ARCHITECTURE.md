@@ -64,6 +64,11 @@ P028 implementuje SectorTopology i generate_sector_topology(RunSeed) w core/sect
 
 Oddziel `profile` (odblokowania, achievementy, ustawienia) od `run_checkpoint` (seed, granica sektora, reguły, moduły, HP, rezerwa, dług). Pliki w katalogu użytkownika, nie przy exe. Zapis tymczasowy → bezpieczna zamiana → backup ostatniego poprawnego pliku. Schema version, limity rozmiaru i walidacja wartości. Uszkodzony zapis nie nadpisuje poprawnego backupu. Bez serializacji wskaźników.
 
+P040-01..03: `LocalProfile` jest niezależną wartością w application, bez pól
+runu. [Profil v1](PROFILE_FORMAT.md) ma 24 bajty, schema1, stałe ID 1..5,
+maskę wariantów oraz ustawienia volume/mute. `encode_profile` i `decode_profile`
+walidują długość, wersję, reserved, checksum i zakresy; nie korzystają z IO.
+
 P038-01..03: adapter `platform/windows/checkpoint_*.hpp` czyta dokładnie40
 bajtów i zapisuje `main.tmp` z kontrolą WriteFile/FlushFileBuffers/CloseHandle.
 Przy istniejącym poprawnym main przygotowuje `main.bak.tmp` z jego wartości,
