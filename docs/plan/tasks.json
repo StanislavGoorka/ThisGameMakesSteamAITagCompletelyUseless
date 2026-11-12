@@ -534,12 +534,34 @@
                       "id":  "P027",
                       "phase":  "M3",
                       "title":  "Dług między sektorami",
-                      "scope":  "Dodaj przeliczenie długu na dodatkowy spawn.",
-                      "acceptance":  "Granice 2,3,6; reszta długu; brak spawnu na zajętym polu.",
+                      "scope":  "Wpis nadrzędny: wyłącznie rozbij wybór wolnego EntityId i atomowy spawn długu na wejściu następnego sektora na P027-01 i P027-02; bez implementacji.",
+                      "acceptance":  "Dzieci definiują deterministyczny ID, granice2/3/6 i zachowanie długu za niewykonany spawn. Jedno wejście mieści jeden impuls, więc6 daje jeden spawn i resztę3; zajęcie nie kasuje długu. P028 zależy od P027-02. Run i wywołanie na granicy sektora pozostają przyszłym etapem.",
                       "depends_on":  [
                                          "P026-05"
                                      ],
                       "gate":  null
+                  },
+                  {
+                      "id": "P027-01",
+                      "phase": "M3",
+                      "title": "Deterministyczny wybór wolnego ID impulsu",
+                      "scope": "Dodaj available_pulse_id(const GameState&) zwracający najmniejszy niewykorzystany EntityId lub nullopt po wyczerpaniu reprezentacji; bez mutacji, spawnu i zużycia długu.",
+                      "acceptance": "Pusta kolekcja daje0, luka i ciągły prefiks dają najmniejszy wolny ID niezależnie od kolejności; graniczne ID0/MAX, wszystkie49 jednostek i permutacje. Pełny stan i zewnętrzny RNG zachowane. Brak zawijania reprezentacji. Debug/Release oraz negatywna mutacja po Rebuild.",
+                      "depends_on": [
+                          "P027"
+                      ],
+                      "gate": null
+                  },
+                  {
+                      "id": "P027-02",
+                      "phase": "M3",
+                      "title": "Pojedynczy spawn długu na wejściu sektora",
+                      "scope": "Dodaj spawn_debt_pulse(GameState&): dla debt>=3 i wolnego sector_entry dopisz jeden Pulse z available_pulse_id, potem odejmij3 długu. Wywołanie tylko na granicy sektora przez przyszły run, bez integracji resolvera i bez runu.",
+                      "acceptance": "Debt0/1/2 odmawia;3 daje jeden spawn i0;4/5 zostawia1/2;6 daje jeden spawn i3, bo wejście mieści tylko jeden impuls. Zajęte wejście (impuls lub blocked_nodes), brak wejścia i ponowienie zachowują cały stan/dług. Gracz i pakiet nie blokują impulsu jak w obecnym core. Unikalne najmniejsze ID, kolejność starych jednostek, reserve/HP/tura/topologia bez zmian. Push do kolekcji przed odjęciem długu chroni błąd alokacji. Testy wejść0/48, granic długu w tym MAX, pełnego stanu i mutacji kosztu po Rebuild; Debug/Release. Replay4/hashv2 bez zmian, bo helper nie jest wywoływany przez turę/fixture.",
+                      "depends_on": [
+                          "P027-01"
+                      ],
+                      "gate": null
                   },
                   {
                       "id":  "P028",
@@ -548,7 +570,7 @@
                       "scope":  "Dodaj ograniczony seedowany generator samej siatki, bez artworku.",
                       "acceptance":  "Rozmiar, porty, przyłącza i powtarzalność; wyłącznie dane headless.",
                       "depends_on":  [
-                                         "P027"
+                                         "P027-02"
                                      ],
                       "gate":  null
                   },
