@@ -1,6 +1,6 @@
 # Checkpoint granicy sektora v1
 
-Specyfikacja P036; kodek i IO powstają w osobnych krokach. Checkpoint odtwarza
+Specyfikacja P036; kodek pamięciowy wdrożono w P037-01..04, IO pozostaje P038/P039. Checkpoint odtwarza
 początek bieżącego sektora po starcie lub przejściu, przed pierwszą akcją.
 Zamknięcie w trakcie sektora wznawia ten początek. Nie zapisujemy profilu,
 achievementów, ustawień ani stanu okna. To dane wewnętrzne, bez tekstów dla gracza.

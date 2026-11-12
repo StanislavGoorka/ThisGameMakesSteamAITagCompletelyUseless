@@ -33,6 +33,19 @@ W każdym kroku: walidator projektu, testy zmienianego zachowania, wymagane test
 
 Na bramce core: pełny zestaw, testy seedów, replayów i memory safety w obsługiwanej konfiguracji. Na MVP: prawdziwe uruchomienie Windows, pełny run i udokumentowana ocena czytelności. Na release: czysta maszyna lub VM bez narzędzi deweloperskich, offline, klient Steam zamknięty/otwarty, katalog użytkownika z polskimi znakami, standardowe konto bez administratora.
 
+## Kodek checkpointu
+
+P037-01..04: `application_run_checkpoint` chroni pełną projekcję początku sektora,
+`application_checkpoint_encode/decode` sprawdzają niezależne literalne wektory,
+a `application_checkpoint_integration` obejmuje 11 000 granic dla 1000 ustalonych
+root seedów (1000 świeżych startów i 10 000 przejść z jawnymi fixture zasobów).
+Pełne stany po restore i pierwszej turze są równe oryginałom; impuls nie pobiera
+długu ponownie. Nie jest to 1000 pełnych runów ani test zapisu plików.
+Korpus odrzuca wszystkie ucięcia 0..39, nadmiar 1..64, 1280 zmian pojedynczego bitu
+i 40 800 zmian pojedynczego bajtu bez odnowienia checksumy. Dodatkowo 32 768 zmian
+pól z odnowioną checksumą i 65 536 par slotów sprawdza semantykę i kanoniczność.
+Raport P037-04 opisuje wymuszony Rebuild z celowo pominiętą walidacją reserved.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
