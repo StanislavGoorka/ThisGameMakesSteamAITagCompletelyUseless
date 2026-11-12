@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P029**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P030**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -166,4 +166,6 @@ Cztery przyjęte akcje kończą się reserve0/debt4/tura4; piąta jest odmową i
 
 P027 jest podziałem planu: wolny ID impulsu (P027-01), następnie pojedynczy spawn długu na wejściu sektora (P027-02). P027-01 implementuje najmniejszy wolny EntityId; P027-02 implementuje pojedynczy spawn na wolnym wejściu za3 długu. Wywołanie granicy sektora czeka na run.
 
-P028 implementuje ograniczony generator topologii7×7: dwie trasy po bokach siatki,13 aktywnych pól, dwa nieruchome odbiorniki, seedowane obroty9 węzłów. To dane headless bez certyfikatu wygranej lub oceny grywalności. [Raport P028](docs/workflow/history/P028.md)
+P028 implementuje ograniczony generator topologii7×7: dwie trasy po bokach siatki,13 aktywnych pól, dwa nieruchome odbiorniki, seedowane obroty9 węzłów. To dane headless; P029 potwierdza podane sekwencje rozwiązania przez rzeczywisty resolver. Brak oceny grywalności. [Raport P028](docs/workflow/history/P028.md)
+
+P029 dodaje validate_solution do walidacji certyfikatów. Cztery wygenerowane seedy0/1/2/MAX mają sprawdzone sekwencje18/17/17/17 tur; nie jest to jeszcze korpus1000 seedów ani pełny run. Końcowy zestaw:35/35 CTest Debug i Release. [Raport P029](docs/workflow/history/P029.md)
