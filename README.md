@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P033-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P034**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -196,3 +196,5 @@ P033: P033 zamknięto jako podział planu na flagę/hash, akcję i reset. Nieruc
 P033-01: GameState ma terminal_rotation_used=false. Pełne porównania stanu i świadek korpusu uwzględniają flagę. Hash v4 koduje tag4 oraz bajt flagi po slotach; replay7 odrzuca wcześniejsze wersje. Brak efektu modułu. [Raport P033-01](docs/workflow/history/P033-01.md)
 
 P033-02: Moduł terminal_rotation pozwala obrócić nieruchomą maskę z dokładnie jednym portem. Pierwszy sukces zużywa wspólny limit rotate/overdrive, drugi jest atomową odmową. Zwykły obrotowy węzeł nie zużywa limitu. RotationRules udostępnia uprawnienie, wspólny helper egzekwuje limit i zasięg; obydwa moduły działają razem. Replay8 z powodu zmiany reguł; hashv4 i wektory fixture bez zmian. [Raport P033-02](docs/workflow/history/P033-02.md)
+
+P033-03: reset_sector_module_usage(GameState&) odnawia wyłącznie jednorazowy limit modułu. Reset jest idempotentny i nie zmienia HP, zasobów, topologii, pakietu, impulsów ani tur. Zwykła tura nie odnawia limitu. Integracja granicy sektora czeka na run P035. Hashv4/replay8 pozostają bez zmian: istniejące tury i kodowanie identyczne. [Raport P033-03](docs/workflow/history/P033-03.md)

@@ -1,4 +1,5 @@
 #include "../support/state_checks.hpp"
+#include "core/sector_module_usage.hpp"
 #include "core/turn_preview.hpp"
 #include <iostream>
 #include <limits>
@@ -24,6 +25,56 @@ bool check_turn(const GameState &state, const Command &command, bool accepted,
 }
 bool cases()
 {
+    for (const bool used : {false, true})
+        for (unsigned modules = 0; modules < 4; ++modules)
+        {
+            GameState state{.player_position = node(0)};
+            if (modules & 1)
+                static_cast<void>(state.modules.add(ModuleId::rotation_range));
+            if (modules & 2)
+                static_cast<void>(
+                    state.modules.add(ModuleId::terminal_rotation));
+            state.terminal_rotation_used = used;
+            state.player_integrity = 0;
+            state.turns_taken = TurnIndex{48};
+            state.ports[0] = *PortMask::from_bits(1);
+            state.packet = Packet{node(1), node(48)};
+            state.pulses = {{*EntityId::from_value(8), node(7)}};
+            state.sector_entry = node(48);
+            state.sector_exit = node(0);
+            state.receiver_nodes[48] = state.powered_nodes[48] = true;
+            state.blocked_nodes[8] = state.rotatable_nodes[9] = true;
+            state.reserve = 1;
+            state.overload_debt = 6;
+            auto expected = state;
+            expected.terminal_rotation_used = false;
+            reset_sector_module_usage(state);
+            if (!test::same_state(state, expected))
+                return false;
+            reset_sector_module_usage(state);
+            if (!test::same_state(state, expected))
+                return false;
+        }
+    GameState renewal{.player_position = node(0)};
+    static_cast<void>(renewal.modules.add(ModuleId::terminal_rotation));
+    renewal.ports[0] = *PortMask::from_bits(1);
+    auto first = resolve_turn(renewal, RotateCommand{node(0)});
+    if (!first.accepted || !first.state.terminal_rotation_used)
+        return false;
+    const auto waited = resolve_turn(first.state, WaitCommand{});
+    if (!waited.accepted || !waited.state.terminal_rotation_used ||
+        !check_turn(waited.state, RotateCommand{node(0)}, false, waited.state))
+        return false;
+    auto renewed = waited.state;
+    reset_sector_module_usage(renewed);
+    auto expected_renewed = renewed;
+    expected_renewed.ports[0] = *PortMask::from_bits(8);
+    expected_renewed.turns_taken = TurnIndex{3};
+    expected_renewed.reserve = 1;
+    expected_renewed.overload_debt = 1;
+    expected_renewed.terminal_rotation_used = true;
+    if (!check_turn(renewed, OverdriveCommand{node(0)}, true, expected_renewed))
+        return false;
     GameState route{.player_position = node(1)};
     static_cast<void>(route.modules.add(ModuleId::terminal_rotation));
     route.ports[1] = *PortMask::from_bits(1);
