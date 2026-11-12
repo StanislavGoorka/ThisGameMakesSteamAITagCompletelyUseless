@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P040-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P040-05**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -250,3 +250,5 @@ P040-01: Dodano LocalProfile i walidację zakresów, stabilne wewnętrzne Achiev
 P040-02: encode_profile zwraca optional kanonicznej tablicy24 bajtów z jawnym LE, magic CCPR, schema1 i FNV-1a64. Cztery niezależne literalne wektory oraz pełne zakresy masek i ustawień potwierdzają wynik i brak mutacji wejścia. Bez decodera i IO. [Raport P040-02](docs/workflow/history/P040-02.md)
 
 P040-03: decode_profile sprawdza długość24, magic, schema1, checksum, reserved i zakresy przed zwróceniem całego profilu. Testy obejmują 25856 poprawnych profili, cztery literalne wektory, wszystkie ucięcia i nadmiar1..64, zmiany wszystkich bajtów i pól z odnowioną checksumą. Kodek pamięciowy gotowy; bez IO. [Raport P040-03](docs/workflow/history/P040-03.md)
+
+P040-04: read_profile_file czyta przez jeden chroniony uchwyt dokładnie24 bajty i zwraca optional profilu oraz DWORD. Cztery literalne pliki, ucięcia, nadmiar do1MiB, checksum, brak pliku/rodzica, katalog i blokada przechodzą testy bez zmiany bajtów main i backupu; ścieżka Unicode. Bez fallbacku i zapisu. [Raport P040-04](docs/workflow/history/P040-04.md)
