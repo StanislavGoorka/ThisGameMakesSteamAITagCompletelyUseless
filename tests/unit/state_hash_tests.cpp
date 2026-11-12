@@ -24,7 +24,8 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.modules == right.modules && left.reserve == right.reserve &&
+    return left.terminal_rotation_used == right.terminal_rotation_used &&
+           left.modules == right.modules && left.reserve == right.reserve &&
            left.overload_debt == right.overload_debt &&
            left.player_position == right.player_position &&
            left.player_integrity == right.player_integrity &&
@@ -217,17 +218,15 @@ int main()
 {
     const GameState minimal{.player_position = node(0)};
     const auto full = full_state();
-    // Independently constructed byte vectors, computed with PowerShell
-    // BigInteger. See history/P031-02.md for the complete reference
-    // calculation.
-    if (checked_hash(minimal) != 15636418876360735861ULL)
+    // Independent JavaScript BigInt byte vectors; see P033-01.md.
+    if (checked_hash(minimal) != 13396733302018930512ULL)
     {
-        std::cerr << "Minimal state must match canonical v3 vector\n";
+        std::cerr << "Minimal state must match canonical v4 vector\n";
         return 1;
     }
-    if (checked_hash(full) != 12852721899160713969ULL)
+    if (checked_hash(full) != 16036596943848517828ULL)
     {
-        std::cerr << "Full state must match canonical v3 vector\n";
+        std::cerr << "Full state must match canonical v4 vector\n";
         return 1;
     }
     struct ResourceVector
@@ -236,13 +235,11 @@ int main()
         std::uint32_t debt;
         std::uint64_t hash;
     };
-    const ResourceVector resources[]{{0, 0, 5646037334929053375ULL},
-                                     {1, 0, 9874218601067987940ULL},
-                                     {2, 0, 15636418876360735861ULL},
-                                     {3, 0, 1417856068790118810ULL},
-                                     {255, 0, 9280530933878142310ULL},
-                                     {2, 1, 18188160845316355644ULL},
-                                     {2, UINT32_MAX, 10403108645413461041ULL}};
+    const ResourceVector resources[]{
+        {0, 0, 17861364115954109330ULL},        {1, 0, 1646935449212147123ULL},
+        {2, 0, 13396733302018930512ULL},        {3, 0, 15629048708986519921ULL},
+        {255, 0, 18087881339199677773ULL},      {2, 1, 9168552035879995947ULL},
+        {2, UINT32_MAX, 1378178069458842564ULL}};
     for (const auto &vector : resources)
     {
         auto value = minimal;

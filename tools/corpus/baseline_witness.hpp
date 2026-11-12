@@ -26,7 +26,8 @@ build_baseline_witness(RunSeed seed, const GameState &initial)
         initial.pulses != expected.pulses ||
         initial.reserve != expected.reserve ||
         initial.overload_debt != expected.overload_debt ||
-        initial.modules != expected.modules)
+        initial.modules != expected.modules ||
+        initial.terminal_rotation_used != expected.terminal_rotation_used)
     {
         return std::nullopt;
     }

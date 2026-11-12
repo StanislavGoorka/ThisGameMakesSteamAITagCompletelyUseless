@@ -1,0 +1,12 @@
+function empty(){return {ports:Array(49).fill(0),rot:Array(49).fill(0),blocked:Array(49).fill(0),player:0,hp:3,turns:0,packet:null,powered:Array(49).fill(0),receivers:Array(49).fill(0),entry:null,exit:null,pulses:[],reserve:2,debt:0,slots:[0,0],used:0};}
+function hash(s,version){let bytes=[];const le=(n,w)=>{n=BigInt(n);for(let i=0;i<w;i++){bytes.push(Number(n&255n));n>>=8n;}};const opt=n=>{bytes.push(n===null?0:1);if(n!==null)bytes.push(n);};le(version,4);bytes.push(...s.ports,...s.rot,...s.blocked,s.player,s.hp);le(s.turns,4);bytes.push(s.packet?1:0);if(s.packet)bytes.push(...s.packet);bytes.push(...s.powered,...s.receivers);opt(s.entry);opt(s.exit);le(s.pulses.length,8);for(const [id,p] of s.pulses){le(id,4);bytes.push(p);}bytes.push(s.reserve);le(s.debt,4);bytes.push(...s.slots);if(version===4)bytes.push(s.used);let h=14695981039346656037n;for(const b of bytes)h=BigInt.asUintN(64,(h^BigInt(b))*1099511628211n);return String(h);}
+function fixture(mask){const s=empty();for(const [i,p]of [[0,6],[1,mask],[7,3],[8,9]])s.ports[i]=p;s.rot[1]=1;s.receivers[1]=s.receivers[8]=1;s.entry=0;s.exit=8;s.pulses=[[1,7]];return s;}
+const map=new Map();function add(s){map.set(hash(s,3),hash(s,4));}
+add(empty());const full=empty();full.player=48;full.hp=255;full.turns=4294967295;full.packet=[0,48];full.entry=0;full.exit=48;full.pulses=[[4294967295,48],[0,0]];for(let i=0;i<49;i++){full.ports[i]=i%16;full.rot[i]=+(i%2===0);full.blocked[i]=+(i%3===0);full.powered[i]=+(i%5===0);full.receivers[i]=+(i%7===0);}add(full);
+for(const [r,d]of [[0,0],[1,0],[2,0],[3,0],[255,0],[2,1],[2,4294967295]]){const s=empty();s.reserve=r;s.debt=d;add(s);}
+for(let mask=0;mask<4;mask++){const s=empty();s.slots=mask===3?[1,2]:[mask===1?1:mask===2?2:0,0];add(s);}
+for(const p of [6,9,3,12])add(fixture(p));
+let s=fixture(12);s.hp=2;s.pulses=[];s.powered[1]=1;s.reserve=3;s.turns=1;add(s);s.packet=[1,8];s.turns=2;add(s);s.packet=null;s.powered[8]=1;s.turns=3;add(s);s.player=1;s.turns=4;add(s);s.player=8;s.turns=5;add(s);
+s=fixture(9);s.hp=2;s.pulses=[];s.powered[1]=1;s.turns=1;s.debt=1;add(s);s.ports[1]=6;s.turns=2;s.debt=2;s.reserve=1;s.packet=[7,8];add(s);s.ports[1]=9;s.turns=3;s.debt=3;s.reserve=1;s.packet=null;s.powered[8]=1;add(s);s.ports[1]=6;s.turns=4;s.debt=4;s.reserve=0;add(s);
+console.log(Object.fromEntries(map));
+for(let i=0;i<4;i++){const s=empty();s.used=1;s.slots=i===3?[1,2]:[i===1?1:i===2?2:0,0];console.log(i,hash(s,4));}

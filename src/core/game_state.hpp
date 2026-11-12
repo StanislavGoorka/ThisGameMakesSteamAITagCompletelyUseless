@@ -68,6 +68,8 @@ struct GameState
     std::uint8_t reserve{2};
     std::uint32_t overload_debt{0};
     ModuleLoadout modules{};
+    // Shared once-per-sector allowance for fixed terminal rotations.
+    bool terminal_rotation_used{false};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

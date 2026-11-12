@@ -13,7 +13,7 @@
 namespace closed_circuit::developer
 {
 
-inline constexpr std::uint32_t replay_version = 6;
+inline constexpr std::uint32_t replay_version = 7;
 
 struct ReplayStep
 {
@@ -31,7 +31,7 @@ struct ReplayResult
     GameState state;
 };
 
-// Version 6 binds the current rules, synthetic fixture and hash encoding v3.
+// Version 7 binds the current rules, synthetic fixture and hash encoding v4.
 // Every attempted command has an entry, including refusals after sector end.
 [[nodiscard]] inline std::optional<ReplayResult>
 run_replay(std::uint32_t version, RunSeed seed,

@@ -81,3 +81,5 @@ Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych f
 4 spacje; `snake_case` dla funkcji i pól, `PascalCase` dla typów; RAII dla COM, uchwytów i pamięci. MSVC `/W4`, `/permissive-`, ostrzeżenia jako błędy dla własnego kodu w CI. Debug i Release. Osobna konfiguracja AddressSanitizer po sprawdzeniu obsługi toolchainu.
 
 Cel pomiarowy: 60 FPS prezentacji, logiczne tury niezależne od FPS, podgląd typowej planszy do 16 ms, RAM poniżej 250 MB. To budżety do sprawdzenia na opisanym sprzęcie, nie ogłoszone wymagania minimalne. Raport benchmarku podaje sprzęt i rozkład czasów.
+
+P033-01: `GameState::terminal_rotation_used` ma domyślnie false i jest częścią pełnego stanu. Hashv4: tag4, pola v3, na końcu bajt0/1 zużycia. Replay7 wiąże tę wersję. Reguła obrotu i reset czekają na P033-02/03.
