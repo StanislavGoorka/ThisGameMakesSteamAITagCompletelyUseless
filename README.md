@@ -181,3 +181,5 @@ P030-03 dodaje kontrolę początkowych spawnów oraz odrębne scenariusze długu
 P030-04 kończy korpus:1000 certyfikatów bazowych i7000 testów spawnów, zero odrzuceń; raport Debug/Release identyczny. Narzędzie: `.\build\windows-msvc\Debug\developer_corpus.exe` (bez argumentów). Wiersz:seed baseline_reason turns debt0 debt2 debt3 debt6 no_entry blocked occupied; 0=PASS,1…6=SpawnIssue,7=unsupported witness,8=invalid certificate,9=debt mismatch. Końcowe `summary 1000 0 0`. Pełne dane:[raport korpusu](docs/workflow/history/P030-04-corpus.txt).40/40 CTest w obu konfiguracjach. [Raport P030-04](docs/workflow/history/P030-04.md)
 
 P031 zamknięto jako plan trzech dzieci: stabilne ID i dwa sloty; GameState i hashv3/replay5; port reguł obrotu bez aktywacji efektów. P032 zależy od P031-03. [Raport P031](docs/workflow/history/P031.md)
+
+P031-01 implementuje ModuleLoadout: dwa kanoniczne sloty i stabilne ModuleId1/2, odrzucenie duplikatów i obcych wartości bez mutacji.41/41 CTest Debug/Release. Efekty jeszcze nieaktywne. [Raport P031-01](docs/workflow/history/P031-01.md)
