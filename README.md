@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P027-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P027-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -164,4 +164,4 @@ Dodatkowa uruchomiona komenda replay overdrive:
 
 Cztery przyjęte akcje kończą się reserve0/debt4/tura4; piąta jest odmową i zachowuje hash 4113736618476666656.
 
-P027 jest podziałem planu: wolny ID impulsu (P027-01), następnie pojedynczy spawn długu na wejściu sektora (P027-02). Brak implementacji dzieci.
+P027 jest podziałem planu: wolny ID impulsu (P027-01), następnie pojedynczy spawn długu na wejściu sektora (P027-02). P027-01 implementuje najmniejszy wolny EntityId; spawn czeka na P027-02.
