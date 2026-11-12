@@ -930,7 +930,9 @@
             "title": "Ograniczony odczyt checkpointu Windows",
             "scope": "Dodaj RAII uchwytu i reader pojedynczego pliku: dokładnie40 bajtów na stosie, walidacja kodekiem, rozróżnienie brak/niepoprawny/IO. Bez fallbacku i zapisu.",
             "acceptance": "Literalne wektory i pełne restore; wszystkie ucięcia, nadmiar i duży plik, uszkodzenie, brak, katalog i blokada uchwytu odrzucane bez zmian pliku.",
-            "depends_on": ["P038"],
+            "depends_on": [
+                "P038"
+            ],
             "gate": null
         },
         {
@@ -939,7 +941,9 @@
             "title": "Staging checkpointu Windows",
             "scope": "Dodaj wyłącznie zapis wartości do wskazanego pliku staging: encode przed otwarciem, pełny WriteFile, FlushFileBuffers i zamknięcie. Bez publikacji i backupu.",
             "acceptance": "Dokładne bajty wszystkich wektorów, powtórzenie i zastąpienie resztek; zła wartość, zablokowany staging i niedostępny katalog nie naruszają istniejących danych.",
-            "depends_on": ["P038-01"],
+            "depends_on": [
+                "P038-01"
+            ],
             "gate": null
         },
         {
@@ -948,7 +952,9 @@
             "title": "Publikacja checkpointu z poprawnym backupem",
             "scope": "Dodaj zapis temp oraz zamianę w tym samym katalogu. Najpierw publikuj staging zwalidowanego poprzedniego main jako bak, potem nowy main; nigdy nie przenoś main poza jego nazwę. Uszkodzony main blokuje zapis i zachowuje backup.",
             "acceptance": "Pierwszy i kolejne zapisy, dokładny poprzedni backup, odmowy staging/backup/main, retry i brak dobrego backupu nadpisanego uszkodzonym main. Bez automatycznego odzyskiwania.",
-            "depends_on": ["P038-02"],
+            "depends_on": [
+                "P038-02"
+            ],
             "gate": null
         },
         {
@@ -957,7 +963,9 @@
             "title": "Test przerwania zapisu Windows",
             "scope": "Dodaj testy integracyjne z zatrzymaniem procesu po staging i po publikacji backupu; testuj resztki częściowego temp i ponowienie oraz pełny restore. Bez fallbacku P039.",
             "acceptance": "Po wymuszonym zakończeniu procesu istnieje poprzedni poprawny main/backup; retry publikuje pełne40 bajtów. Niedostępny katalog i nazwy Unicode sprawdzone. Jawne ograniczenie: bez symulacji zaniku zasilania lub awarii wewnątrz syscall.",
-            "depends_on": ["P038-03"],
+            "depends_on": [
+                "P038-03"
+            ],
             "gate": null
         },
         {
@@ -974,11 +982,77 @@
         {
             "id": "P040",
             "phase": "M4",
-            "title": "Profil lokalny",
-            "scope": "Dodaj trwały profil odblokowań i ustawień oddzielny od runu.",
-            "acceptance": "Round-trip i niezależność usunięcia runu od profilu.",
+            "title": "Rozbij profil lokalny",
+            "scope": "Wyłącznie rozbij profil na model/format, encoder, decoder, odczyt, zapis oraz dowód niezależności runu.",
+            "acceptance": "Dzieci mają osobne kontrakty i testy; P041 zależy od ostatniego wymaganego dziecka.",
             "depends_on": [
                 "P039"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040-01",
+            "phase": "M4",
+            "title": "Model i format profilu",
+            "scope": "Dodaj wartościowy model ustawień i odblokowań oraz specyfikację profilu v1 bez kodeka i IO.",
+            "acceptance": "Domyślne wartości i zakresy; niezależne kopie, stabilne numery ID i jawny format bez pól runu.",
+            "depends_on": [
+                "P040"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040-02",
+            "phase": "M4",
+            "title": "Encoder profilu",
+            "scope": "Zakoduj poprawny profil do stałej kanonicznej tablicy bajtów bez IO.",
+            "acceptance": "Literalne niezależne wektory, granice ustawień i odrzucenie niepoprawnych wartości.",
+            "depends_on": [
+                "P040-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040-03",
+            "phase": "M4",
+            "title": "Decoder profilu",
+            "scope": "Odczytaj dokładny rekord profilu v1 ze span bajtów bez IO.",
+            "acceptance": "Round-trip; ucięcia, nadmiar, wersja, checksum i niepoprawne pola także po odnowieniu checksumy.",
+            "depends_on": [
+                "P040-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040-04",
+            "phase": "M4",
+            "title": "Odczyt pliku profilu",
+            "scope": "Dodaj ograniczony read-only adapter Windows pojedynczego pliku profilu.",
+            "acceptance": "Dokładne bajty; brak, uszkodzenie, nadmiar, blokada i brak mutacji plików.",
+            "depends_on": [
+                "P040-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040-05",
+            "phase": "M4",
+            "title": "Zapis profilu z backupem",
+            "scope": "Dodaj staging i publikację profilu z backupem poprzedniego poprawnego pliku.",
+            "acceptance": "Round-trip; retry i błędy każdej ścieżki nie tracą poprawnego main/bak; niepoprawny main nie nadpisuje backupu.",
+            "depends_on": [
+                "P040-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P040-06",
+            "phase": "M4",
+            "title": "Niezależność profilu i runu",
+            "scope": "Udowodnij integracyjnie w osobnym procesie trwałość profilu oraz niezależność usunięcia plików checkpointu.",
+            "acceptance": "Restart procesu zachowuje ustawienia i odblokowania; usunięcie runu nie zmienia żadnego bajtu profilu ani backupu.",
+            "depends_on": [
+                "P040-05"
             ],
             "gate": null
         },
@@ -989,7 +1063,7 @@
             "scope": "Ustabilizuj kontrakt zdarzeń potrzebnych achievementom.",
             "acceptance": "Stałe identyfikatory i kolejność; preview nie emituje zdarzeń do usług.",
             "depends_on": [
-                "P040"
+                "P040-06"
             ],
             "gate": null
         },
