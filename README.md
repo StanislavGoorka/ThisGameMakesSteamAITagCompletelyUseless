@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P040-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P040-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -246,3 +246,5 @@ P039: recover_checkpoint_file wybiera poprawny main lub backup po braku/uszkodze
 P040: Rozbito profil na sześć małych dzieci: model/format, encoder, decoder, odczyt, zapis z backupem i test niezależności runu. P041 zależy od P040-06. Nie zaimplementowano dzieci. [Raport P040](docs/workflow/history/P040.md)
 
 P040-01: Dodano LocalProfile i walidację zakresów, stabilne wewnętrzne AchievementId 1..5 oraz specyfikację profilu v1 (24 bajty). Test sprawdza wszystkie 65536 masek achievementów, 256 masek wariantów i 256 głośności oraz niezależność kopii. Bez kodeka i IO. [Raport P040-01](docs/workflow/history/P040-01.md)
+
+P040-02: encode_profile zwraca optional kanonicznej tablicy24 bajtów z jawnym LE, magic CCPR, schema1 i FNV-1a64. Cztery niezależne literalne wektory oraz pełne zakresy masek i ustawień potwierdzają wynik i brak mutacji wejścia. Bez decodera i IO. [Raport P040-02](docs/workflow/history/P040-02.md)
