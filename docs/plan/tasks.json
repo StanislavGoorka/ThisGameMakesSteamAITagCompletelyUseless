@@ -1103,11 +1103,44 @@
         {
             "id": "P042",
             "phase": "M4",
-            "title": "Trwały zbiór odblokowań",
-            "scope": "Dodaj zapis zbioru lokalnie zdobytych achievement ID.",
-            "acceptance": "Powtórne odblokowanie nie duplikuje; restart procesu zachowuje stan.",
+            "title": "Rozbij trwały zbiór odblokowań",
+            "scope": "Wyłącznie rozbij czystą aktualizację zbioru, trwałą operację Windows i dowód restartu procesu na trzy małe dzieci; bez implementacji.",
+            "acceptance": "Dzieci chronią idempotencję, zachowanie pozostałych pól, błędy bez nadpisania i restart; P043 zależy od P042-03.",
             "depends_on": [
                 "P041-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P042-01",
+            "phase": "M4",
+            "title": "Idempotentna aktualizacja zbioru",
+            "scope": "Dodaj czysty odczyt i odblokowanie jednego znanego AchievementId w LocalProfile; bez IO i predykatów.",
+            "acceptance": "Każda poprawna maska i ID; duplikat bez zmiany, obce ID i invalid profil odrzucone, pozostałe ustawienia zachowane.",
+            "depends_on": [
+                "P042"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P042-02",
+            "phase": "M4",
+            "title": "Trwałe odblokowanie Windows",
+            "scope": "Dodaj jedną operację read/modify/save opartą o profile_read/save. Brak main tworzy profil domyślny, invalid lub IO blokuje zapis.",
+            "acceptance": "Rozróżnia nowe/already unlocked/błąd; duplikat nie zapisuje main ani backupu; błędy i retry zachowują istniejące odblokowania i ustawienia.",
+            "depends_on": [
+                "P042-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P042-03",
+            "phase": "M4",
+            "title": "Odblokowania po restarcie procesu",
+            "scope": "Zweryfikuj trwałą operację w oddzielnych procesach i dokładne bajty profilu/backupu. Bez nowego kodu produkcyjnego.",
+            "acceptance": "Wszystkie pięć ID, powtórzenia, restart, zapis ustawień i odmowy uszkodzonego/niedostępnego main bez utraty danych.",
+            "depends_on": [
+                "P042-02"
             ],
             "gate": null
         },
@@ -1118,7 +1151,7 @@
             "scope": "Dodaj interfejs i lokalny adapter bez Steam SDK.",
             "acceptance": "Test kontraktu z fake adapterem i działanie offline.",
             "depends_on": [
-                "P042"
+                "P042-03"
             ],
             "gate": null
         },

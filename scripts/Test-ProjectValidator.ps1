@@ -28,7 +28,7 @@ function Seed-TestAsset([string]$Fixture) {
 function Run-Case([string]$Name, [scriptblock]$Change, [bool]$ShouldPass, [string]$Expected = '') {
     $fixture = Join-Path $scratch $Name
     New-Item -ItemType Directory -Path $fixture -Force | Out-Null
-    foreach ($relative in @('AGENTS.md', 'README.md', 'docs', 'content', '.agents')) {
+    foreach ($relative in @('AGENTS.md', 'README.md', 'docs', 'content', '.agents', '.github', 'src', 'tests', 'tools', 'CMakeLists.txt')) {
         Copy-Item -LiteralPath (Join-Path $repoRoot $relative) -Destination $fixture -Recurse
     }
     & $Change $fixture
@@ -55,13 +55,14 @@ try {
         param($dir)
         $path = Join-Path $dir 'docs/workflow/NEXT.md'
         $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8
-        [IO.File]::WriteAllText($path, $data.Replace('Task: P001', 'Task: P002'), $utf8)
+        [IO.File]::WriteAllText($path, ($data -replace 'Task: [A-Z0-9-]+', 'Task: P000'), $utf8)
     } $false 'NEXT Task differs'
     Run-Case 'unfinished-predecessor' {
         param($dir)
         $path = Join-Path $dir 'docs/workflow/STATE.json'
         $data = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
         $data.current_task = 'P003'
+        $data.completed = @('P000', 'P001')
         Write-Json $data $path
     } $false 'unfinished dependency'
     Run-Case 'orphan-file' {
