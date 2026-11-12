@@ -93,3 +93,5 @@ P035-01 implementuje wyłącznie RunState, ograniczony SectorNumber i niemutują
 P035-02 implementuje start_run(RunSeed) w core/run_start.hpp: pierwszy seed sektora pochodzi z pierwszego losowania lokalnego SplitMix64. Złożony GameState zaczyna na wejściu z domyślnymi zasobami. API nie przechowuje RNG, nie wywołuje usług i nie wykonuje tury ani przejścia. Pełny run czeka na P035-03..06.
 
 P035-03..06 implementują resolver i preview runu, bramkowaną nagrodę i wartościowe przejście. Test integracyjny przez trzy generowane sektory używa prawdziwych API, tworzy dług przez overdrive, przenosi moduły i HP oraz blokuje czwarty sektor i akcje po porażce. Jest to dowód headless, bez prezentacji, zapisu ani oceny grywalności.
+
+P036 opisuje [checkpoint granicy sektora v1](CHECKPOINT_FORMAT.md): 40 bajtów, niezależne wersje schematu/reguł, FNV-1a64 i pełna rekonstrukcja początku sektora. Dług po spawnie i flaga opłaconego impulsu zapobiegają podwójnemu kosztowi przy wznowieniu. Kodek i IO nie są jeszcze zaimplementowane.
