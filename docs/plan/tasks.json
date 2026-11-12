@@ -644,10 +644,43 @@
                       "id":  "P031",
                       "phase":  "M3",
                       "title":  "Kontrakt modułu",
-                      "scope":  "Dodaj jeden port modyfikacji reguł bez implementowania nowych modułów.",
-                      "acceptance":  "Pusty zestaw zachowuje bazowe reguły, stabilne ID i limit slotów.",
+                      "scope":  "Wyłącznie podziel kontrakt modułów na wartościowy zestaw, stan/hash/replay i port reguł obrotu. Bez implementacji dzieci ani efektów modułów.",
+                      "acceptance":  "Trzy dzieci o osobnych kontraktach; P032 zależy od ostatniego; jawna decyzja o wersji pełnego stanu.",
                       "depends_on":  [
                                          "P030-04"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P031-01",
+                      "phase":  "M3",
+                      "title":  "Identyfikatory i sloty modułów",
+                      "scope":  "Dodaj wartościowy zestaw do dwóch modułów o stabilnych numerycznych ID1/2, bez GameState i efektów.",
+                      "acceptance":  "Pusty zestaw, poprawne dodanie, kanoniczny porządek, odrzucenie duplikatu/obcego ID/przekroczenia slotów bez mutacji.",
+                      "depends_on":  [
+                                         "P031"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P031-02",
+                      "phase":  "M3",
+                      "title":  "Moduły w stanie i pełnym hashu",
+                      "scope":  "Dodaj pusty zestaw modułów do GameState i pełnego hasha; jawny hashv3/replay5 bez efektów reguł.",
+                      "acceptance":  "Kopie i odmowy zachowują zestaw; niezależne wektory hasha dla pustych/pojedynczych/pełnych slotów; stare replay odrzucane; korpus bez zmian wyników.",
+                      "depends_on":  [
+                                         "P031-01"
+                                     ],
+                      "gate":  null
+                  },
+                  {
+                      "id":  "P031-03",
+                      "phase":  "M3",
+                      "title":  "Port reguł obrotu",
+                      "scope":  "Dodaj jeden czysty port reguł obrotu z zestawu modułów i użyj go w istniejącym helperze, bez aktywacji efektów P032/P033.",
+                      "acceptance":  "Pusty i zarejestrowane zestawy zachowują bazowy zasięg1 oraz odmowę nieruchomych; komenda, preview i commit zgodne; pełny stan i brak RNG.",
+                      "depends_on":  [
+                                         "P031-02"
                                      ],
                       "gate":  null
                   },
@@ -658,7 +691,7 @@
                       "scope":  "Dodaj tylko moduł zwiększający zasięg rotate.",
                       "acceptance":  "Nowy legalny cel i nielegalny poza nową granicą; brak zmian bez modułu.",
                       "depends_on":  [
-                                         "P031"
+                                         "P031-03"
                                      ],
                       "gate":  null
                   },
