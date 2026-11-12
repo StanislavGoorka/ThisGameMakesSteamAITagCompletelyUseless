@@ -87,3 +87,5 @@ P033-01: `GameState::terminal_rotation_used` ma domyślnie false i jest części
 P033-02: wspólny rotate_from_player stosuje jednorazowe uprawnienie do nieruchomej maski o jednym porcie; overdrive dziedziczy walidację i wykonuje drugi obrót bez ponownego zużycia. Replay8, hashv4. Reset i granica runu pozostają osobne.
 
 P035 to podział planu na sześć dzieci, nie gotowy run. Docelowy RunState posiada root seed, SectorNumber1..3, aktywny GameState i reward_claimed. RunPhase jest wyliczany z sector_outcome, numeru i nagrody. Zasoby pozostają wyłącznie w aktywnym sektorze. SektorN używa N-tego wyniku lokalnego SplitMix64(root seed); brak odziedziczonego RNG. Hashv4/replay8 obejmują dotychczasowy GameState i fixture, nie metadane runu. Checkpoint i wersjonowanie runu dopiero P036.
+
+P035-01 implementuje wyłącznie RunState, ograniczony SectorNumber i niemutujący run_phase w core/run_state.hpp. Gotowy odczyt faz nie oznacza działania startu, tury, nagrody ani przejścia runu.
