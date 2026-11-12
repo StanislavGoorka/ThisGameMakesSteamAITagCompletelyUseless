@@ -78,7 +78,7 @@ błędów obu prób. Porównuje pełny restore, także opłacony impuls i dług,
 oraz dokładne bajty main/bak i obu ignorowanych temp. Sprawdza brak rodzica
 i nazwę ze spacją oraz polskimi znakami. Nie testuje naprawy ani integracji UI.
 
-## Ocena grywalności
+## Profil lokalny i zdarzenia
 
 P040-01..03: `application_profile_model/encode/decode` chronią profil v1.
 Cztery niezależne literalne wektory, wszystkie 25 856 poprawne wartości,
@@ -99,6 +99,16 @@ dla każdego z4 wektorów writer, reader przed i reader po usunięciu runu.
 Po usunięciu dokładnie4 nazw checkpointu profil/main/bak i oba pozostawione
 staging zachowują wszystkie bajty. Test używa katalogu Unicode i pełnych
 wartości profilu; nie dodaje produkcyjnej operacji usuwania ani sesji UI.
+
+P041-01/02: `application_domain_event/run_turn_events` chronią stabilne ID,
+wartości payload i kluczy oraz niezależność kopii. Testy każdej komendy,
+odmów i terminalnych wejść porównują pełny stan z core i preview przy trzech
+powtórzeniach. Wszystkie3 sektory obejmują dostawę i sukces w turze48,
+dostawę z przeciążeniem oraz śmierć po dostawie na wyjściu. Kolejność,
+payload i ciągłe ordinal są sprawdzane jawnie. Nie zastępuje to korpusu
+pełnych sekwencji P041-03 ani testów trwałego dispatchu P044.
+
+## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 

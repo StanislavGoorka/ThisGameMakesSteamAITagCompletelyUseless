@@ -33,8 +33,16 @@ samodzielnie do globalnej trwałej deduplikacji. P044 musi ustalić kontekst
 próby oraz regułę ponownego odtwarzania przed dispatch do usług; obecny profil
 i checkpoint nie przechowują outboxu, kluczy ani identyfikatora instancji runu.
 
-P041-02 doda wartościowy wrapper resolvera runu; zwróci wynik i listę,
+P041-02 wdraża `resolve_run_turn_events`, wartościowy wrapper resolvera runu;
+zwraca `RunTurnEventsResult` z wynikiem i listą,
 bez mutacji wejścia i bez publikacji do usług. Istniejący preview_run_turn
-pozostanie czystym podglądem stanu, bez dostępu do tego kanału publikacji.
+pozostaje czystym podglądem stanu, bez dostępu do tego kanału publikacji.
 P041-03 sprawdzi pełne sekwencje, restore i izolację preview. Wybór aktywnego
 stanu i publikacja listy należą do przyszłej aplikacji, nie do symulacji.
+
+Wrapper wywołuje wspólny resolver raz i po akceptacji odczytuje nowe flagi
+powered_nodes jako fakty dostawy. Obecnie wyłącznie deliver_packet ustawia
+te flagi, najwyżej jedną na turę. Zmiana tego niezmiennika wymaga zmiany
+kontraktu ekstrakcji zdarzeń. Wynik sektora odczytuje po wszystkich fazach,
+więc dostawa przed śmiercią pozostaje zdarzeniem, lecz sukces sektora nie.
+Nie powtarza symulacji, nie zmienia core ani preview i nie wywołuje usług.
