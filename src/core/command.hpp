@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/player_movement.hpp"
+#include "core/player_overdrive.hpp"
 #include "core/player_rotation.hpp"
 #include "core/sector_outcome.hpp"
 
@@ -26,13 +27,21 @@ struct RotateCommand
     operator==(const RotateCommand &) const noexcept = default;
 };
 
+struct OverdriveCommand
+{
+    NodeId target;
+    [[nodiscard]] constexpr bool
+    operator==(const OverdriveCommand &) const noexcept = default;
+};
+
 struct WaitCommand
 {
     [[nodiscard]] constexpr bool
     operator==(const WaitCommand &) const noexcept = default;
 };
 
-using Command = std::variant<MoveCommand, RotateCommand, WaitCommand>;
+using Command =
+    std::variant<MoveCommand, RotateCommand, WaitCommand, OverdriveCommand>;
 
 // Reuse the action rules on a private copy. Unlike the action-only move and
 // rotation helpers, every command requires an ongoing sector. Wait has no
@@ -59,6 +68,10 @@ using Command = std::variant<MoveCommand, RotateCommand, WaitCommand>;
                 if constexpr (std::is_same_v<Action, MoveCommand>)
                 {
                     return move_player(candidate, action.target);
+                }
+                else if constexpr (std::is_same_v<Action, OverdriveCommand>)
+                {
+                    return overdrive_from_player(candidate, action.target);
                 }
                 else
                 {

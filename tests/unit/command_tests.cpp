@@ -33,7 +33,7 @@ constexpr NodeId node(int value)
     return *NodeId::from_value(value);
 }
 
-static_assert(std::variant_size_v<Command> == 3);
+static_assert(std::variant_size_v<Command> == 4);
 static_assert(!std::default_initializable<Command>);
 static_assert(!std::default_initializable<MoveCommand>);
 static_assert(!std::default_initializable<RotateCommand>);

@@ -46,6 +46,10 @@ struct TurnResult
             {
                 static_cast<void>(rotate_from_player(next, action.target));
             }
+            else if constexpr (std::is_same_v<Action, OverdriveCommand>)
+            {
+                static_cast<void>(overdrive_from_player(next, action.target));
+            }
             // A validated wait has no board effect; the common cost is below.
         },
         command);

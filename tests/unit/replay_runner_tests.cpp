@@ -53,7 +53,7 @@ bool check(bool condition, const char *message)
 bool unknown_versions_and_empty_replays()
 {
     const std::array<Command, 1> commands{WaitCommand{}};
-    for (const auto version : {0U, 1U, 2U, 4U, UINT32_MAX})
+    for (const auto version : {0U, 1U, 2U, 3U, 5U, UINT32_MAX})
     {
         if (!check(!run_replay(version, RunSeed{0}, commands),
                    "Unknown replay version must have no result"))
@@ -71,7 +71,7 @@ bool unknown_versions_and_empty_replays()
         Vector{RunSeed{UINT64_MAX}, 15288789527669922352ULL}};
     for (const auto &vector : vectors)
     {
-        const auto result = run_replay(3, vector.seed, {});
+        const auto result = run_replay(4, vector.seed, {});
         if (!check(result && result->initial_hash == vector.hash &&
                        result->steps.empty() &&
                        same_state(result->state, seeded_fixture(vector.seed)),
@@ -131,7 +131,7 @@ bool winning_corpus()
         const auto turn = resolve_turn(direct, commands[index]);
         direct = turn.state;
         const auto result =
-            run_replay(3, seed, std::span{commands}.first(index + 1));
+            run_replay(4, seed, std::span{commands}.first(index + 1));
         if (!check(result && result->initial_hash == 15288789527669922352ULL &&
                        result->steps == expected_steps &&
                        same_state(result->state, expected) &&
@@ -152,7 +152,7 @@ bool rotations_and_refusals_continue()
                                           RotateCommand{node(1)},
                                           MoveCommand{node(48)}, WaitCommand{}};
     const auto before = commands;
-    const auto result = run_replay(3, RunSeed{0}, commands);
+    const auto result = run_replay(4, RunSeed{0}, commands);
     auto expected = seeded_fixture(RunSeed{0});
     expected.ports[1] = *PortMask::from_bits(12);
     expected.player_integrity = 2;
@@ -193,7 +193,7 @@ bool overload_and_terminal_refusals()
     commands.push_back(RotateCommand{node(1)});
     commands.push_back(WaitCommand{});
     const auto before = commands;
-    const auto result = run_replay(3, RunSeed{UINT64_MAX}, commands);
+    const auto result = run_replay(4, RunSeed{UINT64_MAX}, commands);
     if (!check(result && result->steps.size() == commands.size(),
                "Replay must retain all attempts beyond sector end"))
     {
@@ -229,14 +229,40 @@ bool overload_and_terminal_refusals()
                  "Terminal commands must preserve full final state and hash");
 }
 
+bool overdrive_corpus()
+{
+    const std::array<Command, 5> commands{
+        OverdriveCommand{node(1)}, OverdriveCommand{node(1)},
+        OverdriveCommand{node(1)}, OverdriveCommand{node(1)},
+        OverdriveCommand{node(1)}};
+    const auto result = run_replay(4, RunSeed{0}, commands);
+    const std::vector<ReplayStep> expected{
+        {true, SectorOutcome::ongoing, 10251646929112012098ULL},
+        {true, SectorOutcome::ongoing, 8409129468280001572ULL},
+        {true, SectorOutcome::ongoing, 15038766804051446976ULL},
+        {true, SectorOutcome::ongoing, 4113736618476666656ULL},
+        {false, SectorOutcome::ongoing, 4113736618476666656ULL}};
+    auto state = seeded_fixture(RunSeed{0});
+    state.ports[1] = *PortMask::from_bits(6);
+    state.player_integrity = 2;
+    state.pulses.clear();
+    state.powered_nodes[1] = state.powered_nodes[8] = true;
+    state.turns_taken = TurnIndex{4};
+    state.reserve = 0;
+    state.overload_debt = 4;
+    return check(
+        result && result->initial_hash == 2662686785220386338ULL &&
+            result->steps == expected && same_state(result->state, state),
+        "Overdrive replay must match independent hashes and full state");
+}
 bool replay_values_are_independent()
 {
     std::vector<Command> commands{MoveCommand{node(48)}};
     const auto before = commands;
     SplitMix64 external_rng{RunSeed{9}};
     auto expected_rng = external_rng;
-    auto first = run_replay(3, RunSeed{0}, commands);
-    auto second = run_replay(3, RunSeed{0}, commands);
+    auto first = run_replay(4, RunSeed{0}, commands);
+    auto second = run_replay(4, RunSeed{0}, commands);
     if (!check(first && second && first->steps == second->steps &&
                    same_state(first->state, second->state) &&
                    commands == before,
@@ -255,8 +281,8 @@ bool replay_values_are_independent()
     first->steps.clear();
     first->initial_hash = 0;
     commands[0] = WaitCommand{};
-    const auto third = run_replay(3, RunSeed{0}, before);
-    const auto changed_commands = run_replay(3, RunSeed{0}, commands);
+    const auto third = run_replay(4, RunSeed{0}, before);
+    const auto changed_commands = run_replay(4, RunSeed{0}, commands);
     return check(third && changed_commands &&
                      second->initial_hash == third->initial_hash &&
                      second->steps == third->steps &&
@@ -272,8 +298,8 @@ bool replay_values_are_independent()
 
 int main()
 {
-    return unknown_versions_and_empty_replays() && winning_corpus() &&
-                   rotations_and_refusals_continue() &&
+    return overdrive_corpus() && unknown_versions_and_empty_replays() &&
+                   winning_corpus() && rotations_and_refusals_continue() &&
                    overload_and_terminal_refusals() &&
                    replay_values_are_independent()
                ? 0
