@@ -1158,11 +1158,44 @@
         {
             "id": "P044",
             "phase": "M4",
-            "title": "Idempotentny dispatch",
-            "scope": "Dodaj dostarczanie zdarzeń do evaluatorów bez podwójnego skutku.",
-            "acceptance": "Powtórzenie zdarzenia i powtórny odczyt checkpointu.",
+            "title": "Rozbij idempotentny dispatch",
+            "scope": "Wyłącznie rozbij kontrakt kontekstu próby/gałęzi, uporządkowany dispatcher z retry i dowód restore/trwałego zbioru. Bez implementacji dzieci.",
+            "acceptance": "Dzieci rozróżniają seed od tożsamości próby/gałęzi, chronią evaluator przed powtórzeniem i trwały zbiór przed duplikatem po restore; P045 zależy od P044-03.",
             "depends_on": [
                 "P043"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P044-01",
+            "phase": "M4",
+            "title": "Kontrakt zakresu dispatchu",
+            "scope": "Dodaj specyfikację i małe typy zakresu próby/gałęzi, wyniku dispatchu oraz port evaluatora zwracającego maskę kandydatów. Bez dispatchu i predykatów.",
+            "acceptance": "Jawny reset po nowej próbie/restore, brak deduplikacji samym seedem, granica gwarancji pamięciowej i trwałej, test wartości i fake evaluatora.",
+            "depends_on": [
+                "P044"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P044-02",
+            "phase": "M4",
+            "title": "Uporządkowany dispatch z retry",
+            "scope": "Dodaj mały dispatcher zdarzeń w jednym zakresie: jednokrotna ocena, cache payloadu i kandydatów oraz retry tylko niepotwierdzonych ID przez AchievementSink.",
+            "acceptance": "Duplikat nie ocenia ponownie; konflikt payloadu, zła kolejność/kontekst odrzucone. Błąd lub wyjątek sinka zachowuje pending bez ponownego skutku evaluatora; preview nie publikuje.",
+            "depends_on": [
+                "P044-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P044-03",
+            "phase": "M4",
+            "title": "Dowód restore i trwałego dispatchu",
+            "scope": "Zweryfikuj integracyjnie zdarzenia resolvera, powtórzenia, checkpoint restore z nową gałęzią oraz restart z lokalnym sinkiem. Bez nowych predykatów i logiki produkcyjnej.",
+            "acceptance": "Dokładne klucze/payloady, raz na zakres dla fake evaluatora, trwałe ID bez duplikatów i przesuwania backupu po restore/restart, preview bez skutku.",
+            "depends_on": [
+                "P044-02"
             ],
             "gate": null
         },
@@ -1173,7 +1206,7 @@
             "scope": "Uściślij wyłącznie specyfikację pięciu predykatów MVP, bez ich implementacji.",
             "acceptance": "Każdy ma przykład pozytywny, negatywny i granicę resetowania.",
             "depends_on": [
-                "P044"
+                "P044-03"
             ],
             "gate": null
         },

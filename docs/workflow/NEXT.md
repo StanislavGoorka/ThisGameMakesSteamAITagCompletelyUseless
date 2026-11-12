@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P044
+Task: P044-01
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P043 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P044 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P044: rozbij idempotentny dispatch. Kontrakt musi odróżnić próbę oraz gałąź restore od samego seeda. Ustal pamięć evaluatora, retry po błędzie sinka, konflikty payloadu i granicę gwarancji po restarcie; istniejący profil ma tylko trwały zbiór ID, nie outbox. Czytaj DOMAIN_EVENTS, achievement_sink i checkpoint. Bez predykatów P045.
+P044-01: specyfikacja i małe typy DeliveryScope (seed, token próby, token gałęzi, sektor początkowej granicy), wyniki oraz port evaluatora z fixed maską. Nowy zakres i świeży evaluator po nowej próbie lub restore; cache tylko w pamięci, trwała idempotencja przez zbiór profilu. Test wartości, granic i fake. Bez dispatchu i predykatów.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator
