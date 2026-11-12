@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P042-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P042-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -266,3 +266,5 @@ P041-02: resolve_run_turn_events wywołuje wspólny resolver runu raz i zwraca l
 P041-03: Korpus pełnych runów porównuje każdą listę kluczy i payloadów oraz pełny stan po dwóch odtworzeniach checkpointu granicy. Cztery seedy, obie kolejności modułów, opłacony impuls, śmierć i overload; powtarzane preview bez kanału zdarzeń. Bez kodu produkcyjnego. [Raport P041-03](docs/workflow/history/P041-03.md)
 
 P042: P042 zamknięto wyłącznie jako podział na trzy kontrakty: czysty zbiór, trwałą operację Windows oraz restart procesu. P043 zależy od P042-03. Nie dodano implementacji dzieci. [Raport P042](docs/workflow/history/P042.md)
+
+P042-01: Dodano is_achievement_unlocked i unlock_achievement: znane ID 1..5, walidacja profilu, osobny wynik duplikatu, zmiana wyłącznie jednego bitu. Test wszystkich 32 masek, ID 0..255 i odmów invalid profilu zachowuje ustawienia. Bez IO i predykatów. [Raport P042-01](docs/workflow/history/P042-01.md)

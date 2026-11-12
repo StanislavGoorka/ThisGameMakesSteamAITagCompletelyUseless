@@ -16,7 +16,12 @@ Stałe wewnętrzne AchievementId 1..5: first_delivery, first_sector,
 run_without_overdrive, reconfigured_delivery, completed_run, zgodnie z
 [architekturą](ARCHITECTURE.md). Bit ID−1 oznacza zdobycie; znana maska 0x001f.
 Nie są to etykiety ani predykaty dla gracza. P045 doprecyzuje warunki, P042
-doda idempotentne odblokowanie. Variant_bits 0..3 rezerwuje dwa bity dla
+wdraża idempotentne odblokowanie. P042-01 dodaje czyste `unlock_achievement`
+oraz `is_achievement_unlocked`. Znane ID 1..5 i poprawny profil są wymagane;
+duplikat jest osobnym wynikiem bez zmiany wartości, invalid nie mutuje profilu.
+Zmienia się wyłącznie wskazany bit achievementu, bez wariantów i ustawień.
+Zapis plików i predykaty pozostają osobnymi krokami.
+Variant_bits 0..3 rezerwuje dwa bity dla
 alternatywnych konfiguracji 2/3; bazowa konfiguracja 1 jest zawsze dostępna.
 Nie wdrożono konfiguracji alternatywnych ani sposobu ich zdobycia.
 
