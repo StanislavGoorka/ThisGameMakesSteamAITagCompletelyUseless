@@ -75,7 +75,11 @@ Odmowa może pozostawić staging; retry go zastępuje. Przy odmowie ostatniej
 zamiany backup może już zawierać nadal aktualny main. Kontrakt wymaga jednego
 zapisującego w prywatnym katalogu lokalnym; nie jest transakcją dwóch nazw
 ani gwarancją wobec zaniku zasilania. Wybór katalogu użytkownika i wywołania
-z sesji są nadal planem; odzyskiwanie z backupu pozostaje P039.
+z sesji są nadal planem. P039 dodaje read-only `recover_checkpoint_file`:
+poprawny main ma pierwszeństwo, brak/uszkodzenie pozwala czytać `.bak`,
+inny błąd IO zatrzymuje wybór. Wynik zachowuje źródło i diagnostykę obu prób.
+Odczyt nie naprawia plików ani nie promuje staging; zapis nadal odrzuca
+uszkodzony main. Polityka naprawy i podłączenie do sesji pozostają poza API.
 
 ## Achievementy
 
@@ -113,4 +117,4 @@ P037-01..04 implementują pamięciowy kodek w `src/application/`: wartościowy
 RunCheckpoint, ścisłą projekcję/rekonstrukcję pełnej granicy oraz encoder/decoder40
 bajtów ze sprawdzeniem wersji, checksumy, zakresów i kanoniczności. Korpus11000
 granic sprawdza pełny stan i pierwszą turę po resume; błędne dane nie zwracają
-częściowego wyniku. IO, atomowa zamiana i backup pozostają P038/P039.
+częściowego wyniku. Adaptery IO, publikacji i odczytu backupu opisano wyżej.

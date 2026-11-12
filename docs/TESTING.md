@@ -71,6 +71,13 @@ do main jest wykrywana po pierwszym przerwaniu. Szczegóły w raporcie P038-04.
 To test zakończenia procesu między wywołaniami API; nie zaniku zasilania,
 awarii nośnika, wnętrza syscall ani konkurencyjnych zapisów.
 
+P039: `windows_checkpoint_recover` sprawdza 4 wektory ×16 kombinacji main/bak
+(poprawny, brak, invalid, blokada uchwytu), każdą dwukrotnie. Potwierdza
+pierwszeństwo main, fallback tylko po braku/invalid, źródło i dokładne kody
+błędów obu prób. Porównuje pełny restore, także opłacony impuls i dług,
+oraz dokładne bajty main/bak i obu ignorowanych temp. Sprawdza brak rodzica
+i nazwę ze spacją oraz polskimi znakami. Nie testuje naprawy ani integracji UI.
+
 ## Ocena grywalności
 
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.

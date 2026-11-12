@@ -94,5 +94,12 @@ pojedyncze zmiany bajtów, błędne pola z ponownie policzoną checksumą, obie 
 wersje. Impuls/dług po resume ma zachować dokładnie jeden już opłacony spawn.
 P038-01..04 wdraża ograniczony reader, staging z flush i publikację ze
 zwalidowanym backupem. Testy plikowe i przerwania procesu opisuje
-[TESTING](TESTING.md); sam format nie jest dowodem IO. Odzyskiwanie P039
-pozostaje osobnym zadaniem. Schema1/run_rules1, hashv4/replay8 bez zmian.
+[TESTING](TESTING.md); sam format nie jest dowodem IO. P039 wdraża odczyt
+backupu bez zapisu: poprawny main wygrywa; ERROR_FILE_NOT_FOUND,
+ERROR_PATH_NOT_FOUND lub ERROR_INVALID_DATA pozwala sprawdzić `main.bak`.
+Pozostałe błędy IO main kończą próbę bez fallbacku. Wynik zawiera optional
+checkpoint, źródło none/main/backup, surowy main_error oraz optional backup_error
+(pusty = nie próbowano). Błąd backupu daje brak checkpointu z obiema diagnozami;
+ERROR_INVALID_DATA oznacza uszkodzenie, dwa NOT_FOUND oznaczają brak,
+pozostałe kody oznaczają IO. Nie ma naprawy, nadpisania lub promocji temp.
+Schema1/run_rules1, hashv4/replay8 bez zmian.
