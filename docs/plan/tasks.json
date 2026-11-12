@@ -774,10 +774,76 @@
             "id": "P035",
             "phase": "M3",
             "title": "Trzysektorowy run",
-            "scope": "Dodaj maszynę stanów runu i przenoszenie zasobów.",
-            "acceptance": "Sektor 1 do 3, śmierć kończy run; brak permanentnego bonusu HP.",
+            "scope": "Wyłącznie podziel zadanie na małe kontrakty: Wartościowy stan i fazy runu; Start pierwszego sektora; Tura aktywnego runu; Nagroda na granicy runu; Przejście do następnego sektora; Dowód pełnego runu. Bez implementacji dzieci.",
+            "acceptance": "Osobne dzieci i topologiczne zależności; konsument zależy od ostatniego dziecka; przekazanie wskazuje pierwsze.",
             "depends_on": [
                 "P034-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035-01",
+            "phase": "M3",
+            "title": "Wartościowy stan i fazy runu",
+            "scope": "Dodaj RunState z root seed, silnym numerem sektora1..3, jednym GameState i flagą odebranej nagrody; czysty run_phase wylicza playing/choosing_reward/ready_for_next/won/lost. Bez akcji i generatora.",
+            "acceptance": "HP0 lub overload kończy run; completed sektora1/2 wymaga nagrody, chyba że zestaw pełny; completed sektora3 daje won. Kopie niezależne, odczyt zachowuje pełny stan.",
+            "depends_on": [
+                "P035"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035-02",
+            "phase": "M3",
+            "title": "Start pierwszego sektora",
+            "scope": "Dodaj start_run(RunSeed): lokalny SplitMix64, pierwszy next_u64 jako seed topologii, sektor1 na wejściu i czysty stan runu. Bez przejść i tur runu.",
+            "acceptance": "Stałe wektory seedów i pełnych stanów; HP3/reserve2/debt0/puste moduły, brak odziedziczonych danych, niezależność kopii i zewnętrznego RNG.",
+            "depends_on": [
+                "P035-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035-03",
+            "phase": "M3",
+            "title": "Tura aktywnego runu",
+            "scope": "Dodaj wartościowy resolve_run_turn przez istniejący resolver, wyłącznie w fazie playing. Bez przejścia i nagrody.",
+            "acceptance": "Odmowy zachowują cały RunState; śmierć/overload kończą run; sukces sektorów1/2 otwiera nagrodę,3 wygrywa; preview bez efektów ubocznych.",
+            "depends_on": [
+                "P035-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035-04",
+            "phase": "M3",
+            "title": "Nagroda na granicy runu",
+            "scope": "Dodaj atomowy wybór modułu tylko w choosing_reward; sukces ustawia reward_claimed.",
+            "acceptance": "Dokładnie jeden wybór po sektorze; drugi/duplikat/obcy ID i zła faza bez mutacji; pełny zestaw pomija okno, bez bonusu HP.",
+            "depends_on": [
+                "P035-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035-05",
+            "phase": "M3",
+            "title": "Przejście do następnego sektora",
+            "scope": "Dodaj wartościowe przejście tylko w ready_for_next; seed sektoraN to N-ty next_u64 z lokalnego SplitMix64(root seed). Przenieś HP/rezerwę/dług/moduły, zresetuj lokalny stan i użycie, raz spawn długu.",
+            "acceptance": "Sektor1→2→3 bez4; brak leczenia, reset tur/dostaw/pozycji/pakietu/impulsów i nagrody; dług3/6 i nowy moduł; odmowy zachowują cały run.",
+            "depends_on": [
+                "P035-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P035-06",
+            "phase": "M3",
+            "title": "Dowód pełnego runu",
+            "scope": "Dodaj wyłącznie integracyjne sekwencje przez trzy generowane sektory z nagrodami, długiem i porażką; użyj prawdziwych API.",
+            "acceptance": "Trzy sektory ukończone, brak czwartego, śmierć/overload kończą; powtórzenia i kopie niezależne; nie deklaruj grywalności ani zapisu.",
+            "depends_on": [
+                "P035-05"
             ],
             "gate": null
         },
@@ -788,7 +854,7 @@
             "scope": "Opisz wersjonowany format checkpointu i limity rozmiaru, bez IO.",
             "acceptance": "Round-trip projektu pól względem GameState; odrzucenie nieznanej wersji w specyfikacji.",
             "depends_on": [
-                "P035"
+                "P035-06"
             ],
             "gate": null
         },
