@@ -83,3 +83,5 @@ Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych f
 Cel pomiarowy: 60 FPS prezentacji, logiczne tury niezależne od FPS, podgląd typowej planszy do 16 ms, RAM poniżej 250 MB. To budżety do sprawdzenia na opisanym sprzęcie, nie ogłoszone wymagania minimalne. Raport benchmarku podaje sprzęt i rozkład czasów.
 
 P033-01: `GameState::terminal_rotation_used` ma domyślnie false i jest częścią pełnego stanu. Hashv4: tag4, pola v3, na końcu bajt0/1 zużycia. Replay7 wiąże tę wersję. Reguła obrotu i reset czekają na P033-02/03.
+
+P033-02: wspólny rotate_from_player stosuje jednorazowe uprawnienie do nieruchomej maski o jednym porcie; overdrive dziedziczy walidację i wykonuje drugi obrót bez ponownego zużycia. Replay8, hashv4. Reset i granica runu pozostają osobne.

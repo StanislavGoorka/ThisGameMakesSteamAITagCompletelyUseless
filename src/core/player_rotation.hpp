@@ -4,6 +4,8 @@
 #include "core/node_rotation.hpp"
 #include "core/rotation_rules.hpp"
 
+#include <bit>
+
 namespace closed_circuit
 {
 
@@ -28,7 +30,17 @@ namespace closed_circuit
         return false;
     }
 
-    return rotate_node(state.ports, state.rotatable_nodes, target);
+    if (state.rotatable_nodes[target.value()])
+        return rotate_node(state.ports, state.rotatable_nodes, target);
+
+    if (!rules.allows_fixed_terminal || state.terminal_rotation_used ||
+        !std::has_single_bit(state.ports[target.value()].bits()))
+        return false;
+
+    state.ports[target.value()] =
+        state.ports[target.value()].rotate_clockwise();
+    state.terminal_rotation_used = true;
+    return true;
 }
 
 } // namespace closed_circuit

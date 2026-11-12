@@ -31,7 +31,8 @@ int main()
     {
         const auto modules = loadout(mask);
         const int limit = (mask == 1 || mask == 3) ? 2 : 1;
-        if (rotation_rules(modules).maximum_distance != limit)
+        if (rotation_rules(modules).maximum_distance != limit ||
+            rotation_rules(modules).allows_fixed_terminal != ((mask & 2) != 0))
             return 1;
         for (int source = 0; source < 49; ++source)
             for (int destination = 0; destination < 49; ++destination)
@@ -42,10 +43,13 @@ int main()
                     state.ports[destination] = *PortMask::from_bits(2);
                     state.rotatable_nodes[destination] = rotatable;
                     auto expected = state;
-                    const bool legal =
-                        rotatable && distance(source, destination) <= limit;
+                    const bool legal = (rotatable || (mask & 2)) &&
+                                       distance(source, destination) <= limit;
                     if (legal)
+                    {
                         expected.ports[destination] = *PortMask::from_bits(4);
+                        expected.terminal_rotation_used = !rotatable;
+                    }
                     if (rotate_from_player(state, node(destination)) != legal ||
                         !test::same_state(state, expected))
                     {
