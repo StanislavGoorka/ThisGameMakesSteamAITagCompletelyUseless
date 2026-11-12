@@ -1,9 +1,9 @@
-# Następny mały krok
+# NastÄ™pny maĹ‚y krok
 
-Task: P030-01
+Task: P030-02
 
-Przeczytaj AGENTS.md, next-step i cpp-core-step, WORKFLOW, STATE, raport P030, bieżący wpis i zależności, ARCHITECTURE, GAME_DESIGN, TESTING i README. Zacznij od git status i walidatora; sprawdź ukończenie P030 (tylko plan).
+Przeczytaj AGENTS, next-step i cpp-core-step, WORKFLOW, STATE, raport P030-01, bieĹĽÄ…cy wpis i zaleĹĽnoĹ›ci w tasks.json, ARCHITECTURE, GAME_DESIGN, TESTING oraz README. Rozpocznij od git status i walidatora; potwierdĹş zaleĹĽnoĹ›ci completed.
 
-Zapisz 1000 unikalnych stałych seedów (w tym 0/MAX) i deweloperski adapter generate_sector_topology → bazowy GameState: gracz na wejściu, wejście/wyjście i dwa odbiorniki z topologii, HP3, rezerwa2, dług0, brak pakietu/impulsów. Pełny stan dla obu rodzin, niezależność kopii i zewnętrznego RNG. Bez świadka, kontroli spawnów i raportu korpusu w tym kroku.
+Dodaj tylko deweloperski konstruktor świadka dla bazowego sector_fixture rodziny P028. Odmawiaj poza ścisłym kontraktem bazowego stanu, nie zmieniaj danych wejściowych i nie filtruj seedów. Waliduj przez rzeczywisty validate_solution, sprawdź ucięcie, błędny stan i pełny stan końcowy. P030-03/04 pozostają osobnymi krokami.
 
-Configure, build i pełne CTest Debug/Release, formatter src/tests/tools, walidator i git diff --check. Wymuszony Rebuild i wykryta mutacja adaptera. Raport, STATE/NEXT, README i osobny lokalny commit; sprawdź hash, zakres i czystość. Bez pushu, assetów, prezentacji i zmian replay4/hashv2.
+Wykonaj wyĹ‚Ä…cznie ten maĹ‚y kontrakt. Dla kodu: cmake --preset windows-msvc; build i peĹ‚ne CTest Debug/Release; formatter src/tests/tools. Test pozytywny, wĹ‚aĹ›ciwa odmowa, peĹ‚ny stan i mutacja po wymuszonym Rebuild. Walidator i git diff --check. Raport, STATE/NEXT, README, lokalny commit i kontrola hash/zakresu/czystoĹ›ci. Bez pushu, assetĂłw i prezentacji. Zmiana reguĹ‚ lub peĹ‚nego stanu wymaga jawnej decyzji o wersji replay/hasha.

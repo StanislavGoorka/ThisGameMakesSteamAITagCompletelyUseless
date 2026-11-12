@@ -171,3 +171,5 @@ P028 implementuje ograniczony generator topologii7×7: dwie trasy po bokach siat
 P029 dodaje validate_solution do walidacji certyfikatów. Cztery wygenerowane seedy0/1/2/MAX mają sprawdzone sekwencje18/17/17/17 tur; nie jest to jeszcze korpus1000 seedów ani pełny run. Końcowy zestaw:35/35 CTest Debug i Release. [Raport P029](docs/workflow/history/P029.md)
 
 P030 zamknięto wyłącznie jako podział korpusu na cztery dzieci: stałe seedy i stan bazowy, świadek ograniczonej rodziny, kontrola spawnów oraz wykonywalny raport. P031 czeka na P030-04. [Raport P030](docs/workflow/history/P030.md)
+
+P030-01 zapisuje korpus v1 (0…998 i MAX) i bazowy adapter sektora bez długu/impulsów. Dwa niezależne pełne wektory i unikalność seedów:36/36 CTest Debug/Release. [Raport P030-01](docs/workflow/history/P030-01.md)
