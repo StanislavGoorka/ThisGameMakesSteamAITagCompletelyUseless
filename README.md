@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P040-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P040-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 ## Mapa dokumentacji
 
@@ -244,3 +244,5 @@ P038-04: Test faktycznego save w procesie potomnym: 16 przerwań, dokładne plik
 P039: recover_checkpoint_file wybiera poprawny main lub backup po braku/uszkodzeniu main, zachowując diagnostykę. Błędy IO main zatrzymują wybór; odczyt nie zmienia plików. Testy obejmują pełny restore i niezmienność backupu. [Raport P039](docs/workflow/history/P039.md)
 
 P040: Rozbito profil na sześć małych dzieci: model/format, encoder, decoder, odczyt, zapis z backupem i test niezależności runu. P041 zależy od P040-06. Nie zaimplementowano dzieci. [Raport P040](docs/workflow/history/P040.md)
+
+P040-01: Dodano LocalProfile i walidację zakresów, stabilne wewnętrzne AchievementId 1..5 oraz specyfikację profilu v1 (24 bajty). Test sprawdza wszystkie 65536 masek achievementów, 256 masek wariantów i 256 głośności oraz niezależność kopii. Bez kodeka i IO. [Raport P040-01](docs/workflow/history/P040-01.md)

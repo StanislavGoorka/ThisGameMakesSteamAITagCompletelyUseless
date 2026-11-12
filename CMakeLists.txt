@@ -278,3 +278,12 @@ if(BUILD_TESTING)
         "-DREPLAY_EXE=$<TARGET_FILE:developer_replay>"
         -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/replay_cli_tests.cmake")
 endif()
+
+if(BUILD_TESTING)
+    add_executable(application_profile_model_tests tests/unit/profile_model_tests.cpp)
+    target_link_libraries(application_profile_model_tests PRIVATE game_core)
+    if(MSVC)
+        target_compile_options(application_profile_model_tests PRIVATE /W4 /permissive-)
+    endif()
+    add_test(NAME application_profile_model COMMAND application_profile_model_tests)
+endif()
