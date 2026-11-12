@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P040-06
+Task: P041
 
-Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P040-05 oraz bieżący wpis
+Przeczytaj AGENTS, next-step, WORKFLOW, STATE, raport P040-06 oraz bieżący wpis
 z zależnościami w tasks.json. Status i walidator na początku.
 
-P040-06: wyłącznie dowód integracyjny niezależności profilu i runu. Uruchom rzeczywisty writer i reader w oddzielnych procesach, porównaj pełne wartości i literalne bajty. Usuń tylko cztery jawne nazwy plików runu w prywatnym katalogu testowym; profil/main/bak/temp pozostają niezmienione. Bez produkcyjnej operacji delete i zmian checkpointu.
+P041: oceń rozmiar kontraktu zdarzeń dla pięciu achievementów MVP. Oddziel model/specyfikację, wytwarzanie wartości dla zatwierdzonej tury i dowód sekwencji/preview. Jeśli potrzebny podział, wykonaj wyłącznie plan i przepnij P042 na ostatnie dziecko. Czytaj ARCHITECTURE, core/run_turn.hpp, turn_resolver.hpp, packet_delivery.hpp i testy runu. Bez evaluatorów, sink, dispatchu i UI.
 
 Dla kodu cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING. Jeden mały kontrakt.
 Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator

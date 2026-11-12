@@ -94,6 +94,12 @@ i resztki staging. Przerwania rzeczywistego save w procesie potomnym obejmują
 Sprawdzają zachowanie poprawnych main/bak i późniejszy retry.
 To zakończenie procesu między wywołaniami API, bez dowodu zaniku zasilania.
 
+P040-06: `windows_profile_independence` uruchamia 12 osobnych procesów:
+dla każdego z4 wektorów writer, reader przed i reader po usunięciu runu.
+Po usunięciu dokładnie4 nazw checkpointu profil/main/bak i oba pozostawione
+staging zachowują wszystkie bajty. Test używa katalogu Unicode i pełnych
+wartości profilu; nie dodaje produkcyjnej operacji usuwania ani sesji UI.
+
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 
 Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą poprawkę, jeśli połączenie byłoby zbyt duże. Testy screenshotowe wolno opierać tylko na zatwierdzonych assetach; ich wzorce i raporty nie są dowodem non-AI.

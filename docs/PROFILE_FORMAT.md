@@ -52,3 +52,8 @@ nowy main przez rename w tym samym katalogu. Nie ma okna bez nazwy main.
 Dwie podmiany nazw nie są wspólną transakcją. Zły lub niedostępny main
 blokuje save; poprawny backup pozostaje zachowany. Retry nadpisuje staging.
 Brak automatycznego fallbacku/naprawy profilu i współbieżnych zapisujących.
+
+P040-06 potwierdza trwałość przez zamknięcie writera i nowy proces readera.
+Usunięcie czterech nazw runu zachowuje dokładne bajty wszystkich nazw profilu,
+również pozostawionych staging. Jest to dowód integracyjny oddzielnych plików;
+produkcyjny wybór katalogu, reset runu oraz podłączenie sesji nadal nie istnieją.
