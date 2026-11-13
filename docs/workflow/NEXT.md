@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P046
+Task: P047
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P045-02, bieżący wpis i jego
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P046, bieżący wpis i jego
 zależności w tasks.json. Status i walidator na początku.
 
-Dodaj wyłącznie evaluator first_delivery: kandydat dla faktycznego PacketDelivered. Sprawdź negatywne zdarzenia, retry dispatchu i trwałość lokalnego profilu.
+Dodaj wyłącznie first_sector dla SectorCompleted po zagrożeniach. Sprawdź wszystkie sektory, turę 48, śmierć na wyjściu, przeciążenie, retry i trwałość.
 
 Dla kodu użyj cpp-core-step; czytaj ARCHITECTURE, GAME_DESIGN, TESTING,
 ACHIEVEMENT_PREDICATES, DOMAIN_EVENTS i DOMAIN_DISPATCH. Jeden mały kontrakt.

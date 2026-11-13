@@ -1,7 +1,9 @@
 # Dispatch zdarzeń v1
 
 P044-01 wdraża typy i ten kontrakt. P044-02 wdraża EventDispatcher, a P044-03
-sprawdza restore/restart. Predykaty pięciu achievementów definiuje P045.
+sprawdza restore/restart. Predykaty pięciu achievementów definiuje
+[P045](ACHIEVEMENT_PREDICATES.md). P046 dodaje MvpAchievementEvaluator:
+na razie wyłącznie first_delivery dla PacketDelivered, bez trackera i IO.
 
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są

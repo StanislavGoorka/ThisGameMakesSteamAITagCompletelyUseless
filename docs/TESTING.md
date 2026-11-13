@@ -155,6 +155,11 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P046: application_mvp_achievements sprawdza first_delivery dla każdego celu
+i sektora oraz retry i duplikat. windows_mvp_achievements publikuje rzeczywiste
+zdarzenia dostawy przed śmiercią do lokalnego profilu, sprawdza blokadę odczytu,
+retry, ustawienia, dokładny backup i niezmienność plików przy świeżej gałęzi.
+
 P045-01/02: application_domain_event sprawdza równość i konflikt dowodu
 rekonfiguracji oraz odmowę dowodu dla wait. application_route_evidence chroni
 otwarcie trasy, zmianę wybranej trasy BFS, wprowadzenie nowego pakietu,
