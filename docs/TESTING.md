@@ -291,3 +291,5 @@ P062-02: windows_window_messages sprawdza rzeczywiste SetFocus/null, cztery zamk
 P062-03: windows_window_process sprawdza trzy osobne uruchomienia developer_window, oznaczony tytuł, wysłane komunikaty focus i zamknięcie z kodem0. Timeout zabija wyłącznie własny proces potomny. Rzeczywisty public gate oraz build public odmawiają obecnego tytułu. CI public usuwa tytuł wyłącznie w checkout runnera po sprawdzeniu odmowy, aby testować infrastrukturę bez developer_window; to nie paczka produktu.
 
 P063-01: application_keyboard_input sprawdza każdy klawisz, 100 prób hold/repeat, release/repress, powtórny focus=true, utratę/odzyskanie focus, niezależność klawiszy i unknown. Bez symulacji i Windows.
+
+P063-02: application_keyboard_commands sprawdza wszystkie 49 pól i cztery kierunki przez niezależne współrzędne row/column, pełne payloady rotate/overdrive/wait, unknown oraz odmowę rzeczywistego resolvera dla geometrycznego sąsiada bez portów.

@@ -22,3 +22,5 @@ Testy są niewyświetlane. P063-01 sprawdza filtr, P063-02 wszystkie 49 pól,
 a P063-03 rzeczywiste wiadomości Windows. P064 zależy od ostatniego dziecka.
 
 P063-01 wdraża KeyboardInput bez Win32 i Command: siedem niezależnych stanów held, domyślny brak focus, brak akcji dla repeat/unknown i reset przy focus loss. Powtórne powiadomienie focus=true nie resetuje trzymanego klawisza.
+
+P063-02 wdraża map_key_command(InputKey, NodeId). Zwraca wartościową komendę bez odczytu/mutacji GameState; ruch jest ograniczony jedynie geometrią. Resolver nadal odrzuca ruch bez portów i zachowuje pełny stan.
