@@ -26,6 +26,12 @@ endif()
 include(CTest)
 
 if(BUILD_TESTING)
+    add_executable(application_run_achievements_tests tests/unit/run_achievements_tests.cpp)
+    target_link_libraries(application_run_achievements_tests PRIVATE game_core)
+    add_test(NAME application_run_achievements COMMAND application_run_achievements_tests)
+endif()
+
+if(BUILD_TESTING)
     add_executable(presentation_achievement_text_tests tests/unit/achievement_text_tests.cpp)
     target_link_libraries(presentation_achievement_text_tests PRIVATE game_core)
     add_test(NAME presentation_achievement_text COMMAND presentation_achievement_text_tests)

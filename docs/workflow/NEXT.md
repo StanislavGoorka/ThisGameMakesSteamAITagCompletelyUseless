@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P073-03
+Task: P073-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-02.
-Zależności: P073-02; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-03.
+Zależności: P073-03; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj wąski właściciel istniejącego evaluatora i EventDispatcher z przygotowaniem kolejki przed publikacją stanu i ponowieniem po błędzie sinka. Bez Win32 i UI.
+Dodaj adapter prywatnego katalogu w LocalAppData i ścieżki istniejącego formatu profilu. Bez zapisu achievementu, checkpointu i zmian UI.
 
-Kryteria: Istniejące predykaty bez zmian; pełna kolejność, retry/wyjątek bez ponownej oceny lub utraty zdarzeń, duplikaty idempotentne, fresh/restore i nowy scope niezależne.
+Kryteria: Rzeczywisty systemowy katalog i prywatny testowy katalog, powtórka, Unicode i kolizja z plikiem; kontrolowane błędy bez pobrań.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.
