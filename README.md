@@ -435,3 +435,5 @@ P069-01: Wydzielono read_text_utf16: owning odczyt z TextCatalog i ścisła konw
 P069-02: Dodano RAII TextRenderer dla wartości TextCatalog: systemowy Segoe UI, pełny UTF-16 i metryki glifów. Lokalny brush należy do bieżącego celu; zbyt mały obszar pomija cały napis. AtlasRenderer opcjonalnie rysuje tekst przed swoim EndDraw. [Raport](docs/workflow/history/P069-02.md)
 
 P069-03: Podłączono istniejący tytuł developerski do DirectWrite nad planszą. BoardView posiada napis, wspólnie z oknem wylicza hit-test z obszarem tekstu i DPI aktualnego celu, a cała scena i trasa są przesunięte poniżej napisu. Bez nowych wpisów treści. Zakończono serię 10 kroków: osiem implementacji i dwa podziały planu, każdy osobnym lokalnym commitem. [Raport](docs/workflow/history/P069-03.md)
+
+P070: Podzielono HUD na cztery małe kontrakty: dane, oznaczone wartości, skład wierszy i integrację okna. P071 zależy od P070-04; dzieci pozostają nieukończone. [Raport](docs/workflow/history/P070.md)

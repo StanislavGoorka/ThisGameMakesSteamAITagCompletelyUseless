@@ -1862,11 +1862,55 @@
         {
             "id": "P070",
             "phase": "M6",
-            "title": "Minimalny HUD",
-            "scope": "Dodaj tylko stan HP, tur i dostaw z zatwierdzonych elementów i oznaczonych etykiet.",
-            "acceptance": "Czytelność przy resize/DPI, żadnych nieoznaczonych napisów.",
+            "title": "Rozbij minimalny HUD",
+            "scope": "Wyłącznie podziel odczyt danych, oznaczone napisy, skład tekstu i podłączenie HUD do okna.",
+            "acceptance": "Każde dziecko ma jeden kontrakt i test; P071 zależy od ostatniej integracji.",
             "depends_on": [
                 "P069-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P070-01",
+            "phase": "M6",
+            "title": "Projekcja danych HUD",
+            "scope": "Dodaj niemutujący odczyt HP, wykonanych tur i liczby zasilonych odbiorników. Bez napisów i renderera.",
+            "acceptance": "Test granic HP/tur, liczenie tylko odbiorników i pełna niezmienność GameState.",
+            "depends_on": [
+                "P070"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P070-02",
+            "phase": "M6",
+            "title": "Oznaczone wartości HUD",
+            "scope": "Dodaj trzy etykiety katalogu i formatowanie liczbowych wartości projekcji, bez renderowania.",
+            "acceptance": "Każdy osobny napis zachowuje prefiks; brak ID daje odmowę, public gate odrzuca placeholdery.",
+            "depends_on": [
+                "P070-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P070-03",
+            "phase": "M6",
+            "title": "Skład wielu napisów",
+            "scope": "Rozszerz istniejący renderer o wartościowe wiersze katalogu i atomową aktualizację layoutu.",
+            "acceptance": "Offscreen: kompletne wiersze, odmowa zbyt małego obszaru bez części markerów, ponowny cel i DPI.",
+            "depends_on": [
+                "P070-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P070-04",
+            "phase": "M6",
+            "title": "HUD w oknie runu",
+            "scope": "Podłącz HP, tury i dostawy do wspólnego widoku live/preview. Bez menu i nowych mechanik.",
+            "acceptance": "HWND: aktualizacja, cancel/focus/commit, resize/DPI i hit-test poniżej wszystkich wierszy; brak nieoznaczonych etykiet.",
+            "depends_on": [
+                "P070-03"
             ],
             "gate": null
         },
@@ -1877,7 +1921,7 @@
             "scope": "Dodaj przejście start->run->wynik->restart bez nowych mechanik.",
             "acceptance": "Nowy run resetuje stan i zachowuje profil.",
             "depends_on": [
-                "P070"
+                "P070-04"
             ],
             "gate": null
         },
