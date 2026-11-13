@@ -1555,10 +1555,43 @@
             "id": "P063",
             "phase": "M6",
             "title": "Mapowanie klawiatury",
-            "scope": "Dodaj wejście przekładane na komendy, bez nowych widoków.",
-            "acceptance": "Repeat klawisza i focus loss nie generują niekontrolowanych tur.",
+            "scope": "Wyłącznie rozbij wejście na filtr naciśnięć/focus, czyste mapowanie komend i adapter wiadomości Win32. Bez implementacji dzieci.",
+            "acceptance": "Trzy małe kontrakty z testami negatywnymi; P064 wymaga P063-03. Sam plan nie implementuje wejścia.",
             "depends_on": [
                 "P062-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P063-01",
+            "phase": "M6",
+            "title": "Filtr naciśnięć i focus klawiatury",
+            "scope": "Dodaj przenośny filtr jednego naciśnięcia do czasu key-up. Utrata focus resetuje stan; powtórzenie po odzyskaniu focus nie jest nową akcją. Bez komend i Win32.",
+            "acceptance": "Pierwsze naciśnięcie, hold/repeat, release/repress, niezależne klawisze, unknown i utrata/odzyskanie focus; D/R.",
+            "depends_on": [
+                "P063"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P063-02",
+            "phase": "M6",
+            "title": "Czyste mapowanie klawisza na komendę",
+            "scope": "Przełóż siedem logicznych klawiszy na kandydatów Command: strzałki move, R rotate bieżącego pola, O overdrive bieżącego pola, Space wait. Bez wykonania tury i usług.",
+            "acceptance": "Każde pole 7x7 i cztery kierunki bez zawijania; pełne payloady czterech komend, unknown bez wyniku, legalność pozostaje w resolverze; D/R.",
+            "depends_on": [
+                "P063-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P063-03",
+            "phase": "M6",
+            "title": "Adapter komunikatów klawiatury Win32",
+            "scope": "Połącz WM_KEYDOWN/UP i focus z filtrem oraz mapowaniem. Okno udostępnia co najwyżej jednego kandydata do pobrania, bez kolejki tur i bez podłączenia sesji gry.",
+            "acceptance": "Rzeczywiste wiadomości Windows: pierwszy down, bit repeat, keyup/repress, focus loss z pending, odzyskanie focus i unknown. Brak komendy po zamknięciu, brak zmiany GameState; D/R.",
+            "depends_on": [
+                "P063-02"
             ],
             "gate": null
         },
@@ -1569,7 +1602,7 @@
             "scope": "Dodaj lifecycle zasobów renderer backend, bez tworzenia artworku.",
             "acceptance": "Resize i odtworzenie urządzenia; brak proceduralnych assetów.",
             "depends_on": [
-                "P063"
+                "P063-03"
             ],
             "gate": null
         },

@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P063
+Task: P063-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P062-03 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P063 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i walidator na początku.
 
-Mapowanie klawiatury. Dodaj wejście przekładane na komendy, bez nowych widoków.
+Filtr naciśnięć i focus klawiatury. Dodaj przenośny filtr jednego naciśnięcia do czasu key-up. Utrata focus resetuje stan; powtórzenie po odzyskaniu focus nie jest nową akcją. Bez komend i Win32.
 
-Kryteria: Repeat klawisza i focus loss nie generują niekontrolowanych tur.
+Kryteria: Pierwsze naciśnięcie, hold/repeat, release/repress, niezależne klawisze, unknown i utrata/odzyskanie focus; D/R.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

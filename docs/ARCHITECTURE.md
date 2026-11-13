@@ -182,3 +182,5 @@ RunCheckpoint, ścisłą projekcję/rekonstrukcję pełnej granicy oraz encoder/
 bajtów ze sprawdzeniem wersji, checksumy, zakresów i kanoniczności. Korpus11000
 granic sprawdza pełny stan i pierwszą turę po resume; błędne dane nie zwracają
 częściowego wyniku. Adaptery IO, publikacji i odczytu backupu opisano wyżej.
+
+P063 rozbito na filtr naciśnięć, mapowanie kandydatów Command i adapter wiadomości Win32. Kontrakt w KEYBOARD_INPUT.md; P064 wymaga P063-03. Brak implementacji dzieci w kroku planistycznym.
