@@ -23,14 +23,15 @@ Obecnie public build celowo odmawia z powodu oznaczonego tytułu developer.
 `build/windows-msvc/Debug/developer_window.exe` (także Release) uruchamia
 planszę start_run z jednostkami i rolami pól z zatwierdzonego atlasu,
 z obsługą odmalowania, resize i tur core z klawiatury. Nad planszą DirectWrite
-pokazuje istniejący oznaczony tytuł developerski; HUD nie jest podłączony.
+pokazuje oznaczony tytuł developerski i HUD: HP, wykonane tury i dostawy.
+HUD odpowiada rysowanemu stanowi live lub preview; każdy wiersz zachowuje marker.
 Sterowanie developer: strzałki — ruch, R — obrót, O — overdrive, Space — wait.
 R/O używają pola pod kursorem, a bez wskazania własnego pola. Tab przełącza
 planowanie, klawisz akcji wybiera komendę, Enter wykonuje ją raz, Escape
 anuluje. Focus loss czyści wybór. Wybór pokazuje wynik core i trasę pakietu
 gotowymi symbolami; anulowanie przywraca stan sesji. Przejścia sektorów
 i zapis z UI pozostają kolejnymi zadaniami.
-Ostatnia pełna pula: Debug i Release po 110/110 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 113/113 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu (niedostępny Computer Use).
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
@@ -443,3 +444,5 @@ P070-01: Dodano niemutującą projekcję HP, wykonanych tur i zasilonych odbiorn
 P070-02: Dodano trzy oznaczone etykiety HUD i formatowanie liczb bez tekstowych fallbacków. Prefiks zostaje na początku każdego wiersza; katalog pozostaje niezmienny. [Raport](docs/workflow/history/P070-02.md)
 
 P070-03: TextRenderer składa kompletne wiersze katalogowe z liczbowymi wartościami w jeden layout. Budowa nowego obiektu nie zmienia poprzedniego, a zbyt mały obszar pomija cały blok. [Raport](docs/workflow/history/P070-03.md)
+
+P070-04: Podłączono HUD do okna developer i wspólnego stanu live/preview. CMake przekazuje etykiety z rejestru; BoardView atomowo wymienia layout i zachowuje wspólny hit-test poniżej tekstów. [Raport](docs/workflow/history/P070-04.md)

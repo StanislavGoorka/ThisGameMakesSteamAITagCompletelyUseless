@@ -21,3 +21,12 @@ Bez nowych grafik, fontów, pobrań i usług zapisu.
 Testy oddzielają projekcję, formatowanie, rzeczywiste piksele DirectWrite
 i integrację HWND. DPI celu i resize sprawdzamy przez API; brak obserwacji
 pulpitu nie jest oceną czytelności przez gracza.
+
+P070-01..04 są zaimplementowane. BoardView posiada kopię bazowego katalogu,
+tworzy pełny zastępczy layout przed publikacją nowego stanu i używa tego
+samego obszaru dla planszy, preview i hit-testu. CMake przekazuje oznaczone
+wiersze rejestru do katalogu developer; nie powiela etykiet w kodzie produktu.
+Test HWND obejmuje cztery rozmiary, wszystkie 49 pól, rzeczywistą dostawę
+i obrażenia, preview/cancel/focus/commit oraz wstrzyknięty recreate target.
+Test pikseli tekstu obejmuje 96/144/192 DPI. Computer Use list_apps zgłosił
+brak native pipe (os error 2), więc obserwacja pulpitu pozostaje niewykonana.

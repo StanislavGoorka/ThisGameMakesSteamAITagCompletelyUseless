@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P070-04
+Task: P071
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070-03.
-Zależności completed: P070-03. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070-04.
+Zależności completed: P070-04. Sprawdź git status i walidator.
 
-Podłącz HP, tury i dostawy do wspólnego widoku live/preview. Bez menu i nowych mechanik.
+Dodaj przejście start->run->wynik->restart bez nowych mechanik.
 
-Kryteria: HWND: aktualizacja, cancel/focus/commit, resize/DPI i hit-test poniżej wszystkich wierszy; brak nieoznaczonych etykiet.
+Kryteria: Nowy run resetuje stan i zachowuje profil.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, HUD_PRESENTATION.md

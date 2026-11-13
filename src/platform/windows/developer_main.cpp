@@ -21,8 +21,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         if (FAILED(apartment.result))
             return 5;
         const auto catalog = TextCatalog::from_records(
-            std::span{&windows::developer_title_record, 1}, {},
-            build_text_audience);
+            windows::developer_text_records, {}, build_text_audience);
         if (!catalog)
             return 1;
         auto created =
@@ -34,12 +33,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         // CMake supplies a UTF-8 checkout path; launching from another cwd
         // works.
         const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
-        auto label =
-            windows::TextRenderer::create(*catalog, "developer-window-title");
-        if (!label.renderer)
-            return 8;
-        auto board = windows::RunWindow::create(
-            *created.window, run, root, assets, std::move(label.renderer));
+        auto board = windows::RunWindow::create(*created.window, run, root,
+                                                assets, {}, &*catalog);
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);
