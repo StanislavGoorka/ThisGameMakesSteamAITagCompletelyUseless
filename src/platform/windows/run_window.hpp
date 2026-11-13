@@ -1,6 +1,8 @@
 #pragma once
 #include "application/action_preview.hpp"
 #include "application/action_selection.hpp"
+#include "core/run_reward.hpp"
+#include "core/run_transition.hpp"
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
 #include "presentation/reward_text.hpp"
@@ -71,6 +73,10 @@ class RunWindow final : public WindowCommandHandler
     {
         return FAILED(error_) ? error_ : view_->error();
     }
+    [[nodiscard]] std::optional<ModuleId> reward_candidate() const noexcept
+    {
+        return reward_selection_.candidate(run_);
+    }
     void key_available() noexcept override
     {
         try
@@ -78,6 +84,7 @@ class RunWindow final : public WindowCommandHandler
             if (!window_.focused())
             {
                 selection_.reset();
+                reward_selection_.reset();
                 show_live(run_);
                 return;
             }
@@ -88,6 +95,7 @@ class RunWindow final : public WindowCommandHandler
             if (screen() != SessionScreen::run)
             {
                 selection_.reset();
+                reward_selection_.reset();
                 if (*key == InputKey::confirm)
                 {
                     auto next = run_;
@@ -103,10 +111,11 @@ class RunWindow final : public WindowCommandHandler
                 error_ = S_OK;
                 return;
             }
-            if (lifecycle_ && run_phase(run_) == RunPhase::choosing_reward)
+            if (lifecycle_ && (run_phase(run_) == RunPhase::choosing_reward ||
+                               run_phase(run_) == RunPhase::ready_for_next))
             {
                 selection_.reset();
-                show_live(run_);
+                reward_key(*key);
                 return;
             }
             std::optional<Command> command;
@@ -140,7 +149,8 @@ class RunWindow final : public WindowCommandHandler
             // copy succeeds. Both following move assignments are nonthrowing.
             show_live(next.state);
             run_ = std::move(next.state);
-            if (screen() == SessionScreen::result)
+            reward_selection_.sync(run_);
+            if (run_phase(run_) != RunPhase::playing)
             {
                 selection_.reset();
                 window_.discard_point();
@@ -156,14 +166,61 @@ class RunWindow final : public WindowCommandHandler
     }
 
   private:
-    void show_live(const RunState &run)
+    void reward_key(InputKey key)
+    {
+        auto selection = reward_selection_;
+        selection.sync(run_);
+        if (key == InputKey::west || key == InputKey::east)
+            selection.move(run_, key == InputKey::east);
+        else if (key == InputKey::cancel)
+            selection.reset();
+        else if (key == InputKey::confirm)
+        {
+            auto chosen = run_;
+            if (run_phase(chosen) == RunPhase::choosing_reward)
+            {
+                const auto id = selection.candidate(chosen);
+                if (!id || !choose_run_module(chosen, *id))
+                {
+                    show_live(run_, selection.candidate(run_), true);
+                    return;
+                }
+            }
+            auto next = advance_run(chosen);
+            if (next.accepted)
+            {
+                show_live(next.state);
+                run_ = std::move(next.state);
+                reward_selection_.reset();
+                window_.discard_point();
+                error_ = S_OK;
+                return;
+            }
+            show_live(run_, selection.candidate(run_), true);
+            return;
+        }
+        show_live(run_, selection.candidate(run_));
+        reward_selection_ = selection;
+        error_ = S_OK;
+    }
+    void show_live(const RunState &run, std::optional<ModuleId> candidate = {},
+                   bool reward_error = false)
     {
         if (lifecycle_ && flow_.screen(run) == SessionScreen::run &&
             run_phase(run) == RunPhase::choosing_reward)
         {
-            const auto lines =
-                presentation::reward_lines(reward_offer(run), std::nullopt);
+            auto lines =
+                presentation::reward_lines(reward_offer(run), candidate);
+            if (reward_error)
+                lines->push_back({"reward-error", std::nullopt});
             view_->set_board(run.sector, {}, std::nullopt, *lines);
+            return;
+        }
+        if (lifecycle_ && flow_.screen(run) == SessionScreen::run &&
+            run_phase(run) == RunPhase::ready_for_next)
+        {
+            view_->set_board(run.sector, {},
+                             TextLine{"reward-continue", std::nullopt});
             return;
         }
         view_->set_board(
@@ -197,6 +254,7 @@ class RunWindow final : public WindowCommandHandler
     SessionFlow flow_{true};
     bool lifecycle_ = false;
     ActionSelection selection_;
+    RewardSelection reward_selection_;
     std::unique_ptr<BoardView> view_;
     HRESULT error_ = S_OK;
 };

@@ -465,3 +465,5 @@ P072-01: Dodano czysty RewardSelection z nawigacją cykliczną po istniejącej o
 P072-02: Dodano cztery katalogowe placeholdery nagrody i czystą projekcję wierszy z numerem opcji oraz wskazaniem. Pusta oferta nie tworzy nagrody, nieznane i niekanoniczne oferty są odrzucane. [Raport](docs/workflow/history/P072-02.md)
 
 P072-03: Podłączono katalogowy blok oferty do istniejącego renderera i RunWindow. Overlay atomowo zastępuje layout, wyłącza planszę oraz hit-test i pozostaje widoczny po klawiszu planszy. [Raport](docs/workflow/history/P072-03.md)
+
+P072-04: Podłączono wybór modułu i przejście sektora do okna. Enter bez kandydata daje katalogowy błąd bez mutacji; pełny zestaw przechodzi bez nagrody. Przejście czyści preview, wskazania i tryb planowania. [Raport](docs/workflow/history/P072-04.md)

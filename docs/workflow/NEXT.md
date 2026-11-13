@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P072-04
+Task: P073
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P072-03.
-Zależności: P072-03; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P072-04.
+Zależności: P072-04; muszą być completed.
 Sprawdź git status i walidator.
 
-Podłącz kandydata nagrody do istniejących choose_run_module i advance_run; Enter zatwierdza raz, pusta oferta przechodzi bez fikcyjnej nagrody. Bez IO checkpointu i nowych mechanik.
+Dodaj prezentację jednego istniejącego achievementu, bez nowych predykatów.
 
-Kryteria: HWND: nielegalny/nieaktualny wybór bez mutacji, left/right i Enter, hold/focus, dwie granice sektora, pełne stany zgodne z core i reset preview; katalogowe błędy z markerem.
+Kryteria: Brak duplikacji powiadomień i wyłącznie zatwierdzone grafiki.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.

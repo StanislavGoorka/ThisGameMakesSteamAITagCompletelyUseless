@@ -2,6 +2,18 @@
   "schema_version": 1,
   "texts": [
     {
+      "id": "reward-continue",
+      "value": "[AI PLACEHOLDER] No module selection needed. Press Enter to continue.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-error",
+      "value": "[AI PLACEHOLDER] Select an available module before continuing.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "reward-range",
       "value": "[AI PLACEHOLDER] Extended rotation range:",
       "status": "ai_placeholder",
