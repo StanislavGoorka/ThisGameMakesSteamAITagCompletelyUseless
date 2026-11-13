@@ -77,8 +77,7 @@ bool persist(const std::filesystem::path &path,
     const LocalProfile initial{0, 3, 42, true};
     if (!windows::save_profile_file(path, initial))
         return false;
-    const DeliveryScope scope{
-        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
+    const DeliveryScope scope{RunSeed{1}, {1}, {1}, events.front().key.sector};
     MvpAchievementEvaluator evaluator(origin);
     windows::LocalAchievementSink sink(path);
     EventDispatcher dispatcher(scope, evaluator, sink);
@@ -136,10 +135,10 @@ bool without_overdrive(const std::filesystem::path &directory)
 {
     for (int used = 0; used <= 3; ++used)
         if (!persist(directory / (L"overdrive" + std::to_wstring(used)),
-                     run_events(used), used == 0 ? 7 : 3,
+                     run_events(used), used == 0 ? 23 : 19,
                      RunHistoryOrigin::fresh_run))
             return false;
-    return persist(directory / L"unknown", run_events(0), 3);
+    return persist(directory / L"unknown", run_events(0), 19);
 }
 bool reconfiguration(const std::filesystem::path &path)
 {
@@ -152,13 +151,24 @@ bool reconfiguration(const std::filesystem::path &path)
                    .reconfigured_packet_target == node(1) &&
            persist(path, result.events, 9);
 }
+bool completed_run(const std::filesystem::path &path)
+{
+    auto run = fixture();
+    run.sector_number = *SectorNumber::from_value(3);
+    run.sector.receiver_nodes[7] = run.sector.powered_nodes[7] = true;
+    run.sector.sector_exit = node(1);
+    const auto result = resolve_run_turn_events(run, MoveCommand{node(1)});
+    return result.turn.phase == RunPhase::won && result.events.size() == 4 &&
+           persist(path, result.events, 19);
+}
 int main()
 {
     test::CheckpointDirectory directory;
     return delivery(directory.path / L"predykaty.dat") &&
                    sector_completion(directory.path / L"sektor.dat") &&
                    without_overdrive(directory.path) &&
-                   reconfiguration(directory.path / L"trasa.dat")
+                   reconfiguration(directory.path / L"trasa.dat") &&
+                   completed_run(directory.path / L"koniec.dat")
                ? 0
                : 1;
 }

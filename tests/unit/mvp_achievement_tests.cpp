@@ -186,10 +186,45 @@ bool reconfiguration()
     return dispatcher.dispatch(scope, delivered) == DispatchResult::delivered &&
            sink.calls == calls;
 }
+bool completed_run()
+{
+    for (int sector = 1; sector <= 3; ++sector)
+        for (auto reason :
+             {RunEndReason::won, RunEndReason::death, RunEndReason::overload})
+        {
+            MvpAchievementEvaluator evaluator;
+            if (evaluator.evaluate(event(RunEnded{reason}, 48, 2, sector)) !=
+                (sector == 3 && reason == RunEndReason::won ? 16 : 0))
+                return false;
+        }
+    MvpAchievementEvaluator evaluator(RunHistoryOrigin::fresh_run);
+    test::RecordingSink sink;
+    sink.fail_id = AchievementId::completed_run;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    for (int sector = 1; sector <= 3; ++sector)
+        for (const auto &e :
+             {event(ActionCommitted{WaitCommand{}}, 1, 0, sector),
+              event(SectorCompleted{}, 1, 1, sector)})
+            if (dispatcher.dispatch(scope, e) != DispatchResult::delivered)
+                return false;
+    const auto won = event(RunEnded{RunEndReason::won}, 1, 2, 3);
+    if (dispatcher.dispatch(scope, won) != DispatchResult::retry ||
+        sink.profile.achievement_bits != 6)
+        return false;
+    sink.fail_id.reset();
+    if (dispatcher.dispatch(scope, won) != DispatchResult::delivered ||
+        sink.profile.achievement_bits != 22)
+        return false;
+    const auto calls = sink.calls;
+    return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
+           sink.calls == calls;
+}
 int main()
 {
     return delivery() && sector_completion() && without_overdrive() &&
-                   reconfiguration()
+                   reconfiguration() && completed_run()
                ? 0
                : 1;
 }

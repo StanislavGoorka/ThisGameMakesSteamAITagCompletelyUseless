@@ -19,6 +19,10 @@ równocześnie first_delivery oraz reconfigured_delivery. Inny cel nie konsumuje
 dowodu. Zmiana sektora i nowy evaluator zerują zbiór. Nie ma alokacji ani IO.
 Retry po konsumpcji dowodu używa maski zapamiętanej przez dispatcher.
 
+P050 zamyka pięć predykatów MVP: RunEnded(won) w sektorze 3 zgłasza completed_run
+niezależnie od pochodzenia historii. Z czystą historią zgłasza równocześnie
+run_without_overdrive. SectorCompleted sam nie zgłasza ukończenia runu.
+
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są
 niezerowymi wartościami uint64, przydzielanymi przez przyszłą sesję aplikacji.

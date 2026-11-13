@@ -155,6 +155,12 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P050: completed_run wymaga won w sektorze 3, bez wymogu znanej historii.
+Testy odrzucają death/overload i sektory pośrednie. Jedno końcowe zdarzenie
+zgłasza dwa ID; częściowy sukces i retry zachowują potwierdzone bity. Test
+Windows publikuje cztery rzeczywiste zdarzenia ostatniej tury i sprawdza
+trwałe bity 1/2/5 oraz dokładną niezmienność profilu i backupu przy powtórce.
+
 P049: wszystkie 49 celów z rotate i overdrive, inny cel dostawy, obrót bez
 dowodu, konsumpcja, reset sektora i nowy evaluator. Retry po błędzie sinka
 zachowuje kandydata rekonfiguracji mimo skonsumowanego trackera. Test Windows

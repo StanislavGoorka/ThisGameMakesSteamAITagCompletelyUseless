@@ -91,14 +91,20 @@ uszkodzony main. Polityka naprawy i podłączenie do sesji pozostają poza API.
 
 ## Achievementy
 
-Lokalny evaluator reaguje na zdarzenia domenowe. Stałe identyfikatory, np. `ACH_FIRST_DELIVERY`, nie są etykietami dla gracza. Pięć MVP: dostawa, sektor, run bez overdrive, dostawa po rekonfiguracji, ukończenie runu. P045 precyzuje predykaty i resetowanie; implementować każdy oddzielnie.
+Lokalny evaluator reaguje na zdarzenia domenowe. Stałe AchievementId nie są
+etykietami dla gracza. Pięć MVP: dostawa, sektor, run bez overdrive, dostawa po
+rekonfiguracji, ukończenie runu. [P045](ACHIEVEMENT_PREDICATES.md) precyzuje
+predykaty i resetowanie; P046–P050 implementują je w MvpAchievementEvaluator.
+Evaluator nie alokuje i nie wykonuje IO. Powstaje od nowa dla każdej próby
+i gałęzi, a historia po restore jest domyślnie nieznana. ActionCommitted
+przenosi dowód zmiany trasy BFS wyliczony przez wrapper w P045-02.
 
 P041-01/02: [kontrakt zdarzeń v1](DOMAIN_EVENTS.md) definiuje wartościowe
 payloady i klucz wewnątrz próby. `resolve_run_turn_events` wywołuje istniejący
 resolver raz i zwraca listę: akcja, dostawa, sukces sektora, koniec runu.
 Odmowa daje pustą listę; preview nadal zwraca tylko wynik core, bez usług.
-Korpus pełnych sekwencji i restore sprawdzono w P041-03. Predykaty MVP nadal
-czekają na P045 i dalsze dzieci. Brak trwałego outboxu i globalnej tożsamości
+Korpus pełnych sekwencji i restore sprawdzono w P041-03. Integrację pełnego
+runu z rzeczywistymi predykatami zaplanowano w P051. Brak trwałego outboxu i globalnej tożsamości
 prób; seed nie jest unikalnym ID runu. Dispatch opisano poniżej.
 
 Port `AchievementSink` ma backend lokalny i później Steam. Najpierw trwały zapis lokalny, potem idempotentna synchronizacja z kolejką i potwierdzeniami. Offline i brak Steam nie blokują gry. [Dokumentacja Steamworks](https://partner.steamgames.com/doc/features/achievements) opisuje odblokowanie i zapis statystyk; aktualne API sprawdzić przy implementacji. Ikony, opisy i nazwy wymagają pochodzenia tak samo jak reszta treści.
