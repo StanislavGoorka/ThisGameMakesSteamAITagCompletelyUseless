@@ -29,3 +29,14 @@ destrukcji. Publiczny build testów nie jest publicznym binarium gry.
 Nie projektować tła, ikon ani placeholderowej grafiki. Domyślna ramka systemu
 nie zastępuje późniejszej prezentacji zatwierdzonymi assetami. Lokalny smoke
 nie dowodzi zachowania na czystej VM ani czytelności kompletnej gry.
+
+P062-01 wdraża `windows::NativeWindow::create(catalog, title_id)`: wynik
+zawiera unique_ptr albo kod Win32. Brak ID daje ERROR_NOT_FOUND, złe UTF-8
+ERROR_NO_UNICODE_TRANSLATION. Błędy rejestracji i CreateWindowExW zachowują
+kod systemowy; alokacja może propagować wyjątek bez opublikowania HWND.
+Każdy obiekt ma własny atom klasy; obiekt nie może zmienić adresu.
+WM_NCDESTROY czyści zapisany uchwyt również po wcześniejszym WM_CLOSE.
+Destruktor niszczy okno przed wyrejestrowaniem klasy, zgodnie z kontraktami
+[WM_NCDESTROY](https://learn.microsoft.com/en-us/windows/win32/winmsg/wm-ncdestroy)
+i [UnregisterClassW](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-unregisterclassw).
+P062-02/03 nadal nie są zaimplementowane; nie ma pętli, focus ani entrypointu.

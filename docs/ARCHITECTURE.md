@@ -129,6 +129,13 @@ evaluatora; brak historii nie oznacza spełnienia predykatu runu bez overdrive.
 
 ## Prezentacja
 
+P062-01: [NativeWindow](../src/platform/windows/native_window.hpp) posiada
+ukryty HWND i własną klasę Win32; tytuł pochodzi z TextCatalog i ścisłej
+konwersji UTF-8. Życie obiektu jest przypisane do wątku, bez kopiowania
+i przenoszenia. WM_NCDESTROY unieważnia uchwyt; destruktor niszczy okno
+i wyrejestrowuje klasę. Bez renderera, pętli komunikatów i focus w tym kroku.
+Pełny zakres kolejnych dzieci: [kontrakt okna](WINDOW_LIFECYCLE.md).
+
 P058 dzieli [odczyt zatwierdzonych odwołań](ASSET_MANIFEST.md) na cztery dzieci:
 model application, pamięciowy parser Windows.Data.Json, chroniony odczyt pliku
 z SHA-256 oraz dowód integracyjny. Plan nie jest jeszcze gotowym czytnikiem;

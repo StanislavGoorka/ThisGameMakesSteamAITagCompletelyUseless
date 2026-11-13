@@ -8,6 +8,13 @@
 
 ## C++ i zakres testów
 
+P062-01: windows_native_window tworzy rzeczywiste ukryte HWND; cztery
+powtórzenia dwóch współistniejących okien chronią dokładny tytuł Unicode,
+niezależne klasy, IsWindow/IsWindowVisible oraz wyrejestrowanie po destrukcji.
+WM_CLOSE przed destruktorem czyści uchwyt. Nieznane ID i invalid UTF-8 dają
+brak obiektu oraz właściwy kod; statycznie brak copy/move. To lokalny test
+API z timeoutem 20 s, bez widocznego okna, focus, pętli i VM.
+
 P061-03: application_text_catalog sprawdza faktyczny build_text_audience
 nadany przez CMake; public nie przyjmuje testowego placeholdera, developer go
 przyjmuje. Test-PublicContent.ps1 -BuildModes sprawdza 9 prób rejestru i 4
