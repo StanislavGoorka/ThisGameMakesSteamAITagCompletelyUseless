@@ -27,3 +27,5 @@ Kontrakty systemowe:
 [ID2D1HwndRenderTarget](https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nn-d2d1-id2d1hwndrendertarget),
 [zasoby i ich domeny](https://learn.microsoft.com/en-us/windows/win32/direct2d/resources-and-resource-domains).
 P065 wymaga ukończenia ostatniego dziecka, a nie samego podziału.
+
+P064-01 wdraża Direct2DTarget::create(HWND). Wynik zawiera unique_ptr albo HRESULT; cel i fabryka mają własność ComPtr. Wskaźniki target()/factory() są pożyczone, nie przenoszą własności. Brak publicznego konstruktora, copy i move. Adapter nie niszczy HWND, nie rysuje ani nie prezentuje bufora.

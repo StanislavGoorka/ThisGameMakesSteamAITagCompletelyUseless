@@ -39,7 +39,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P064-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P064-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -375,3 +375,5 @@ P063-02: Dodano map_key_command: strzałki tworzą kandydatów MoveCommand bez z
 P063-03: NativeWindow tłumaczy WM_KEYDOWN/UP na filtr i mapowanie; bit30 oraz stan held blokują repeat. take_command konsumuje jedyną akcję, focus loss i zamknięcie czyszczą pending. Test siedmiu komend, powtórek, repress, unknown i krawędzi nie wymaga GameState. [Raport](docs/workflow/history/P063-03.md)
 
 P064: Rozbito lifecycle Direct2D na własność fabryki/celu HWND oraz resize, zawieszenie i recreate. P065 zależy od P064-02. Dokument ustala granice dowodów i zakaz rysowania w tych krokach. [Raport](docs/workflow/history/P064.md)
+
+P064-01: Dodano Direct2DTarget z RAII ComPtr fabryki single-threaded i celu HWND. Create publikuje cały adapter albo HRESULT. Rzeczywiste dwa cele w czterech powtórzeniach mają dokładny HWND i rozmiar klienta; null/zniszczony HWND dają odmowę. [Raport](docs/workflow/history/P064-01.md)

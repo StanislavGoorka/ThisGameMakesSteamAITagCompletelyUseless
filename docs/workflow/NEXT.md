@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P064-01
+Task: P064-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P064 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P064-01 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i walidator na początku.
 
-Własność fabryki i celu Direct2D. Dodaj RAII single-threaded ID2D1Factory i ID2D1HwndRenderTarget dla istniejącego ukrytego HWND. Kontrolowane błędy i brak częściowego wyniku; bez BeginDraw, artworku i podłączenia entrypointu.
+Resize i odtworzenie celu Direct2D. Rozszerz istniejący adapter o resize, zawieszenie przy zerowym rozmiarze i odtworzenie celu po D2DERR_RECREATE_TARGET. Fabryka pozostaje żywa. Bez rysowania i bez sesji produktu.
 
-Kryteria: Rzeczywiste API: dwa niezależne cele, dokładny HWND i rozmiar pikseli, powtórki create/release, odmowa null/zniszczonego HWND bez obiektu; D/R.
+Kryteria: Rzeczywiste resize i recreate, zerowy rozmiar bez celu do rysowania, powrót z zawieszenia, kontrolowana odmowa po zniszczeniu HWND oraz retry. Symulowany status utraty urządzenia odróżnij od fizycznego resetu GPU; D/R.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,
