@@ -1,4 +1,14 @@
 {
   "schema_version": 1,
-  "approvals": []
+  "approvals": [
+    {
+      "id": "kenney-1bit-1.2-2026-11-13",
+      "source_url": "https://kenney-assets.itch.io/1-bit-pack",
+      "source_version": "1.2",
+      "status": "pending",
+      "approved_at": null,
+      "evidence": "2026-11-13: przygotowano wniosek docs/assets/REQUEST_KENNEY_1BIT_1_2.md; oczekuje rzeczywistej odpowiedzi użytkownika.",
+      "scope": "Jedno darmowe pobranie 1bitpack_kenney_1.2.zip do .local/asset-intake/kenney-1bit-1.2/, kontrola wersji, licencji i hashy oraz minimalny import niezmienionych PNG/not do assets/approved/kenney-1bit-1.2/ i publicznego lokalnego Git. Bez darowizny, zakupu, innych pakietów lub wersji, skryptów, preview, scen przykładowych, logo i pushu."
+    }
+  ]
 }

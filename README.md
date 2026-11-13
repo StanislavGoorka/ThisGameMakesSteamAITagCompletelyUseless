@@ -34,6 +34,11 @@ P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/d
 
 Następne zadanie to **P056**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
+P056 jest zablokowane do rzeczywistej odpowiedzi na
+[wniosek o Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
+Zgoda ma status pending; niczego nie pobrano. W poleceniu wykonania 10 kroków
+ukończono dotąd pięć, a dalsza kolejka wymaga tej zgody.
+
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
 P045-01: ActionCommitted przechowuje opcjonalny cel zmienionej trasy; równość i konflikt dispatchera obejmują dowód, a wait/move z dowodem są odrzucane przed evaluatorem. [Raport](docs/workflow/history/P045-01.md)
