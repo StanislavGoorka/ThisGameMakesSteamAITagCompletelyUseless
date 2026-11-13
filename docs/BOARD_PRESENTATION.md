@@ -1,0 +1,31 @@
+# Prezentacja zatwierdzonej planszy
+
+P066 jest podziałem na cztery małe kontrakty. Nie zamyka implementacji.
+
+1. P066-01: wybór istniejącego kafla dla każdej z 16 masek portów.
+   Atlas Kenney 1-Bit Pack 1.2 ma komórki 16x16, krok 17, 49x22.
+   Korytarze (kolumna, wiersz; indeks od zera): (8,0) NS,
+   (9,0) ES, (10,0) NES, (11,0) NESW, (12,0) S.
+   Zamknięty symbol (9,3) reprezentuje maskę zero. Pozostałe orientacje
+   uzyskuje wyłącznie obrót całego gotowego kafla o wielokrotność 90 stopni.
+   Test porówna porty na krawędziach rzeczywistych pikseli oraz wszystkie maski.
+2. P066-02: czysta projekcja 49 pól GameState na kafle i współrzędne 7x7.
+   Dopasowanie kwadratu do obszaru klienta, jednakowy rozmiar komórek,
+   brak mutacji stanu, brak wyniku dla pustego lub niepoprawnego viewportu.
+3. P066-03: upload zweryfikowanego PNG do Direct2D i rysowanie listy kafli.
+   Bitmapa należy do konkretnego celu; brak pliku, zły atlas lub hash
+   dają kontrolowany błąd bez zastępczej grafiki. Test offscreen porówna
+   rzeczywiste piksele z oryginalnym atlasem po obrotach.
+4. P066-04: podłączenie planszy z istniejącego start_run do developer_window,
+   WM_PAINT, resize i odtworzenia bitmapy po utracie celu. Bez jednostek,
+   wykonywania komend, HUD i nowych treści. Smoke procesu oraz test repaint.
+
+P067 wymaga P066-04. Plan nie oznacza gotowego renderera ani grywalnej sesji.
+Pochodzenie i zgoda: [import](assets/KENNEY_1BIT_1_2_IMPORT.md).
+Bez zmian zatwierdzonych plików i bez pobierania.
+
+API: [DrawBitmap](https://learn.microsoft.com/en-us/windows/win32/direct2d/how-to-draw-a-bitmap)
+wymaga bitmapy z tego samego celu i sprawdzenia EndDraw;
+[WM_PAINT](https://learn.microsoft.com/en-us/windows/win32/gdi/wm-paint)
+zamyka BeginPaint przez EndPaint. Clear służy wyłącznie wyczyszczeniu bufora.
+Nie rysujemy linii, figur, proceduralnych oznaczeń ani nowych ilustracji.

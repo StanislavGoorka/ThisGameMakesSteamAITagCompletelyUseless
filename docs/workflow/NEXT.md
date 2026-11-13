@@ -1,18 +1,17 @@
 # Następny mały krok
 
-Task: P066
+Task: P066-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P065 oraz bieżący wpis
-i jego zależności w tasks.json. Sprawdź status i walidator na początku.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P066.
+Sprawdź git status, walidator i zależności: P066.
 
-Prezentacja płytek. Wyświetl wyłącznie planszę z zatwierdzonych bitmap, bez postaci i HUD.
+Przypisz ka?d? mask? 0-15 do gotowego kafla atlasu Kenney 1.2 i obrotu. Bez rysowania i zmiany asset?w.
 
-Kryteria: Orientacja i współrzędne; pokrycie portów przez gotowe assety.
+Kryteria: Wszystkie maski i obroty, granice atlasu, porty na kraw?dziach rzeczywistego PNG; D/R.
 
-Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
-zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,
-GAME_DESIGN i TESTING. Dla treści asset-intake i CONTENT_POLICY.
-Configure/build/CTest Debug i Release; formatter src/tests/tools.
-Dla dokumentacji walidator i diff --check. Raport, STATE/NEXT/README
-i osobny lokalny commit z kontrolą hasha i zakresu. Bez nowych assetów,
-pobrań i pushu.
+Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
+Dla treści: asset-intake i CONTENT_POLICY. Kontrakt BOARD_PRESENTATION.md.
+Za szeroki zakres rozbij bez implementacji. Configure/build/CTest Debug i Release;
+formatter src/tests/tools, walidator i diff --check. Raport, STATE/NEXT/README
+i osobny commit z kontrolą hasha i zakresu. Bez nowych assetów i pobrań.
+Push wyłącznie na polecenie użytkownika; bieżąca seria 10 kroków ma zgodę na push na końcu.

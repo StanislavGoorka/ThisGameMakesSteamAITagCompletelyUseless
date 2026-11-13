@@ -46,7 +46,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P066**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P066-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -388,3 +388,5 @@ P064-01: Dodano Direct2DTarget z RAII ComPtr fabryki single-threaded i celu HWND
 P064-02: Direct2DTarget obsługuje resize, zawieszenie przy zerowym wymiarze i odtworzenie po D2DERR_RECREATE_TARGET z tą samą fabryką. Test czterech sekwencji, prawdziwego SetWindowPos i zamkniętego HWND potwierdza rozmiary, nowy cel i kontrolowane odmowy. [Raport](docs/workflow/history/P064-02.md)
 
 P065: Dodano read_png_asset: chroniony odczyt i SHA-256 przed systemowym WIC PNG, owning bufor PBGRA z limitem 4096x4096. Pełne piksele zatwierdzonego atlasu są zgodne z niezależnym GDI+. Testuje brak COM, Unicode, kopie, korupcję przed hashem i kodekiem, brak pliku, retry, non-PNG i niezmienność źródeł. Zakończono zamówione 10 kolejnych kroków: osiem implementacyjnych i dwa podziały planu. [Raport](docs/workflow/history/P065.md)
+
+P066: Rozbito prezentację planszy na cztery kontrakty: kafle portów, projekcja 7x7, bitmapa Direct2D i okno developerskie. P067 wymaga ostatniego dziecka; plan nie implementuje renderowania. [Raport](docs/workflow/history/P066.md)

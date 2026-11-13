@@ -1643,10 +1643,54 @@
             "id": "P066",
             "phase": "M6",
             "title": "Prezentacja płytek",
-            "scope": "Wyświetl wyłącznie planszę z zatwierdzonych bitmap, bez postaci i HUD.",
-            "acceptance": "Orientacja i współrzędne; pokrycie portów przez gotowe assety.",
+            "scope": "Wy??cznie rozbij prezentacj? planszy na mapowanie atlasu, czyst? projekcj?, adapter bitmapy Direct2D i pod??czenie okna. Bez implementacji dzieci.",
+            "acceptance": "Cztery ma?e kontrakty z testami negatywnymi; P067 wymaga P066-04. Sam plan nie implementuje renderowania.",
             "depends_on": [
                 "P065"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P066-01",
+            "phase": "M6",
+            "title": "Mapowanie zatwierdzonych kafli port?w",
+            "scope": "Przypisz ka?d? mask? 0-15 do gotowego kafla atlasu Kenney 1.2 i obrotu. Bez rysowania i zmiany asset?w.",
+            "acceptance": "Wszystkie maski i obroty, granice atlasu, porty na kraw?dziach rzeczywistego PNG; D/R.",
+            "depends_on": [
+                "P066"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P066-02",
+            "phase": "M6",
+            "title": "Czysta projekcja planszy na kafle",
+            "scope": "Prze??? 49 masek GameState na kafle i wsp??rz?dne w dopasowanym kwadracie viewportu. Bez Windows i mutacji stanu.",
+            "acceptance": "Wszystkie pola i maski, uk?ad 7x7, resize, pusty i niepoprawny viewport, niezale?no?? wyniku; D/R.",
+            "depends_on": [
+                "P066-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P066-03",
+            "phase": "M6",
+            "title": "Rysowanie zatwierdzonego atlasu Direct2D",
+            "scope": "Dodaj upload zweryfikowanego PNG i rysowanie listy kafli. Bitmapa nale?y do konkretnego celu. Bez okna produktu i generowanego fallbacku.",
+            "acceptance": "Rzeczywisty render offscreen por?wnany z pikselami atlasu po obrotach; brak pliku, z?y hash i retry; D/R.",
+            "depends_on": [
+                "P066-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P066-04",
+            "phase": "M6",
+            "title": "Plansza w oknie developerskim",
+            "scope": "Podepnij plansz? z start_run do developer_window, WM_PAINT, resize i odtwarzania bitmapy po utracie celu. Bez jednostek, komend i HUD.",
+            "acceptance": "Rzeczywisty repaint i resize, kontrolowana odmowa braku assetu, smoke procesu; D/R.",
+            "depends_on": [
+                "P066-03"
             ],
             "gate": null
         },
@@ -1657,7 +1701,7 @@
             "scope": "Dodaj render gracza, pakietu i bazowego impulsu gotowymi elementami.",
             "acceptance": "Stan po turze zgodny z core; nie dodawaj grafiki brakujących obiektów.",
             "depends_on": [
-                "P066"
+                "P066-04"
             ],
             "gate": null
         },
