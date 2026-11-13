@@ -24,6 +24,30 @@
       "value": "[AI PLACEHOLDER] Deliveries:",
       "status": "ai_placeholder",
       "source_asset_id": null
+    },
+    {
+      "id": "session-start",
+      "value": "[AI PLACEHOLDER] Press Enter to start.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "session-won",
+      "value": "[AI PLACEHOLDER] Run complete. Press Enter to restart.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "session-death",
+      "value": "[AI PLACEHOLDER] Lost all HP. Press Enter to restart.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "session-overload",
+      "value": "[AI PLACEHOLDER] Turn limit reached. Press Enter to restart.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
     }
   ]
 }

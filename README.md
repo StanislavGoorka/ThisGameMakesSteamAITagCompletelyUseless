@@ -450,3 +450,5 @@ P070-04: Podłączono HUD do okna developer i wspólnego stanu live/preview. CMa
 P071: Podzielono cykl start-run-wynik-restart na czysty model, katalog komunikatów i adapter okna. P072 zależy od P071-03; nagrody i zapis nie należą do P071. [Raport](docs/workflow/history/P071.md)
 
 P071-01: Dodano czysty SessionFlow: ekran start/run/wynik i bramkowane rozpoczęcie lub restart z tym samym seedem. Profil oraz IO pozostają poza modelem. [Raport](docs/workflow/history/P071-01.md)
+
+P071-02: Dodano cztery oznaczone komunikaty sesji i niemutujący wybór katalogowego ID dla startu oraz won/death/overload. Nie ma fallbacku dla niespójnej fazy ani brakującej etykiety. [Raport](docs/workflow/history/P071-02.md)

@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P071-02
+Task: P071-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P071-01.
-Zależności completed: P071-01. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P071-02.
+Zależności completed: P071-02. Sprawdź git status i walidator.
 
-Dodaj katalogowe komunikaty startu i wyniku won/death/overload oraz niemutujący wybór ID. Bez renderowania.
+Podłącz start, wynik i restart przez Enter do istniejącego okna. Czyść wybór i podgląd przy przejściu; nie dodawaj wyboru nagrody.
 
-Kryteria: Każdy osobny komunikat ma prefiks; brak fallbacku i public gate odrzuca robocze komunikaty.
+Kryteria: HWND: start nie wykonuje tury, wynik nie przyjmuje akcji, Enter restartuje raz, hold/focus bez powtórzenia; pełny reset runu i niezmienione pliki profilu.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, HUD_PRESENTATION.md
