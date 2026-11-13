@@ -28,3 +28,10 @@ wyników core; ostatni sektor pozostaje terminalnym wynikiem P071.
 
 Zapis checkpointu z UI, evaluator achievementów i powiadomienia pozostają
 poza tym łańcuchem. P073 i P074 zachowują własne kontrakty. Bez pobrań.
+
+P072-01..03 są zaimplementowane: czysty kursor, katalogowe wiersze i skład
+pełnego bloku tekstu. BoardView atomowo wymienia overlay i wyłącza planszę
+oraz hit-test. P072-04 nadal odpowiada za nawigację klawiaturą i zatwierdzanie.
+Test HWND obejmuje oferty 1/2, resize, odtworzenie celu i odmowę brakującego ID.
+DPI 96/144/192 sprawdza wspólny renderer wielowierszowy w windows_text_renderer.
+Obserwacja wzrokowa nie zastępuje tych testów i nie została tu wykonana.

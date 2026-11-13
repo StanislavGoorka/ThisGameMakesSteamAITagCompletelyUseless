@@ -3,6 +3,7 @@
 #include "application/action_selection.hpp"
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
+#include "presentation/reward_text.hpp"
 #include "presentation/session_text.hpp"
 #include <type_traits>
 
@@ -102,6 +103,12 @@ class RunWindow final : public WindowCommandHandler
                 error_ = S_OK;
                 return;
             }
+            if (lifecycle_ && run_phase(run_) == RunPhase::choosing_reward)
+            {
+                selection_.reset();
+                show_live(run_);
+                return;
+            }
             std::optional<Command> command;
             switch (*key)
             {
@@ -151,6 +158,14 @@ class RunWindow final : public WindowCommandHandler
   private:
     void show_live(const RunState &run)
     {
+        if (lifecycle_ && flow_.screen(run) == SessionScreen::run &&
+            run_phase(run) == RunPhase::choosing_reward)
+        {
+            const auto lines =
+                presentation::reward_lines(reward_offer(run), std::nullopt);
+            view_->set_board(run.sector, {}, std::nullopt, *lines);
+            return;
+        }
         view_->set_board(
             run.sector, {},
             lifecycle_ ? presentation::session_message(flow_.screen(run), run)

@@ -92,20 +92,21 @@ class BoardView final : public WindowPainter
         return route_;
     }
     void set_board(GameState board, std::vector<NodeId> route = {},
-                   std::optional<TextLine> message = std::nullopt)
+                   std::optional<TextLine> message = std::nullopt,
+                   std::span<const TextLine> overlay = {})
     {
-        if (message && !hud_catalog_)
+        if ((message || !overlay.empty()) && !hud_catalog_)
             throw std::runtime_error("Missing presentation catalog");
         if (hud_catalog_)
         {
-            auto text = make_hud(board, message);
+            auto text = make_hud(board, message, overlay);
             if (!text.renderer)
                 throw std::runtime_error("HUD layout failed");
             label_ = std::move(text.renderer);
         }
         board_ = std::move(board);
         route_ = std::move(route);
-        message_only_ = message.has_value();
+        message_only_ = message.has_value() || !overlay.empty();
         if (window_.handle())
             InvalidateRect(window_.handle(), nullptr, FALSE);
     }
@@ -172,8 +173,16 @@ class BoardView final : public WindowPainter
   private:
     [[nodiscard]] TextCreateResult
     make_hud(const GameState &board,
-             std::optional<TextLine> message = std::nullopt) const
+             std::optional<TextLine> message = std::nullopt,
+             std::span<const TextLine> overlay = {}) const
     {
+        if (!overlay.empty())
+        {
+            std::vector<TextLine> lines{
+                {"developer-window-title", std::nullopt}};
+            lines.insert(lines.end(), overlay.begin(), overlay.end());
+            return TextRenderer::create(*hud_catalog_, lines);
+        }
         if (message)
         {
             const std::array lines{

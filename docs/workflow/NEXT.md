@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P072-03
+Task: P072-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P072-02.
-Zależności: P072-02; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P072-03.
+Zależności: P072-03; muszą być completed.
 Sprawdź git status i walidator.
 
-Złóż istniejącym rendererem katalogowe wiersze oferty i wskazania kandydata. Bez obsługi zatwierdzenia i bez nowych ikon.
+Podłącz kandydata nagrody do istniejących choose_run_module i advance_run; Enter zatwierdza raz, pusta oferta przechodzi bez fikcyjnej nagrody. Bez IO checkpointu i nowych mechanik.
 
-Kryteria: Zatwierdzona typografia systemowa i oznaczone teksty; resize/DPI, brak częściowych markerów, hit-test planszy wyłączony w widoku oferty.
+Kryteria: HWND: nielegalny/nieaktualny wybór bez mutacji, left/right i Enter, hold/focus, dwie granice sektora, pełne stany zgodne z core i reset preview; katalogowe błędy z markerem.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.

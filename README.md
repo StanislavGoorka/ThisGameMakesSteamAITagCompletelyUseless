@@ -463,3 +463,5 @@ P072: Podzielono wybór istniejącego modułu na model kandydata, oznaczone teks
 P072-01: Dodano czysty RewardSelection z nawigacją cykliczną po istniejącej ofercie. Zmiana seedu, sektora, fazy lub oferty unieważnia wskazanie; model nie zmienia RunState. [Raport](docs/workflow/history/P072-01.md)
 
 P072-02: Dodano cztery katalogowe placeholdery nagrody i czystą projekcję wierszy z numerem opcji oraz wskazaniem. Pusta oferta nie tworzy nagrody, nieznane i niekanoniczne oferty są odrzucane. [Raport](docs/workflow/history/P072-02.md)
+
+P072-03: Podłączono katalogowy blok oferty do istniejącego renderera i RunWindow. Overlay atomowo zastępuje layout, wyłącza planszę oraz hit-test i pozostaje widoczny po klawiszu planszy. [Raport](docs/workflow/history/P072-03.md)
