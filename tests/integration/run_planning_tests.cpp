@@ -54,10 +54,44 @@ int wmain(int argc, wchar_t **argv)
                made.session->selection().pointed() == node(value);
     };
     auto expected = initial;
+    const auto view_matches =
+        [&](const RunState &state, const std::vector<NodeId> &route)
+    {
+        return test::same_state(made.session->view().board(), state.sector) &&
+               made.session->view().packet_route() == route;
+    };
+    tap(VK_TAB);
+    tap(VK_SPACE);
+    const auto wait_preview = project_action(expected, WaitCommand{});
+    if (!view_matches(wait_preview.result.state, wait_preview.packet_route) ||
+        wait_preview.packet_route.empty() ||
+        !test::same_run(made.session->state(), expected))
+        return 21;
+    if (!hover(48))
+        return 31;
+    tap('R'); // out of range: restore live scene and erase the old route
+    if (!view_matches(expected, {}))
+        return 32;
+    tap(VK_SPACE);
+    SetWindowPos(hwnd, nullptr, 0, 0, 700, 500,
+                 SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+    UpdateWindow(hwnd);
+    if (!view_matches(wait_preview.result.state, wait_preview.packet_route) ||
+        made.session->error() != S_OK)
+        return 33;
+    tap(VK_ESCAPE);
+    if (!view_matches(expected, {}))
+        return 22;
     if (!hover(1))
         return 4;
     tap(VK_TAB);
     tap('R');
+    const auto rotation_preview =
+        project_action(expected, RotateCommand{node(1)});
+    if (!view_matches(rotation_preview.result.state,
+                      rotation_preview.packet_route) ||
+        !rotation_preview.packet_route.empty())
+        return 23;
     if (!made.session->selection().planning() ||
         made.session->selection().candidate() !=
             Command{RotateCommand{node(1)}} ||
@@ -66,6 +100,8 @@ int wmain(int argc, wchar_t **argv)
     expected = resolve_run_turn(expected, RotateCommand{node(1)}).state;
     tap(VK_RETURN);
     tap(VK_RETURN);
+    if (!view_matches(rotation_preview.result.state, {}))
+        return 24;
     if (!test::same_run(made.session->state(), expected) ||
         made.session->selection().candidate())
         return 6;
@@ -74,6 +110,8 @@ int wmain(int argc, wchar_t **argv)
     tap('O');
     tap(VK_ESCAPE);
     tap(VK_RETURN);
+    if (!view_matches(expected, {}))
+        return 25;
     if (made.session->selection().planning() ||
         !test::same_run(made.session->state(), expected))
         return 8;
@@ -84,6 +122,8 @@ int wmain(int argc, wchar_t **argv)
     tap(VK_TAB);
     tap(VK_SPACE);
     SendMessageW(hwnd, WM_KILLFOCUS, 0, 0);
+    if (!view_matches(expected, {}))
+        return 26;
     if (made.session->selection().planning() ||
         made.session->selection().candidate() ||
         made.session->selection().pointed() || window.window->pointed())
@@ -126,6 +166,30 @@ int wmain(int argc, wchar_t **argv)
     if (!test::same_run(made.session->state(), expected) ||
         made.session->selection().planning())
         return 19;
+    // Refused candidates, terminal runs and resize must never resurrect a
+    // previous route. Repaint a chosen preview through a real WM_PAINT.
+    tap(VK_TAB);
+    tap(VK_RIGHT);
+    const auto move = project_action(expected, MoveCommand{node(1)});
+    if (!view_matches(move.result.accepted ? move.result.state : expected,
+                      move.result.accepted ? move.packet_route
+                                           : std::vector<NodeId>{}))
+        return 27;
+    UpdateWindow(hwnd);
+    tap(VK_ESCAPE);
+    for (int i = 0; i < 50; ++i)
+        tap(VK_SPACE);
+    expected = made.session->state();
+    if (run_phase(expected) != RunPhase::lost)
+        return 28;
+    tap(VK_TAB);
+    tap(VK_SPACE);
+    if (!view_matches(expected, {}))
+        return 29;
+    tap(VK_RETURN);
+    if (!view_matches(expected, {}) ||
+        !test::same_run(made.session->state(), expected))
+        return 30;
     SendMessageW(hwnd, WM_CLOSE, 0, 0);
     if (made.session->selection().planning() ||
         made.session->selection().candidate())

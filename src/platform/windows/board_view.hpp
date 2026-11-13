@@ -50,9 +50,14 @@ class BoardView final : public WindowPainter
     {
         return board_;
     }
-    void set_board(GameState board)
+    [[nodiscard]] const std::vector<NodeId> &packet_route() const noexcept
+    {
+        return route_;
+    }
+    void set_board(GameState board, std::vector<NodeId> route = {})
     {
         board_ = std::move(board);
+        route_ = std::move(route);
         if (window_.handle())
             InvalidateRect(window_.handle(), nullptr, FALSE);
     }
@@ -92,8 +97,8 @@ class BoardView final : public WindowPainter
                     return;
             }
             const auto size = device_->target()->GetSize();
-            const auto draws =
-                presentation::scene_draws(board_, size.width, size.height);
+            const auto draws = presentation::scene_draws(board_, size.width,
+                                                         size.height, route_);
             if (!draws)
             {
                 error_ = E_INVALIDARG;
@@ -120,6 +125,7 @@ class BoardView final : public WindowPainter
     }
     NativeWindow &window_;
     GameState board_;
+    std::vector<NodeId> route_;
     std::filesystem::path root_;
     AssetManifest manifest_;
     std::unique_ptr<Direct2DTarget> device_;

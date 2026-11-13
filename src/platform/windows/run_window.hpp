@@ -1,4 +1,5 @@
 #pragma once
+#include "application/action_preview.hpp"
 #include "application/action_selection.hpp"
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
@@ -58,6 +59,7 @@ class RunWindow final : public WindowCommandHandler
             if (!window_.focused())
             {
                 selection_.reset();
+                view_->set_board(run_.sector);
                 return;
             }
             selection_.point(window_.pointed());
@@ -81,10 +83,16 @@ class RunWindow final : public WindowCommandHandler
                 break;
             }
             if (!command)
+            {
+                show_selection();
                 return;
+            }
             auto next = resolve_run_turn(run_, *command);
             if (!next.accepted)
+            {
+                view_->set_board(run_.sector);
                 return;
+            }
             // Copying into the view may throw; publish run_ only after that
             // copy succeeds. Both following move assignments are nonthrowing.
             view_->set_board(next.state.sector);
@@ -99,6 +107,22 @@ class RunWindow final : public WindowCommandHandler
     }
 
   private:
+    void show_selection()
+    {
+        if (selection_.candidate())
+        {
+            auto preview = project_action(run_, *selection_.candidate());
+            if (preview.result.accepted)
+            {
+                view_->set_board(std::move(preview.result.state.sector),
+                                 std::move(preview.packet_route));
+                error_ = S_OK;
+                return;
+            }
+        }
+        view_->set_board(run_.sector);
+        error_ = S_OK;
+    }
     RunWindow(NativeWindow &window, RunState run,
               std::unique_ptr<BoardView> view)
         : window_(window), run_(std::move(run)), view_(std::move(view))

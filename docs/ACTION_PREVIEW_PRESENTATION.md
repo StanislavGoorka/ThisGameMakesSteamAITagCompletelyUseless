@@ -46,3 +46,14 @@ dziecka. Brak assetu blokuje prezentację, nie uzasadnia nowej grafiki.
 Nie wdrażać HUD, menu startu, modułów, zapisu ani usług w tych dzieciach.
 Kontrola wzrokowa wymaga działającego Computer Use; bieżąca sesja nie ma
 połączenia z native pipe. Testy pikseli nie zastępują oceny grywalności.
+
+P068-04 wdraża wynik wybranej akcji w BoardView oraz znaczniki trasy z już
+sprawdzonej komórki pakietu (45,8), bez nowego wyboru artworku. Znacznik ma
+25% boku komórki: x=lewa krawędź, y=37,5% wysokości. Jego prostokąt nie
+przecina centralnych 50% ani narożników po 25%. Gotowe piksele atlasu są
+skalowane i kopiowane; nie ma linii trasy ani nowych figur. Enter usuwa
+znaczniki i publikuje dokładnie stan przewidziany; odmowa, anulowanie i focus
+przywracają live state. Resize zachowuje wybraną komendę i przelicza geometrię.
+Ponowna próba Computer Use w tej sesji: import @oai/sky działa, list_apps
+zwraca brak native pipe (os error 2). Brak obserwacji pulpitu, bez blokowania
+testów offscreen wymaganych przez ten kontrakt.

@@ -24,9 +24,12 @@ int wmain(int argc, wchar_t **argv)
     state.receiver_nodes[1] = state.receiver_nodes[2] = true;
     state.powered_nodes[2] = true;
     const auto original = state;
-    const auto scene = *p::scene_draws(state, 448, 448);
+    const std::array route{*NodeId::from_value(24), *NodeId::from_value(25),
+                           *NodeId::from_value(48)};
+    const auto scene = *p::scene_draws(state, 448, 448, route);
     const auto units = *p::unit_draws(state, 448, 448);
-    if (scene.size() != 49 + units.size() || p::scene_draws(state, 0, 448))
+    if (scene.size() != 49 + units.size() + route.size() ||
+        p::scene_draws(state, 0, 448, route))
         return 2;
     for (unsigned i = 0; i < 49; ++i)
         if (scene[i].x != (i % 7) * 64 + 16 ||
@@ -45,6 +48,17 @@ int wmain(int argc, wchar_t **argv)
         for (unsigned j = 0; j < i; ++j)
             if (overlaps(units[i].draw, units[j].draw))
                 return 6;
+    for (unsigned i = 0; i < route.size(); ++i)
+    {
+        const auto &marker = scene[49 + units.size() + i];
+        if (marker.tile != p::AtlasTile{45, 8, 0} || marker.size != 16 ||
+            marker.x != (route[i].value() % 7) * 64 ||
+            marker.y != (route[i].value() / 7) * 64 + 24)
+            return 10;
+        for (unsigned j = 0; j < 49 + units.size(); ++j)
+            if (overlaps(marker, scene[j]))
+                return 11;
+    }
     ComPtr<IWICImagingFactory> wic;
     ComPtr<IWICBitmap> image;
     ComPtr<ID2D1Factory> factory;

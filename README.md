@@ -26,7 +26,8 @@ z obsługą odmalowania, resize i tur core z klawiatury. HUD nie jest podłączo
 Sterowanie developer: strzałki — ruch, R — obrót, O — overdrive, Space — wait.
 R/O używają pola pod kursorem, a bez wskazania własnego pola. Tab przełącza
 planowanie, klawisz akcji wybiera komendę, Enter wykonuje ją raz, Escape
-anuluje. Focus loss czyści wybór. Graficzny podgląd, przejścia sektorów
+anuluje. Focus loss czyści wybór. Wybór pokazuje wynik core i trasę pakietu
+gotowymi symbolami; anulowanie przywraca stan sesji. Przejścia sektorów
 i zapis z UI pozostają kolejnymi zadaniami.
 Ostatnia pełna pula: Debug i Release po 107/107 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu (niedostępny Computer Use).
@@ -51,7 +52,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P068-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P069**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -423,3 +424,5 @@ P068-03: Rozbito adapter wskazania na P068-05 (czysty hit-test istniejącej geom
 P068-05: Dodano board_node_at: opcjonalny NodeId z tej samej geometrii fit_board co renderer. Półotwarte granice rozstrzygane przez porównanie współrzędnych, bez zaokrąglania dzielenia na wspólnej krawędzi. [Raport](docs/workflow/history/P068-05.md)
 
 P068-06: Połączono ActionSelection z oknem: hit-test kursora, wskazane cele R/O, filtrowane Tab/Enter/Escape, reset focusu i hover przy resize/mouse leave. Natychmiastowe akcje i zatwierdzony kandydat używają tego samego resolvera runu. [Raport](docs/workflow/history/P068-06.md)
+
+P068-04: Podłączono wynik podglądu do BoardView i znaczniki trasy z istniejącej komórki pakietu (45,8). Znaczniki zajmują rozłączny lewy obszar; anulowanie, odmowa i focus przywracają live state, Enter publikuje przewidziany stan bez starych znaczników. [Raport](docs/workflow/history/P068-04.md)
