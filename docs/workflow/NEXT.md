@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P073-04
+Task: P073-05
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-03.
-Zależności: P073-03; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-04.
+Zależności: P073-04; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj adapter prywatnego katalogu w LocalAppData i ścieżki istniejącego formatu profilu. Bez zapisu achievementu, checkpointu i zmian UI.
+Połącz istniejące zdarzenia zatwierdzonej tury z lokalnym sinkiem oraz katalogowym wierszem first_delivery w oknie developer. Bez nowych predykatów i grafik.
 
-Kryteria: Rzeczywisty systemowy katalog i prywatny testowy katalog, powtórka, Unicode i kolizja z plikiem; kontrolowane błędy bez pobrań.
+Kryteria: HWND: wyłącznie commit i trwały unlock, brak duplikatów po preview/retry/restart; kolejka zachowana po błędzie profilu, kontrolowany tekst, focus/hold, pełne stany core i niezmienione bajty istniejącego profilu.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.

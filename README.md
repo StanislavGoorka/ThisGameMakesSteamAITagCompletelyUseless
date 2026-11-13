@@ -475,3 +475,5 @@ P073-01: Dodano AchievementNoticeSink: pojedyncze pending dla nowego trwałego f
 P073-02: Dodano dwa katalogowe placeholdery: first_delivery i kontrolowany błąd usługi. Czysta projekcja odrzuca pozostałe ID, a brak katalogowej wartości nie daje fallbacku. [Raport](docs/workflow/history/P073-02.md)
 
 P073-03: Dodano RunAchievements, właściciela istniejącego evaluatora i dispatchera. Prepare kopiuje wyłącznie niedostarczone zdarzenia przed publikacją, publish przenosi kolejkę bez alokacji, a flush zachowuje pozycję po błędzie lub wyjątku. [Raport](docs/workflow/history/P073-03.md)
+
+P073-04: Dodano adapter systemowego LocalAppData i prywatnej ścieżki ClosedCircuit/profile.bin. Tworzy tylko katalog, zachowuje istniejące pliki i odmawia kolizji oraz katalogu reparse. [Raport](docs/workflow/history/P073-04.md)

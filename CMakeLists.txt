@@ -25,6 +25,12 @@ endif()
 
 include(CTest)
 
+if(BUILD_TESTING AND WIN32)
+    add_executable(windows_profile_location_tests tests/integration/profile_location_tests.cpp)
+    target_link_libraries(windows_profile_location_tests PRIVATE game_core shell32 ole32 uuid)
+    add_test(NAME windows_profile_location COMMAND windows_profile_location_tests)
+endif()
+
 if(BUILD_TESTING)
     add_executable(application_run_achievements_tests tests/unit/run_achievements_tests.cpp)
     target_link_libraries(application_run_achievements_tests PRIVATE game_core)
