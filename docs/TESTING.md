@@ -301,3 +301,5 @@ P064-01: windows_direct2d_target tworzy rzeczywiste fabryki i cele HWND dla dwó
 P064-02: windows_direct2d_resize czterokrotnie sprawdza rzeczywiste rozmiary 1x1, 321x197 i 624x441, trzy warianty zera i powrót, zachowanie fabryki oraz nową tożsamość COM celu po kontrolowanym D2DERR_RECREATE_TARGET. Rzeczywisty SetWindowPos i GetClientRect zasilają Resize; zamknięty HWND odmawia dwukrotnie. S_OK/E_FAIL przechodzą bez zmiany celu. Brak fizycznego resetu GPU, draw/present i VM.
 
 P065: windows_png_read porównuje 832x373/stride3328/1241344 bajtów i SHA-256 pełnego PBGRA z niezależnym GDI+. Sprawdza COM-uninitialized, rzeczywisty manifest, trzy powtórki w Unicode root, niezależność bufora, korupcję przed hashem i kodekiem, brak, retry, non-PNG oraz niezmienność oryginału/rejestru. Nie tworzy artworku ani nowych assetów.
+
+P066-01: presentation_atlas_tiles sprawdza literalne mapowanie wszystkich 16 masek i porty na kraw?dziach rzeczywistego PNG. Rotuje indeksy kraw?dzi niezale?nie od helpera produkcyjnego. Kontroluje granice kom?rek i obrot?w; nie tworzy grafiki.

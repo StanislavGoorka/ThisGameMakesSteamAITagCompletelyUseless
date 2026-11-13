@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P066-01
+Task: P066-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P066.
-Sprawdź git status, walidator i zależności: P066.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P066-01.
+Sprawdź git status, walidator i zależności: P066-01.
 
-Przypisz ka?d? mask? 0-15 do gotowego kafla atlasu Kenney 1.2 i obrotu. Bez rysowania i zmiany asset?w.
+Prze??? 49 masek GameState na kafle i wsp??rz?dne w dopasowanym kwadracie viewportu. Bez Windows i mutacji stanu.
 
-Kryteria: Wszystkie maski i obroty, granice atlasu, porty na kraw?dziach rzeczywistego PNG; D/R.
+Kryteria: Wszystkie pola i maski, uk?ad 7x7, resize, pusty i niepoprawny viewport, niezale?no?? wyniku; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakt BOARD_PRESENTATION.md.
