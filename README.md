@@ -32,12 +32,12 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P058**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P058-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
 Zakres zapisano w rejestrze, a P057 przyjął minimalny zestaw z kontrolą bajtów.
-W poleceniu wykonania 10 kroków ukończono dotąd siedem.
+W poleceniu wykonania 10 kroków ukończono dotąd osiem; P058 jest podziałem planu.
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -72,6 +72,8 @@ P055: Dossier Kenney 1-Bit Pack 1.2 dokumentuje CC0 dla gry i publicznego Git, d
 P056: Zapisano rzeczywistą odpowiedź użytkownika: „Tak, zgadzam się na ten zakres”. Zgoda kenney-1bit-1.2-2026-11-13 ma status approved; usunięto blokadę. Dotyczy wyłącznie jednego darmowego pobrania wersji 1.2 z itch.io i minimalnego importu niezmienionych PNG/not po weryfikacji. Bez pobrania w kroku P056. [Raport](docs/workflow/history/P056.md)
 
 P057: Pobrano raz zatwierdzony 1bitpack_kenney_1.2.zip: 657579 bajtów, wersja 1.2 i CC0 potwierdzone w License.txt. Przyjęto jeden niezmieniony atlas PNG 832x373 i dwie noty, 20259 bajtów, z kompletnym rejestrem i SHA-256. Archiwum pozostało ignorowane, pozostałych grafik/scen nie rozpakowano. Git zachowuje bajty approved bez normalizacji. Testy walidatora obsługują teraz niepusty rejestr. [Raport](docs/workflow/history/P057.md)
+
+P058: P058 zamknięto wyłącznie jako podział na cztery kontrakty: wartościowe odwołania, pamięciowy parser JSON Windows, bounded read z SHA-256 oraz test integracji rzeczywistego importu. P059 zależy od P058-04; samo zamknięcie planu nie dostarcza czytnika. ASSET_MANIFEST.md ustala limity, kontrolowane odmowy i granice dowodów. [Raport](docs/workflow/history/P058.md)
 
 ## Mapa dokumentacji
 

@@ -1381,11 +1381,55 @@
         {
             "id": "P058",
             "phase": "M5",
-            "title": "Odczyt manifestu",
-            "scope": "Dodaj parser zatwierdzonych odwołań do assetów bez renderowania.",
-            "acceptance": "Zły hash/ID/ścieżka i brak pliku dają kontrolowany błąd.",
+            "title": "Podział odczytu manifestu",
+            "scope": "Wyłącznie podziel model odwołań, parser JSON, weryfikację pliku i dowód integracyjny na dzieci P058-01..04; bez ich implementacji.",
+            "acceptance": "Oddzielne kontrakty i testy w ASSET_MANIFEST.md, porządek topologiczny; P059 zależy od P058-04. Ukończenie tego wpisu nie oznacza działającego czytnika.",
             "depends_on": [
                 "P057"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P058-01",
+            "phase": "M5",
+            "title": "Wartościowe odwołanie do zatwierdzonego assetu",
+            "scope": "Dodaj w application jeden kontrakt AssetReference: ograniczone ID, kanoniczna ścieżka pod approved, digest SHA-256 i długość; walidację unikalności manifestu oraz lookup. Bez JSON, IO i renderowania.",
+            "acceptance": "Poprawne odwołania, złe ID/ścieżki/hash i granice długości, duplikaty ID/ścieżki Windows oraz nieznane ID; niezależne kopie, Debug/Release.",
+            "depends_on": [
+                "P058"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P058-02",
+            "phase": "M5",
+            "title": "Parser JSON odwołań bez IO",
+            "scope": "Dodaj ograniczony parser pamięciowy UTF-8 content/assets.json w adapterze Windows z systemowym Windows.Data.Json; publikuj cały model tylko po walidacji. Bez odczytu plików i renderowania.",
+            "acceptance": "Błędy składni/UTF-8/wersji/typów/statusu, zły hash/ID/ścieżka, duplikaty i limity dokumentu/liczby/głębokości dają brak wyniku. Literalny manifest i kopie, Debug/Release; bez nowych pobrań.",
+            "depends_on": [
+                "P058-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P058-03",
+            "phase": "M5",
+            "title": "Odczyt i SHA-256 zatwierdzonego pliku Windows",
+            "scope": "Dodaj bounded read wartości AssetReference z jednego chronionego uchwytu i SHA-256 przez BCrypt. Sprawdź rozmiar i kanoniczną lokalizację pod zaufanym approved; brak częściowych bajtów.",
+            "acceptance": "Dokładne bajty, brak pliku, blokada, katalog/reparse, wyjście poza approved, zły rozmiar i hash dają kontrolowane wyniki; Unicode w zaufanym katalogu bazowym, Debug/Release. Bez WIC i renderowania.",
+            "depends_on": [
+                "P058-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P058-04",
+            "phase": "M5",
+            "title": "Integracja manifestu z zatwierdzonym importem",
+            "scope": "Połącz parser, lookup i weryfikację pliku w jednym teście rzeczywistego rejestru P057 oraz izolowanych odmów. Nie zmieniaj zatwierdzonych bajtów i nie dodawaj funkcji prezentacji.",
+            "acceptance": "Wszystkie trzy rekordy zwracają dokładne bajty; nieznane ID, zła ścieżka/hash i brak pliku są kontrolowane bez partial result. Własne kopie do negatywnych próbek, D/R i walidator.",
+            "depends_on": [
+                "P058-03"
             ],
             "gate": null
         },
@@ -1396,7 +1440,7 @@
             "scope": "Dodaj bramkę odrzucającą nieśledzone i niezatwierdzone zasoby.",
             "acceptance": "Negatywne próbki: plik bez rejestru, zła zgoda, zmieniony hash.",
             "depends_on": [
-                "P058"
+                "P058-04"
             ],
             "gate": null
         },

@@ -129,6 +129,11 @@ evaluatora; brak historii nie oznacza spełnienia predykatu runu bez overdrive.
 
 ## Prezentacja
 
+P058 dzieli [odczyt zatwierdzonych odwołań](ASSET_MANIFEST.md) na cztery dzieci:
+model application, pamięciowy parser Windows.Data.Json, chroniony odczyt pliku
+z SHA-256 oraz dowód integracyjny. Plan nie jest jeszcze gotowym czytnikiem;
+P059 czeka na P058-04. Systemowe API nie rozszerza uprawnień do treści.
+
 Renderer używa wyłącznie zatwierdzonego manifestu. Brak zasobu oznacza kontrolowany błąd lub wyłączenie widoku, nie rysowanie nowej ikony. Panele, ścieżki i znaczniki powstają z pozyskanych elementów. Zwykłe pozycjonowanie i skalowanie gotowych bitmap jest operacją prezentacji; nie daje prawa do twórczego przerabiania artworku.
 
 Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych finalnych tekstów z dowodami pochodzenia. Komunikat błędu pokazywany graczowi również jest treścią. Wewnętrznych nazw nie wyświetlaj jako finalnego tytułu. Binarne identyfikatory nie mogą wyciekać na UI jako nieoznaczone etykiety.
