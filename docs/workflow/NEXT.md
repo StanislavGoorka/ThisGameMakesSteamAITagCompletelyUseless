@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P072-02
+Task: P072-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P072-01.
-Zależności: P072-01; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P072-02.
+Zależności: P072-02; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj osobne katalogowe placeholdery dwóch istniejących modułów i instrukcji wyboru oraz niemutujący wybór wierszy dla oferty. Bez renderowania.
+Złóż istniejącym rendererem katalogowe wiersze oferty i wskazania kandydata. Bez obsługi zatwierdzenia i bez nowych ikon.
 
-Kryteria: Każdy wiersz ma pełny marker; brak ID i nieznany moduł dają odmowę, pusta oferta nie tworzy fikcyjnej nagrody; public gate blokuje robocze wpisy.
+Kryteria: Zatwierdzona typografia systemowa i oznaczone teksty; resize/DPI, brak częściowych markerów, hit-test planszy wyłączony w widoku oferty.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.

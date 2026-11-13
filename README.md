@@ -461,3 +461,5 @@ P071-03: Podłączono ekran startu i trzy końcowe wyniki do Enter. Start nie wy
 P072: Podzielono wybór istniejącego modułu na model kandydata, oznaczone teksty, skład widoku i integrację nagrody/przejścia. P073 zależy od P072-04. To dziesiąty krok serii; dzieci nie są zaimplementowane. [Raport](docs/workflow/history/P072.md)
 
 P072-01: Dodano czysty RewardSelection z nawigacją cykliczną po istniejącej ofercie. Zmiana seedu, sektora, fazy lub oferty unieważnia wskazanie; model nie zmienia RunState. [Raport](docs/workflow/history/P072-01.md)
+
+P072-02: Dodano cztery katalogowe placeholdery nagrody i czystą projekcję wierszy z numerem opcji oraz wskazaniem. Pusta oferta nie tworzy nagrody, nieznane i niekanoniczne oferty są odrzucane. [Raport](docs/workflow/history/P072-02.md)

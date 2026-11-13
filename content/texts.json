@@ -2,6 +2,30 @@
   "schema_version": 1,
   "texts": [
     {
+      "id": "reward-range",
+      "value": "[AI PLACEHOLDER] Extended rotation range:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-terminal",
+      "value": "[AI PLACEHOLDER] Rotate one fixed terminal per sector:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-instruction",
+      "value": "[AI PLACEHOLDER] Left/Right selects a module. Enter confirms.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-selected",
+      "value": "[AI PLACEHOLDER] Selected option:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "developer-window-title",
       "value": "[AI PLACEHOLDER] Closed Circuit",
       "status": "ai_placeholder",
