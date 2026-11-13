@@ -52,7 +52,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P069**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P069-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -426,3 +426,5 @@ P068-05: Dodano board_node_at: opcjonalny NodeId z tej samej geometrii fit_board
 P068-06: Połączono ActionSelection z oknem: hit-test kursora, wskazane cele R/O, filtrowane Tab/Enter/Escape, reset focusu i hover przy resize/mouse leave. Natychmiastowe akcje i zatwierdzony kandydat używają tego samego resolvera runu. [Raport](docs/workflow/history/P068-06.md)
 
 P068-04: Podłączono wynik podglądu do BoardView i znaczniki trasy z istniejącej komórki pakietu (45,8). Znaczniki zajmują rozłączny lewy obszar; anulowanie, odmowa i focus przywracają live state, Enter publikuje przewidziany stan bez starych znaczników. [Raport](docs/workflow/history/P068-04.md)
+
+P069: Rozbito tekst developerski na wspólny odczyt UTF-16, renderer DirectWrite z lifecycle niezależnym od celu oraz podłączenie istniejącego napisu w osobnym obszarze okna. P070 wymaga P069-03; kontrakt TEXT_PRESENTATION.md określa brak obciętego markera i wspólną geometrię hit-testu. [Raport](docs/workflow/history/P069.md)

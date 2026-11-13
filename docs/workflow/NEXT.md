@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P069
+Task: P069-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P068-04.
-Zależności: P068-04. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P069.
+Zależności: P069. Sprawdź git status i walidator.
 
-Dodaj DirectWrite dla jednego oznaczonego tekstu katalogu.
+Wydziel wspólny owning odczyt tekstu katalogu i ścisłą konwersję Win32 UTF-8/UTF-16; użyj go także dla tytułu NativeWindow. Bez DirectWrite, nowych wpisów tekstu i fallbacku ID.
 
-Kryteria: Każda wyświetlana wartość zachowuje prefiks, poprawne UTF-8/UTF-16.
+Kryteria: Dokładny prefiks, polskie znaki, pary surogatów, invalid UTF-8, brak ID, niezależność kopii oraz niezmieniony katalog i tytuł okna; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakty BOARD_PRESENTATION.md

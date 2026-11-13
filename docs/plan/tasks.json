@@ -1818,11 +1818,44 @@
         {
             "id": "P069",
             "phase": "M6",
-            "title": "Tekst developer",
-            "scope": "Dodaj DirectWrite dla jednego oznaczonego tekstu katalogu.",
-            "acceptance": "Każda wyświetlana wartość zachowuje prefiks, poprawne UTF-8/UTF-16.",
+            "title": "Rozbij tekst developerski DirectWrite",
+            "scope": "Wyłącznie rozbij prezentację jednego istniejącego oznaczonego tekstu katalogu na ścisłą konwersję UTF-16, renderer DirectWrite i podłączenie do okna. Bez implementacji dzieci i nowych treści.",
+            "acceptance": "Trzy małe kontrakty z testami Unicode, odmów, lifecycle i rzeczywistego paint/resize. P070 wymaga ostatniego dziecka; sam plan nie wdraża tekstu.",
             "depends_on": [
                 "P068-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P069-01",
+            "phase": "M6",
+            "title": "Ścisły odczyt tekstu katalogu do UTF-16",
+            "scope": "Wydziel wspólny owning odczyt tekstu katalogu i ścisłą konwersję Win32 UTF-8/UTF-16; użyj go także dla tytułu NativeWindow. Bez DirectWrite, nowych wpisów tekstu i fallbacku ID.",
+            "acceptance": "Dokładny prefiks, polskie znaki, pary surogatów, invalid UTF-8, brak ID, niezależność kopii oraz niezmieniony katalog i tytuł okna; D/R.",
+            "depends_on": [
+                "P069"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P069-02",
+            "phase": "M6",
+            "title": "Renderer jednego napisu DirectWrite",
+            "scope": "Dodaj RAII fabryki/formatu/layoutu DirectWrite dla tekstu wyłącznie z katalogu. Rysuj istniejący tekst na przekazanym celu D2D, bez własnego BeginDraw/EndDraw i bez nowego fontu. Podłącz opcjonalny napis do pojedynczej klatki AtlasRenderer, bez okna UI.",
+            "acceptance": "Rzeczywisty offscreen: pełny UTF-16 i prefiks, mierzalne piksele tekstu, brak rysowania gdy cały napis nie mieści się w obszarze, invalid target/bounds i ponowne użycie na innym celu; D/R.",
+            "depends_on": [
+                "P069-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P069-03",
+            "phase": "M6",
+            "title": "Jeden napis katalogu w oknie developerskim",
+            "scope": "Podłącz istniejący developer-window-title do DirectWrite w osobnym górnym obszarze BoardView. Renderer i hit-test wspólnie uwzględniają ten obszar. Bez HUD, nowych tekstów, menu i mechanik.",
+            "acceptance": "Paint/resize/recreate i focus z rzeczywistym HWND; obszar napisu nie jest polem, wybór i preview/commit nadal zgodne. Każdy pokazany tekst zachowuje marker, public gate odrzuca placeholder; D/R.",
+            "depends_on": [
+                "P069-02"
             ],
             "gate": null
         },
@@ -1833,7 +1866,7 @@
             "scope": "Dodaj tylko stan HP, tur i dostaw z zatwierdzonych elementów i oznaczonych etykiet.",
             "acceptance": "Czytelność przy resize/DPI, żadnych nieoznaczonych napisów.",
             "depends_on": [
-                "P069"
+                "P069-03"
             ],
             "gate": null
         },
