@@ -51,3 +51,9 @@ tekstu poza planszą, preview/anulowanie/focus/commit. Wstrzyknięty status
 D2DERR_RECREATE_TARGET sprawdza odtworzenie zasobów i zachowanie napisu/trasy;
 nie jest fizycznym resetem GPU. Smoke procesu sprawdza również developer_window.
 Debug i Release: po 110/110 CTest. Ocena wzrokowa pozostaje niewykonana.
+
+P070-03: TextRenderer składa do 16 katalogowych TextLine w jeden owning
+layout. Każdy wiersz może mieć liczbowy sufiks; brak ID lub błędne UTF-8
+odrzucają cały nowy obiekt. Opublikowanie zastępczego layoutu pozostaje
+operacją właściciela. Offscreen obejmuje trzy wiersze i 96/144/192 DPI,
+ponowne niezależne cele i czarny bufor po odmowie zbyt małej szerokości.

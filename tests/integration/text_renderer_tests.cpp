@@ -124,5 +124,46 @@ int wmain(int argc, wchar_t **argv)
             !black(pixels(surface.image.Get())))
             return 13;
     }
+    const std::array lines{TextLine{"label", 0}, TextLine{"label", 48},
+                           TextLine{"label", 2}};
+    auto block = windows::TextRenderer::create(catalog, lines);
+    if (!block.renderer ||
+        block.renderer->text() !=
+            L"[AI PLACEHOLDER] Test \u017c \xd83d\xdd0c 0\n[AI PLACEHOLDER] "
+            L"Test \u017c \xd83d\xdd0c 48\n[AI PLACEHOLDER] Test \u017c "
+            L"\xd83d\xdd0c 2" ||
+        block.renderer->extent().height < text.renderer->extent().height * 2.5f)
+        return 14;
+    const std::array bad_lines{lines[0], TextLine{"missing", 1}};
+    if (windows::TextRenderer::create(catalog, bad_lines).renderer ||
+        windows::TextRenderer::create(catalog, std::span<const TextLine>{})
+            .renderer)
+        return 15;
+    const auto unchanged = std::wstring{block.renderer->text()};
+    for (float dpi : {96.f, 144.f, 192.f})
+    {
+        auto surface = make_surface(wic.Get(), factory.Get());
+        if (!surface.target)
+            return 16;
+        surface.target->SetDpi(dpi, dpi);
+        const auto size = surface.target->GetSize();
+        surface.target->BeginDraw();
+        surface.target->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+        auto result = block.renderer->draw(
+            surface.target.Get(), D2D1::RectF(0, 0, size.width, size.height));
+        if (FAILED(surface.target->EndDraw()) || result != S_OK ||
+            black(pixels(surface.image.Get())))
+            return 17;
+        surface.target->BeginDraw();
+        surface.target->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+        result = block.renderer->draw(
+            surface.target.Get(),
+            D2D1::RectF(0, 0, block.renderer->extent().width - 1,
+                        block.renderer->extent().height));
+        if (FAILED(surface.target->EndDraw()) || result != S_FALSE ||
+            !black(pixels(surface.image.Get())) ||
+            block.renderer->text() != unchanged)
+            return 18;
+    }
     return 0;
 }

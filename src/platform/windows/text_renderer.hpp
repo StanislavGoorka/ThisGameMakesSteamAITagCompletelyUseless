@@ -1,4 +1,5 @@
 #pragma once
+#include "application/text_line.hpp"
 #include "platform/windows/text_utf16.hpp"
 #include <cmath>
 #include <d2d1.h>
@@ -31,7 +32,26 @@ class TextRenderer
     [[nodiscard]] static TextCreateResult create(const TextCatalog &catalog,
                                                  std::string_view id)
     {
-        auto value = read_text_utf16(catalog, id);
+        const TextLine line{id, std::nullopt};
+        return create(catalog, std::span{&line, 1});
+    }
+    // Build a complete replacement before publishing it to a view.
+    [[nodiscard]] static TextCreateResult
+    create(const TextCatalog &catalog, std::span<const TextLine> lines)
+    {
+        if (lines.empty() || lines.size() > 16)
+            return {nullptr, E_INVALIDARG};
+        std::string block;
+        for (const auto &line : lines)
+        {
+            const auto formatted = format_text_line(catalog, line);
+            if (!formatted)
+                return {nullptr, HRESULT_FROM_WIN32(ERROR_NOT_FOUND)};
+            if (!block.empty())
+                block += '\n';
+            block += *formatted;
+        }
+        auto value = decode_text_utf16(block);
         if (!value.text)
             return {nullptr, HRESULT_FROM_WIN32(value.error)};
         auto owner = std::unique_ptr<TextRenderer>(new TextRenderer);

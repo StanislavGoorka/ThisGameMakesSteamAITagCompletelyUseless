@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P070-03
+Task: P070-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070-02.
-Zależności completed: P070-02. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070-03.
+Zależności completed: P070-03. Sprawdź git status i walidator.
 
-Rozszerz istniejący renderer o wartościowe wiersze katalogu i atomową aktualizację layoutu.
+Podłącz HP, tury i dostawy do wspólnego widoku live/preview. Bez menu i nowych mechanik.
 
-Kryteria: Offscreen: kompletne wiersze, odmowa zbyt małego obszaru bez części markerów, ponowny cel i DPI.
+Kryteria: HWND: aktualizacja, cancel/focus/commit, resize/DPI i hit-test poniżej wszystkich wierszy; brak nieoznaczonych etykiet.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, HUD_PRESENTATION.md
