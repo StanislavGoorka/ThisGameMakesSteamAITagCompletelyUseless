@@ -196,3 +196,10 @@ przed destrukcją. NativeWindow i apartment COM żyją dłużej. Resize i utrata
 celu odtwarzają zasoby. Developer entrypoint używa istniejącego start_run,
 przypiętego hasha atlasu i ścieżki checkoutu nadanej przez CMake. Nie ma
 zależności core od rendererów. Kontrakt: [BOARD_PRESENTATION](BOARD_PRESENTATION.md).
+
+P067-01..03: scene_draws składa kafle i gotowe symbole w rozłącznych obszarach.
+RunWindow posiada wartościowy RunState i BoardView; otrzymuje filtrowane
+naciśnięcie przez pożyczony WindowCommandHandler. Resolver core jest jedynym
+źródłem legalności i faz. Najpierw powstaje pełny wynik i kopia do widoku,
+potem niezgłaszające wyjątków move publikuje run. Callbacki są odłączane przed
+destrukcją. Brak zależności od checkpointów, evaluatora achievementów i usług.

@@ -1,7 +1,7 @@
 #include "application/text_build_policy.hpp"
 #include "core/run_start.hpp"
 #include "developer_text.hpp"
-#include "platform/windows/board_view.hpp"
+#include "platform/windows/run_window.hpp"
 using namespace closed_circuit;
 
 struct ComApartment
@@ -34,14 +34,14 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         // CMake supplies a UTF-8 checkout path; launching from another cwd
         // works.
         const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
-        auto board = windows::BoardView::create(*created.window, run.sector,
-                                                root, assets);
-        if (!board.view)
+        auto board =
+            windows::RunWindow::create(*created.window, run, root, assets);
+        if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);
         UpdateWindow(created.window->handle());
         const auto result = created.window->run_message_loop();
-        if (FAILED(board.view->error()))
+        if (FAILED(board.session->error()))
             return 7;
         return result.error ? 3 : result.exit_code;
     }

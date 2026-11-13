@@ -329,3 +329,10 @@ pełny stan oraz 802 816 kanałów klatki offscreen 448x448 względem niezależn
 całkowitoliczbowej kompozycji oryginalnych pikseli. BoardView przyjmuje pełny
 nowy stan i odmalowuje tę samą projekcję. Pulpit nie został obejrzany:
 oba dostępne interfejsy Computer Use zgłosiły niedostępny native pipe.
+
+P067-03: windows_run_window wysyła prawdziwe komunikaty klawiatury dla
+wszystkich siedmiu klawiszy i unknown. Każdą próbę porównuje z pełnym
+resolve_run_turn i stanem widoku. Obejmuje ruch, obrót, overdrive, wait,
+odmowy portów/granicy, dostawę i kontakt, 20 powtórek każdego naciśnięcia,
+focus loss/recovery, limit 48 tur i terminalne odmowy. Repaint po akcjach
+używa rzeczywistego celu HWND poza pulpitem. Brak nowych usług i reguł.

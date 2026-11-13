@@ -18,6 +18,11 @@ struct WindowPainter
     virtual ~WindowPainter() = default;
     virtual void paint(HWND window) noexcept = 0;
 };
+struct WindowCommandHandler
+{
+    virtual ~WindowCommandHandler() = default;
+    virtual void key_available() noexcept = 0;
+};
 struct MessageLoopResult
 {
     int exit_code;
@@ -76,6 +81,11 @@ class NativeWindow
         painter_ = painter;
         if (handle_)
             InvalidateRect(handle_, nullptr, FALSE);
+    }
+    void set_command_handler(WindowCommandHandler *handler) noexcept
+    {
+        pending_key_.reset();
+        command_handler_ = handler;
     }
     [[nodiscard]] std::optional<Command> take_command(NodeId player)
     {
@@ -163,7 +173,11 @@ class NativeWindow
                 else if (owner->input_.key_down(*key,
                                                 (lparam & (1LL << 30)) != 0) &&
                          !owner->pending_key_)
+                {
                     owner->pending_key_ = key;
+                    if (owner->command_handler_)
+                        owner->command_handler_->key_available();
+                }
                 return 0;
             }
         }
@@ -191,6 +205,7 @@ class NativeWindow
     KeyboardInput input_;
     std::optional<InputKey> pending_key_;
     WindowPainter *painter_ = nullptr;
+    WindowCommandHandler *command_handler_ = nullptr;
 };
 
 inline WindowCreateResult NativeWindow::create(const TextCatalog &catalog,
