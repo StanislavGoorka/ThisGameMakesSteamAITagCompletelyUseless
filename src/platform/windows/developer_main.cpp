@@ -1,6 +1,8 @@
 #include "application/text_build_policy.hpp"
 #include "core/run_start.hpp"
 #include "developer_text.hpp"
+#include "platform/windows/local_achievement_sink.hpp"
+#include "platform/windows/profile_location.hpp"
 #include "platform/windows/run_window.hpp"
 using namespace closed_circuit;
 
@@ -33,8 +35,11 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         // CMake supplies a UTF-8 checkout path; launching from another cwd
         // works.
         const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
-        auto board = windows::RunWindow::create(*created.window, run, root,
-                                                assets, {}, &*catalog, true);
+        const auto profile = windows::local_profile_location();
+        windows::LocalAchievementSink durable{profile.path};
+        AchievementNoticeSink notices{durable};
+        auto board = windows::RunWindow::create(
+            *created.window, run, root, assets, {}, &*catalog, true, &notices);
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);

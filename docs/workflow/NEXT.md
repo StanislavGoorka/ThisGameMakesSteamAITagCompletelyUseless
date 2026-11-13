@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P073-05
+Task: P074
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-04.
-Zależności: P073-04; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-05.
+Zależności: P073-05; muszą być completed.
 Sprawdź git status i walidator.
 
-Połącz istniejące zdarzenia zatwierdzonej tury z lokalnym sinkiem oraz katalogowym wierszem first_delivery w oknie developer. Bez nowych predykatów i grafik.
+Dodaj w UI odczyt istniejącego checkpointu i kontrolowane błędy.
 
-Kryteria: HWND: wyłącznie commit i trwały unlock, brak duplikatów po preview/retry/restart; kolejka zachowana po błędzie profilu, kontrolowany tekst, focus/hold, pełne stany core i niezmienione bajty istniejącego profilu.
+Kryteria: Zamknięcie i restart; zły zapis nie pokazuje wewnętrznych tekstów bez prefiksu.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.
@@ -17,3 +17,5 @@ Za szeroki zakres rozbij bez implementacji. Bez nowych mechanik i assetów.
 Kod: configure/build/CTest Debug i Release, formatter src/tests/tools.
 Zawsze: walidator, diff --check, raport, STATE/NEXT/README i osobny lokalny
 commit z kontrolą hasha i zakresu. Bez pobrań i push.
+
+Czytaj również ACHIEVEMENT_PRESENTATION.md, run_achievements.hpp, profile_location.hpp, run_window.hpp oraz checkpoint_recover.hpp i run_checkpoint.hpp. P074 obejmuje kilka kontraktów; najpierw oceń podział na odczyt checkpointu, katalogowe błędy, granice zapisu i integrację wznowienia. Nie implementuj całego łańcucha w jednym kroku.

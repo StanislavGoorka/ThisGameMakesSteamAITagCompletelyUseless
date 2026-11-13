@@ -19,7 +19,7 @@ i odpowiedni `ctest --preset ... --output-on-failure`. Każdy build sprawdza
 payload; public dodatkowo odrzuca placeholdery w rejestrze napisów.
 To kontrola rejestru, a nie gotowa paczka wydania. [Kontrakt](docs/PUBLIC_CONTENT.md)
 
-Obecnie public build celowo odmawia z powodu oznaczonego tytułu developer.
+Obecnie public build celowo odmawia z powodu oznaczonych tekstów developer.
 `build/windows-msvc/Debug/developer_window.exe` (także Release) uruchamia
 oznaczony ekran startu. Enter otwiera planszę start_run z jednostkami i rolami pól z zatwierdzonego atlasu,
 z obsługą odmalowania, resize i tur core z klawiatury. Nad planszą DirectWrite
@@ -32,10 +32,15 @@ Enter nie wykonuje dodatkowej tury ani powtórnego restartu.
 R/O używają pola pod kursorem, a bez wskazania własnego pola. Tab przełącza
 planowanie, klawisz akcji wybiera komendę, Enter wykonuje ją raz, Escape
 anuluje. Focus loss czyści wybór. Wybór pokazuje wynik core i trasę pakietu
-gotowymi symbolami; anulowanie przywraca stan sesji. Przejścia sektorów
-i zapis z UI pozostają kolejnymi zadaniami.
-Ostatnia pełna pula: Debug i Release po 116/116 CTest. Brak testów VM,
-fizycznego resetu GPU i obserwacji pulpitu (niedostępny Computer Use).
+gotowymi symbolami; anulowanie przywraca stan sesji. Po sektorach 1 i 2
+lewo/prawo wybiera moduł, Enter zatwierdza i przechodzi dalej. Pełny zestaw
+przechodzi bez dodatkowej nagrody. Pierwsza nowa dostawa pokazuje katalogowe
+powiadomienie dopiero po trwałym odblokowaniu; Escape je chowa. Profil
+używa LocalAppData/ClosedCircuit/profile.bin i istniejącego formatu.
+Błąd profilu zachowuje zdarzenia w pamięci; Enter ponawia zapis. Zapis
+i wznowienie checkpointu z UI pozostają P074.
+Ostatnia pełna pula: Debug i Release po 125/125 CTest. Brak testów VM,
+fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
 
@@ -477,3 +482,5 @@ P073-02: Dodano dwa katalogowe placeholdery: first_delivery i kontrolowany błą
 P073-03: Dodano RunAchievements, właściciela istniejącego evaluatora i dispatchera. Prepare kopiuje wyłącznie niedostarczone zdarzenia przed publikacją, publish przenosi kolejkę bez alokacji, a flush zachowuje pozycję po błędzie lub wyjątku. [Raport](docs/workflow/history/P073-03.md)
 
 P073-04: Dodano adapter systemowego LocalAppData i prywatnej ścieżki ClosedCircuit/profile.bin. Tworzy tylko katalog, zachowuje istniejące pliki i odmawia kolizji oraz katalogu reparse. [Raport](docs/workflow/history/P073-04.md)
+
+P073-05: Połączono zdarzenia wykonanej tury z lokalnym profilem, kolejką retry i oznaczonym wierszem first_delivery. Preview i odmowy nie uruchamiają usług; błąd nie gubi zdarzeń, Enter ponawia bez tury, Escape chowa powiadomienie. To dziesiąty krok serii: dziewięć implementacji i jeden podział. [Raport](docs/workflow/history/P073-05.md)

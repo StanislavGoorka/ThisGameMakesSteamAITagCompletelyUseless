@@ -1,10 +1,13 @@
 #pragma once
 #include "application/action_preview.hpp"
 #include "application/action_selection.hpp"
+#include "application/run_achievements.hpp"
+#include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
 #include "core/run_transition.hpp"
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
+#include "presentation/achievement_text.hpp"
 #include "presentation/reward_text.hpp"
 #include "presentation/session_text.hpp"
 #include <type_traits>
@@ -32,10 +35,16 @@ class RunWindow final : public WindowCommandHandler
     create(NativeWindow &window, RunState initial,
            const std::filesystem::path &root, const AssetManifest &manifest,
            std::unique_ptr<TextRenderer> label = {},
-           const TextCatalog *hud_catalog = nullptr, bool show_start = false)
+           const TextCatalog *hud_catalog = nullptr, bool show_start = false,
+           AchievementNoticeSink *notice_sink = nullptr)
     {
-        if (show_start && !hud_catalog)
+        if ((show_start || notice_sink) && !hud_catalog)
             return {nullptr, E_INVALIDARG};
+        if (notice_sink)
+            for (auto id :
+                 {"achievement-first-delivery", "achievement-unavailable"})
+                if (!hud_catalog->find(id))
+                    return {nullptr, HRESULT_FROM_WIN32(ERROR_NOT_FOUND)};
         if (hud_catalog)
             for (auto id : {"session-start", "session-won", "session-death",
                             "session-overload"})
@@ -49,6 +58,12 @@ class RunWindow final : public WindowCommandHandler
             new RunWindow(window, std::move(initial), std::move(board.view)));
         owner->lifecycle_ = hud_catalog != nullptr;
         owner->flow_ = SessionFlow{!show_start};
+        owner->notice_sink_ = notice_sink;
+        if (notice_sink)
+            owner->achievements_ = owner->make_achievements(
+                owner->run_, 1,
+                show_start ? RunHistoryOrigin::fresh_run
+                           : RunHistoryOrigin::restored_checkpoint);
         owner->show_live(owner->run_);
         window.set_command_handler(owner.get());
         return {std::move(owner), S_OK};
@@ -77,6 +92,10 @@ class RunWindow final : public WindowCommandHandler
     {
         return reward_selection_.candidate(run_);
     }
+    [[nodiscard]] bool achievements_pending() const noexcept
+    {
+        return achievements_ && achievements_->pending();
+    }
     void key_available() noexcept override
     {
         try
@@ -92,6 +111,15 @@ class RunWindow final : public WindowCommandHandler
             const auto key = window_.take_key();
             if (!key)
                 return;
+            if (*key == InputKey::cancel && notice_sink_)
+                notice_sink_->dismiss();
+            if (*key == InputKey::confirm && achievements_pending())
+            {
+                static_cast<void>(achievements_->flush());
+                show_live(run_, reward_candidate());
+                error_ = S_OK;
+                return;
+            }
             if (screen() != SessionScreen::run)
             {
                 selection_.reset();
@@ -102,12 +130,23 @@ class RunWindow final : public WindowCommandHandler
                     auto flow = flow_;
                     if (flow.confirm(next))
                     {
-                        view_->set_board(next.sector);
+                        if (attempt_ == UINT64_MAX)
+                            throw std::runtime_error("Attempt token exhausted");
+                        auto delivery =
+                            notice_sink_
+                                ? make_achievements(next, attempt_ + 1,
+                                                    RunHistoryOrigin::fresh_run)
+                                : nullptr;
+                        view_->set_board(next.sector, {}, std::nullopt, {},
+                                         status_lines());
                         run_ = std::move(next);
                         flow_ = flow;
+                        achievements_ = std::move(delivery);
+                        ++attempt_;
                         window_.discard_point();
                     }
                 }
+                show_live(run_);
                 error_ = S_OK;
                 return;
             }
@@ -139,16 +178,22 @@ class RunWindow final : public WindowCommandHandler
                 show_selection();
                 return;
             }
-            auto next = resolve_run_turn(run_, *command);
+            auto resolved = resolve_run_turn_events(run_, *command);
+            auto &next = resolved.turn;
             if (!next.accepted)
             {
-                view_->set_board(run_.sector);
+                show_live(run_);
                 return;
             }
+            auto pending = achievements_
+                               ? achievements_->prepare(resolved.events)
+                               : std::vector<DomainEvent>{};
             // Copying into the view may throw; publish run_ only after that
             // copy succeeds. Both following move assignments are nonthrowing.
             show_live(next.state);
             run_ = std::move(next.state);
+            if (achievements_)
+                achievements_->publish(std::move(pending));
             reward_selection_.sync(run_);
             if (run_phase(run_) != RunPhase::playing)
             {
@@ -157,6 +202,11 @@ class RunWindow final : public WindowCommandHandler
             }
             else
                 selection_.context_changed();
+            if (achievements_)
+            {
+                static_cast<void>(achievements_->flush());
+                show_live(run_);
+            }
             error_ = S_OK;
         }
         catch (...)
@@ -166,6 +216,29 @@ class RunWindow final : public WindowCommandHandler
     }
 
   private:
+    [[nodiscard]] std::unique_ptr<RunAchievements>
+    make_achievements(const RunState &run, std::uint64_t attempt,
+                      RunHistoryOrigin origin)
+    {
+        auto first = run.sector_number;
+        if (run_phase(run) == RunPhase::choosing_reward ||
+            run_phase(run) == RunPhase::ready_for_next)
+            first = *SectorNumber::from_value(first.value() + 1);
+        return std::make_unique<RunAchievements>(
+            DeliveryScope{run.seed, {attempt}, {1}, first}, *notice_sink_,
+            origin);
+    }
+    [[nodiscard]] std::vector<TextLine> status_lines() const
+    {
+        std::vector<TextLine> lines;
+        if (auto line = presentation::achievement_line(
+                notice_sink_ ? notice_sink_->pending() : std::nullopt))
+            lines.push_back(*line);
+        if (auto line =
+                presentation::achievement_storage_line(achievements_pending()))
+            lines.push_back(*line);
+        return lines;
+    }
     void reward_key(InputKey key)
     {
         auto selection = reward_selection_;
@@ -213,20 +286,23 @@ class RunWindow final : public WindowCommandHandler
                 presentation::reward_lines(reward_offer(run), candidate);
             if (reward_error)
                 lines->push_back({"reward-error", std::nullopt});
-            view_->set_board(run.sector, {}, std::nullopt, *lines);
+            view_->set_board(run.sector, {}, std::nullopt, *lines,
+                             status_lines());
             return;
         }
         if (lifecycle_ && flow_.screen(run) == SessionScreen::run &&
             run_phase(run) == RunPhase::ready_for_next)
         {
             view_->set_board(run.sector, {},
-                             TextLine{"reward-continue", std::nullopt});
+                             TextLine{"reward-continue", std::nullopt}, {},
+                             status_lines());
             return;
         }
         view_->set_board(
             run.sector, {},
             lifecycle_ ? presentation::session_message(flow_.screen(run), run)
-                       : std::nullopt);
+                       : std::nullopt,
+            {}, status_lines());
     }
     void show_selection()
     {
@@ -236,12 +312,13 @@ class RunWindow final : public WindowCommandHandler
             if (preview.result.accepted)
             {
                 view_->set_board(std::move(preview.result.state.sector),
-                                 std::move(preview.packet_route));
+                                 std::move(preview.packet_route), std::nullopt,
+                                 {}, status_lines());
                 error_ = S_OK;
                 return;
             }
         }
-        view_->set_board(run_.sector);
+        view_->set_board(run_.sector, {}, std::nullopt, {}, status_lines());
         error_ = S_OK;
     }
     RunWindow(NativeWindow &window, RunState run,
@@ -255,6 +332,9 @@ class RunWindow final : public WindowCommandHandler
     bool lifecycle_ = false;
     ActionSelection selection_;
     RewardSelection reward_selection_;
+    AchievementNoticeSink *notice_sink_ = nullptr;
+    std::unique_ptr<RunAchievements> achievements_;
+    std::uint64_t attempt_ = 1;
     std::unique_ptr<BoardView> view_;
     HRESULT error_ = S_OK;
 };

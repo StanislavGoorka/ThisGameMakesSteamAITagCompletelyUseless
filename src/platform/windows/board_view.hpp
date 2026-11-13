@@ -93,13 +93,14 @@ class BoardView final : public WindowPainter
     }
     void set_board(GameState board, std::vector<NodeId> route = {},
                    std::optional<TextLine> message = std::nullopt,
-                   std::span<const TextLine> overlay = {})
+                   std::span<const TextLine> overlay = {},
+                   std::span<const TextLine> status = {})
     {
-        if ((message || !overlay.empty()) && !hud_catalog_)
+        if ((message || !overlay.empty() || !status.empty()) && !hud_catalog_)
             throw std::runtime_error("Missing presentation catalog");
         if (hud_catalog_)
         {
-            auto text = make_hud(board, message, overlay);
+            auto text = make_hud(board, message, overlay, status);
             if (!text.renderer)
                 throw std::runtime_error("HUD layout failed");
             label_ = std::move(text.renderer);
@@ -174,25 +175,21 @@ class BoardView final : public WindowPainter
     [[nodiscard]] TextCreateResult
     make_hud(const GameState &board,
              std::optional<TextLine> message = std::nullopt,
-             std::span<const TextLine> overlay = {}) const
+             std::span<const TextLine> overlay = {},
+             std::span<const TextLine> status = {}) const
     {
+        std::vector<TextLine> lines{{"developer-window-title", std::nullopt}};
         if (!overlay.empty())
-        {
-            std::vector<TextLine> lines{
-                {"developer-window-title", std::nullopt}};
             lines.insert(lines.end(), overlay.begin(), overlay.end());
-            return TextRenderer::create(*hud_catalog_, lines);
-        }
-        if (message)
+        else if (message)
+            lines.push_back(*message);
+        else
         {
-            const std::array lines{
-                TextLine{"developer-window-title", std::nullopt}, *message};
-            return TextRenderer::create(*hud_catalog_, lines);
+            const auto hud =
+                presentation::hud_lines(presentation::hud_values(board));
+            lines.insert(lines.end(), hud.begin(), hud.end());
         }
-        const auto hud =
-            presentation::hud_lines(presentation::hud_values(board));
-        const std::array lines{TextLine{"developer-window-title", std::nullopt},
-                               hud[0], hud[1], hud[2]};
+        lines.insert(lines.end(), status.begin(), status.end());
         return TextRenderer::create(*hud_catalog_, lines);
     }
     BoardView(NativeWindow &window, GameState board, std::filesystem::path root,

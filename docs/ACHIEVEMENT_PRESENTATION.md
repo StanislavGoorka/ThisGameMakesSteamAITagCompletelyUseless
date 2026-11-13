@@ -30,3 +30,5 @@ resize/DPI oraz cały dotychczasowy stan preview. Escape może schować wiersz
 bez mutacji runu. Obserwacja pulpitu i testy API są osobnymi dowodami.
 
 Zapis/wznowienie checkpointu pozostaje P074. Bez nowych assetów i pobrań.
+
+P073-01..05 są zaimplementowane. Okno developer podłącza LocalAchievementSink, dekorator i jeden RunAchievements na scope. Wyłącznie zaakceptowana tura publikuje kolejkę; preview, odmowy, resize i focus nie uruchamiają sinka. Błąd pozwala kontynuować tury, a Enter ponawia bez wykonania akcji. Restart czeka na opróżnienie starego scope. Status nie ukrywa planszy. Debug i Release po 125/125 CTest. Kolejka retry jest ulotna; zamknięcie procesu przy niedostępnym profilu nie utrwala oczekujących zdarzeń. Profil zachowuje kontrakt jednego procesu zapisującego. Testy używają własnych plików, nie profilu użytkownika. Obserwacja pulpitu i VM niewykonane.
