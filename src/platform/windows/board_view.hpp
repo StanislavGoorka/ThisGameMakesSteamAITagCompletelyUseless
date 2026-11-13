@@ -23,7 +23,8 @@ class BoardView final : public WindowPainter
     }
     [[nodiscard]] static BoardViewResult
     create(NativeWindow &window, const GameState &board,
-           const std::filesystem::path &root, const AssetManifest &manifest)
+           const std::filesystem::path &root, const AssetManifest &manifest,
+           std::unique_ptr<TextRenderer> label = {})
     {
         auto device = Direct2DTarget::create(window.handle());
         if (!device.device)
@@ -32,9 +33,9 @@ class BoardView final : public WindowPainter
             AtlasRenderer::create(device.device->target(), root, manifest);
         if (!atlas.renderer)
             return {nullptr, atlas.error};
-        auto owner = std::unique_ptr<BoardView>(
-            new BoardView(window, board, root, manifest,
-                          std::move(device.device), std::move(atlas.renderer)));
+        auto owner = std::unique_ptr<BoardView>(new BoardView(
+            window, board, root, manifest, std::move(device.device),
+            std::move(atlas.renderer), std::move(label)));
         window.set_painter(owner.get());
         return {std::move(owner), S_OK};
     }
@@ -49,6 +50,27 @@ class BoardView final : public WindowPainter
     [[nodiscard]] const GameState &board() const noexcept
     {
         return board_;
+    }
+    [[nodiscard]] float board_top() const noexcept
+    {
+        return label_ ? label_->extent().height + 8 : 0;
+    }
+    [[nodiscard]] std::wstring_view label_text() const noexcept
+    {
+        return label_ ? label_->text() : std::wstring_view{};
+    }
+    [[nodiscard]] std::optional<NodeId>
+    node_at(float x, float y, float width, float height) const noexcept override
+    {
+        if (!device_->target())
+            return std::nullopt;
+        float dpi_x = 0, dpi_y = 0;
+        device_->target()->GetDpi(&dpi_x, &dpi_y);
+        if (dpi_x <= 0 || dpi_y <= 0)
+            return std::nullopt;
+        return presentation::board_node_at(
+            x * 96 / dpi_x, y * 96 / dpi_y - board_top(), width * 96 / dpi_x,
+            height * 96 / dpi_y - board_top());
     }
     [[nodiscard]] const std::vector<NodeId> &packet_route() const noexcept
     {
@@ -97,14 +119,21 @@ class BoardView final : public WindowPainter
                     return;
             }
             const auto size = device_->target()->GetSize();
-            const auto draws = presentation::scene_draws(board_, size.width,
-                                                         size.height, route_);
-            if (!draws)
+            std::vector<presentation::TileDraw> draws;
+            if (size.height > board_top())
             {
-                error_ = E_INVALIDARG;
-                return;
+                auto scene = presentation::scene_draws(
+                    board_, size.width, size.height - board_top(), route_);
+                if (!scene)
+                {
+                    error_ = E_INVALIDARG;
+                    return;
+                }
+                draws = std::move(*scene);
+                for (auto &draw : draws)
+                    draw.y += board_top();
             }
-            handle_draw_result(atlas_->draw(*draws));
+            handle_draw_result(atlas_->draw(draws, label_.get()));
             if (error_ == S_OK)
                 ++frames_;
         }
@@ -117,10 +146,11 @@ class BoardView final : public WindowPainter
   private:
     BoardView(NativeWindow &window, GameState board, std::filesystem::path root,
               AssetManifest manifest, std::unique_ptr<Direct2DTarget> device,
-              std::unique_ptr<AtlasRenderer> atlas)
+              std::unique_ptr<AtlasRenderer> atlas,
+              std::unique_ptr<TextRenderer> label)
         : window_(window), board_(std::move(board)), root_(std::move(root)),
           manifest_(std::move(manifest)), device_(std::move(device)),
-          atlas_(std::move(atlas))
+          atlas_(std::move(atlas)), label_(std::move(label))
     {
     }
     NativeWindow &window_;
@@ -130,6 +160,7 @@ class BoardView final : public WindowPainter
     AssetManifest manifest_;
     std::unique_ptr<Direct2DTarget> device_;
     std::unique_ptr<AtlasRenderer> atlas_;
+    std::unique_ptr<TextRenderer> label_;
     HRESULT error_ = S_OK;
     unsigned frames_ = 0;
 };

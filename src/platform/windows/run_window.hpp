@@ -26,9 +26,11 @@ class RunWindow final : public WindowCommandHandler
     }
     [[nodiscard]] static RunWindowResult
     create(NativeWindow &window, RunState initial,
-           const std::filesystem::path &root, const AssetManifest &manifest)
+           const std::filesystem::path &root, const AssetManifest &manifest,
+           std::unique_ptr<TextRenderer> label = {})
     {
-        auto board = BoardView::create(window, initial.sector, root, manifest);
+        auto board = BoardView::create(window, initial.sector, root, manifest,
+                                       std::move(label));
         if (!board.view)
             return {nullptr, board.error};
         auto owner = std::unique_ptr<RunWindow>(

@@ -38,3 +38,16 @@ i [DrawTextLayout](https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d
 DrawTextLayout nie zwraca błędu operacji rysowania; caller sprawdza EndDraw.
 Test używa dwóch niezależnych programowych celów WIC, porównuje wynikowe
 piksele i sprawdza czarny bufor po odmowie, bez zapisywania obrazu jako asset.
+
+P069-03 podłącza istniejący tytuł developerski bez zmian texts.json.
+BoardView rezerwuje wysokość napisu plus 8 DIP, przesuwa całą scenę i daje
+oknu wspólny hit-test przez WindowPainter::node_at. Hit-test przelicza piksele
+klienta na DIP według DPI aktualnego celu, odejmuje obszar tekstu i używa
+tego samego fit_board. Bez renderera pozostaje wcześniejszy hit-test.
+Zbyt małe okno może pominąć cały napis, nigdy nie wycina samego markera.
+
+Test rzeczywistego HWND przechodzi cztery rozmiary, wszystkie 49 pól i obszar
+tekstu poza planszą, preview/anulowanie/focus/commit. Wstrzyknięty status
+D2DERR_RECREATE_TARGET sprawdza odtworzenie zasobów i zachowanie napisu/trasy;
+nie jest fizycznym resetem GPU. Smoke procesu sprawdza również developer_window.
+Debug i Release: po 110/110 CTest. Ocena wzrokowa pozostaje niewykonana.

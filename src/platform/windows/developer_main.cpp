@@ -34,8 +34,12 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         // CMake supplies a UTF-8 checkout path; launching from another cwd
         // works.
         const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
-        auto board =
-            windows::RunWindow::create(*created.window, run, root, assets);
+        auto label =
+            windows::TextRenderer::create(*catalog, "developer-window-title");
+        if (!label.renderer)
+            return 8;
+        auto board = windows::RunWindow::create(
+            *created.window, run, root, assets, std::move(label.renderer));
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);

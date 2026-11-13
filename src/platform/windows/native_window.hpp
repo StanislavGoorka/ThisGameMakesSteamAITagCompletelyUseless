@@ -19,6 +19,11 @@ struct WindowPainter
 {
     virtual ~WindowPainter() = default;
     virtual void paint(HWND window) noexcept = 0;
+    [[nodiscard]] virtual std::optional<NodeId>
+    node_at(float x, float y, float width, float height) const noexcept
+    {
+        return presentation::board_node_at(x, y, width, height);
+    }
 };
 struct WindowCommandHandler
 {
@@ -180,11 +185,10 @@ class NativeWindow
             RECT client{};
             std::optional<NodeId> point;
             if (owner->focused_ && GetClientRect(handle, &client))
-                point = presentation::board_node_at(
-                    static_cast<short>(LOWORD(lparam)),
-                    static_cast<short>(HIWORD(lparam)),
-                    static_cast<float>(client.right),
-                    static_cast<float>(client.bottom));
+                point = owner->node_at(static_cast<short>(LOWORD(lparam)),
+                                       static_cast<short>(HIWORD(lparam)),
+                                       static_cast<float>(client.right),
+                                       static_cast<float>(client.bottom));
             TRACKMOUSEEVENT tracking{sizeof(TRACKMOUSEEVENT), TME_LEAVE, handle,
                                      0};
             TrackMouseEvent(&tracking);
@@ -245,6 +249,12 @@ class NativeWindow
         pointed_ = point;
         if (command_handler_)
             command_handler_->key_available();
+    }
+    [[nodiscard]] std::optional<NodeId> node_at(float x, float y, float width,
+                                                float height) const noexcept
+    {
+        return painter_ ? painter_->node_at(x, y, width, height)
+                        : presentation::board_node_at(x, y, width, height);
     }
     std::optional<NodeId> pointed_;
     HINSTANCE instance_ = nullptr;

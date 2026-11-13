@@ -203,3 +203,12 @@ naciśnięcie przez pożyczony WindowCommandHandler. Resolver core jest jedynym
 źródłem legalności i faz. Najpierw powstaje pełny wynik i kopia do widoku,
 potem niezgłaszające wyjątków move publikuje run. Callbacki są odłączane przed
 destrukcją. Brak zależności od checkpointów, evaluatora achievementów i usług.
+
+P068-01..06 i P069-01..03: ActionSelection oddziela wskazanie Command od
+zatwierdzenia. ActionPreview posiada wynik tego samego resolvera i trasę
+BFS po akcji. BoardView otrzymuje całą przewidzianą scenę bez zmiany runu;
+anulowanie/focus przywraca live state, commit usuwa poprzednią trasę.
+TextRenderer posiada owning UTF-16 katalogu i niezależny od celu layout
+DirectWrite. AtlasRenderer składa opcjonalny napis w tej samej klatce.
+BoardView rezerwuje jego obszar i udostępnia wspólny hit-test oknu; brush
+powstaje na bieżącym celu. Nie ma nowych assetów ani finalnych tekstów.
