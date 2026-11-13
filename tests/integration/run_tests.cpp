@@ -34,7 +34,14 @@ bool apply(RunState &run, const Command &command,
         actual.phase != core.phase || !core.accepted ||
         !test::same_run(run, before))
         return false;
-    std::vector<DomainEventPayload> expected{ActionCommitted{command}};
+    if (emitted.events.empty())
+        return false;
+    // Route semantics have literal fixtures in route_evidence_tests. This
+    // corpus checks command/order and exact full payload replay after restore.
+    const auto evidence = std::get<ActionCommitted>(emitted.events[0].payload)
+                              .reconfigured_packet_target;
+    std::vector<DomainEventPayload> expected{
+        ActionCommitted{command, evidence}};
     for (int i = 0; i < 49; ++i)
         if (!before.sector.powered_nodes[i] &&
             actual.state.sector.powered_nodes[i])

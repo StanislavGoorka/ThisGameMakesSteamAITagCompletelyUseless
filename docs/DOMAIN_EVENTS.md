@@ -2,7 +2,12 @@
 
 P045-01 dodaje do ActionCommitted opcjonalny reconfigured_packet_target.
 Domyślnie brak dowodu; dozwolony tylko dla rotate/overdrive. Wartość celu
-uczestniczy w równości i kontroli konfliktu dispatchera. Ekstrakcja w P045-02.
+uczestniczy w równości i kontroli konfliktu dispatchera. P045-02 wylicza dowód
+po wprowadzeniu pakietu i przed jego ruchem: ta sama pozycja/cel, porty przed
+i po akcji, różne pełne trasy wspólnego BFS i niepusta trasa po akcji.
+Końcowe porty są portami po akcji, bo dalsze fazy ich nie zmieniają.
+Wrapper używa introduce_packet na pomocniczej kopii, bez powtarzania resolvera
+ani pozostałych faz. Odmowy i preview nie publikują dowodu.
 
 P041-01 opisuje i wdraża wyłącznie wartości w application. Nie ma usługi,
 callbacku, IO, serializacji ani evaluatorów achievementów. Core pozostaje

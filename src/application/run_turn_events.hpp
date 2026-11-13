@@ -28,8 +28,26 @@ resolve_run_turn_events(const RunState &run, const Command &command)
               static_cast<std::uint8_t>(result.events.size())},
              std::move(payload)});
     };
-    append(ActionCommitted{command});
     const auto &next = result.turn.state.sector;
+    ActionCommitted action{command};
+    if (std::holds_alternative<RotateCommand>(command) ||
+        std::holds_alternative<OverdriveCommand>(command))
+    {
+        // Introduction precedes the action. The remaining resolver phases
+        // do not change ports, so final ports also describe post-action ports.
+        auto introduced = run.sector;
+        static_cast<void>(introduce_packet(introduced));
+        if (const auto &packet = introduced.packet)
+        {
+            const auto after =
+                shortest_route(next.ports, packet->position, packet->target);
+            if (!after.empty() &&
+                after != shortest_route(introduced.ports, packet->position,
+                                        packet->target))
+                action.reconfigured_packet_target = packet->target;
+        }
+    }
+    append(action);
     // Only deliver_packet changes powered_nodes in the shared resolver, and
     // the single active packet can power at most one new target per turn.
     for (std::size_t i = 0; i < GameState::node_count; ++i)

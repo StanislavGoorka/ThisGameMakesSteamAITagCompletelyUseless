@@ -155,6 +155,13 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P045-01/02: application_domain_event sprawdza równość i konflikt dowodu
+rekonfiguracji oraz odmowę dowodu dla wait. application_route_evidence chroni
+otwarcie trasy, zmianę wybranej trasy BFS, wprowadzenie nowego pakietu,
+overdrive, symetrię, obrót niezwiązanej gałęzi, brak pakietu, pakiet na celu,
+zamknięcie, odmowę oraz powtarzalność po checkpoint round-trip. Pełny stan
+pozostaje zgodny z core i preview, wejście nie jest mutowane.
+
 Automatyczne boty mierzą dominujące strategie, niewygrywalne stany i liczbę używanych akcji. Nie zastępują playtestu. Agent może wykonać obserwację interfejsu, jeśli ma odpowiednie narzędzia, i opisać jej ograniczenia. Nie zmyślaj opinii graczy ani badań. Zewnętrzni testerzy nie podejmują decyzji za autora wizji; ich dowody mogą uzasadniać samodzielną poprawkę balansu. Kontakt z testerami wymaga osobnej autoryzacji.
 
 Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą poprawkę, jeśli połączenie byłoby zbyt duże. Testy screenshotowe wolno opierać tylko na zatwierdzonych assetach; ich wzorce i raporty nie są dowodem non-AI.

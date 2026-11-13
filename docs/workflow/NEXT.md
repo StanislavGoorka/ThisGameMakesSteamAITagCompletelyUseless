@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P045-02
+Task: P046
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P045-01, bieżący wpis i jego
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P045-02, bieżący wpis i jego
 zależności w tasks.json. Status i walidator na początku.
 
-Wypełnij dowód zmiany trasy dla tego samego pakietu po wprowadzeniu i przed ruchem. Porównaj BFS przed/po rotate lub overdrive; otwarcie i zmiana tak, zamknięcie i obrót bez zmiany nie.
+Dodaj wyłącznie evaluator first_delivery: kandydat dla faktycznego PacketDelivered. Sprawdź negatywne zdarzenia, retry dispatchu i trwałość lokalnego profilu.
 
 Dla kodu użyj cpp-core-step; czytaj ARCHITECTURE, GAME_DESIGN, TESTING,
 ACHIEVEMENT_PREDICATES, DOMAIN_EVENTS i DOMAIN_DISPATCH. Jeden mały kontrakt.
