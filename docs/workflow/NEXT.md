@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P065
+Task: P066
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P064-02 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P065 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i walidator na początku.
 
-Dekodowanie WIC. Dodaj odczyt jednego zatwierdzonego PNG.
+Prezentacja płytek. Wyświetl wyłącznie planszę z zatwierdzonych bitmap, bez postaci i HUD.
 
-Kryteria: Poprawny plik, plik uszkodzony i brak zasobu bez generowanego fallbacku.
+Kryteria: Orientacja i współrzędne; pokrycie portów przez gotowe assety.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

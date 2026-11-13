@@ -186,3 +186,5 @@ częściowego wyniku. Adaptery IO, publikacji i odczytu backupu opisano wyżej.
 P063 rozbito na filtr naciśnięć, mapowanie kandydatów Command i adapter wiadomości Win32. Kontrakt w KEYBOARD_INPUT.md; P064 wymaga P063-03. Brak implementacji dzieci w kroku planistycznym.
 
 P064 rozbito na RAII fabryki/celu HWND oraz resize/recreate. DIRECT2D_LIFECYCLE.md określa pożyczony HWND, pojedynczy wątek i brak rysowania. P065 wymaga P064-02; sam podział nie implementuje backendu.
+
+P065: read_png_asset łączy kontrolę pochodzenia bajtów P058 z systemowym decoderem PNG WIC i owning PBGRA. COM jest własnością caller; brak częściowego obrazu i fallbacku. PNG_DECODING.md określa limity i niezależny numeryczny oracle GDI+. Bez renderowania.
