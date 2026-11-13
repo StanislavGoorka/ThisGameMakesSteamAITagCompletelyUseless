@@ -457,3 +457,5 @@ P071-01: Dodano czysty SessionFlow: ekran start/run/wynik i bramkowane rozpoczę
 P071-02: Dodano cztery oznaczone komunikaty sesji i niemutujący wybór katalogowego ID dla startu oraz won/death/overload. Nie ma fallbacku dla niespójnej fazy ani brakującej etykiety. [Raport](docs/workflow/history/P071-02.md)
 
 P071-03: Podłączono ekran startu i trzy końcowe wyniki do Enter. Start nie wykonuje tury, terminalny preview pozostaje planszą, a wykonany wynik blokuje akcje. Restart resetuje cały run, wybór i trasę; profil pozostaje nietknięty. [Raport](docs/workflow/history/P071-03.md)
+
+P072: Podzielono wybór istniejącego modułu na model kandydata, oznaczone teksty, skład widoku i integrację nagrody/przejścia. P073 zależy od P072-04. To dziesiąty krok serii; dzieci nie są zaimplementowane. [Raport](docs/workflow/history/P072.md)

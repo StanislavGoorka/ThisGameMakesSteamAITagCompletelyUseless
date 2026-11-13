@@ -1961,11 +1961,55 @@
         {
             "id": "P072",
             "phase": "M6",
-            "title": "Widok wyboru modułu",
-            "scope": "Dodaj jeden ekran istniejącej oferty modułów.",
-            "acceptance": "Nielegalny wybór odrzucony; fokus i teksty zgodne z polityką.",
+            "title": "Rozbij widok wyboru modułu",
+            "scope": "Wyłącznie podziel model kandydata, oznaczone teksty, skład widoku i integrację wyboru istniejącej nagrody.",
+            "acceptance": "Każde dziecko ma jeden rezultat i test; P073 zależy od P072-04. Bez implementacji dzieci.",
             "depends_on": [
                 "P071-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P072-01",
+            "phase": "M6",
+            "title": "Kandydat nagrody",
+            "scope": "Dodaj czysty model wskazania jednego modułu z istniejącej oferty runu; nawigacja lewo/prawo i odczyt kandydata, bez zmiany RunState.",
+            "acceptance": "Oferty 0/1/2, oba posiadane moduły, brak oferty poza właściwą fazą; zmiana kontekstu usuwa stary wybór, brak mutacji runu.",
+            "depends_on": [
+                "P072"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P072-02",
+            "phase": "M6",
+            "title": "Oznaczone etykiety nagrody",
+            "scope": "Dodaj osobne katalogowe placeholdery dwóch istniejących modułów i instrukcji wyboru oraz niemutujący wybór wierszy dla oferty. Bez renderowania.",
+            "acceptance": "Każdy wiersz ma pełny marker; brak ID i nieznany moduł dają odmowę, pusta oferta nie tworzy fikcyjnej nagrody; public gate blokuje robocze wpisy.",
+            "depends_on": [
+                "P072-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P072-03",
+            "phase": "M6",
+            "title": "Skład widoku nagrody",
+            "scope": "Złóż istniejącym rendererem katalogowe wiersze oferty i wskazania kandydata. Bez obsługi zatwierdzenia i bez nowych ikon.",
+            "acceptance": "Zatwierdzona typografia systemowa i oznaczone teksty; resize/DPI, brak częściowych markerów, hit-test planszy wyłączony w widoku oferty.",
+            "depends_on": [
+                "P072-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P072-04",
+            "phase": "M6",
+            "title": "Wybór i przejście sektora w oknie",
+            "scope": "Podłącz kandydata nagrody do istniejących choose_run_module i advance_run; Enter zatwierdza raz, pusta oferta przechodzi bez fikcyjnej nagrody. Bez IO checkpointu i nowych mechanik.",
+            "acceptance": "HWND: nielegalny/nieaktualny wybór bez mutacji, left/right i Enter, hold/focus, dwie granice sektora, pełne stany zgodne z core i reset preview; katalogowe błędy z markerem.",
+            "depends_on": [
+                "P072-03"
             ],
             "gate": null
         },
@@ -1976,7 +2020,7 @@
             "scope": "Dodaj prezentację jednego istniejącego achievementu, bez nowych predykatów.",
             "acceptance": "Brak duplikacji powiadomień i wyłącznie zatwierdzone grafiki.",
             "depends_on": [
-                "P072"
+                "P072-04"
             ],
             "gate": null
         },
