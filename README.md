@@ -459,3 +459,5 @@ P071-02: Dodano cztery oznaczone komunikaty sesji i niemutujący wybór katalogo
 P071-03: Podłączono ekran startu i trzy końcowe wyniki do Enter. Start nie wykonuje tury, terminalny preview pozostaje planszą, a wykonany wynik blokuje akcje. Restart resetuje cały run, wybór i trasę; profil pozostaje nietknięty. [Raport](docs/workflow/history/P071-03.md)
 
 P072: Podzielono wybór istniejącego modułu na model kandydata, oznaczone teksty, skład widoku i integrację nagrody/przejścia. P073 zależy od P072-04. To dziesiąty krok serii; dzieci nie są zaimplementowane. [Raport](docs/workflow/history/P072.md)
+
+P072-01: Dodano czysty RewardSelection z nawigacją cykliczną po istniejącej ofercie. Zmiana seedu, sektora, fazy lub oferty unieważnia wskazanie; model nie zmienia RunState. [Raport](docs/workflow/history/P072-01.md)
