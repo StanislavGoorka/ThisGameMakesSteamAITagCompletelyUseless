@@ -13,6 +13,11 @@
 
 namespace closed_circuit::windows
 {
+struct WindowPainter
+{
+    virtual ~WindowPainter() = default;
+    virtual void paint(HWND window) noexcept = 0;
+};
 struct MessageLoopResult
 {
     int exit_code;
@@ -64,6 +69,13 @@ class NativeWindow
     [[nodiscard]] bool focused() const noexcept
     {
         return focused_;
+    }
+    // Borrowed callback, detached by its owner before destruction.
+    void set_painter(WindowPainter *painter) noexcept
+    {
+        painter_ = painter;
+        if (handle_)
+            InvalidateRect(handle_, nullptr, FALSE);
     }
     [[nodiscard]] std::optional<Command> take_command(NodeId player)
     {
@@ -124,6 +136,17 @@ class NativeWindow
         }
         auto *owner = reinterpret_cast<NativeWindow *>(
             GetWindowLongPtrW(handle, GWLP_USERDATA));
+        if (owner && message == WM_PAINT)
+        {
+            PAINTSTRUCT paint{};
+            BeginPaint(handle, &paint);
+            if (owner->painter_)
+                owner->painter_->paint(handle);
+            EndPaint(handle, &paint);
+            return 0;
+        }
+        if (owner && owner->painter_ && message == WM_SIZE)
+            InvalidateRect(handle, nullptr, FALSE);
         if (owner && (message == WM_SETFOCUS || message == WM_KILLFOCUS))
         {
             owner->focused_ = message == WM_SETFOCUS;
@@ -167,6 +190,7 @@ class NativeWindow
     bool loop_active_ = false;
     KeyboardInput input_;
     std::optional<InputKey> pending_key_;
+    WindowPainter *painter_ = nullptr;
 };
 
 inline WindowCreateResult NativeWindow::create(const TextCatalog &catalog,

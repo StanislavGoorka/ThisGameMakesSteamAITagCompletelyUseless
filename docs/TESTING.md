@@ -310,3 +310,10 @@ P066-03: windows_atlas_renderer porównuje wszystkie 65 536 kanałów obrazu
 offscreen 128x128 z pikselami atlasu, z obrotami i skalą 2x. Chroni transform
 callera, odmowę całej błędnej listy bez zmiany klatki, brak pliku, korupcję,
 niezgodny manifest i retry. Oryginalne assety pozostają niezmienione.
+
+P066-04: windows_board_view wykonuje trzy resize oraz po dwa odmalowania
+przez prawdziwy WM_PAINT. Okno jest widoczne poza pulpitem, bez aktywacji;
+ukryte HWND nie otrzymuje UpdateWindow. Symulowany D2DERR_RECREATE_TARGET
+powoduje prawdziwe odtworzenie celu i bitmapy. Brak assetu odmawia utworzenia
+widoku. Odłączenie callbacka i pełna niezmienność wejściowego stanu są
+sprawdzane. windows_window_process nadal sprawdza trzy nowe procesy produktu.

@@ -1,12 +1,25 @@
 #include "application/text_build_policy.hpp"
+#include "core/run_start.hpp"
 #include "developer_text.hpp"
-#include "platform/windows/native_window.hpp"
+#include "platform/windows/board_view.hpp"
 using namespace closed_circuit;
 
+struct ComApartment
+{
+    HRESULT result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    ~ComApartment()
+    {
+        if (SUCCEEDED(result))
+            CoUninitialize();
+    }
+};
 int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
 {
     try
     {
+        ComApartment apartment;
+        if (FAILED(apartment.result))
+            return 5;
         const auto catalog = TextCatalog::from_records(
             std::span{&windows::developer_title_record, 1}, {},
             build_text_audience);
@@ -16,8 +29,20 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
             windows::NativeWindow::create(*catalog, "developer-window-title");
         if (!created.window)
             return 2;
+        const auto run = start_run(RunSeed{0});
+        const AssetManifest assets{presentation::atlas_reference()};
+        // CMake supplies a UTF-8 checkout path; launching from another cwd
+        // works.
+        const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
+        auto board = windows::BoardView::create(*created.window, run.sector,
+                                                root, assets);
+        if (!board.view)
+            return 6;
         ShowWindow(created.window->handle(), show);
+        UpdateWindow(created.window->handle());
         const auto result = created.window->run_message_loop();
+        if (FAILED(board.view->error()))
+            return 7;
         return result.error ? 3 : result.exit_code;
     }
     catch (...)

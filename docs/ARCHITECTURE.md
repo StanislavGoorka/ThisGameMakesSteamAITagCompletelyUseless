@@ -188,3 +188,11 @@ P063 rozbito na filtr naciśnięć, mapowanie kandydatów Command i adapter wiad
 P064 rozbito na RAII fabryki/celu HWND oraz resize/recreate. DIRECT2D_LIFECYCLE.md określa pożyczony HWND, pojedynczy wątek i brak rysowania. P065 wymaga P064-02; sam podział nie implementuje backendu.
 
 P065: read_png_asset łączy kontrolę pochodzenia bajtów P058 z systemowym decoderem PNG WIC i owning PBGRA. COM jest własnością caller; brak częściowego obrazu i fallbacku. PNG_DECODING.md określa limity i niezależny numeryczny oracle GDI+. Bez renderowania.
+
+P066-01..04: presentation mapuje maski na gotowe komórki atlasu i współrzędne
+7x7; AtlasRenderer posiada bitmapę i jej dokładny cel Direct2D. BoardView
+jest właścicielem zasobów planszy i pożyczonego callbacka WM_PAINT, odłączanego
+przed destrukcją. NativeWindow i apartment COM żyją dłużej. Resize i utrata
+celu odtwarzają zasoby. Developer entrypoint używa istniejącego start_run,
+przypiętego hasha atlasu i ścieżki checkoutu nadanej przez CMake. Nie ma
+zależności core od rendererów. Kontrakt: [BOARD_PRESENTATION](BOARD_PRESENTATION.md).
