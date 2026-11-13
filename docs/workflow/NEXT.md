@@ -1,21 +1,22 @@
 # Następny mały krok
 
-Task: P074-02
+Task: P074-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-01.
-Zależności: P074-01; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-02.
+Zależności: P074-02; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj odczyt istniejącego recover_checkpoint_file z odtworzeniem RunState
-i statusem none/resumed/corrupt/unavailable. Bez UI i zapisu.
+Dodaj katalogowe placeholdery uszkodzonego, niedostępnego i niezapisanego
+checkpointu oraz czystą projekcję wierszy z ResumeStatus. Bez renderowania.
 
-Kryteria: rzeczywiste pliki main/bak: brak, poprawny main, fallback backupu,
-uszkodzenie, blokada odczytu; pełny stan równy restore, brak modyfikacji plików.
+Kryteria: każdy status ma pełny marker lub brak wiersza; brak ID daje odmowę;
+public gate blokuje robocze wpisy; bez kodów błędów w tekście.
 
-Czytaj RESUME_PRESENTATION.md, CHECKPOINT_FORMAT.md, checkpoint_recover.hpp,
-run_checkpoint.hpp i tests/integration/checkpoint_recover_tests.cpp.
-Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
+Czytaj RESUME_PRESENTATION.md, session_resume.hpp, achievement_text.hpp,
+tests/unit/achievement_text_tests.cpp, content/REGISTRY.md i CONTENT_POLICY.
+Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.
 Za szeroki zakres rozbij bez implementacji. Bez nowych mechanik i assetów.
-Kod: configure/build/CTest Debug i Release, formatter src/tests/tools.
+Kod: configure/build/CTest Debug i Release, formatter src/tests/tools,
+scripts/Test-PublicContent.ps1.
 Zawsze: walidator, diff --check, raport, STATE/NEXT/README i osobny lokalny
 commit z kontrolą hasha i zakresu. Bez pobrań i push.

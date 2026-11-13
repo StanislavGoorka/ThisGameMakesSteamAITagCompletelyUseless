@@ -37,3 +37,5 @@ Bez nowych mechanik, assetów i pobrań. Obserwacja pulpitu jest osobnym
 dowodem od testów API i HWND.
 
 P074-01 jest zaimplementowane: `checkpoint_location_in` i `local_checkpoint_location` dzielą z profilem `private_directory_in`; adapter tylko rozwiązuje ścieżkę.
+
+P074-02 jest zaimplementowane: `ResumeStatus` (application) i `resume_checkpoint_file` (Windows). Brak obu plików daje none, inny błąd niż brak/INVALID_DATA daje unavailable przed corrupt, a niemożliwy restore daje corrupt.
