@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P073-02
+Task: P073-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-01.
-Zależności: P073-01; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-02.
+Zależności: P073-02; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj katalogowy placeholder first_delivery i kontrolowanego błędu usługi oraz czystą projekcję wiersza. Bez ikon i renderowania.
+Dodaj wąski właściciel istniejącego evaluatora i EventDispatcher z przygotowaniem kolejki przed publikacją stanu i ponowieniem po błędzie sinka. Bez Win32 i UI.
 
-Kryteria: Pełny marker, brak ID i nieznany achievement dają odmowę; public gate blokuje robocze wpisy.
+Kryteria: Istniejące predykaty bez zmian; pełna kolejność, retry/wyjątek bez ponownej oceny lub utraty zdarzeń, duplikaty idempotentne, fresh/restore i nowy scope niezależne.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.

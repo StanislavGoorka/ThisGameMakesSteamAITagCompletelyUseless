@@ -2,6 +2,18 @@
   "schema_version": 1,
   "texts": [
     {
+      "id": "achievement-first-delivery",
+      "value": "[AI PLACEHOLDER] Achievement unlocked: First delivery. Escape dismisses.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "achievement-unavailable",
+      "value": "[AI PLACEHOLDER] Achievement storage unavailable. Enter retries.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "reward-continue",
       "value": "[AI PLACEHOLDER] No module selection needed. Press Enter to continue.",
       "status": "ai_placeholder",

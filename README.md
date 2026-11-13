@@ -471,3 +471,5 @@ P072-04: Podłączono wybór modułu i przejście sektora do okna. Enter bez kan
 P073: Rozbito lokalne powiadomienie first_delivery na pięć wąskich zadań: dekorator sinka, katalogowy tekst, kolejka zdarzeń, lokalizacja profilu i integracja okna. P074 wymaga P073-05; dzieci nie są zaimplementowane. [Raport](docs/workflow/history/P073.md)
 
 P073-01: Dodano AchievementNoticeSink: pojedyncze pending dla nowego trwałego first_delivery, przekazywanie wszystkich żądań do istniejącego sinka i idempotentne dismiss bez duplikacji. [Raport](docs/workflow/history/P073-01.md)
+
+P073-02: Dodano dwa katalogowe placeholdery: first_delivery i kontrolowany błąd usługi. Czysta projekcja odrzuca pozostałe ID, a brak katalogowej wartości nie daje fallbacku. [Raport](docs/workflow/history/P073-02.md)
