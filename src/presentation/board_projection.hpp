@@ -27,6 +27,24 @@ struct TileDraw
     return BoardLayout{(width - side) / 2, (height - side) / 2, side / 7};
 }
 
+[[nodiscard]] inline std::optional<NodeId>
+board_node_at(float x, float y, float width, float height) noexcept
+{
+    const auto layout = fit_board(width, height);
+    if (!layout || !std::isfinite(x) || !std::isfinite(y) || x < layout->left ||
+        y < layout->top || x >= layout->left + 7 * layout->cell ||
+        y >= layout->top + 7 * layout->cell)
+        return std::nullopt;
+    // Compare the same boundaries as the draw layout, avoiding rounded
+    // division at an exact shared edge of two cells.
+    unsigned column = 0, row = 0;
+    while (column < 6 && x >= layout->left + (column + 1) * layout->cell)
+        ++column;
+    while (row < 6 && y >= layout->top + (row + 1) * layout->cell)
+        ++row;
+    return NodeId::from_value(row * 7 + column);
+}
+
 [[nodiscard]] inline std::optional<std::array<TileDraw, GameState::node_count>>
 board_draws(const GameState &state, float width, float height) noexcept
 {
