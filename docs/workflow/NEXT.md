@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P060
+Task: P061
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P059, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P060, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Kontrakt tekstów runtime. Dodaj wąski katalog tekstów, bez finalnych tekstów AI.
+Blokada placeholderów. Dodaj rozdzielenie developer/public build i bramkę placeholderów.
 
-Kryteria: Każdy generated visible string wymaga prefiksu; brak fallbacku z ID.
+Kryteria: Developer dopuszcza oznaczone teksty; public package je odrzuca.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

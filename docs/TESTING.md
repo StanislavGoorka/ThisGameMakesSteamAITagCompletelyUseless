@@ -8,6 +8,12 @@
 
 ## C++ i zakres testów
 
+P060: application_text_catalog sprawdza wartości, niezależne kopie, pusty
+katalog, brak fallbacku ID, dokładny prefiks i brak źródła placeholdera,
+źródło approved i zakaz markera, invalid status/ID/NUL, limit 4096/4097,
+duplikaty i limit 256/257. Syntetyczny approved fixture pozostaje wyłącznie
+w niewyświetlanym teście; nie jest zatwierdzonym tekstem gry.
+
 P059: `scripts/Validate-AssetPackage.ps1` jest bramką assets/approved
 w dokładnym checkout Git, używaną również w CI. Wymaga poprawnego rejestru,
 zgód, hashy i śledzenia plików. Jawne wyliczanie obejmuje hidden i odrzuca

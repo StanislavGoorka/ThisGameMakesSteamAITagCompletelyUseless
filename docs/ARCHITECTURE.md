@@ -141,6 +141,15 @@ Renderer używa wyłącznie zatwierdzonego manifestu. Brak zasobu oznacza kontro
 
 Developer build dopuszcza oznaczone teksty robocze. Release wymaga kompletnych finalnych tekstów z dowodami pochodzenia. Komunikat błędu pokazywany graczowi również jest treścią. Wewnętrznych nazw nie wyświetlaj jako finalnego tytułu. Binarne identyfikatory nie mogą wyciekać na UI jako nieoznaczone etykiety.
 
+P060: `TextCatalog` w application posiada niezależne wartości `TextRecord`
+i publikuje całą listę dopiero po walidacji. ID jak dla odwołań assetów,
+do 256 wpisów, każdy 1..4096 bajtów bez NUL. ai_placeholder wymaga dokładnego
+początku `[AI PLACEHOLDER]` i braku źródła; approved odrzuca ten marker
+i wymaga source_asset_id istniejącego w poprawnym zatwierdzonym manifeście.
+Lookup nieznanego ID daje nullptr. To kontrakt pamięciowy bez JSON/IO/renderera;
+zgodność treści z ludzkim źródłem nadal wymaga rejestru i review. P061
+dostarczy rozdzielenie developer/public i bramkę placeholderów.
+
 ## Styl i budżety
 
 4 spacje; `snake_case` dla funkcji i pól, `PascalCase` dla typów; RAII dla COM, uchwytów i pamięci. MSVC `/W4`, `/permissive-`, ostrzeżenia jako błędy dla własnego kodu w CI. Debug i Release. Osobna konfiguracja AddressSanitizer po sprawdzeniu obsługi toolchainu.
