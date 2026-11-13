@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P047
+Task: P048
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P046, bieżący wpis i jego
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P047, bieżący wpis i jego
 zależności w tasks.json. Status i walidator na początku.
 
-Dodaj wyłącznie first_sector dla SectorCompleted po zagrożeniach. Sprawdź wszystkie sektory, turę 48, śmierć na wyjściu, przeciążenie, retry i trwałość.
+Dodaj wyłącznie run_without_overdrive z jawnym pochodzeniem fresh_run albo domyślnym restored_checkpoint. Pamiętaj użycie przez wszystkie sektory; nieznana historia wyklucza kandydata. Nowa próba wymaga nowego evaluatora.
 
 Dla kodu użyj cpp-core-step; czytaj ARCHITECTURE, GAME_DESIGN, TESTING,
 ACHIEVEMENT_PREDICATES, DOMAIN_EVENTS i DOMAIN_DISPATCH. Jeden mały kontrakt.

@@ -3,7 +3,9 @@
 P044-01 wdraża typy i ten kontrakt. P044-02 wdraża EventDispatcher, a P044-03
 sprawdza restore/restart. Predykaty pięciu achievementów definiuje
 [P045](ACHIEVEMENT_PREDICATES.md). P046 dodaje MvpAchievementEvaluator:
-na razie wyłącznie first_delivery dla PacketDelivered, bez trackera i IO.
+first_delivery dla PacketDelivered, a P047 dodaje first_sector wyłącznie dla
+SectorCompleted. Oba predykaty są bez trackera i IO; koniec sektora pochodzi
+z resolvera po obrażeniach i koszcie, więc sama pozycja na wyjściu nie wystarcza.
 
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są

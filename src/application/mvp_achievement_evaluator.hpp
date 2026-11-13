@@ -11,6 +11,8 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
     [[nodiscard]] std::uint16_t
     evaluate(const DomainEvent &event) noexcept override
     {
+        if (std::holds_alternative<SectorCompleted>(event.payload))
+            return 2;
         return std::holds_alternative<PacketDelivered>(event.payload) ? 1 : 0;
     }
 };

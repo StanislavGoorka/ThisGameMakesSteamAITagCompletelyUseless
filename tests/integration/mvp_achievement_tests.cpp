@@ -70,8 +70,49 @@ bool delivery(const std::filesystem::path &path)
            test::read_bytes(path.native() + L".bak") == backup &&
            backup == original;
 }
+bool persist(const std::filesystem::path &path,
+             const std::vector<DomainEvent> &events, std::uint16_t expected)
+{
+    const LocalProfile initial{0, 3, 42, true};
+    if (!windows::save_profile_file(path, initial))
+        return false;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
+    MvpAchievementEvaluator evaluator;
+    windows::LocalAchievementSink sink(path);
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    for (const auto &e : events)
+        if (dispatcher.dispatch(scope, e) != DispatchResult::delivered)
+            return false;
+    if (windows::read_profile_file(path).profile !=
+        LocalProfile{expected, 3, 42, true})
+        return false;
+    const auto main = test::read_bytes(path);
+    const auto backup = test::read_bytes(path.native() + L".bak");
+    MvpAchievementEvaluator restored;
+    const DeliveryScope branch{
+        scope.seed, scope.attempt, {2}, scope.first_sector};
+    EventDispatcher replay(branch, restored, sink);
+    for (const auto &e : events)
+        if (replay.dispatch(branch, e) != DispatchResult::delivered)
+            return false;
+    return test::read_bytes(path) == main &&
+           test::read_bytes(path.native() + L".bak") == backup;
+}
+bool sector_completion(const std::filesystem::path &path)
+{
+    auto run = fixture();
+    run.sector.receiver_nodes[7] = run.sector.powered_nodes[7] = true;
+    run.sector.sector_exit = node(1);
+    const auto result = resolve_run_turn_events(run, MoveCommand{node(1)});
+    return result.turn.phase == RunPhase::choosing_reward &&
+           persist(path, result.events, 3);
+}
 int main()
 {
     test::CheckpointDirectory directory;
-    return delivery(directory.path / L"predykaty.dat") ? 0 : 1;
+    return delivery(directory.path / L"predykaty.dat") &&
+                   sector_completion(directory.path / L"sektor.dat")
+               ? 0
+               : 1;
 }

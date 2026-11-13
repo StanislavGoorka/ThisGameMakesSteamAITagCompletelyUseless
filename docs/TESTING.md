@@ -155,6 +155,11 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P047 rozszerza testy MVP o first_sector: trzy sektory, tury 1 i 48, śmierć
+na wyjściu, brak drugiej dostawy i pozostanie poza wyjściem. Rzeczywiste
+zdarzenia sukcesu zapisują bity dostawy/sektora i zachowują dokładne pliki
+przy powtórce w nowej gałęzi.
+
 P046: application_mvp_achievements sprawdza first_delivery dla każdego celu
 i sektora oraz retry i duplikat. windows_mvp_achievements publikuje rzeczywiste
 zdarzenia dostawy przed śmiercią do lokalnego profilu, sprawdza blokadę odczytu,

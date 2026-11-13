@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P047**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P048**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -41,6 +41,8 @@ P045-01: ActionCommitted przechowuje opcjonalny cel zmienionej trasy; równość
 P045-02: Wrapper porównuje pełne trasy BFS tego samego pakietu przed i po rotacji. Dodano dosłowne testy otwarcia, zmiany, negatywnych przypadków, zgodności preview/core i odtworzenia checkpointu. [Raport](docs/workflow/history/P045-02.md)
 
 P046: MvpAchievementEvaluator zgłasza first_delivery wyłącznie dla PacketDelivered. Testy obejmują wszystkie cele/sektory, odmowę zapisu i retry, dostawę przed śmiercią oraz niezmienne pliki po powtórce w nowej gałęzi. [Raport](docs/workflow/history/P046.md)
+
+P047: Evaluator zgłasza first_sector wyłącznie dla SectorCompleted. Scenariusze wszystkich sektorów sprawdzają turę 48, śmierć na wyjściu, brak drugiej dostawy i brak sukcesu poza wyjściem; powtórka zachowuje profil i backup. [Raport](docs/workflow/history/P047.md)
 
 ## Mapa dokumentacji
 
