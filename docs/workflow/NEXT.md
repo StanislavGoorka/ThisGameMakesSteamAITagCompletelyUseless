@@ -1,19 +1,20 @@
 # Następny mały krok
 
-Task: P074-04
+Task: P074-05
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-03.
-Zależności: P074-03; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-04.
+Zależności: P074-04; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj czystą decyzję granicy: zapis początku sektora (capture_checkpoint),
-usunięcie po wyniku terminalnym, brak akcji w trakcie sektora. Bez IO.
+Dodaj port zapisu/usunięcia checkpointu i adapter Windows na istniejącym
+save_checkpoint_file. Usuwanie najpierw backup, potem main. Bez UI.
 
-Kryteria: start, każdy sektor po przejściu, tura w sektorze, nagroda,
-won/death/overload; zapis zgodny z capture_checkpoint, wejście bez mutacji.
+Kryteria: rzeczywiste pliki: zapis i backup, usunięcie obu, brak plików,
+blokada, uszkodzony main bez nadpisania; powtórka idempotentna.
 
-Czytaj RESUME_PRESENTATION.md, CHECKPOINT_FORMAT.md, run_checkpoint.hpp,
-run_state.hpp, run_transition.hpp i tests/unit/run_checkpoint_tests.cpp.
+Czytaj RESUME_PRESENTATION.md, CHECKPOINT_FORMAT.md, checkpoint_save.hpp,
+checkpoint_boundary.hpp, local_achievement_sink.hpp (wzorzec portu)
+i tests/integration/checkpoint_save_tests.cpp.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Za szeroki zakres rozbij bez implementacji. Bez nowych mechanik i assetów.
 Kod: configure/build/CTest Debug i Release, formatter src/tests/tools.

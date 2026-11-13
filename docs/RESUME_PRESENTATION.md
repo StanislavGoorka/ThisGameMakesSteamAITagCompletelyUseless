@@ -41,3 +41,5 @@ P074-01 jest zaimplementowane: `checkpoint_location_in` i `local_checkpoint_loca
 P074-02 jest zaimplementowane: `ResumeStatus` (application) i `resume_checkpoint_file` (Windows). Brak obu plików daje none, inny błąd niż brak/INVALID_DATA daje unavailable przed corrupt, a niemożliwy restore daje corrupt.
 
 P074-03 jest zaimplementowane: wpisy `checkpoint-corrupt`, `checkpoint-unavailable`, `checkpoint-unsaved` w texts.json oraz `presentation/checkpoint_text.hpp`. Public gate nadal odmawia placeholderów.
+
+P074-04 jest zaimplementowane: `checkpoint_boundary` (application) zwraca save z capture_checkpoint wyłącznie dla dokładnego początku sektora, clear dla won/lost i keep w pozostałych przypadkach; wolno go wołać po każdej zaakceptowanej zmianie.
