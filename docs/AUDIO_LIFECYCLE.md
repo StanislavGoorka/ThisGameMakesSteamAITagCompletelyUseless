@@ -24,3 +24,5 @@ procesu i HWND z niedostępnym urządzeniem.
 
 Testy nie generują próbek audio, także cichych buforów. Odtwarzanie bufora
 zatwierdzonego pliku zostanie sprawdzone po imporcie w P078.
+
+P075-01 jest zaimplementowane: `application/audio_output.hpp` (AudioCue::delivery, AudioPlayResult, port AudioOutput, SilentAudioOutput).
