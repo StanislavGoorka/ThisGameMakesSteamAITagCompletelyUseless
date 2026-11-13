@@ -8,6 +8,11 @@
 
 ## C++ i zakres testów
 
+P058-04: windows_asset_manifest_integration czyta rzeczywisty rejestr P057
+i porównuje pełne bajty trzech zatwierdzonych plików przez parse/lookup/read.
+Kontroluje nieznane ID, traversal, zły hash, korupcję i brak własnych kopii.
+Oryginały i rejestr pozostają bez zmian, bez PNG decode i prezentacji.
+
 P058-03: windows_asset_read chroni dokładne bajty abc i pustego pliku,
 Unicode katalogu bazowego, powtórki, brak pliku, blokadę, invalid reference,
 katalog, złe długości i hash. Rzeczywiste junction na C: (temp) sprawdzają

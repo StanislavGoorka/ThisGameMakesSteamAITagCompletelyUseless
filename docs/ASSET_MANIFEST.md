@@ -93,3 +93,9 @@ Oczekiwane bajty porównujemy z niezmienionymi plikami. Złe ID/hash/ścieżka,
 brak pliku i uszkodzenie występują wyłącznie w izolowanym katalogu testowym.
 Nigdy nie mutować approved w repo dla negatywnej próbki. Debug/Release,
 formatter, walidator i diff --check są wymagane w każdym dziecku C++.
+
+P058-04 wdraża `windows_asset_manifest_integration`: rzeczywisty rejestr
+P057 i trzy literalne ID przechodzą parse→lookup→read, z porównaniem pełnych
+bajtów. Korupcja i brak pliku dotyczą tylko kopii w katalogu testowym;
+zła ścieżka zostaje odrzucona w parserze, a zły digest przed publikacją bufora.
+To dowód kontraktu czytnika, bez dekodowania lub renderowania atlasu.

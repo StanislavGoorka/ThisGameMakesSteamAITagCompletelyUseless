@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P058-04
+Task: P059
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P058-03, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P058-04, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Integracja manifestu z zatwierdzonym importem. Połącz parser, lookup i weryfikację pliku w jednym teście rzeczywistego rejestru P057 oraz izolowanych odmów. Nie zmieniaj zatwierdzonych bajtów i nie dodawaj funkcji prezentacji.
+Walidacja paczki assetów. Dodaj bramkę odrzucającą nieśledzone i niezatwierdzone zasoby.
 
-Kryteria: Wszystkie trzy rekordy zwracają dokładne bajty; nieznane ID, zła ścieżka/hash i brak pliku są kontrolowane bez partial result. Własne kopie do negatywnych próbek, D/R i walidator.
+Kryteria: Negatywne próbki: plik bez rejestru, zła zgoda, zmieniony hash.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,
