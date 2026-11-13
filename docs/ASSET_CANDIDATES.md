@@ -1,10 +1,10 @@
 # Kandydaci na treści — niczego nie pobrano
 
-Stan na 2026-11-10. Poniżej wyłącznie przeczytane publiczne strony. **Żaden kandydat nie ma zgody na pobranie ani zatwierdzonego dowodu non-AI.** Nie proponujemy pobierania teraz; kolejne kroki headless są niezależne od assetów.
+Stan na 2026-11-13. Poniżej wyłącznie przeczytane publiczne strony. **Żaden kandydat nie ma zgody na pobranie.** P055 znalazł deklarację non-AI dla konkretnego 1-Bit Pack 1.2; [dossier i ograniczenia](assets/KENNEY_1BIT_1_2.md). Pozostałe wpisy nie mają zatwierdzonego dowodu non-AI.
 
 | Źródło pierwotne | Możliwe użycie | Ustalono na stronie | Nadal wymagane |
 | --- | --- | --- | --- |
-| [Kenney 1-Bit Pack](https://kenney.nl/assets/1-bit-pack) | Płytki, symbole, jednostki; spójna ograniczona oprawa | CC0, 16×16, wersja 1.0 z 2021 | Dowód ludzkiego autorstwa konkretnego archiwum, wersja/hash po zgodzie, dopasowanie wszystkich portów i ostrzeżeń |
+| [Kenney 1-Bit Pack 1.2](https://kenney-assets.itch.io/1-bit-pack) | Płytki, symbole, jednostki | CC0 i deklaracja non-AI na stronie konkretnego pliku 1.2; devlog autora | Zgoda P056, kontrola wersji/licencji/hash po pobraniu, dopasowanie portów i ostrzeżeń; nie utożsamiać z wpisem 1.0 na kenney.nl |
 | [Kenney UI Pack](https://kenney.nl/assets/ui-pack) | Panele i przyciski | CC0; 1.0 z 2014, 2.0 jako remake | Daty 1.0 nie przenosić na 2.0; zweryfikować bieżącą wersję i non-AI |
 | [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds) | Krótkie sygnały zdarzeń | CC0, 1.0 z 2020 | Dowód pochodzenia konkretnych nagrań, zakres dźwięków, zgoda przed pobraniem |
 
