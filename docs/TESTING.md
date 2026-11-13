@@ -155,6 +155,11 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P049: wszystkie 49 celów z rotate i overdrive, inny cel dostawy, obrót bez
+dowodu, konsumpcja, reset sektora i nowy evaluator. Retry po błędzie sinka
+zachowuje kandydata rekonfiguracji mimo skonsumowanego trackera. Test Windows
+łączy faktyczne otwarcie trasy i dostawę w tej samej turze z trwałymi bitami 1/4.
+
 P048: testy MVP sprawdzają czysty run i overdrive w każdym z trzech sektorów,
 reset przez nową instancję, death/overload oraz nieznaną historię po restore,
 również sektora 1. Jawny fresh_run z błędnym początkiem strumienia nie wystarcza.

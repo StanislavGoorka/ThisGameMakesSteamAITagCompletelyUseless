@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P049**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P050**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -45,6 +45,8 @@ P046: MvpAchievementEvaluator zgłasza first_delivery wyłącznie dla PacketDeli
 P047: Evaluator zgłasza first_sector wyłącznie dla SectorCompleted. Scenariusze wszystkich sektorów sprawdzają turę 48, śmierć na wyjściu, brak drugiej dostawy i brak sukcesu poza wyjściem; powtórka zachowuje profil i backup. [Raport](docs/workflow/history/P047.md)
 
 P048: Dodano jawne RunHistoryOrigin i tracker overdrive przez wszystkie sektory. Tylko pełna nowa próba bez użycia i zwycięstwo kwalifikują; restore, porażka i niepoprawny początek strumienia nie. Testy resetu instancji i trwałości PASS. [Raport](docs/workflow/history/P048.md)
+
+P049: Dodano tracker 49 celów rekonfiguracji: dowód z akcji, konsumpcja przy dostawie, reset sektora i instancji. Testy wszystkich celów, obu rotacji, innego celu i retry po konsumpcji oraz rzeczywista dostawa po otwarciu trasy PASS. [Raport](docs/workflow/history/P049.md)
 
 ## Mapa dokumentacji
 

@@ -137,7 +137,59 @@ bool without_overdrive()
     MvpAchievementEvaluator next_attempt(RunHistoryOrigin::fresh_run);
     return (finish(next_attempt) & 4) != 0 && (finish(old) & 4) == 0;
 }
+bool reconfiguration()
+{
+    for (int target = 0; target < 49; ++target)
+        for (bool overdrive : {false, true})
+        {
+            MvpAchievementEvaluator evaluator;
+            const auto node = *NodeId::from_value(target);
+            const auto other = *NodeId::from_value((target + 1) % 49);
+            const Command command = overdrive ? Command{OverdriveCommand{node}}
+                                              : Command{RotateCommand{node}};
+            if (evaluator.evaluate(event(ActionCommitted{command, node})) !=
+                    0 ||
+                evaluator.evaluate(event(PacketDelivered{other}, 1, 1)) != 1 ||
+                evaluator.evaluate(
+                    event(ActionCommitted{RotateCommand{node}}, 2)) != 0 ||
+                evaluator.evaluate(event(PacketDelivered{node}, 2, 1)) != 9 ||
+                evaluator.evaluate(event(PacketDelivered{node}, 3, 1)) != 1)
+                return false;
+            MvpAchievementEvaluator restored;
+            if (restored.evaluate(event(PacketDelivered{node})) != 1)
+                return false;
+            static_cast<void>(
+                evaluator.evaluate(event(ActionCommitted{command, node}, 4)));
+            static_cast<void>(evaluator.evaluate(
+                event(ActionCommitted{WaitCommand{}}, 1, 0, 2)));
+            if (evaluator.evaluate(event(PacketDelivered{node}, 1, 1, 2)) != 1)
+                return false;
+        }
+    const auto node = *NodeId::from_value(8);
+    MvpAchievementEvaluator evaluator;
+    test::RecordingSink sink;
+    sink.fail_id = AchievementId::reconfigured_delivery;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    const auto action = event(ActionCommitted{RotateCommand{node}, node});
+    const auto delivered = event(PacketDelivered{node}, 1, 1);
+    if (dispatcher.dispatch(scope, action) != DispatchResult::delivered ||
+        dispatcher.dispatch(scope, delivered) != DispatchResult::retry ||
+        sink.profile.achievement_bits != 1)
+        return false;
+    sink.fail_id.reset();
+    if (dispatcher.dispatch(scope, delivered) != DispatchResult::delivered ||
+        sink.profile.achievement_bits != 9)
+        return false;
+    const auto calls = sink.calls;
+    return dispatcher.dispatch(scope, delivered) == DispatchResult::delivered &&
+           sink.calls == calls;
+}
 int main()
 {
-    return delivery() && sector_completion() && without_overdrive() ? 0 : 1;
+    return delivery() && sector_completion() && without_overdrive() &&
+                   reconfiguration()
+               ? 0
+               : 1;
 }

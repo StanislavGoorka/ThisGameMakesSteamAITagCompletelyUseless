@@ -141,12 +141,24 @@ bool without_overdrive(const std::filesystem::path &directory)
             return false;
     return persist(directory / L"unknown", run_events(0), 3);
 }
+bool reconfiguration(const std::filesystem::path &path)
+{
+    auto run = fixture();
+    run.sector.ports[0] = *PortMask::from_bits(1);
+    run.sector.rotatable_nodes[0] = true;
+    const auto result = resolve_run_turn_events(run, RotateCommand{node(0)});
+    return result.turn.accepted && result.events.size() == 2 &&
+           std::get<ActionCommitted>(result.events[0].payload)
+                   .reconfigured_packet_target == node(1) &&
+           persist(path, result.events, 9);
+}
 int main()
 {
     test::CheckpointDirectory directory;
     return delivery(directory.path / L"predykaty.dat") &&
                    sector_completion(directory.path / L"sektor.dat") &&
-                   without_overdrive(directory.path)
+                   without_overdrive(directory.path) &&
+                   reconfiguration(directory.path / L"trasa.dat")
                ? 0
                : 1;
 }

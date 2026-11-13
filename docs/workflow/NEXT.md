@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P049
+Task: P050
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P048, bieżący wpis i jego
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P049, bieżący wpis i jego
 zależności w tasks.json. Status i walidator na początku.
 
-Dodaj wyłącznie reconfigured_delivery: stały zbiór celów z dowodem ActionCommitted, konsumpcja przy dostawie, reset sektora i instancji. Retry po skonsumowaniu dowodu musi korzystać z cache dispatchera.
+Dodaj wyłącznie completed_run na RunEnded(won) w sektorze 3. Zwróć jednocześnie maskę run_without_overdrive, gdy spełniona. Śmierć, overload i sektor pośredni nie wystarczają.
 
 Dla kodu użyj cpp-core-step; czytaj ARCHITECTURE, GAME_DESIGN, TESTING,
 ACHIEVEMENT_PREDICATES, DOMAIN_EVENTS i DOMAIN_DISPATCH. Jeden mały kontrakt.

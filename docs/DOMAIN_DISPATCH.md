@@ -13,6 +13,12 @@ Każda zaakceptowana akcja overdrive wyklucza ten warunek do końca instancji,
 także przez granice sektorów. Kandydat powstaje dopiero na RunEnded(won)
 w sektorze 3. Nowa próba/gałąź wymaga nowego evaluatora; nie ma resetu w miejscu.
 
+P049 dodaje stały zbiór 49 celów o dowiedzionej rekonfiguracji. Cel ustawia
+wyłącznie dowód z ActionCommitted; PacketDelivered konsumuje bit i zgłasza
+równocześnie first_delivery oraz reconfigured_delivery. Inny cel nie konsumuje
+dowodu. Zmiana sektora i nowy evaluator zerują zbiór. Nie ma alokacji ani IO.
+Retry po konsumpcji dowodu używa maski zapamiętanej przez dispatcher.
+
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są
 niezerowymi wartościami uint64, przydzielanymi przez przyszłą sesję aplikacji.
