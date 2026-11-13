@@ -1,6 +1,7 @@
 #include "../support/checkpoint_files.hpp"
 #include "../support/state_checks.hpp"
 #include "core/run_start.hpp"
+#include "core/turn_resolver.hpp"
 #include "platform/windows/board_view.hpp"
 #include <iostream>
 using namespace closed_circuit;
@@ -57,6 +58,14 @@ int wmain(int argc, wchar_t **argv)
     }
     if (!test::same_state(run.sector, original.sector))
         return 9;
+    const auto next = resolve_turn(run.sector, WaitCommand{});
+    const auto old_frames = created.view->frames();
+    created.view->set_board(next.state);
+    UpdateWindow(hwnd);
+    if (!next.accepted ||
+        !test::same_state(created.view->board(), next.state) ||
+        created.view->error() != S_OK || created.view->frames() <= old_frames)
+        return 11;
     const auto before = created.view->frames();
     created.view.reset();
     InvalidateRect(hwnd, nullptr, FALSE);

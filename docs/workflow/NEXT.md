@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P067-02
+Task: P067-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P067-01.
-Sprawdź git status, walidator i zależności: P067-01.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P067-02.
+Sprawdź git status, walidator i zależności: P067-02.
 
-Połącz projekcje planszy i symboli; zarezerwuj miejsce na symbole bez przesłaniania portów. Podepnij tę samą scenę do BoardView. Bez wykonywania komend.
+Połącz odfiltrowany klawisz z istniejącym resolve_run_turn i aktualizacją widoku. Jedna akcja na naciśnięcie; bez nowych reguł, zapisu, HUD i ekranów.
 
-Kryteria: Jedna scena po aktualizacji stanu, rozdzielne obszary płytek i jednostek, offscreen zgodny z listą i repaint/resize; D/R.
+Kryteria: Rzeczywiste komunikaty Win32: move/rotate/overdrive/wait, hold/repeat, focus i terminalne odmowy. Pełny stan i scena po każdej próbie zgodne z core; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakt BOARD_PRESENTATION.md.

@@ -2,6 +2,7 @@
 #include "platform/windows/atlas_renderer.hpp"
 #include "platform/windows/direct2d_target.hpp"
 #include "platform/windows/native_window.hpp"
+#include "presentation/scene_projection.hpp"
 
 namespace closed_circuit::windows
 {
@@ -45,6 +46,16 @@ class BoardView final : public WindowPainter
     {
         return frames_;
     }
+    [[nodiscard]] const GameState &board() const noexcept
+    {
+        return board_;
+    }
+    void set_board(GameState board)
+    {
+        board_ = std::move(board);
+        if (window_.handle())
+            InvalidateRect(window_.handle(), nullptr, FALSE);
+    }
     void handle_draw_result(HRESULT result) noexcept
     {
         error_ = device_->handle_draw_result(result);
@@ -82,7 +93,7 @@ class BoardView final : public WindowPainter
             }
             const auto size = device_->target()->GetSize();
             const auto draws =
-                presentation::board_draws(board_, size.width, size.height);
+                presentation::scene_draws(board_, size.width, size.height);
             if (!draws)
             {
                 error_ = E_INVALIDARG;

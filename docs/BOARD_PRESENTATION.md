@@ -39,7 +39,7 @@ jednostki zajmują osobne narożniki komórki. Porty nie mogą zostać zasłoni�
 Role pól i zasilenie nie są nowymi mechanikami.
 
 P067-02 składa jedną listę dla AtlasRenderer i BoardView. Centralny kafel
-zajmuje 60% boku komórki; symbole zajmują rozłączne narożniki po 25%.
+zajmuje 50% boku komórki; symbole zajmują rozłączne narożniki po 25%.
 Nie ma tła/obrysu generowanego w kodzie. Test kontroluje rozdzielność obszarów
 i porównuje klatkę offscreen z oryginalnymi pikselami gotowych symboli.
 

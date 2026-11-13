@@ -323,3 +323,9 @@ jednostek na wszystkich 49 polach, odrębne narożniki, brak martwego gracza
 i nieobecnego pakietu, role pól, zasilenie i stabilny porządek ID impulsów.
 Rzeczywista tura z dostawą i kontaktem usuwa symbole pakietu/impulsu i zmienia
 symbol odbiornika. Test PNG sprawdza niepuste komórki wszystkich ośmi symboli.
+
+P067-02: windows_scene_renderer sprawdza rozłączne prostokąty kafli i symboli,
+pełny stan oraz 802 816 kanałów klatki offscreen 448x448 względem niezależnej
+całkowitoliczbowej kompozycji oryginalnych pikseli. BoardView przyjmuje pełny
+nowy stan i odmalowuje tę samą projekcję. Pulpit nie został obejrzany:
+oba dostępne interfejsy Computer Use zgłosiły niedostępny native pipe.
