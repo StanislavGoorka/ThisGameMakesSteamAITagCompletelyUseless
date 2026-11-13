@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P054**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P055**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -59,6 +59,8 @@ P051-02: Dwa nowe procesy odczytują checkpoint sektora 2 i porównują każdy p
 P052: Dodano developer_preview_benchmark: 1000 stałych seedów, trzy rodziny obciążenia, legalny wait i odmowa ruchu, po 3000 próbek na przypadek. Raport sprzętu i dwóch pomiarów Release w docs/PREVIEW_BENCHMARK.md: p95 maksymalnie 4700 ns w syntetycznym stresie 49 impulsów. CTest kontroluje kontrakt CLI bez progu czasu; wynik nie ocenia grywalności. [Raport](docs/workflow/history/P052.md)
 
 P053: Dodano deterministyczny test 16384 komend: 64 seedy, dwie rodziny zagrożeń, cztery zestawy modułów, sukcesy i odmowy wszystkich akcji. Pełne stany preview i dwóch wykonań są identyczne; atomowe odmowy, HP, tury, porty, zasoby i unikalne ID/pola impulsów spełniają niezmienniki. Błąd wypisuje pełny reproducer. [Raport](docs/workflow/history/P053.md)
+
+P054: Przejrzano i przyjęto bramkę headless M4: przejście do dossier treści M5, bez nowych reguł. docs/HEADLESS_GATE.md wiąże dowody core, seedów, replayów, checkpointów, profilu i pięciu predykatów z ich ograniczeniami. Powtórzone Debug/Release i osobny Release AddressSanitizer: po 83/83 testy PASS; 11 testów walidatora PASS. Brak QA wizualnego i oceny grywalności. [Raport](docs/workflow/history/P054.md)
 
 ## Mapa dokumentacji
 

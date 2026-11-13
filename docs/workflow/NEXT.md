@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P054
+Task: P055
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P053 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P054 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Przeprowadź bramkę headless bez nowych funkcji. Przejrzyj i uruchom Debug/Release, seedy, replay i trwałość, zapisz konkretną decyzję przejścia do pochodzenia treści oraz znane ograniczenia. Bez deklaracji QA wizualnego lub grywalności.
+Użyj asset-intake i CONTENT_POLICY. Zweryfikuj dossier jednego konkretnego bazowego pakietu i wersji bez pobierania oraz bez zapisywania preview. Sprawdź licencję do gry i publicznego Git, pochodzenie konkretnej wersji i luki dowodu non-AI. Nie uznawaj licencji CC0 za dowód autorstwa.
 
 Dla C++ stosuj cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Configure, build i CTest Debug/Release, formatter src/tests/tools; dla samej

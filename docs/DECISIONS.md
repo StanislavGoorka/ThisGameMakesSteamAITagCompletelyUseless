@@ -18,6 +18,11 @@ Nowe decyzje dopisuj z dowodem, konsekwencjami i identyfikatorem zadania. Nie es
 
 ## Ryzyka i reakcje
 
+2026-11-13, P054: bramka headless zezwala przejść do M5 (dossier treści).
+[Dowody i ograniczenia](HEADLESS_GATE.md) oddzielają potwierdzoną logikę/trwałość
+od przyszłego QA Windows i grywalności. Brak zmiany reguł; obserwacja MVP nadal
+warunkuje rozszerzanie zakresu. Assety pozostają poza repozytorium.
+
 | Ryzyko | Sygnał | Reakcja |
 | --- | --- | --- |
 | Niejasna granica treści AI | Nowa interpretacja ankiety lub treść wykonana przez kod | Audyt konkretnego rezultatu, sprawdzenie aktualnego źródła, blokada zamiast zatajenia |
