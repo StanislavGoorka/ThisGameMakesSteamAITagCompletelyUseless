@@ -1,6 +1,7 @@
 #include "platform/windows/asset_manifest_parse.hpp"
 #include "platform/windows/png_read.hpp"
 #include "presentation/atlas_tiles.hpp"
+#include "presentation/unit_projection.hpp"
 #include <iostream>
 using namespace closed_circuit;
 namespace p = presentation;
@@ -59,5 +60,16 @@ int wmain(int argc, wchar_t **argv)
         p::valid_tile({0, 0, 4}) || !p::valid_tile({48, 21, 3}) ||
         PortMask::from_bits(16))
         return 7;
+    for (unsigned kind = 0; kind < 8; ++kind)
+    {
+        const auto tile = *p::tile_for_symbol(static_cast<p::SymbolKind>(kind));
+        unsigned alpha = 0;
+        for (unsigned y = 0; y < 16; ++y)
+            for (unsigned x = 0; x < 16; ++x)
+                alpha += image.pixels[(tile.row * 17 + y) * image.stride +
+                                      (tile.column * 17 + x) * 4 + 3];
+        if (!p::valid_tile(tile) || !alpha)
+            return 8;
+    }
     return 0;
 }

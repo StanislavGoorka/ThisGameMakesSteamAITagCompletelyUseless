@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P067-01
+Task: P067-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P067.
-Sprawdź git status, walidator i zależności: P067.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P067-01.
+Sprawdź git status, walidator i zależności: P067-01.
 
-Przełóż gracza, pakiet, impulsy oraz istniejące role pól na gotowe symbole atlasu w odrębnych miejscach komórki. Bez rysowania i wykonywania tur.
+Połącz projekcje planszy i symboli; zarezerwuj miejsce na symbole bez przesłaniania portów. Podepnij tę samą scenę do BoardView. Bez wykonywania komend.
 
-Kryteria: Wszystkie 49 pozycji, nakładanie jednostek, brak pakietu i śmierć, stabilna kolejność impulsów oraz pełna niezmienność stanu; D/R.
+Kryteria: Jedna scena po aktualizacji stanu, rozdzielne obszary płytek i jednostek, offscreen zgodny z listą i repaint/resize; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakt BOARD_PRESENTATION.md.

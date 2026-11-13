@@ -50,3 +50,10 @@ wykonują dodatkowej tury. Callbacki nie wypuszczają wyjątków przez Win32.
 Brak automatycznego przejścia sektora, zapisu, achievementów, HUD i menu.
 
 P068 wymaga P067-03, nie samego ukończenia planu P067.
+
+P067-01 przypina gotowe symbole do komórek atlasu (indeksy od zera):
+gracz (24,0), pakiet (45,8), impuls (25,7), wejście (19,20), wyjście (20,20),
+odbiornik (39,14), zasilony odbiornik (39,15), stałe przyłącze (38,13).
+Test PNG potwierdza, że wszystkie osiem komórek istnieje i jest niepustych.
+Pierwszeństwo jednej roli pola: odbiornik/zasilenie, wyjście, wejście, stałe
+przyłącze. Symbole jednostek pozostają niezależne od tego pierwszeństwa.

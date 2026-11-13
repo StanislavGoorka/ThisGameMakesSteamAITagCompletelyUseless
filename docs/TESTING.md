@@ -317,3 +317,9 @@ ukryte HWND nie otrzymuje UpdateWindow. Symulowany D2DERR_RECREATE_TARGET
 powoduje prawdziwe odtworzenie celu i bitmapy. Brak assetu odmawia utworzenia
 widoku. Odłączenie callbacka i pełna niezmienność wejściowego stanu są
 sprawdzane. windows_window_process nadal sprawdza trzy nowe procesy produktu.
+
+P067-01: presentation_unit_projection sprawdza wspólną pozycję trzech typów
+jednostek na wszystkich 49 polach, odrębne narożniki, brak martwego gracza
+i nieobecnego pakietu, role pól, zasilenie i stabilny porządek ID impulsów.
+Rzeczywista tura z dostawą i kontaktem usuwa symbole pakietu/impulsu i zmienia
+symbol odbiornika. Test PNG sprawdza niepuste komórki wszystkich ośmi symboli.
