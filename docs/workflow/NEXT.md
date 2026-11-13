@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P062
+Task: P062-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061-03, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P062, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Cykl okna Win32. Dodaj minimalny cykl okna bez rysowania gry; tytuł jako oznaczony placeholder.
+Własność ukrytego okna Win32. Dodaj RAII klasy i jednego ukrytego HWND. Tytuł wyłącznie z TextCatalog, ścisła konwersja UTF-8, kontrolowane błędy bez fallbacku. Bez pętli komunikatów, focus, pokazywania okna i rysowania.
 
-Kryteria: Start, zamknięcie, focus i poprawne zwolnienie zasobów.
+Kryteria: Rzeczywiste create/destroy i unregister, dwa okna, powtórki, dokładny tytuł Unicode, unknown ID i invalid UTF-8 bez HWND. WM_CLOSE przed destruktorem nie powoduje podwójnego zwolnienia; D/R.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

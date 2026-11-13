@@ -1511,12 +1511,45 @@
             "id": "P062",
             "phase": "M6",
             "title": "Cykl okna Win32",
-            "scope": "Dodaj minimalny cykl okna bez rysowania gry; tytuł jako oznaczony placeholder.",
-            "acceptance": "Start, zamknięcie, focus i poprawne zwolnienie zasobów.",
+            "scope": "Wyłącznie rozbij cykl Win32 na własność ukrytego okna, komunikaty/focus i developer entrypoint ze smoke testem; bez implementacji dzieci.",
+            "acceptance": "Trzy małe kontrakty i testy; P063 wymaga ostatniego dziecka. Zapisz warunki treści oraz brak renderowania; plan nie oznacza gotowego programu Windows.",
             "depends_on": [
                 "P061-03"
             ],
             "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
+        },
+        {
+            "id": "P062-01",
+            "phase": "M6",
+            "title": "Własność ukrytego okna Win32",
+            "scope": "Dodaj RAII klasy i jednego ukrytego HWND. Tytuł wyłącznie z TextCatalog, ścisła konwersja UTF-8, kontrolowane błędy bez fallbacku. Bez pętli komunikatów, focus, pokazywania okna i rysowania.",
+            "acceptance": "Rzeczywiste create/destroy i unregister, dwa okna, powtórki, dokładny tytuł Unicode, unknown ID i invalid UTF-8 bez HWND. WM_CLOSE przed destruktorem nie powoduje podwójnego zwolnienia; D/R.",
+            "depends_on": [
+                "P062"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P062-02",
+            "phase": "M6",
+            "title": "Komunikaty zamknięcia i focus okna",
+            "scope": "Dodaj wąski stan focus i kontrakt zakończenia pętli Win32 dla istniejącego okna. Bez wejścia gry, renderera i entrypointu produktu.",
+            "acceptance": "WM_SETFOCUS/KILLFOCUS, WM_CLOSE/DESTROY i zakończenie GetMessage, brak busy loop i kontrolowany błąd odczytu komunikatu; rzeczywiste wiadomości Windows, D/R.",
+            "depends_on": [
+                "P062-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P062-03",
+            "phase": "M6",
+            "title": "Developer entrypoint okna i smoke procesu",
+            "scope": "Połącz okno i pętlę w minimalnym celu WIN32 wyłącznie developer. Każdy widoczny tytuł pochodzi z katalogu z oznaczonym wpisem odnotowanym w texts.json. Bez ikon, grafiki, audio i logiki gry.",
+            "acceptance": "Start, focus, zamknięcie i zwolnienie zasobów; proces smoke z timeoutem i kilkoma startami. Public gate odrzuca roboczy wpis, bez publicznego binarium z placeholderem. D/R; oddziel brak VM i ocenę wizualną.",
+            "depends_on": [
+                "P062-02"
+            ],
+            "gate": null
         },
         {
             "id": "P063",
@@ -1525,7 +1558,7 @@
             "scope": "Dodaj wejście przekładane na komendy, bez nowych widoków.",
             "acceptance": "Repeat klawisza i focus loss nie generują niekontrolowanych tur.",
             "depends_on": [
-                "P062"
+                "P062-03"
             ],
             "gate": null
         },

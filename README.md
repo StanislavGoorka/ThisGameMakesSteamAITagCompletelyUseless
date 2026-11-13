@@ -39,7 +39,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P062**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P062-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -355,3 +355,5 @@ P061-01: TextCatalog wymaga jawnego TextAudience: developer przyjmuje oznaczone 
 P061-02: Public content gate wymaga poprawnego approved payloadu i katalogu tekstów wyłącznie approved bez markera. Dziewięć izolowanych wyników procesu potwierdza m.in. developer acceptance oraz public rejection tego samego oznaczonego wpisu. [Raport](docs/workflow/history/P061-02.md)
 
 P061-03: Dodano jawny tryb CMake CLOSED_CIRCUIT_PUBLIC_BUILD, presety public i build_text_audience. Każdy konsument game_core wymaga bramki treści; developer/public działa niezależnie od D/R. Wszystkie cztery warianty zaliczyły po 88/88 CTest. Izolowana próba 9 rejestrów oraz 4 wyników builda PASS; CI rozszerzono o oba tryby. [Raport](docs/workflow/history/P061-03.md)
+
+P062: Rozbito cykl Win32 na P062-01 (RAII ukrytego okna), P062-02 (komunikaty/focus) i P062-03 (developer entrypoint i smoke procesu). P063 wymaga ostatniego dziecka. WINDOW_LIFECYCLE.md określa własność, tytuł z katalogu i zakaz rysowania. [Raport](docs/workflow/history/P062.md)
