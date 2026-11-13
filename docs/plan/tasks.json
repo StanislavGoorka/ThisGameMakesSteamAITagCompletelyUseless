@@ -1599,10 +1599,32 @@
             "id": "P064",
             "phase": "M6",
             "title": "Urządzenie Direct2D",
-            "scope": "Dodaj lifecycle zasobów renderer backend, bez tworzenia artworku.",
-            "acceptance": "Resize i odtworzenie urządzenia; brak proceduralnych assetów.",
+            "scope": "Wyłącznie rozbij lifecycle Direct2D na własność fabryki/celu HWND oraz resize i odtwarzanie celu. Bez implementacji dzieci i rysowania.",
+            "acceptance": "Dwa małe kontrakty z dowodami API; P065 wymaga P064-02. Plan nie oznacza wdrożonego renderera.",
             "depends_on": [
                 "P063-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P064-01",
+            "phase": "M6",
+            "title": "Własność fabryki i celu Direct2D",
+            "scope": "Dodaj RAII single-threaded ID2D1Factory i ID2D1HwndRenderTarget dla istniejącego ukrytego HWND. Kontrolowane błędy i brak częściowego wyniku; bez BeginDraw, artworku i podłączenia entrypointu.",
+            "acceptance": "Rzeczywiste API: dwa niezależne cele, dokładny HWND i rozmiar pikseli, powtórki create/release, odmowa null/zniszczonego HWND bez obiektu; D/R.",
+            "depends_on": [
+                "P064"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P064-02",
+            "phase": "M6",
+            "title": "Resize i odtworzenie celu Direct2D",
+            "scope": "Rozszerz istniejący adapter o resize, zawieszenie przy zerowym rozmiarze i odtworzenie celu po D2DERR_RECREATE_TARGET. Fabryka pozostaje żywa. Bez rysowania i bez sesji produktu.",
+            "acceptance": "Rzeczywiste resize i recreate, zerowy rozmiar bez celu do rysowania, powrót z zawieszenia, kontrolowana odmowa po zniszczeniu HWND oraz retry. Symulowany status utraty urządzenia odróżnij od fizycznego resetu GPU; D/R.",
+            "depends_on": [
+                "P064-01"
             ],
             "gate": null
         },
@@ -1613,7 +1635,7 @@
             "scope": "Dodaj odczyt jednego zatwierdzonego PNG.",
             "acceptance": "Poprawny plik, plik uszkodzony i brak zasobu bez generowanego fallbacku.",
             "depends_on": [
-                "P064"
+                "P064-02"
             ],
             "gate": null
         },

@@ -184,3 +184,5 @@ granic sprawdza pełny stan i pierwszą turę po resume; błędne dane nie zwrac
 częściowego wyniku. Adaptery IO, publikacji i odczytu backupu opisano wyżej.
 
 P063 rozbito na filtr naciśnięć, mapowanie kandydatów Command i adapter wiadomości Win32. Kontrakt w KEYBOARD_INPUT.md; P064 wymaga P063-03. Brak implementacji dzieci w kroku planistycznym.
+
+P064 rozbito na RAII fabryki/celu HWND oraz resize/recreate. DIRECT2D_LIFECYCLE.md określa pożyczony HWND, pojedynczy wątek i brak rysowania. P065 wymaga P064-02; sam podział nie implementuje backendu.
