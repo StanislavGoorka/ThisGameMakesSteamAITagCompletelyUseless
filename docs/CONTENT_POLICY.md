@@ -29,8 +29,8 @@ Nie pobieramy treści „free for personal use”, niejasnego autorstwa ani nieu
 
 ## Rejestry
 
-- [content/assets.json](../content/assets.json): `schema_version`, `assets`; obecnie pusto. Schemat szczegółowy: [REGISTRY.md](../content/REGISTRY.md).
-- [content/approvals.json](../content/approvals.json): konkretne zgody z datą i dowodem; obecnie pusto.
+- [content/assets.json](../content/assets.json): `schema_version`, `assets`; P057 zawiera atlas Kenney 1.2 i dwie noty. Schemat szczegółowy: [REGISTRY.md](../content/REGISTRY.md).
+- [content/approvals.json](../content/approvals.json): konkretne zgody z datą i dowodem; P056 zapisuje zgodę na ten jeden pakiet 1.2.
 - [content/texts.json](../content/texts.json): napisy produktu, obecnie pusto.
 - [ASSET_CANDIDATES.md](ASSET_CANDIDATES.md): propozycje bez statusu zatwierdzenia.
 

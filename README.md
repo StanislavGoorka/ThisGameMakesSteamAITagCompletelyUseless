@@ -8,7 +8,7 @@ Taktyczny roguelike bez fabuły: gracz przełącza połączenia małej planszy. 
 
 [Publiczne repozytorium GitHub](https://github.com/StanislavGoorka/ThisGameMakesSteamAITagCompletelyUseless).
 
-AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć treści audiowizualnych dla gracza. Treści zewnętrzne wymagają weryfikacji autorstwa, licencji i zgody przed pobraniem. Tekst roboczy zawsze zaczyna się od `[AI PLACEHOLDER]` i jest wykluczony z wydania. Nie pobrano żadnych assetów.
+AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć treści audiowizualnych dla gracza. Treści zewnętrzne wymagają weryfikacji autorstwa, licencji i zgody przed pobraniem. Tekst roboczy zawsze zaczyna się od `[AI PLACEHOLDER]` i jest wykluczony z wydania. Po zgodzie P056 przyjęto w P057 jeden niezmieniony atlas Kenney 1.2 i dwie noty; [dowody importu](docs/assets/KENNEY_1BIT_1_2_IMPORT.md).
 
 ## Stan projektu
 
@@ -32,12 +32,12 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P057**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P058**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
-Zakres zapisano w rejestrze; import pozostaje P057. W poleceniu wykonania
-10 kroków ukończono dotąd sześć.
+Zakres zapisano w rejestrze, a P057 przyjął minimalny zestaw z kontrolą bajtów.
+W poleceniu wykonania 10 kroków ukończono dotąd siedem.
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -70,6 +70,8 @@ P054: Przejrzano i przyjęto bramkę headless M4: przejście do dossier treści 
 P055: Dossier Kenney 1-Bit Pack 1.2 dokumentuje CC0 dla gry i publicznego Git, deklarację non-AI przy konkretnym pliku i devlog autora. Zapisano różnice nazw/rozmiarów archiwów i brakujące kontrole po zgodzie. Nie pobrano plików ani preview; rejestry assetów i zgód pozostają puste. [Raport](docs/workflow/history/P055.md)
 
 P056: Zapisano rzeczywistą odpowiedź użytkownika: „Tak, zgadzam się na ten zakres”. Zgoda kenney-1bit-1.2-2026-11-13 ma status approved; usunięto blokadę. Dotyczy wyłącznie jednego darmowego pobrania wersji 1.2 z itch.io i minimalnego importu niezmienionych PNG/not po weryfikacji. Bez pobrania w kroku P056. [Raport](docs/workflow/history/P056.md)
+
+P057: Pobrano raz zatwierdzony 1bitpack_kenney_1.2.zip: 657579 bajtów, wersja 1.2 i CC0 potwierdzone w License.txt. Przyjęto jeden niezmieniony atlas PNG 832x373 i dwie noty, 20259 bajtów, z kompletnym rejestrem i SHA-256. Archiwum pozostało ignorowane, pozostałych grafik/scen nie rozpakowano. Git zachowuje bajty approved bez normalizacji. Testy walidatora obsługują teraz niepusty rejestr. [Raport](docs/workflow/history/P057.md)
 
 ## Mapa dokumentacji
 

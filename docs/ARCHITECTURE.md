@@ -21,7 +21,7 @@ Nie dodawaj frameworka, ECS, fizyki ani edytora bez konkretnego uzasadnienia. Po
 | `src/steam/` | Opcjonalny adapter Steamworks |
 | `tests/unit/`, `tests/integration/` | Logika, trwałość, kontrakty |
 | `tests/fixtures/` | Niewyświetlane dane syntetyczne, nigdy w paczce gry |
-| `assets/approved/` | Zatwierdzone zasoby; obecnie katalog nie istnieje |
+| `assets/approved/` | P057: jeden niezmieniony atlas Kenney 1.2 i dwie noty; rejestr z hashami |
 | `content/` | Rejestry pochodzenia, zgód i plików paczki |
 | `scripts/`, `tools/` | Narzędzia deweloperskie, poza paczką gry |
 

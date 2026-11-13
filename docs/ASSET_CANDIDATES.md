@@ -1,10 +1,10 @@
-# Kandydaci na treści — niczego nie pobrano
+# Kandydaci na treści i stan importu
 
-Stan na 2026-11-13. Niczego jeszcze nie pobrano. **1-Bit Pack 1.2 ma konkretną zgodę P056**; pozostałe pakiety nie mają zgody. P055 znalazł deklarację non-AI dla konkretnego 1-Bit Pack 1.2; [dossier i ograniczenia](assets/KENNEY_1BIT_1_2.md). Pozostałe wpisy nie mają zatwierdzonego dowodu non-AI.
+Stan na 2026-11-13. **1-Bit Pack 1.2 ma konkretną zgodę P056 i minimalny import P057**: jeden niezmieniony atlas oraz dwie noty. [Dossier](assets/KENNEY_1BIT_1_2.md) i [hashy/zakres importu](assets/KENNEY_1BIT_1_2_IMPORT.md). Pozostałe pakiety nie mają zgody ani zatwierdzonego dowodu non-AI.
 
 | Źródło pierwotne | Możliwe użycie | Ustalono na stronie | Nadal wymagane |
 | --- | --- | --- | --- |
-| [Kenney 1-Bit Pack 1.2](https://kenney-assets.itch.io/1-bit-pack) | Płytki, symbole, jednostki | CC0 i deklaracja non-AI na stronie konkretnego pliku 1.2; devlog autora; zgoda P056 | Kontrola wersji/licencji/hash po pobraniu, dopasowanie portów i ostrzeżeń; nie utożsamiać z wpisem 1.0 na kenney.nl |
+| [Kenney 1-Bit Pack 1.2](https://kenney-assets.itch.io/1-bit-pack) | Płytki, symbole, jednostki | CC0 i deklaracja non-AI przy pliku 1.2; zgoda P056; License.txt/wersja i hashe sprawdzone w P057 | Mapowanie portów/ostrzeżeń i czytelność prezentacji; nie utożsamiać z wpisem 1.0 na kenney.nl |
 | [Kenney UI Pack](https://kenney.nl/assets/ui-pack) | Panele i przyciski | CC0; 1.0 z 2014, 2.0 jako remake | Daty 1.0 nie przenosić na 2.0; zweryfikować bieżącą wersję i non-AI |
 | [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds) | Krótkie sygnały zdarzeń | CC0, 1.0 z 2020 | Dowód pochodzenia konkretnych nagrań, zakres dźwięków, zgoda przed pobraniem |
 

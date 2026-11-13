@@ -6,3 +6,5 @@
 *.ps1 text eol=crlf
 *.cpp text eol=lf
 *.hpp text eol=lf
+# Preserve every approved file exactly as hashed, including license notes.
+/assets/approved/** binary

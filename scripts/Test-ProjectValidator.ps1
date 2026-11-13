@@ -21,8 +21,12 @@ function Seed-TestAsset([string]$Fixture) {
         non_ai_evidence = 'synthetic test, not an authorship claim'; approval_id = 'fixture-permission'; status = 'approved'}
     $permission = @{id = 'fixture-permission'; source_url = $record.source_url; source_version = 'test';
         status = 'approved'; approved_at = '2026-11-10'; evidence = 'synthetic test only, not a user approval'; scope = 'isolated validator fixture'}
-    Write-Json @{schema_version = 1; assets = @($record)} (Join-Path $Fixture 'content/assets.json')
-    Write-Json @{schema_version = 1; approvals = @($permission)} (Join-Path $Fixture 'content/approvals.json')
+    $assets = Get-Content -Raw -Encoding UTF8 (Join-Path $Fixture 'content/assets.json') | ConvertFrom-Json
+    $approvals = Get-Content -Raw -Encoding UTF8 (Join-Path $Fixture 'content/approvals.json') | ConvertFrom-Json
+    $assets.assets = @($assets.assets) + @($record)
+    $approvals.approvals = @($approvals.approvals) + @($permission)
+    Write-Json $assets (Join-Path $Fixture 'content/assets.json')
+    Write-Json $approvals (Join-Path $Fixture 'content/approvals.json')
 }
 
 function Run-Case([string]$Name, [scriptblock]$Change, [bool]$ShouldPass, [string]$Expected = '') {
@@ -30,6 +34,9 @@ function Run-Case([string]$Name, [scriptblock]$Change, [bool]$ShouldPass, [strin
     New-Item -ItemType Directory -Path $fixture -Force | Out-Null
     foreach ($relative in @('AGENTS.md', 'README.md', 'docs', 'content', '.agents', '.github', 'src', 'tests', 'tools', 'CMakeLists.txt')) {
         Copy-Item -LiteralPath (Join-Path $repoRoot $relative) -Destination $fixture -Recurse
+    }
+    if (Test-Path -LiteralPath (Join-Path $repoRoot 'assets')) {
+        Copy-Item -LiteralPath (Join-Path $repoRoot 'assets') -Destination $fixture -Recurse
     }
     & $Change $fixture
     $result = & powershell -NoProfile -ExecutionPolicy Bypass -File $validator -Root $fixture

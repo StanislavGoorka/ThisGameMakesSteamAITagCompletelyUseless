@@ -1,4 +1,47 @@
 {
   "schema_version": 1,
-  "assets": []
+  "assets": [
+    {
+      "id": "kenney1bit12-monochrome",
+      "path": "assets/approved/kenney-1bit-1.2/Tilesheet/monochrome-transparent.png",
+      "sha256": "888B96CEF0777CE03E9A9F3EB2C7AFC02B2EED9C8F4E9E36E9871F8B624D2D00",
+      "bytes": 19451,
+      "author": "Kenney",
+      "source_url": "https://kenney-assets.itch.io/1-bit-pack",
+      "source_version": "1.2",
+      "license": "CC0-1.0",
+      "license_evidence": "License.txt z tego samego ZIP-a potwierdza 1.2 i CC0; https://creativecommons.org/publicdomain/zero/1.0/legalcode.en sekcje 2-3 pozwalają kopiować i redystrybuować w grze komercyjnej i publicznym Git. Szczegóły: docs/assets/KENNEY_1BIT_1_2_IMPORT.md. Bez logo i sugerowania poparcia autora.",
+      "non_ai_evidence": "Deklaracja dystrybutora No generative AI was used na stronie konkretnego pakietu z plikiem 1bitpack_kenney_1.2.zip, odczytana 2026-11-13. Wersja 1.2 potwierdzona przez License.txt wewnątrz pobranego ZIP-a SHA256 129A0E74E1DC9091A769D5118BE5C88780484C7A3771EE33AC9EF0DF02583A9A. Dossier docs/assets/KENNEY_1BIT_1_2.md; deklaracja źródłowa, bez gwarancji niezależnego audytu.",
+      "approval_id": "kenney-1bit-1.2-2026-11-13",
+      "status": "approved"
+    },
+    {
+      "id": "kenney1bit12-license",
+      "path": "assets/approved/kenney-1bit-1.2/License.txt",
+      "sha256": "D861F208CD550A54E6E59BE553EF6AC93A84F4A2966D0371D21331B70E54F33D",
+      "bytes": 569,
+      "author": "Kenney",
+      "source_url": "https://kenney-assets.itch.io/1-bit-pack",
+      "source_version": "1.2",
+      "license": "CC0-1.0",
+      "license_evidence": "Niezmieniona nota licencyjna wybranej grafiki z archiwum 1.2. CC0-1.0 obejmuje komercyjną grę oraz redystrybucję w publicznym Git; https://creativecommons.org/publicdomain/zero/1.0/legalcode.en. Nota jest dokumentem pochodzenia, nie etykietą UI.",
+      "non_ai_evidence": "Nota pochodzi z tego samego archiwum 1.2 SHA256 129A0E74E1DC9091A769D5118BE5C88780484C7A3771EE33AC9EF0DF02583A9A; strona dystrybutora dla tego pliku deklaruje No generative AI was used. Przegląd 2026-11-13 opisano w docs/assets/KENNEY_1BIT_1_2_IMPORT.md.",
+      "approval_id": "kenney-1bit-1.2-2026-11-13",
+      "status": "approved"
+    },
+    {
+      "id": "kenney1bit12-tilesheet-info",
+      "path": "assets/approved/kenney-1bit-1.2/Tilesheet.txt",
+      "sha256": "DAAF1EF167014D100E49780E9C09841A96858C01B284EB5D67AF17AFA0482F73",
+      "bytes": 239,
+      "author": "Kenney",
+      "source_url": "https://kenney-assets.itch.io/1-bit-pack",
+      "source_version": "1.2",
+      "license": "CC0-1.0",
+      "license_evidence": "Niezmienione metadane importu objęte License.txt tego samego pakietu CC0-1.0. Kopiowanie i redystrybucja w komercyjnej grze oraz publicznym Git zgodnie z https://creativecommons.org/publicdomain/zero/1.0/legalcode.en. Nie wyświetlać jako tekstu gry.",
+      "non_ai_evidence": "Plik z archiwum 1.2 SHA256 129A0E74E1DC9091A769D5118BE5C88780484C7A3771EE33AC9EF0DF02583A9A; strona konkretnego pakietu deklaruje No generative AI was used, devlog 1.2 opisuje dodanie metadanych. Przegląd 2026-11-13: docs/assets/KENNEY_1BIT_1_2_IMPORT.md.",
+      "approval_id": "kenney-1bit-1.2-2026-11-13",
+      "status": "approved"
+    }
+  ]
 }
