@@ -1,4 +1,5 @@
 #pragma once
+#include "application/action_selection.hpp"
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
 #include <type_traits>
@@ -42,6 +43,10 @@ class RunWindow final : public WindowCommandHandler
     {
         return *view_;
     }
+    [[nodiscard]] const ActionSelection &selection() const noexcept
+    {
+        return selection_;
+    }
     [[nodiscard]] HRESULT error() const noexcept
     {
         return FAILED(error_) ? error_ : view_->error();
@@ -50,8 +55,31 @@ class RunWindow final : public WindowCommandHandler
     {
         try
         {
-            const auto command =
-                window_.take_command(run_.sector.player_position);
+            if (!window_.focused())
+            {
+                selection_.reset();
+                return;
+            }
+            selection_.point(window_.pointed());
+            const auto key = window_.take_key();
+            if (!key)
+                return;
+            std::optional<Command> command;
+            switch (*key)
+            {
+            case InputKey::plan:
+                selection_.toggle();
+                break;
+            case InputKey::cancel:
+                selection_.cancel();
+                break;
+            case InputKey::confirm:
+                command = selection_.confirm();
+                break;
+            default:
+                command = selection_.choose(*key, run_.sector.player_position);
+                break;
+            }
             if (!command)
                 return;
             auto next = resolve_run_turn(run_, *command);
@@ -61,6 +89,7 @@ class RunWindow final : public WindowCommandHandler
             // copy succeeds. Both following move assignments are nonthrowing.
             view_->set_board(next.state.sector);
             run_ = std::move(next.state);
+            selection_.context_changed();
             error_ = S_OK;
         }
         catch (...)
@@ -77,6 +106,7 @@ class RunWindow final : public WindowCommandHandler
     }
     NativeWindow &window_;
     RunState run_;
+    ActionSelection selection_;
     std::unique_ptr<BoardView> view_;
     HRESULT error_ = S_OK;
 };

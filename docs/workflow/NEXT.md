@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P068-06
+Task: P068-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P068-05.
-Zależności: P068-05. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P068-06.
+Zależności: P068-06. Sprawdź git status i walidator.
 
-Połącz istniejący hit-test i ActionSelection z wiadomościami okna. Tab/Enter/Escape i focus; R/O używają pola kursora. W trybie planowania dopiero Enter wykonuje istniejący resolver. Bez prezentacji preview.
+Pokaż wynik modelu preview i trasę wyłącznie gotowymi symbolami atlasu. Po anulowaniu przywróć widok live state; po zatwierdzeniu pokaż identyczny wynik core. Bez nowych linii, strzałek, figur i tekstów.
 
-Kryteria: Rzeczywiste HWND: hover, marginesy, resize, mouse leave, focus i repeat; sąsiedni cel R/O, brak mutacji przed Enter, jedno zatwierdzenie, anulowanie i pełna zgodność z core; D/R.
+Kryteria: Offscreen zgodny z oryginalnymi pikselami, marker nie zasłania portów/jednostek, brak trasy i terminalne odmowy nie pokazują starego preview; anulowanie/focus/resize i commit zgodne z modelem; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakty BOARD_PRESENTATION.md

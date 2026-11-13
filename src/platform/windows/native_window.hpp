@@ -1,6 +1,7 @@
 #pragma once
 #include "application/keyboard_commands.hpp"
 #include "application/text_catalog.hpp"
+#include "presentation/board_projection.hpp"
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -89,9 +90,17 @@ class NativeWindow
     }
     [[nodiscard]] std::optional<Command> take_command(NodeId player)
     {
+        const auto key = take_key();
+        return key ? map_key_command(*key, player) : std::nullopt;
+    }
+    [[nodiscard]] std::optional<InputKey> take_key() noexcept
+    {
         const auto key = std::exchange(pending_key_, std::nullopt);
-        return key && handle_ && focused_ ? map_key_command(*key, player)
-                                          : std::nullopt;
+        return handle_ && focused_ ? key : std::nullopt;
+    }
+    [[nodiscard]] std::optional<NodeId> pointed() const noexcept
+    {
+        return pointed_;
     }
     [[nodiscard]] MessageLoopResult run_message_loop()
     {
@@ -125,6 +134,12 @@ class NativeWindow
             return InputKey::overdrive;
         case VK_SPACE:
             return InputKey::wait;
+        case VK_TAB:
+            return InputKey::plan;
+        case VK_RETURN:
+            return InputKey::confirm;
+        case VK_ESCAPE:
+            return InputKey::cancel;
         default:
             return std::nullopt;
         }
@@ -157,12 +172,34 @@ class NativeWindow
         }
         if (owner && owner->painter_ && message == WM_SIZE)
             InvalidateRect(handle, nullptr, FALSE);
+        if (owner && (message == WM_SIZE || message == WM_MOUSELEAVE))
+            owner->set_point(std::nullopt);
+        if (owner && message == WM_MOUSEMOVE)
+        {
+            RECT client{};
+            std::optional<NodeId> point;
+            if (owner->focused_ && GetClientRect(handle, &client))
+                point = presentation::board_node_at(
+                    static_cast<short>(LOWORD(lparam)),
+                    static_cast<short>(HIWORD(lparam)),
+                    static_cast<float>(client.right),
+                    static_cast<float>(client.bottom));
+            TRACKMOUSEEVENT tracking{sizeof(TRACKMOUSEEVENT), TME_LEAVE, handle,
+                                     0};
+            TrackMouseEvent(&tracking);
+            owner->set_point(point);
+        }
         if (owner && (message == WM_SETFOCUS || message == WM_KILLFOCUS))
         {
             owner->focused_ = message == WM_SETFOCUS;
             owner->input_.set_focus(owner->focused_);
             if (!owner->focused_)
+            {
                 owner->pending_key_.reset();
+                owner->pointed_.reset();
+                if (owner->command_handler_)
+                    owner->command_handler_->key_available();
+            }
         }
         if (owner && (message == WM_KEYDOWN || message == WM_KEYUP))
         {
@@ -186,6 +223,9 @@ class NativeWindow
             owner->focused_ = false;
             owner->input_.set_focus(false);
             owner->pending_key_.reset();
+            owner->pointed_.reset();
+            if (owner->command_handler_)
+                owner->command_handler_->key_available();
             if (owner->loop_active_)
                 PostQuitMessage(0);
         }
@@ -197,6 +237,15 @@ class NativeWindow
         }
         return DefWindowProcW(handle, message, wparam, lparam);
     }
+    void set_point(std::optional<NodeId> point) noexcept
+    {
+        if (pointed_ == point)
+            return;
+        pointed_ = point;
+        if (command_handler_)
+            command_handler_->key_available();
+    }
+    std::optional<NodeId> pointed_;
     HINSTANCE instance_ = nullptr;
     ATOM atom_ = 0;
     HWND handle_ = nullptr;

@@ -26,3 +26,9 @@ P063-01 wdraża KeyboardInput bez Win32 i Command: siedem niezależnych stanów 
 P063-02 wdraża map_key_command(InputKey, NodeId). Zwraca wartościową komendę bez odczytu/mutacji GameState; ruch jest ograniczony jedynie geometrią. Resolver nadal odrzuca ruch bez portów i zachowuje pełny stan.
 
 P063-03 wdraża NativeWindow::take_command(NodeId). Wiadomości WM_KEYDOWN/UP są tłumaczone na filtr; bit30 oznacza repeat. Każde pobranie konsumuje jedyny oczekujący wpis, również na granicy planszy. Focus loss i WM_DESTROY czyszczą pending oraz held; nie ma podłączonej sesji. Kontrakt bit30: https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-keydown .
+
+P068-06 rozszerza filtr o Tab/Enter/Escape i udostępnia take_key dla
+ActionSelection. Zachowuje take_command dla dotychczasowych konsumentów.
+WM_MOUSEMOVE używa fit_board, WM_MOUSELEAVE/resize usuwa hover, a focus loss
+i destrukcja także kandydata i tryb. R/O zapisuje wskazany cel w chwili wyboru;
+sam ruch kursora nie przepisuje komendy. Legalność pozostaje w resolverze.

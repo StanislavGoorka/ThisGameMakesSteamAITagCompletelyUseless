@@ -13,6 +13,9 @@ enum class InputKey : unsigned
     rotate,
     overdrive,
     wait,
+    plan,
+    confirm,
+    cancel,
     count
 };
 
