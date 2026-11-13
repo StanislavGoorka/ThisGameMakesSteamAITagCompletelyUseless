@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P061-02
+Task: P061-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061-01, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061-02, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Publiczna bramka rejestru napisów. Dodaj skrypt public content gate na bazie bramki approved: content/texts.json musi zawierać wyłącznie approved i żadnego markera. Bez skanera binariów i bez zmiany treści.
+Tryb public w konfiguracji CMake. Dodaj jawne rozdzielenie developer/public niezależne od Debug/Release. Public build uruchamia bramkę P061-02 przed celami produktu i wystawia politykę do przyszłego entrypointu; developer pozostaje domyślny.
 
-Kryteria: Izolowane rejestry: pusty i approved fixture przechodzą, oznaczony placeholder dozwolony przez developer walidator jest odrzucony publicznie, mixed i zły status/źródło odrzucone. Właściwe kody procesu.
+Kryteria: Configure/build D/R developer i public bez placeholderów. Izolowany developer z oznaczonym wpisem przechodzi, public build odmawia z niezerowym kodem. Bez deklaracji gotowego depotu i bez publikacji.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

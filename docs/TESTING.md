@@ -8,6 +8,13 @@
 
 ## C++ i zakres testów
 
+P061-02: Test-PublicContent.ps1 sprawdza 9 wyników procesu na izolowanym
+checkout: pusty/public, marked/developer, marked/public, approved fixture,
+mixed, nieznane źródło/status, marker ze statusem approved i przywrócenie.
+Validate-PublicContent.ps1 uruchamia najpierw bramkę assetów i odrzuca
+placeholdery bez zmiany rzeczywistych treści. Test approved jest syntetyczny,
+bez dowodu autorstwa; to próba walidacji pól.
+
 P061-01 rozszerza application_text_catalog o macierz dwóch TextAudience:
 pusty i approved-only katalog, placeholder-only i mixed lista, brak źródła
 oraz unknown audience. Public odrzuca całą listę z placeholderem, developer

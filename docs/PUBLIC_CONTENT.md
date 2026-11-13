@@ -23,7 +23,14 @@ P061-01 wdraża wymagany parametr `TextAudience` fabryki TextCatalog.
 Nie ma domyślnej polityki; caller wybiera developer albo public_release.
 Public odrzuca atomowo również mixed listę z jednym poprawnym placeholderem,
 a nieznana wartość enum jest błędem także dla pustej listy. Oba tryby nadal
-wymagają pełnej walidacji wpisów i źródeł. P061-02/03 pozostają do wdrożenia.
+wymagają pełnej walidacji wpisów i źródeł.
+
+P061-02 wdraża `scripts/Validate-PublicContent.ps1`. Najpierw uruchamia
+bramkę approved payloadu, a następnie odrzuca każdy wpis nie-approved
+lub zawierający marker. `scripts/Test-PublicContent.ps1` w osobnym checkout
+sprawdza różnicę developer/public oraz odmowy metadanych. Rzeczywisty
+content/texts.json pozostaje pusty; samo PASS nie oznacza gotowego produktu.
+Integracja z wyborem trybu budowania pozostaje w P061-03.
 
 Ograniczenie: bramki pól i rejestru nie skanują napisów zakodowanych w EXE
 ani niewymienionych katalogów depotu. P101 i review wszystkich ekranów mają
