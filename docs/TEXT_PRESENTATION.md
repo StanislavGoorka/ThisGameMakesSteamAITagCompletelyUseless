@@ -25,3 +25,16 @@ mogą udostępnić starego brush ani trasy preview. Bez HUD i nowych etykiet.
 Public gate nadal odrzuca istniejący placeholder. Nie tworzymy finalnych
 tekstów ani nowej zgody na assety. Brak obserwacji pulpitu należy raportować
 oddzielnie od testów API i pikseli; Computer Use ostatnio zgłaszał brak pipe.
+
+P069-02 wdraża TextRenderer: Segoe UI z kolekcji systemowej, 16 DIP,
+pełny UTF-16 z katalogu, bez zawijania i bez skracania. Extent uwzględnia
+metryki i overhang glifów. Zbyt mały obszar zwraca S_FALSE bez rysowania;
+niepoprawny cel/obszar zwraca E_INVALIDARG. Brush jest lokalny dla każdego
+draw, a layout/fabryka/format żyją w RAII bez przypisania do celu D2D.
+AtlasRenderer opcjonalnie składa napis w tej samej klatce przed EndDraw.
+
+Zweryfikowane API: [CreateTextLayout](https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefactory-createtextlayout)
+i [DrawTextLayout](https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-drawtextlayout).
+DrawTextLayout nie zwraca błędu operacji rysowania; caller sprawdza EndDraw.
+Test używa dwóch niezależnych programowych celów WIC, porównuje wynikowe
+piksele i sprawdza czarny bufor po odmowie, bez zapisywania obrazu jako asset.

@@ -52,7 +52,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P069-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P069-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -430,3 +430,5 @@ P068-04: Podłączono wynik podglądu do BoardView i znaczniki trasy z istnieją
 P069: Rozbito tekst developerski na wspólny odczyt UTF-16, renderer DirectWrite z lifecycle niezależnym od celu oraz podłączenie istniejącego napisu w osobnym obszarze okna. P070 wymaga P069-03; kontrakt TEXT_PRESENTATION.md określa brak obciętego markera i wspólną geometrię hit-testu. [Raport](docs/workflow/history/P069.md)
 
 P069-01: Wydzielono read_text_utf16: owning odczyt z TextCatalog i ścisła konwersja Win32 bez zastępowania błędnych bajtów. NativeWindow używa wspólnego odczytu tytułu, bez fallbacku identyfikatora. [Raport](docs/workflow/history/P069-01.md)
+
+P069-02: Dodano RAII TextRenderer dla wartości TextCatalog: systemowy Segoe UI, pełny UTF-16 i metryki glifów. Lokalny brush należy do bieżącego celu; zbyt mały obszar pomija cały napis. AtlasRenderer opcjonalnie rysuje tekst przed swoim EndDraw. [Raport](docs/workflow/history/P069-02.md)

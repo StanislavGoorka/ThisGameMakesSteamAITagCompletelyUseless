@@ -1,5 +1,6 @@
 #pragma once
 #include "platform/windows/png_read.hpp"
+#include "platform/windows/text_renderer.hpp"
 #include "presentation/board_projection.hpp"
 #include <d2d1.h>
 #include <memory>
@@ -51,8 +52,8 @@ class AtlasRenderer
             return {nullptr, result};
         return {std::move(owner), S_OK};
     }
-    [[nodiscard]] HRESULT
-    draw(std::span<const presentation::TileDraw> tiles) noexcept
+    [[nodiscard]] HRESULT draw(std::span<const presentation::TileDraw> tiles,
+                               const TextRenderer *label = nullptr) noexcept
     {
         // Validate the whole frame before touching the previous frame.
         if (tiles.size() > 4096)
@@ -89,8 +90,18 @@ class AtlasRenderer
                                 D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
                                 D2D1::RectF(x, y, x + 16, y + 16));
         }
+        HRESULT text_result = S_OK;
+        const auto size = target_->GetSize();
+        if (label && size.width > 8 &&
+            size.height >= label->extent().height + 8)
+            text_result = label->draw(
+                target_.Get(),
+                D2D1::RectF(4, 4, size.width - 4, label->extent().height + 4));
         target_->SetTransform(previous);
-        return target_->EndDraw();
+        const auto result = target_->EndDraw();
+        return FAILED(result)        ? result
+               : FAILED(text_result) ? text_result
+                                     : S_OK;
     }
 
   private:

@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P069-02
+Task: P069-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P069-01.
-Zależności: P069-01. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P069-02.
+Zależności: P069-02. Sprawdź git status i walidator.
 
-Dodaj RAII fabryki/formatu/layoutu DirectWrite dla tekstu wyłącznie z katalogu. Rysuj istniejący tekst na przekazanym celu D2D, bez własnego BeginDraw/EndDraw i bez nowego fontu. Podłącz opcjonalny napis do pojedynczej klatki AtlasRenderer, bez okna UI.
+Podłącz istniejący developer-window-title do DirectWrite w osobnym górnym obszarze BoardView. Renderer i hit-test wspólnie uwzględniają ten obszar. Bez HUD, nowych tekstów, menu i mechanik.
 
-Kryteria: Rzeczywisty offscreen: pełny UTF-16 i prefiks, mierzalne piksele tekstu, brak rysowania gdy cały napis nie mieści się w obszarze, invalid target/bounds i ponowne użycie na innym celu; D/R.
+Kryteria: Paint/resize/recreate i focus z rzeczywistym HWND; obszar napisu nie jest polem, wybór i preview/commit nadal zgodne. Każdy pokazany tekst zachowuje marker, public gate odrzuca placeholder; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakty BOARD_PRESENTATION.md
