@@ -133,7 +133,8 @@ P058 dzieli [odczyt zatwierdzonych odwołań](ASSET_MANIFEST.md) na cztery dziec
 model application, pamięciowy parser Windows.Data.Json, chroniony odczyt pliku
 z SHA-256 oraz dowód integracyjny. Plan nie jest jeszcze gotowym czytnikiem;
 P059 czeka na P058-04. P058-01 wdraża model, a P058-02 parser pamięciowy;
-odczyt i SHA-256 pliku pozostają P058-03. Systemowe API nie rozszerza
+P058-03 wdraża chroniony odczyt z SHA-256 BCrypt i kanoniczną lokalizacją.
+P058-04 pozostaje dowodem integracji rejestru. Systemowe API nie rozszerza
 uprawnień do treści.
 
 Renderer używa wyłącznie zatwierdzonego manifestu. Brak zasobu oznacza kontrolowany błąd lub wyłączenie widoku, nie rysowanie nowej ikony. Panele, ścieżki i znaczniki powstają z pozyskanych elementów. Zwykłe pozycjonowanie i skalowanie gotowych bitmap jest operacją prezentacji; nie daje prawa do twórczego przerabiania artworku.

@@ -13,9 +13,10 @@ namespace closed_circuit::test
 class CheckpointDirectory
 {
   public:
-    CheckpointDirectory()
+    explicit CheckpointDirectory(
+        const std::filesystem::path &base = std::filesystem::current_path())
     {
-        path = std::filesystem::current_path() /
+        path = base /
                (L"checkpoint_test_" + std::to_wstring(GetCurrentProcessId()));
         // Never delete a pre-existing path. CTest runs each test in its own
         // process, and each fixture owns only the directory it created.

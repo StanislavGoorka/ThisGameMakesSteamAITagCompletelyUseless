@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P058-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P058-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -332,3 +332,5 @@ P044-01: Dodano DeliveryScope z odrębnymi tokenami próby i gałęzi oraz grani
 P044-02: EventDispatcher zachowuje kopie zdarzeń i masek, ocenia raz na zakres i ponawia tylko pending ID. Odrzuca konflikty, zły kontekst, kształt i kolejność. Testy chronią częściowe potwierdzenia, invalid maskę i wyjątek sinka po skutku; syntetyczny strumień trzech sektorów powtarza się bez dodatkowych ocen. Bez IO i predykatów. [Raport P044-02](docs/workflow/history/P044-02.md)
 
 P044-03: Test integracyjny przechodzi trzy pełne runy dla seedów 0/1/MAX przez resolver, baseline witness i lokalny sink. Duplikaty nie oceniają ponownie; restore sektora2 porównuje każdą listę kluczy/payloadów i pełny stan. Nowa gałąź, nowa próba z tym samym seedem i sześć nowych procesów oceniają ponownie bez zmiany main/bak. Preview zachowuje stan, pliki i liczniki usług. Stały fake nie implementuje predykatów MVP; bez zmian produkcyjnych. [Raport P044-03](docs/workflow/history/P044-03.md)
+
+P058-03: Dodano read_asset_file: jeden chroniony uchwyt, kanoniczna lokalizacja, dokładna długość i SHA-256 BCrypt przed publikacją całego bufora. Testy obejmują Unicode, puste i dokładne bajty, brak, blokadę, katalog, junction, ucieczkę oraz złe rozmiary/hash i invalid reference. [Raport](docs/workflow/history/P058-03.md)

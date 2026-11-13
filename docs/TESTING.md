@@ -8,6 +8,12 @@
 
 ## C++ i zakres testów
 
+P058-03: windows_asset_read chroni dokładne bajty abc i pustego pliku,
+Unicode katalogu bazowego, powtórki, brak pliku, blokadę, invalid reference,
+katalog, złe długości i hash. Rzeczywiste junction na C: (temp) sprawdzają
+reparse i ucieczkę poza approved; D: nie obsługuje tych próbek. Testy nie
+dotykają zatwierdzonych assetów. Wyłącznie cały bufor albo kontrolowany błąd.
+
 P058-02: `windows_asset_manifest_parse` uruchamia systemowy Windows.Data.Json
 w rzeczywistym apartment WinRT. Literalny rekord chroni pełne pola/digest,
 puste manifesty, JSON escapes i niezależne kopie. Odmowy obejmują składnię,

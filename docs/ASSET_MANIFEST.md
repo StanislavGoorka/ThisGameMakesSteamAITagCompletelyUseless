@@ -74,6 +74,18 @@ SHA-256 przez systemowy
 z RAII i bez własnej implementacji kryptografii. Nie dekoduje PNG i nie
 zmienia treści. Sprawdzenie hasha potwierdza bajty, nie autorstwo lub licencję.
 
+P058-03 wdraża `windows::read_asset_file(trusted_root, reference)`.
+Porównuje znormalizowaną ścieżkę uchwytu z kanonicznym approved i pełnym
+względnym odwołaniem; również junction do innego miejsca wewnątrz approved
+nie jest aliasem dopuszczonej ścieżki. Uchwyt odmawia współdzielenia zapisu
+i usuwania. Brak wyniku zawiera kod Win32: invalid reference=INVALID_DATA,
+lokalizacja/katalog/reparse=ACCESS_DENIED, długość=BAD_LENGTH, hash=CRC;
+błędy otwarcia/IO zachowują kod systemu. Błąd BCrypt daje GEN_FAILURE.
+Alokacja może zgłosić wyjątek bez publikacji bajtów. Wykorzystano systemowy
+[BCryptHash](https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcrypthash)
+z RAII providera oraz
+[GetFinalPathNameByHandleW](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew).
+
 ## Dowód integracji — P058-04
 
 Rzeczywisty rejestr i wszystkie trzy pliki P057 przechodzą parse→lookup→read.
