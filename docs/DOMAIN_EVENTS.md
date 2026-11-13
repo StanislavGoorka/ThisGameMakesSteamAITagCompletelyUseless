@@ -12,9 +12,10 @@ wspólnym źródłem reguł. Zdarzenia to dane wewnętrzne, bez treści dla grac
 | 4 | RunEnded z RunEndReason | Koniec runu: won=1, death=2, overload=3 |
 
 Rodzaj wylicza payload, nie indeks wariantu. Nie przechowujemy drugiej,
-potencjalnie sprzecznej kopii rodzaju. Akcja zawiera cel obrotu/overdrive,
-więc przyszły evaluator może śledzić rekonfigurację i użycia overdrive.
-Predykaty, zakres ich pamięci i reset definiuje P045, nie ten kontrakt.
+potencjalnie sprzecznej kopii rodzaju. Akcja zawiera cel obrotu/overdrive
+i pozwala śledzić użycia overdrive. Sam cel obrotu nie dowodzi zmiany trasy.
+Predykaty, reset i plan rozszerzenia payloadu opisuje
+[specyfikacja P045](ACHIEVEMENT_PREDICATES.md).
 
 DomainEventKey zawiera silny RunSeed, SectorNumber, TurnIndex i uint8 ordinal.
 Tura to licznik **po** zaakceptowanej akcji, w MVP 1..48. Ordinal to pozycja

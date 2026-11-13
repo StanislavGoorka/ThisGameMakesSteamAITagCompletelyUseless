@@ -1211,13 +1211,31 @@
             "gate": null
         },
         {
+            "id": "P045-01",
+            "phase": "M4",
+            "title": "Wartość dowodu rekonfiguracji",
+            "scope": "Rozszerz ActionCommitted o opcjonalny cel pakietu o zmienionej trasie. Bez ekstrakcji i predykatów.",
+            "acceptance": "Domyślny brak dowodu, pełna równość i kopie payloadu, konflikt tego samego klucza o innym dowodzie odrzucony.",
+            "depends_on": ["P045"],
+            "gate": null
+        },
+        {
+            "id": "P045-02",
+            "phase": "M4",
+            "title": "Ekstrakcja zmiany trasy pakietu",
+            "scope": "Wypełnij dowód rekonfiguracji w wrapperze porównując BFS tego samego pakietu przed i po akcji, bez ponownego resolvera.",
+            "acceptance": "Otwarcie i zmiana trasy tak; obrót bez zmiany, brak pakietu, pakiet na celu i zamknięcie trasy nie. Restore i preview zachowują kontrakty.",
+            "depends_on": ["P045-01"],
+            "gate": null
+        },
+        {
             "id": "P046",
             "phase": "M4",
             "title": "Achievement dostawy",
             "scope": "Implementuj wyłącznie pierwszy predykat dostawy.",
             "acceptance": "Przypadki pozytywne, negatywne i trwałość.",
             "depends_on": [
-                "P045"
+                "P045-02"
             ],
             "gate": null
         },
