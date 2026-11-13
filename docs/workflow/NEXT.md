@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P053
+Task: P054
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P052 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P053 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Dodaj ograniczony test losowych sekwencji legalnych i nielegalnych komend. Stałe seedy, pełny reproducer błędu i niezmienniki HP/portów/ID; sprawdź atomową odmowę, deterministyczne powtórzenie oraz zgodność preview. Bez zmian reguł.
+Przeprowadź bramkę headless bez nowych funkcji. Przejrzyj i uruchom Debug/Release, seedy, replay i trwałość, zapisz konkretną decyzję przejścia do pochodzenia treści oraz znane ograniczenia. Bez deklaracji QA wizualnego lub grywalności.
 
 Dla C++ stosuj cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Configure, build i CTest Debug/Release, formatter src/tests/tools; dla samej

@@ -155,6 +155,19 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P053: `core_random_commands` sprawdza 16 384 komendy: 64 stałe seedy (0..62
+i MAX), dwie rodziny (bazowa oraz dług 6 z opłaconym impulsem i drugim na
+wyjściu), cztery zestawy modułów przez seed modulo 4, po 128 prób.
+Naprzemiennie losuje z pełnej listy legalnych i nielegalnych komend; po końcu
+sektora sprawdza atomowe odmowy. Każdy rodzaj ma sukcesy i odmowy. Pełne stany
+preview i dwóch wykonań muszą być równe, wejście pozostaje identyczne.
+Niezmienniki obejmują HP (brak leczenia, najwyżej 1 obrażenie), tury, zasoby,
+liczbę portów każdego węzła, monotoniczne dostawy, niezmienne dane sektora,
+brak nowych/zdublowanych ID i nakładania impulsów. Błąd wypisuje seed,
+rodzinę, zestaw modułów i całą sekwencję prób z celami. Indeksy komend w tym
+wewnętrznym reproducerze: move=0, rotate=1, wait=2, overdrive=3. Nie jest to
+pełny fuzzing niezaufanych bajtów ani dowód balansu.
+
 P051-01 rozszerza windows_event_dispatcher o pełny run root seedu 1 z prawdziwym
 MvpAchievementEvaluator. Wszystkie pięć odblokowań daje maskę 31 i backup 15.
 Checkpoint sektora 2 jest zapisany/odczytany przez Windows; sektory 2–3
