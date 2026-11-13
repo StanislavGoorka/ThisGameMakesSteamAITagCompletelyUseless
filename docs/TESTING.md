@@ -302,4 +302,6 @@ P064-02: windows_direct2d_resize czterokrotnie sprawdza rzeczywiste rozmiary 1x1
 
 P065: windows_png_read porównuje 832x373/stride3328/1241344 bajtów i SHA-256 pełnego PBGRA z niezależnym GDI+. Sprawdza COM-uninitialized, rzeczywisty manifest, trzy powtórki w Unicode root, niezależność bufora, korupcję przed hashem i kodekiem, brak, retry, non-PNG oraz niezmienność oryginału/rejestru. Nie tworzy artworku ani nowych assetów.
 
-P066-01: presentation_atlas_tiles sprawdza literalne mapowanie wszystkich 16 masek i porty na kraw?dziach rzeczywistego PNG. Rotuje indeksy kraw?dzi niezale?nie od helpera produkcyjnego. Kontroluje granice kom?rek i obrot?w; nie tworzy grafiki.
+P066-01: presentation_atlas_tiles sprawdza literalne mapowanie wszystkich 16 masek i porty na krawędziach rzeczywistego PNG. Rotuje indeksy krawędzi niezależnie od helpera produkcyjnego. Kontroluje granice komórek i obrotów; nie tworzy grafiki.
+
+P066-02: presentation_board_projection sprawdza wszystkie 49 pól i 16 masek w pięciu viewportach, w tym 1x1. Kontroluje centrowanie, brak zawijania, odmowę zero/negative/NaN/infinity/overflow i pełną niezmienność stanu.

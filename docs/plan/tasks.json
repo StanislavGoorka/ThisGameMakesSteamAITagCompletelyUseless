@@ -1643,8 +1643,8 @@
             "id": "P066",
             "phase": "M6",
             "title": "Prezentacja płytek",
-            "scope": "Wy??cznie rozbij prezentacj? planszy na mapowanie atlasu, czyst? projekcj?, adapter bitmapy Direct2D i pod??czenie okna. Bez implementacji dzieci.",
-            "acceptance": "Cztery ma?e kontrakty z testami negatywnymi; P067 wymaga P066-04. Sam plan nie implementuje renderowania.",
+            "scope": "Wyłącznie rozbij prezentację planszy na mapowanie atlasu, czystą projekcję, adapter bitmapy Direct2D i podłączenie okna. Bez implementacji dzieci.",
+            "acceptance": "Cztery małe kontrakty z testami negatywnymi; P067 wymaga P066-04. Sam plan nie implementuje renderowania.",
             "depends_on": [
                 "P065"
             ],
@@ -1653,9 +1653,9 @@
         {
             "id": "P066-01",
             "phase": "M6",
-            "title": "Mapowanie zatwierdzonych kafli port?w",
-            "scope": "Przypisz ka?d? mask? 0-15 do gotowego kafla atlasu Kenney 1.2 i obrotu. Bez rysowania i zmiany asset?w.",
-            "acceptance": "Wszystkie maski i obroty, granice atlasu, porty na kraw?dziach rzeczywistego PNG; D/R.",
+            "title": "Mapowanie zatwierdzonych kafli portów",
+            "scope": "Przypisz każdą maskę 0-15 do gotowego kafla atlasu Kenney 1.2 i obrotu. Bez rysowania i zmiany assetów.",
+            "acceptance": "Wszystkie maski i obroty, granice atlasu, porty na krawędziach rzeczywistego PNG; D/R.",
             "depends_on": [
                 "P066"
             ],
@@ -1665,8 +1665,8 @@
             "id": "P066-02",
             "phase": "M6",
             "title": "Czysta projekcja planszy na kafle",
-            "scope": "Prze??? 49 masek GameState na kafle i wsp??rz?dne w dopasowanym kwadracie viewportu. Bez Windows i mutacji stanu.",
-            "acceptance": "Wszystkie pola i maski, uk?ad 7x7, resize, pusty i niepoprawny viewport, niezale?no?? wyniku; D/R.",
+            "scope": "Przełóż 49 masek GameState na kafle i współrzędne w dopasowanym kwadracie viewportu. Bez Windows i mutacji stanu.",
+            "acceptance": "Wszystkie pola i maski, układ 7x7, resize, pusty i niepoprawny viewport, niezależność wyniku; D/R.",
             "depends_on": [
                 "P066-01"
             ],
@@ -1676,8 +1676,8 @@
             "id": "P066-03",
             "phase": "M6",
             "title": "Rysowanie zatwierdzonego atlasu Direct2D",
-            "scope": "Dodaj upload zweryfikowanego PNG i rysowanie listy kafli. Bitmapa nale?y do konkretnego celu. Bez okna produktu i generowanego fallbacku.",
-            "acceptance": "Rzeczywisty render offscreen por?wnany z pikselami atlasu po obrotach; brak pliku, z?y hash i retry; D/R.",
+            "scope": "Dodaj upload zweryfikowanego PNG i rysowanie listy kafli. Bitmapa należy do konkretnego celu. Bez okna produktu i generowanego fallbacku.",
+            "acceptance": "Rzeczywisty render offscreen porównany z pikselami atlasu po obrotach; brak pliku, zły hash i retry; D/R.",
             "depends_on": [
                 "P066-02"
             ],
@@ -1687,7 +1687,7 @@
             "id": "P066-04",
             "phase": "M6",
             "title": "Plansza w oknie developerskim",
-            "scope": "Podepnij plansz? z start_run do developer_window, WM_PAINT, resize i odtwarzania bitmapy po utracie celu. Bez jednostek, komend i HUD.",
+            "scope": "Podepnij planszę z start_run do developer_window, WM_PAINT, resize i odtwarzania bitmapy po utracie celu. Bez jednostek, komend i HUD.",
             "acceptance": "Rzeczywisty repaint i resize, kontrolowana odmowa braku assetu, smoke procesu; D/R.",
             "depends_on": [
                 "P066-03"
