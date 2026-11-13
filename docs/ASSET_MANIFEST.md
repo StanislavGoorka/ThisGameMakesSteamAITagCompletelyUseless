@@ -1,7 +1,7 @@
 # Kontrakt odczytu odwołań P058
 
-P058 jest podziałem planu, nie implementacją. P058-01..04 osobno dostarczą
-poniższe kontrakty; P059 zależy od ostatniego dziecka. Nie dodajemy renderera,
+P058 jest podziałem planu. P058-01 dostarcza model, walidację i lookup;
+P058-02..04 pozostają kolejnymi kontraktami. P059 zależy od ostatniego dziecka. Nie dodajemy renderera,
 nowych assetów, formatu zapisu gry ani ogólnej biblioteki JSON.
 
 ## Wartości application — P058-01
@@ -25,6 +25,9 @@ Duplikat ID albo ścieżki porównanej bez rozróżniania liter ASCII jest błę
 Windows nie może otworzyć tego samego pliku pod dwiema takimi nazwami.
 Lookup nieznanego ID daje brak wyniku. Model nie sprawdza istnienia pliku ani
 zgodności jego zawartości z digestem — to osobny kontrakt P058-03.
+AssetReference posiada własne stringi i porównanie pełnej wartości.
+Walidacja manifestu odrzuca również niekanoniczne wartości pozostawione
+po przeniesieniu obiektu; lookup nie publikuje częściowo poprawnej listy.
 
 ## Parser pamięciowy Windows — P058-02
 

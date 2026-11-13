@@ -8,6 +8,13 @@
 
 ## C++ i zakres testów
 
+P058-01: `application_asset_reference` sprawdza własne wartości ID/ścieżki,
+32 literalne bajty SHA-256, wszystkie 256 wartości znaku ID i 16 384 zmian
+znaku digestu. Obejmuje długości ID64/65 i ścieżki240/241, zakres bajtów,
+Windows device names/ADS/traversal/NUL/Unicode, 256/257 odwołań, duplikaty ID
+i ścieżek różniących się case oraz brak nieznanego ID. Kopie i wartości
+po move nie mogą udostępnić invalid manifestu. Bez JSON, plików i renderowania.
+
 CTest uruchamia mały natywny runner testów; późniejszą bibliotekę można dodać tylko z uzasadnieniem. Nazwy plików: `*_tests.cpp`; nazwy przypadków opisują warunek i rezultat, np. `rotate_four_times_restores_ports`, `invalid_move_preserves_rng`. Każdy test działa również w Release, bez polegania na `assert`.
 
 Nie narzucamy sztucznego procentu coverage całego produktu. Core musi mieć testy wszystkich reguł i opisanych ścieżek błędów. Liczba zaliczonych testów ani 100% line coverage nie dowodzą grywalności. Przy poprawce błędu najpierw przypadek odtwarzający błąd, potem poprawka i ponowne uruchomienie.

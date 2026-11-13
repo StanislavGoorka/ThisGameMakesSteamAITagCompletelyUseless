@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P058-01
+Task: P058-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P058 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P058-01 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Zaimplementuj wyłącznie P058-01: wartościowy AssetReference, walidowane ID i kanoniczna ścieżka approved, hex SHA-256, długość, unikalność ograniczonego manifestu i lookup nieznanego ID. Stosuj ASSET_MANIFEST.md i cpp-core-step. Bez JSON, IO, renderowania i nowych assetów. Testy pól/granic/duplikatów oraz kopii w Debug/Release.
+Zaimplementuj wyłącznie pamięciowy parser P058-02 zgodnie z ASSET_MANIFEST.md. UTF-8 bez BOM do 1 MiB, głębokość32 i najwyżej256 odwołań, schema1/status approved i ścisłe typy wymaganych pól. Użyj systemowego Windows.Data.Json/C++WinRT, caller zapewnia apartment. Zwracaj tylko pełny zwalidowany manifest. Testy składni, UTF-8, typów, pól, limitów i duplikatów w D/R. Bez IO, SHA liczonego z plików, renderera i pobrań.
 
 Dla C++ stosuj cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Configure, build i CTest Debug/Release, formatter src/tests/tools; dla samej
