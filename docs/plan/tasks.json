@@ -2016,11 +2016,66 @@
         {
             "id": "P073",
             "phase": "M6",
-            "title": "Lokalne powiadomienie",
-            "scope": "Dodaj prezentację jednego istniejącego achievementu, bez nowych predykatów.",
-            "acceptance": "Brak duplikacji powiadomień i wyłącznie zatwierdzone grafiki.",
+            "title": "Rozbij lokalne powiadomienie",
+            "scope": "Wyłącznie podziel prezentację istniejącego first_delivery na potwierdzenie sinka, tekst, dostarczanie zdarzeń, ścieżkę profilu i integrację okna. Bez implementacji dzieci.",
+            "acceptance": "Każde dziecko ma jeden kontrakt i testy; P074 zależy od ostatniego dziecka. Bez nowych predykatów, grafik i pobrań.",
             "depends_on": [
                 "P072-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P073-01",
+            "phase": "M6",
+            "title": "Potwierdzone powiadomienie sinka",
+            "scope": "Dodaj dekorator istniejącego AchievementSink, zapamiętujący wyłącznie nowe trwałe odblokowanie first_delivery. Bez IO i renderowania.",
+            "acceptance": "unlocked tworzy jeden pending; already_unlocked, unavailable, invalid, wyjątek i inne ID nie tworzą powiadomienia; dismiss i powtórka nie dublują.",
+            "depends_on": [
+                "P073"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P073-02",
+            "phase": "M6",
+            "title": "Oznaczony tekst achievementu",
+            "scope": "Dodaj katalogowy placeholder first_delivery i kontrolowanego błędu usługi oraz czystą projekcję wiersza. Bez ikon i renderowania.",
+            "acceptance": "Pełny marker, brak ID i nieznany achievement dają odmowę; public gate blokuje robocze wpisy.",
+            "depends_on": [
+                "P073-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P073-03",
+            "phase": "M6",
+            "title": "Kolejka zdarzeń okna",
+            "scope": "Dodaj wąski właściciel istniejącego evaluatora i EventDispatcher z przygotowaniem kolejki przed publikacją stanu i ponowieniem po błędzie sinka. Bez Win32 i UI.",
+            "acceptance": "Istniejące predykaty bez zmian; pełna kolejność, retry/wyjątek bez ponownej oceny lub utraty zdarzeń, duplikaty idempotentne, fresh/restore i nowy scope niezależne.",
+            "depends_on": [
+                "P073-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P073-04",
+            "phase": "M6",
+            "title": "Lokalizacja profilu okna",
+            "scope": "Dodaj adapter prywatnego katalogu w LocalAppData i ścieżki istniejącego formatu profilu. Bez zapisu achievementu, checkpointu i zmian UI.",
+            "acceptance": "Rzeczywisty systemowy katalog i prywatny testowy katalog, powtórka, Unicode i kolizja z plikiem; kontrolowane błędy bez pobrań.",
+            "depends_on": [
+                "P073-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P073-05",
+            "phase": "M6",
+            "title": "Powiadomienie achievementu w oknie",
+            "scope": "Połącz istniejące zdarzenia zatwierdzonej tury z lokalnym sinkiem oraz katalogowym wierszem first_delivery w oknie developer. Bez nowych predykatów i grafik.",
+            "acceptance": "HWND: wyłącznie commit i trwały unlock, brak duplikatów po preview/retry/restart; kolejka zachowana po błędzie profilu, kontrolowany tekst, focus/hold, pełne stany core i niezmienione bajty istniejącego profilu.",
+            "depends_on": [
+                "P073-04"
             ],
             "gate": null
         },
@@ -2031,7 +2086,7 @@
             "scope": "Dodaj w UI odczyt istniejącego checkpointu i kontrolowane błędy.",
             "acceptance": "Zamknięcie i restart; zły zapis nie pokazuje wewnętrznych tekstów bez prefiksu.",
             "depends_on": [
-                "P073"
+                "P073-05"
             ],
             "gate": null
         },

@@ -467,3 +467,5 @@ P072-02: Dodano cztery katalogowe placeholdery nagrody i czystą projekcję wier
 P072-03: Podłączono katalogowy blok oferty do istniejącego renderera i RunWindow. Overlay atomowo zastępuje layout, wyłącza planszę oraz hit-test i pozostaje widoczny po klawiszu planszy. [Raport](docs/workflow/history/P072-03.md)
 
 P072-04: Podłączono wybór modułu i przejście sektora do okna. Enter bez kandydata daje katalogowy błąd bez mutacji; pełny zestaw przechodzi bez nagrody. Przejście czyści preview, wskazania i tryb planowania. [Raport](docs/workflow/history/P072-04.md)
+
+P073: Rozbito lokalne powiadomienie first_delivery na pięć wąskich zadań: dekorator sinka, katalogowy tekst, kolejka zdarzeń, lokalizacja profilu i integracja okna. P074 wymaga P073-05; dzieci nie są zaimplementowane. [Raport](docs/workflow/history/P073.md)
