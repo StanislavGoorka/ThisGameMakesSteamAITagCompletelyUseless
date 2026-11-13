@@ -1286,12 +1286,30 @@
         {
             "id": "P051",
             "phase": "M4",
-            "title": "Integracja core",
-            "scope": "Dodaj jeden scenariusz całego headless runu z checkpointem i odblokowaniem.",
-            "acceptance": "Powtórka po restarcie daje ten sam wynik i brak duplikatów.",
+            "title": "Rozbij integrację predykatów",
+            "scope": "Wyłącznie rozbij dowód pełnego runu z rzeczywistym evaluatorem i checkpointem oraz osobny dowód restartu procesu. Bez implementacji dzieci.",
+            "acceptance": "P051-01 obejmuje run i restore w procesie; P051-02 ponowienie po restarcie bez duplikatów; P052 zależy od ostatniego dziecka.",
             "depends_on": [
                 "P050"
             ],
+            "gate": null
+        },
+        {
+            "id": "P051-01",
+            "phase": "M4",
+            "title": "Pełny run z predykatami MVP",
+            "scope": "Dodaj jeden headless scenariusz od start_run przez trzy generowane sektory, rzeczywisty MvpAchievementEvaluator i lokalny profil; porównaj restore granicy w tym samym procesie.",
+            "acceptance": "Nowa próba odblokowuje 31; restore od sektora 2 bez historii zgłasza 27 do pustego profilu. Pełne stany i payloady zgodne; duplikaty i preview nie zmieniają plików. Bez nowej logiki produkcyjnej.",
+            "depends_on": ["P051"],
+            "gate": null
+        },
+        {
+            "id": "P051-02",
+            "phase": "M4",
+            "title": "Predykaty MVP po restarcie procesu",
+            "scope": "Uruchom odczyt zapisanego checkpointu i replay sektorów 2–3 z rzeczywistym evaluatorem w osobnym procesie. Bez zmian predykatów i formatów.",
+            "acceptance": "Dwa nowe procesy dają zgodne stany/payloady i zachowują dokładne bajty main/bak profilu; nowy pusty profil po restore nie otrzymuje run_without_overdrive. Preview bez skutku.",
+            "depends_on": ["P051-01"],
             "gate": null
         },
         {
@@ -1301,7 +1319,7 @@
             "scope": "Dodaj benchmark resolvera na opisanym korpusie stanów.",
             "acceptance": "Raport sprzętu, p50 i p95; wynik nie jest testem grywalności.",
             "depends_on": [
-                "P051"
+                "P051-02"
             ],
             "gate": null
         },

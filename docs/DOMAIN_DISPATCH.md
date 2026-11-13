@@ -23,6 +23,11 @@ P050 zamyka pięć predykatów MVP: RunEnded(won) w sektorze 3 zgłasza complete
 niezależnie od pochodzenia historii. Z czystą historią zgłasza równocześnie
 run_without_overdrive. SectorCompleted sam nie zgłasza ukończenia runu.
 
+P051 jest wyłącznie podziałem planu: P051-01 połączy rzeczywiste predykaty,
+trzy generowane sektory, profil i restore w procesie. P051-02 osobno sprawdzi
+ponowienie w nowych procesach. Dotychczasowy dowód P044-03 używał stałej maski,
+więc nie zastępuje tych kryteriów. P052 czeka na oba dzieci.
+
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są
 niezerowymi wartościami uint64, przydzielanymi przez przyszłą sesję aplikacji.
