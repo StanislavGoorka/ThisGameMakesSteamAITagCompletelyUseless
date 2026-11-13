@@ -10,7 +10,18 @@
       "name": "windows-msvc",
       "generator": "Visual Studio 17 2022",
       "architecture": "x64",
-      "binaryDir": "${sourceDir}/build/windows-msvc"
+      "binaryDir": "${sourceDir}/build/windows-msvc",
+      "cacheVariables": {
+        "CLOSED_CIRCUIT_PUBLIC_BUILD": "OFF"
+      }
+    },
+    {
+      "name": "windows-public",
+      "inherits": "windows-msvc",
+      "binaryDir": "${sourceDir}/build/windows-public",
+      "cacheVariables": {
+        "CLOSED_CIRCUIT_PUBLIC_BUILD": "ON"
+      }
     }
   ],
   "buildPresets": [
@@ -23,6 +34,16 @@
       "name": "windows-release",
       "configurePreset": "windows-msvc",
       "configuration": "Release"
+    },
+    {
+      "name": "windows-public-debug",
+      "configurePreset": "windows-public",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-public-release",
+      "configurePreset": "windows-public",
+      "configuration": "Release"
     }
   ],
   "testPresets": [
@@ -34,6 +55,16 @@
     {
       "name": "windows-release",
       "configurePreset": "windows-msvc",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-public-debug",
+      "configurePreset": "windows-public",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-public-release",
+      "configurePreset": "windows-public",
       "configuration": "Release"
     }
   ]

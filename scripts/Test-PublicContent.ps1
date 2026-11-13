@@ -1,3 +1,5 @@
+param([switch]$BuildModes)
+
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -51,6 +53,27 @@ try {
     Write-Texts @()
     Check-Process 'restored public catalog' 'Validate-PublicContent.ps1' $true 'only approved records'
     Write-Output 'PASS: all 9 public content checks.'
+    if ($BuildModes) {
+        Write-Texts @($placeholder)
+        $build = Join-Path $scratch 'build-modes'
+        foreach ($public in @('OFF', 'ON')) {
+            $output = & cmake -S $scratch -B $build -G 'Visual Studio 17 2022' -A x64 -DBUILD_TESTING=OFF "-DCLOSED_CIRCUIT_PUBLIC_BUILD=$public" 2>&1
+            if ($LASTEXITCODE -ne 0) { throw "Fixture configure failed: $output" }
+            foreach ($config in @('Debug', 'Release')) {
+                $ErrorActionPreference = 'Continue'
+                $output = & cmake --build $build --config $config --target developer_preview_benchmark --parallel 8 2>&1
+                $code = $LASTEXITCODE
+                $ErrorActionPreference = 'Stop'
+                if ($public -eq 'OFF') {
+                    if ($code -ne 0) { throw "Developer $config rejected marked text: $output" }
+                } elseif ($code -eq 0 -or -not (($output -join "`n").Contains('Public content rejects'))) {
+                    throw "Public $config did not reject marked text: $output"
+                }
+                Write-Output "PASS: fixture build public=$public config=$config"
+            }
+        }
+        Write-Output 'PASS: all 4 build audience checks.'
+    }
 } finally {
     $resolved = [IO.Path]::GetFullPath($scratch)
     $boundary = [IO.Path]::GetFullPath($localRoot).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar

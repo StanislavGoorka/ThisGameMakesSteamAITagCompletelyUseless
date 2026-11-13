@@ -7,6 +7,22 @@ add_library(game_core INTERFACE)
 target_compile_features(game_core INTERFACE cxx_std_20)
 target_include_directories(game_core INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+option(CLOSED_CIRCUIT_PUBLIC_BUILD "Require approved public content" OFF)
+target_compile_definitions(game_core INTERFACE CLOSED_CIRCUIT_PUBLIC_BUILD=$<BOOL:${CLOSED_CIRCUIT_PUBLIC_BUILD}>)
+if(WIN32)
+    if(CLOSED_CIRCUIT_PUBLIC_BUILD)
+        set(content_gate "Validate-PublicContent.ps1")
+    else()
+        set(content_gate "Validate-AssetPackage.ps1")
+    endif()
+    add_custom_target(validate_content ALL
+        COMMAND powershell -NoProfile -ExecutionPolicy Bypass
+            -File "${CMAKE_CURRENT_SOURCE_DIR}/scripts/${content_gate}"
+            -Root "${CMAKE_CURRENT_SOURCE_DIR}"
+        VERBATIM)
+    add_dependencies(game_core validate_content)
+endif()
+
 include(CTest)
 if(BUILD_TESTING)
     add_executable(application_text_catalog_tests tests/unit/text_catalog_tests.cpp)

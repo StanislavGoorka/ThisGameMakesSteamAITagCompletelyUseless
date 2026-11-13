@@ -8,6 +8,12 @@
 
 ## C++ i zakres testów
 
+P061-03: application_text_catalog sprawdza faktyczny build_text_audience
+nadany przez CMake; public nie przyjmuje testowego placeholdera, developer go
+przyjmuje. Test-PublicContent.ps1 -BuildModes sprawdza 9 prób rejestru i 4
+wyniki rzeczywistego builda konsumenta game_core w izolowanym repo.
+Presety windows-public-debug/release uruchamiają tę samą pełną pulę CTest.
+
 P061-02: Test-PublicContent.ps1 sprawdza 9 wyników procesu na izolowanym
 checkout: pusty/public, marked/developer, marked/public, approved fixture,
 mixed, nieznane źródło/status, marker ze statusem approved i przywrócenie.

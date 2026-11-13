@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P061-03
+Task: P062
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061-02, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061-03, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Tryb public w konfiguracji CMake. Dodaj jawne rozdzielenie developer/public niezależne od Debug/Release. Public build uruchamia bramkę P061-02 przed celami produktu i wystawia politykę do przyszłego entrypointu; developer pozostaje domyślny.
+Cykl okna Win32. Dodaj minimalny cykl okna bez rysowania gry; tytuł jako oznaczony placeholder.
 
-Kryteria: Configure/build D/R developer i public bez placeholderów. Izolowany developer z oznaczonym wpisem przechodzi, public build odmawia z niezerowym kodem. Bez deklaracji gotowego depotu i bez publikacji.
+Kryteria: Start, zamknięcie, focus i poprawne zwolnienie zasobów.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

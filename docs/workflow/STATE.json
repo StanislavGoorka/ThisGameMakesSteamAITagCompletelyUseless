@@ -137,9 +137,10 @@
         "P060",
         "P061",
         "P061-01",
-        "P061-02"
+        "P061-02",
+        "P061-03"
     ],
-    "current_task": "P061-03",
+    "current_task": "P062",
     "blocked": [],
-    "last_report": "docs/workflow/history/P061-02.md"
+    "last_report": "docs/workflow/history/P061-03.md"
 }

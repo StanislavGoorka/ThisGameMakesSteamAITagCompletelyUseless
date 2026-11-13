@@ -30,7 +30,20 @@ bramkę approved payloadu, a następnie odrzuca każdy wpis nie-approved
 lub zawierający marker. `scripts/Test-PublicContent.ps1` w osobnym checkout
 sprawdza różnicę developer/public oraz odmowy metadanych. Rzeczywisty
 content/texts.json pozostaje pusty; samo PASS nie oznacza gotowego produktu.
-Integracja z wyborem trybu budowania pozostaje w P061-03.
+P061-03 dodaje opcję CMake `CLOSED_CIRCUIT_PUBLIC_BUILD` (domyślnie OFF),
+presety windows-public i windows-public-debug/release. Zarówno Debug jak
+i Release mogą być developerskie; nazwa Release nie oznacza treści public.
+Cel validate_content uruchamia się przy każdym buildzie i jest zależnością
+game_core, więc obejmuje również jawne budowanie konsumenta biblioteki.
+Developer używa Validate-AssetPackage, public — Validate-PublicContent.
+`text_build_policy.hpp` wystawia build_text_audience dla przyszłego entrypointu;
+nie zastępuje walidacji samych wpisów. Testy niewyświetlane mogą jawnie używać
+polityki developer również przy kompilacji public, pozostając poza paczką gry.
+
+`Test-PublicContent.ps1 -BuildModes` przełącza rzeczywisty CMake w izolowanym
+checkout z oznaczonym wpisem. Developer Debug/Release buduje wskazanego
+konsumenta game_core; public Debug/Release musi odmówić przed jego budową.
+CI obejmuje również cztery warianty pełnego builda i CTest.
 
 Ograniczenie: bramki pól i rejestru nie skanują napisów zakodowanych w EXE
 ani niewymienionych katalogów depotu. P101 i review wszystkich ekranów mają

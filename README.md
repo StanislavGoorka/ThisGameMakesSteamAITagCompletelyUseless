@@ -12,6 +12,13 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
+Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
+buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
+`cmake --build --preset windows-public-debug` lub `windows-public-release`
+i odpowiedni `ctest --preset ... --output-on-failure`. Każdy build sprawdza
+payload; public dodatkowo odrzuca placeholdery w rejestrze napisów.
+To kontrola rejestru, a nie gotowa paczka wydania. [Kontrakt](docs/PUBLIC_CONTENT.md)
+
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
 
 P018 zamknięto jako wpis planistyczny: dostawę pakietu rozbito na zadania P018-01, P018-02 i P018-03. Wszystkie trzy dzieci są zaimplementowane. Kroki wprowadzenia, ruchu i dostawy pozostają osobnymi funkcjami; ich kolejność ustala resolver P021-02. [Raport P018](docs/workflow/history/P018.md)
@@ -32,7 +39,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P061-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P062**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -346,3 +353,5 @@ P061: Rozbito zakres na P061-01 (polityka katalogu), P061-02 (public gate rejest
 P061-01: TextCatalog wymaga jawnego TextAudience: developer przyjmuje oznaczone placeholdery, public_release odrzuca atomowo każdą listę z placeholderem. Nieznany audience jest błędem również dla pustej listy. Testy obu polityk i źródeł PASS. [Raport](docs/workflow/history/P061-01.md)
 
 P061-02: Public content gate wymaga poprawnego approved payloadu i katalogu tekstów wyłącznie approved bez markera. Dziewięć izolowanych wyników procesu potwierdza m.in. developer acceptance oraz public rejection tego samego oznaczonego wpisu. [Raport](docs/workflow/history/P061-02.md)
+
+P061-03: Dodano jawny tryb CMake CLOSED_CIRCUIT_PUBLIC_BUILD, presety public i build_text_audience. Każdy konsument game_core wymaga bramki treści; developer/public działa niezależnie od D/R. Wszystkie cztery warianty zaliczyły po 88/88 CTest. Izolowana próba 9 rejestrów oraz 4 wyników builda PASS; CI rozszerzono o oba tryby. [Raport](docs/workflow/history/P061-03.md)

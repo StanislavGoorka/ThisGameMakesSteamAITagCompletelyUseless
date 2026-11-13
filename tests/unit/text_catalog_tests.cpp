@@ -1,4 +1,4 @@
-#include "application/text_catalog.hpp"
+#include "application/text_build_policy.hpp"
 #include <iostream>
 using namespace closed_circuit;
 
@@ -18,6 +18,15 @@ int main()
                               TextStatus::approved, "source"};
     const TextRecord placeholder{"test", "[AI PLACEHOLDER] Test",
                                  TextStatus::ai_placeholder, std::nullopt};
+    const auto built_catalog = TextCatalog::from_records(
+        std::span{&placeholder, 1}, {}, build_text_audience);
+#if CLOSED_CIRCUIT_PUBLIC_BUILD
+    if (built_catalog)
+        return 1;
+#else
+    if (!built_catalog || *built_catalog->find("test") != placeholder.value)
+        return 1;
+#endif
     for (const auto audience :
          {TextAudience::developer, TextAudience::public_release})
     {

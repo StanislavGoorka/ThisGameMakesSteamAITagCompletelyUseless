@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        preset: [windows-debug, windows-release]
+        preset: [windows-debug, windows-release, windows-public-debug, windows-public-release]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -24,8 +24,12 @@ jobs:
         run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-AssetPackage.ps1
       - name: Test asset gate
         run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-AssetPackage.ps1
+      - name: Test public content and build modes
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-PublicContent.ps1 -BuildModes
       - name: Configure
-        run: cmake --preset windows-msvc
+        run: |
+          $configure = if ('${{ matrix.preset }}' -like 'windows-public-*') { 'windows-public' } else { 'windows-msvc' }
+          cmake --preset $configure
       - name: Build
         run: cmake --build --preset ${{ matrix.preset }}
       - name: Test
