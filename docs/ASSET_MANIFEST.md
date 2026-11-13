@@ -1,8 +1,9 @@
 # Kontrakt odczytu odwołań P058
 
-P058 jest podziałem planu. P058-01 dostarcza model, walidację i lookup;
-P058-02..04 pozostają kolejnymi kontraktami. P059 zależy od ostatniego dziecka. Nie dodajemy renderera,
-nowych assetów, formatu zapisu gry ani ogólnej biblioteki JSON.
+P058 jest podziałem planu. P058-01 dostarcza model, walidację i lookup,
+a P058-02 pamięciowy parser Windows. P058-03/04 pozostają kolejnymi kontraktami.
+P059 zależy od ostatniego dziecka. Nie dodajemy renderera, nowych assetów,
+formatu zapisu gry ani ogólnej biblioteki JSON.
 
 ## Wartości application — P058-01
 
@@ -49,6 +50,13 @@ buildem dziecka. Nie pobieramy nowej zależności. Wywołujący zapewnia apartme
 WinRT; parser nie przejmuje życia wątku/COM i nie wykonuje IO ani wywołań sieci.
 Nieprawidłowe UTF-8, dane/typy, nieobsługiwana wersja i limity dają brak wyniku;
 błąd alokacji może propagować, bez publikacji częściowej listy.
+
+P058-02 wdraża `windows::parse_asset_manifest`. Kontrola Win32
+[MultiByteToWideChar](https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar)
+z MB_ERR_INVALID_CHARS poprzedza konwersję do hstring: domyślna konwersja
+C++/WinRT zastępuje złe sekwencje. Test negatywny wykrył tę różnicę przed
+ukończeniem kroku. Przyjęcie JSON nie oznacza jeszcze sprawdzenia pliku ani
+realnej zgody; pełna kontrola pochodzenia pozostaje w rejestrze i bramce paczki.
 
 ## Weryfikacja pliku — P058-03
 

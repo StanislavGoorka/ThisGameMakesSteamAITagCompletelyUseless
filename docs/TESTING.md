@@ -8,6 +8,17 @@
 
 ## C++ i zakres testów
 
+P058-02: `windows_asset_manifest_parse` uruchamia systemowy Windows.Data.Json
+w rzeczywistym apartment WinRT. Literalny rekord chroni pełne pola/digest,
+puste manifesty, JSON escapes i niezależne kopie. Odmowy obejmują składnię,
+root/wersję/typy, brakujące pola/status, hash/ID/ścieżkę, duplikaty,
+ujemne/ułamkowe/zbyt duże bytes, 256/257 rekordów, 1 MiB/+1 i głębokość32/33.
+Nawiasy, escaped quote i backslash wewnątrz stringów nie zwiększają głębokości.
+BOM, NUL i nieprawidłowe UTF-8 są odrzucane; prawidłowe Unicode metadanych
+przechodzi. Pierwszy test ujawnił zastępowanie złego UTF-8 w domyślnej konwersji;
+regresja przechodzi po ścisłej walidacji Win32 przed konwersją. Brak IO,
+renderowania i zmian approved; rzeczywisty rejestr z plikami czeka na P058-04.
+
 P058-01: `application_asset_reference` sprawdza własne wartości ID/ścieżki,
 32 literalne bajty SHA-256, wszystkie 256 wartości znaku ID i 16 384 zmian
 znaku digestu. Obejmuje długości ID64/65 i ścieżki240/241, zakres bajtów,
