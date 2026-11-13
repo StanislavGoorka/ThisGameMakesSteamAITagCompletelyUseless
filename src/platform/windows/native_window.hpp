@@ -11,6 +11,29 @@
 
 namespace closed_circuit::windows
 {
+struct MessageLoopResult
+{
+    int exit_code;
+    DWORD error;
+};
+
+// Optional filter is for narrow API consumers; the window loop uses nullptr
+// so destruction of the main HWND never invalidates the GetMessage filter.
+inline MessageLoopResult dispatch_messages(HWND filter = nullptr)
+{
+    MSG message{};
+    for (;;)
+    {
+        const auto result = GetMessageW(&message, filter, 0, 0);
+        if (result == -1)
+            return {1, GetLastError()};
+        if (result == 0)
+            return {static_cast<int>(message.wParam), ERROR_SUCCESS};
+        TranslateMessage(&message);
+        DispatchMessageW(&message);
+    }
+}
+
 class NativeWindow;
 struct WindowCreateResult
 {
@@ -19,7 +42,7 @@ struct WindowCreateResult
 };
 
 // Thread-affine ownership: create and destroy on the same Win32 thread.
-// Starts hidden, with no artwork, background brush, icon or message loop.
+// Starts hidden, with no artwork, background brush or icon.
 class NativeWindow
 {
   public:
@@ -35,6 +58,19 @@ class NativeWindow
     [[nodiscard]] HWND handle() const noexcept
     {
         return handle_;
+    }
+    [[nodiscard]] bool focused() const noexcept
+    {
+        return focused_;
+    }
+    [[nodiscard]] MessageLoopResult run_message_loop()
+    {
+        if (!handle_ || loop_active_)
+            return {1, ERROR_INVALID_WINDOW_HANDLE};
+        loop_active_ = true;
+        const auto result = dispatch_messages();
+        loop_active_ = false;
+        return result;
     }
     [[nodiscard]] static WindowCreateResult create(const TextCatalog &catalog,
                                                    std::string_view title_id);
@@ -56,10 +92,18 @@ class NativeWindow
                 return FALSE;
             owner->handle_ = handle;
         }
+        auto *owner = reinterpret_cast<NativeWindow *>(
+            GetWindowLongPtrW(handle, GWLP_USERDATA));
+        if (owner && (message == WM_SETFOCUS || message == WM_KILLFOCUS))
+            owner->focused_ = message == WM_SETFOCUS;
+        if (owner && message == WM_DESTROY)
+        {
+            owner->focused_ = false;
+            if (owner->loop_active_)
+                PostQuitMessage(0);
+        }
         if (message == WM_NCDESTROY)
         {
-            auto *owner = reinterpret_cast<NativeWindow *>(
-                GetWindowLongPtrW(handle, GWLP_USERDATA));
             if (owner)
                 owner->handle_ = nullptr;
             SetWindowLongPtrW(handle, GWLP_USERDATA, 0);
@@ -69,6 +113,8 @@ class NativeWindow
     HINSTANCE instance_ = nullptr;
     ATOM atom_ = 0;
     HWND handle_ = nullptr;
+    bool focused_ = false;
+    bool loop_active_ = false;
 };
 
 inline WindowCreateResult NativeWindow::create(const TextCatalog &catalog,

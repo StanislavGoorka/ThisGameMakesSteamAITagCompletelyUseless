@@ -39,4 +39,6 @@ WM_NCDESTROY czyści zapisany uchwyt również po wcześniejszym WM_CLOSE.
 Destruktor niszczy okno przed wyrejestrowaniem klasy, zgodnie z kontraktami
 [WM_NCDESTROY](https://learn.microsoft.com/en-us/windows/win32/winmsg/wm-ncdestroy)
 i [UnregisterClassW](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-unregisterclassw).
-P062-02/03 nadal nie są zaimplementowane; nie ma pętli, focus ani entrypointu.
+P062-03 pozostaje następnym krokiem: entrypoint developer.
+
+P062-02: focused() śledzi WM_SETFOCUS/KILLFOCUS i zeruje się przy WM_DESTROY. run_message_loop() używa blokującego GetMessageW bez filtra HWND; tylko zniszczenie okna z aktywną pętlą wysyła PostQuitMessage. Pozostałe okna i destruktory nie zanieczyszczają kolejki WM_QUIT. dispatch_messages rozróżnia wynik -1, 0 i dodatni; błąd zachowuje kod Win32, WM_QUIT zachowuje kod wyjścia. Brak HWND lub rekurencyjna pętla daje kontrolowaną odmowę. Kontrakt GetMessage: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getmessagew .
