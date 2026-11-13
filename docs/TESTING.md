@@ -342,3 +342,5 @@ P072-01..04 oraz P073-01..05: pełna pula 125/125 w Debug i Release. Nowe testy 
 P074-01: `windows_checkpoint_location` sprawdza zapytanie o rzeczywisty LocalAppData bez tworzenia katalogu użytkownika, `ClosedCircuit/checkpoint.bin` we wspólnym katalogu z profilem (w obu kolejnościach), Unicode, powtórki bez zmiany bajtów obu plików, kolizję z plikiem i odmowę pustej, względnej lub brakującej bazy.
 
 P074-02: `windows_checkpoint_resume` sprawdza klasyfikację wszystkich czterech wektorów jako resumed z main i backupu (pełny RunState równy restore, tura 0), none/corrupt/unavailable dla kombinacji błędów oraz niepoprawną wartość jako corrupt. Rzeczywiste pliki: brak, main, backup po uszkodzonym main, uszkodzenie bez backupu, wyłączna blokada main i brak katalogu; dwa odczyty i niezmienione nazwy oraz bajty katalogu. Timeout 30 s.
+
+P074-03: `presentation_checkpoint_text` sprawdza brak wiersza dla none/resumed i braku błędu zapisu, dokładne wartości lokalnego katalogu, odmowę pustego katalogu, pełny marker bez cyfr i backslasha w rzeczywistym rejestrze developer, nieznane wartości statusu oraz odmowę katalogu public.

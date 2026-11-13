@@ -96,6 +96,24 @@
       "value": "[AI PLACEHOLDER] Turn limit reached. Press Enter to restart.",
       "status": "ai_placeholder",
       "source_asset_id": null
+    },
+    {
+      "id": "checkpoint-corrupt",
+      "value": "[AI PLACEHOLDER] Saved run is damaged and was not loaded.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "checkpoint-unavailable",
+      "value": "[AI PLACEHOLDER] Saved run could not be read.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "checkpoint-unsaved",
+      "value": "[AI PLACEHOLDER] Run progress could not be saved.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
     }
   ]
 }
