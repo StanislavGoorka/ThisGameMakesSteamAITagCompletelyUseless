@@ -1,13 +1,14 @@
 # Następny mały krok
 
-Task: P068
+Task: P068-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P067-03.
-Sprawdź git status, walidator i zależności: P067-03.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P068.
+Czytaj także [kontrakt podglądu](../ACTION_PREVIEW_PRESENTATION.md).
+Sprawdź git status, walidator i zależności: P068.
 
-Dodaj ścieżkę podglądu używając zatwierdzonych znaczników.
+Dodaj wartościową projekcję wskazanej Command: wynik z preview_run_turn oraz trasa pakietu z istniejącego BFS na topologii wyniku. Bez wejścia, usług i rysowania.
 
-Kryteria: Wygląd odpowiada preview; brak generowanych strzałek i linii artystycznych.
+Kryteria: Pełny wynik równy resolve_run_turn; obrót zmienia trasę, brak trasy i dostawa, nowy pakiet, odmowy i terminalne wejścia; powtórki nie zmieniają live state, usług ani RNG; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakt BOARD_PRESENTATION.md.

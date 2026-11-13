@@ -1742,10 +1742,54 @@
             "id": "P068",
             "phase": "M6",
             "title": "Podgląd gotowymi symbolami",
-            "scope": "Dodaj ścieżkę podglądu używając zatwierdzonych znaczników.",
-            "acceptance": "Wygląd odpowiada preview; brak generowanych strzałek i linii artystycznych.",
+            "scope": "Wyłącznie rozbij podgląd na czysty wynik i trasę, model wyboru akcji, adapter wskazania Win32 oraz prezentację gotowych znaczników. Bez implementacji dzieci.",
+            "acceptance": "Cztery małe kontrakty z testami zgodności preview/commit, braku skutków ubocznych i anulowania; P069 wymaga P068-04. Sam plan nie wdraża podglądu.",
             "depends_on": [
                 "P067-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068-01",
+            "phase": "M6",
+            "title": "Czysty model wyniku i trasy podglądu",
+            "scope": "Dodaj wartościową projekcję wskazanej Command: wynik z preview_run_turn oraz trasa pakietu z istniejącego BFS na topologii wyniku. Bez wejścia, usług i rysowania.",
+            "acceptance": "Pełny wynik równy resolve_run_turn; obrót zmienia trasę, brak trasy i dostawa, nowy pakiet, odmowy i terminalne wejścia; powtórki nie zmieniają live state, usług ani RNG; D/R.",
+            "depends_on": [
+                "P068"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068-02",
+            "phase": "M6",
+            "title": "Model wyboru komendy podglądu",
+            "scope": "Dodaj czysty model trybu planowania: Tab przełącza, siedem klawiszy wybiera kandydata, Enter oddaje go do wykonania, Escape/focus loss czyści. Opcjonalny wskazany NodeId jest celem R/O; bez Win32 i wykonywania tur.",
+            "acceptance": "Wybór i anulowanie nie zmieniają RunState; Enter najwyżej raz, brak starego kandydata po zmianie kontekstu/focus; ruch bez zawijania i fallback R/O do własnego pola przy braku wskazania; D/R.",
+            "depends_on": [
+                "P068-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068-03",
+            "phase": "M6",
+            "title": "Adapter wskazania i planowania Win32",
+            "scope": "Połącz model wyboru z oknem: wskaż pole kursorem przez tę samą geometrię 7x7; Tab/Enter/Escape obsługują tryb planowania. R/O wskazują wybrane pole, legalność nadal sprawdza core. Bez rysowania preview.",
+            "acceptance": "Rzeczywiste wiadomości: hover, marginesy, resize, focus, powtórzenia i anulowanie; wybór sąsiedniego celu R/O, jedna tura dopiero po zatwierdzeniu, pełna zgodność z core; D/R.",
+            "depends_on": [
+                "P068-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068-04",
+            "phase": "M6",
+            "title": "Prezentacja podglądu gotowymi znacznikami",
+            "scope": "Pokaż wynik modelu preview i trasę wyłącznie gotowymi symbolami atlasu. Po anulowaniu przywróć widok live state; po zatwierdzeniu pokaż identyczny wynik core. Bez nowych linii, strzałek, figur i tekstów.",
+            "acceptance": "Offscreen zgodny z oryginalnymi pikselami, marker nie zasłania portów/jednostek, brak trasy i terminalne odmowy nie pokazują starego preview; anulowanie/focus/resize i commit zgodne z modelem; D/R.",
+            "depends_on": [
+                "P068-03"
             ],
             "gate": null
         },
@@ -1756,7 +1800,7 @@
             "scope": "Dodaj DirectWrite dla jednego oznaczonego tekstu katalogu.",
             "acceptance": "Każda wyświetlana wartość zachowuje prefiks, poprawne UTF-8/UTF-16.",
             "depends_on": [
-                "P068"
+                "P068-04"
             ],
             "gate": null
         },

@@ -57,3 +57,7 @@ odbiornik (39,14), zasilony odbiornik (39,15), stałe przyłącze (38,13).
 Test PNG potwierdza, że wszystkie osiem komórek istnieje i jest niepustych.
 Pierwszeństwo jednej roli pola: odbiornik/zasilenie, wyjście, wejście, stałe
 przyłącze. Symbole jednostek pozostają niezależne od tego pierwszeństwa.
+
+Kolejny zakres P068 rozbito na cztery dzieci; kontrakt i negatywne przypadki
+opisuje [ACTION_PREVIEW_PRESENTATION](ACTION_PREVIEW_PRESENTATION.md).
+P069 wymaga ostatniego dziecka, nie samego planu.
