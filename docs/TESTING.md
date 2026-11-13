@@ -289,3 +289,5 @@ Każdy zgłoszony problem otrzymuje małe zadanie odtwarzania i osobno małą po
 P062-02: windows_window_messages sprawdza rzeczywiste SetFocus/null, cztery zamknięcia po opóźnionym WM_CLOSE, wyzerowanie focus/HWND i kontrolowaną odmowę drugiej pętli. Zniszczony uchwyt wymusza rzeczywiste GetMessage=-1; osobny PostQuitMessage(37) chroni kod wyjścia. Timeout 20 s, lokalne API bez VM.
 
 P062-03: windows_window_process sprawdza trzy osobne uruchomienia developer_window, oznaczony tytuł, wysłane komunikaty focus i zamknięcie z kodem0. Timeout zabija wyłącznie własny proces potomny. Rzeczywisty public gate oraz build public odmawiają obecnego tytułu. CI public usuwa tytuł wyłącznie w checkout runnera po sprawdzeniu odmowy, aby testować infrastrukturę bez developer_window; to nie paczka produktu.
+
+P063-01: application_keyboard_input sprawdza każdy klawisz, 100 prób hold/repeat, release/repress, powtórny focus=true, utratę/odzyskanie focus, niezależność klawiszy i unknown. Bez symulacji i Windows.

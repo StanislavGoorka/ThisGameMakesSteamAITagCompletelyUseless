@@ -39,7 +39,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P063-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P063-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -367,3 +367,5 @@ P062-02: Dodano stan focus oraz blokującą pętlę Win32 z rozróżnieniem WM_Q
 P062-03: Dodano developer_window.exe: tytuł wyłącznie z rejestru przez TextCatalog, ramka Win32, blokująca pętla i kontrolowane kody błędów. Trzy osobne uruchomienia smoke kontrolują tytuł i zamknięcie. Public gate i build odrzucają roboczy wpis; cel okna jest wykluczony z public. CI sprawdza odmowę przed testami infrastruktury z pustym katalogiem. [Raport](docs/workflow/history/P062-03.md)
 
 P063: Rozbito wejście klawiatury na trzy kontrakty: filtr naciśnięć/focus, czyste mapowanie i adapter Win32. P064 wymaga ostatniego dziecka. KEYBOARD_INPUT.md ustala brak kolejki tur i brak mutacji stanu przez wejście. [Raport](docs/workflow/history/P063.md)
+
+P063-01: Dodano przenośny KeyboardInput: jedna akcja do key-up, niezależne klawisze, reset przy focus loss i odmowa repeat po odzyskaniu focus. Redundantny focus=true zachowuje held; unknown jest ignorowany. [Raport](docs/workflow/history/P063-01.md)

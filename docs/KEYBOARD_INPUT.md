@@ -20,3 +20,5 @@ w szczególności Alt+F4. P063 nie podłącza jeszcze sesji ani widoku planszy.
 
 Testy są niewyświetlane. P063-01 sprawdza filtr, P063-02 wszystkie 49 pól,
 a P063-03 rzeczywiste wiadomości Windows. P064 zależy od ostatniego dziecka.
+
+P063-01 wdraża KeyboardInput bez Win32 i Command: siedem niezależnych stanów held, domyślny brak focus, brak akcji dla repeat/unknown i reset przy focus loss. Powtórne powiadomienie focus=true nie resetuje trzymanego klawisza.
