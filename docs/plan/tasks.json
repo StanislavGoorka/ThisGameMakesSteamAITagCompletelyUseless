@@ -1216,7 +1216,9 @@
             "title": "Wartość dowodu rekonfiguracji",
             "scope": "Rozszerz ActionCommitted o opcjonalny cel pakietu o zmienionej trasie. Bez ekstrakcji i predykatów.",
             "acceptance": "Domyślny brak dowodu, pełna równość i kopie payloadu, konflikt tego samego klucza o innym dowodzie odrzucony.",
-            "depends_on": ["P045"],
+            "depends_on": [
+                "P045"
+            ],
             "gate": null
         },
         {
@@ -1225,7 +1227,9 @@
             "title": "Ekstrakcja zmiany trasy pakietu",
             "scope": "Wypełnij dowód rekonfiguracji w wrapperze porównując BFS tego samego pakietu przed i po akcji, bez ponownego resolvera.",
             "acceptance": "Otwarcie i zmiana trasy tak; obrót bez zmiany, brak pakietu, pakiet na celu i zamknięcie trasy nie. Restore i preview zachowują kontrakty.",
-            "depends_on": ["P045-01"],
+            "depends_on": [
+                "P045-01"
+            ],
             "gate": null
         },
         {
@@ -1300,7 +1304,9 @@
             "title": "Pełny run z predykatami MVP",
             "scope": "Dodaj jeden headless scenariusz od start_run przez trzy generowane sektory, rzeczywisty MvpAchievementEvaluator i lokalny profil; porównaj restore granicy w tym samym procesie.",
             "acceptance": "Nowa próba odblokowuje 31; restore od sektora 2 bez historii zgłasza 27 do pustego profilu. Pełne stany i payloady zgodne; duplikaty i preview nie zmieniają plików. Bez nowej logiki produkcyjnej.",
-            "depends_on": ["P051"],
+            "depends_on": [
+                "P051"
+            ],
             "gate": null
         },
         {
@@ -1309,7 +1315,9 @@
             "title": "Predykaty MVP po restarcie procesu",
             "scope": "Uruchom odczyt zapisanego checkpointu i replay sektorów 2–3 z rzeczywistym evaluatorem w osobnym procesie. Bez zmian predykatów i formatów.",
             "acceptance": "Dwa nowe procesy dają zgodne stany/payloady i zachowują dokładne bajty main/bak profilu; nowy pusty profil po restore nie otrzymuje run_without_overdrive. Preview bez skutku.",
-            "depends_on": ["P051-01"],
+            "depends_on": [
+                "P051-01"
+            ],
             "gate": null
         },
         {
@@ -1459,10 +1467,43 @@
             "id": "P061",
             "phase": "M5",
             "title": "Blokada placeholderów",
-            "scope": "Dodaj rozdzielenie developer/public build i bramkę placeholderów.",
-            "acceptance": "Developer dopuszcza oznaczone teksty; public package je odrzuca.",
+            "scope": "Wyłącznie rozbij blokadę placeholderów na politykę katalogu, bramkę rejestru i integrację trybu CMake; bez implementacji dzieci.",
+            "acceptance": "Trzy małe kontrakty z testami i zależnościami; P062 wymaga ostatniego dziecka. Zamknięcie planu nie dostarcza public builda.",
             "depends_on": [
                 "P060"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P061-01",
+            "phase": "M5",
+            "title": "Polityka developer/public katalogu tekstów",
+            "scope": "Dodaj jawny TextAudience do walidacji TextCatalog: developer przyjmuje oznaczone placeholdery, public odrzuca całą listę z placeholderem. Bez IO, JSON i CMake.",
+            "acceptance": "Puste i approved-only listy, mixed/placeholder listy, invalid audience, atomowa odmowa i brak fallbacku ID; D/R.",
+            "depends_on": [
+                "P061"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P061-02",
+            "phase": "M5",
+            "title": "Publiczna bramka rejestru napisów",
+            "scope": "Dodaj skrypt public content gate na bazie bramki approved: content/texts.json musi zawierać wyłącznie approved i żadnego markera. Bez skanera binariów i bez zmiany treści.",
+            "acceptance": "Izolowane rejestry: pusty i approved fixture przechodzą, oznaczony placeholder dozwolony przez developer walidator jest odrzucony publicznie, mixed i zły status/źródło odrzucone. Właściwe kody procesu.",
+            "depends_on": [
+                "P061-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P061-03",
+            "phase": "M5",
+            "title": "Tryb public w konfiguracji CMake",
+            "scope": "Dodaj jawne rozdzielenie developer/public niezależne od Debug/Release. Public build uruchamia bramkę P061-02 przed celami produktu i wystawia politykę do przyszłego entrypointu; developer pozostaje domyślny.",
+            "acceptance": "Configure/build D/R developer i public bez placeholderów. Izolowany developer z oznaczonym wpisem przechodzi, public build odmawia z niezerowym kodem. Bez deklaracji gotowego depotu i bez publikacji.",
+            "depends_on": [
+                "P061-02"
             ],
             "gate": null
         },
@@ -1473,7 +1514,7 @@
             "scope": "Dodaj minimalny cykl okna bez rysowania gry; tytuł jako oznaczony placeholder.",
             "acceptance": "Start, zamknięcie, focus i poprawne zwolnienie zasobów.",
             "depends_on": [
-                "P061"
+                "P061-03"
             ],
             "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
         },

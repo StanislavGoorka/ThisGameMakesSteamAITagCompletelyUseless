@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P061
+Task: P061-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P060, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Blokada placeholderów. Dodaj rozdzielenie developer/public build i bramkę placeholderów.
+Polityka developer/public katalogu tekstów. Dodaj jawny TextAudience do walidacji TextCatalog: developer przyjmuje oznaczone placeholdery, public odrzuca całą listę z placeholderem. Bez IO, JSON i CMake.
 
-Kryteria: Developer dopuszcza oznaczone teksty; public package je odrzuca.
+Kryteria: Puste i approved-only listy, mixed/placeholder listy, invalid audience, atomowa odmowa i brak fallbacku ID; D/R.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,
