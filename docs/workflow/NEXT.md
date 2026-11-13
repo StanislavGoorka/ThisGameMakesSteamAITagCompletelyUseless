@@ -1,22 +1,22 @@
 # Następny mały krok
 
-Task: P075
+Task: P075-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-07.
-Zależności: P074-07; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075.
+Zależności: P075; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj tylko lifecycle urządzenia audio i kontrakt odtwarzania, bez dźwięku
-zastępczego, syntezy i wbudowanych nagrań.
+Dodaj identyfikator sygnału, port odtwarzania z wynikiem
+played/muted/unavailable/unknown oraz cichą implementację.
+Bez Windows, danych audio i mapowania zdarzeń.
 
-Kryteria: brak urządzenia nie blokuje gry; brak syntezy i wbudowanych nagrań.
+Kryteria: cicha implementacja zawsze zwraca unavailable bez skutków; nieznany
+sygnał odrzucony; fake portu potwierdza kolejność wywołań; brak próbek i plików.
 
-P075 obejmuje port aplikacji, adapter urządzenia Windows i integrację z oknem;
-najpierw oceń podział. Za szeroki zakres rozbij bez implementacji.
-Czytaj ARCHITECTURE (porty usług), CONTENT_POLICY (zakaz syntezy audio),
-DIRECT2D_LIFECYCLE.md jako wzorzec dokumentu lifecycle i ROADMAP M6.
+Czytaj AUDIO_LIFECYCLE.md, CONTENT_POLICY, achievement_sink.hpp
+i checkpoint_store.hpp (wzorce portów).
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
-Bez nowych mechanik i assetów; żadnych plików audio ani generowanych próbek.
+Za szeroki zakres rozbij bez implementacji. Bez nowych mechanik i assetów.
 Kod: configure/build/CTest Debug i Release, formatter src/tests/tools.
 Uwaga: dysk ma 1 s rozdzielczości czasu; po przywróceniu pliku z mutacji
 odczekaj i wykonaj touch przed przebudową.

@@ -2170,11 +2170,44 @@
         {
             "id": "P075",
             "phase": "M6",
-            "title": "Backend audio",
-            "scope": "Dodaj tylko lifecycle urządzenia i kontrakt odtwarzania, bez dźwięku zastępczego.",
-            "acceptance": "Brak urządzenia nie blokuje gry; brak syntezy i wbudowanych nagrań.",
+            "title": "Rozbij backend audio",
+            "scope": "Wyłącznie podziel lifecycle urządzenia i kontrakt odtwarzania na port sygnałów, adapter XAudio2 i podłączenie do okna. Bez implementacji dzieci i bez dźwięku zastępczego.",
+            "acceptance": "Każde dziecko ma jeden kontrakt i testy; P076 zależy od ostatniego dziecka. Brak syntezy, wbudowanych nagrań, plików audio i pobrań.",
             "depends_on": [
                 "P074-07"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P075-01",
+            "phase": "M6",
+            "title": "Port sygnałów audio",
+            "scope": "Dodaj identyfikator sygnału, port odtwarzania z wynikiem played/muted/unavailable/unknown oraz cichą implementację. Bez Windows, danych audio i mapowania zdarzeń.",
+            "acceptance": "Cicha implementacja zawsze zwraca unavailable bez skutków; nieznany sygnał odrzucony; fake portu potwierdza kolejność wywołań; brak próbek i plików.",
+            "depends_on": [
+                "P075"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P075-02",
+            "phase": "M6",
+            "title": "Lifecycle urządzenia XAudio2",
+            "scope": "Dodaj RAII silnika XAudio2 i mastering voice z wstrzykiwaną fabryką, stanem unavailable po błędzie tworzenia lub krytycznym błędzie silnika i ponownym utworzeniem. Bez source voice i buforów.",
+            "acceptance": "Rzeczywista próba utworzenia daje spójny stan z urządzeniem lub bez; wstrzyknięte błędy, krytyczny callback, odtworzenie i zwolnienie w poprawnej kolejności; bez wyjątków i syntezy.",
+            "depends_on": [
+                "P075-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P075-03",
+            "phase": "M6",
+            "title": "Audio w oknie developer",
+            "scope": "Podłącz lifecycle urządzenia jako port audio w developer_window; brak urządzenia lub zatwierdzonego sygnału nie zmienia gry. Bez odtwarzania i nowych tekstów.",
+            "acceptance": "HWND z niedostępnym urządzeniem: tury, preview, zapis i focus jak dotąd; smoke procesu działa; port nigdy nie odtwarza bez zatwierdzonego pliku.",
+            "depends_on": [
+                "P075-02"
             ],
             "gate": null
         },
@@ -2185,7 +2218,7 @@
             "scope": "Sprawdź jeden pakiet audio i wystąp o konkretną zgodę bez pobierania.",
             "acceptance": "Dokumentacja wersji, non-AI, licencji i faktycznej odpowiedzi.",
             "depends_on": [
-                "P075"
+                "P075-03"
             ],
             "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
         },

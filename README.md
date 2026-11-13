@@ -43,6 +43,8 @@ LocalAppData/ClosedCircuit/checkpoint.bin; wynik won/lost go usuwa. Ponowne
 uruchomienie wznawia początek zapisanego sektora. Uszkodzony lub niedostępny
 zapis pokazuje oznaczony wiersz na ekranie startu; błąd zapisu nie blokuje gry
 ([kontrakt](docs/RESUME_PRESENTATION.md)).
+Backend audio rozbito w P075 na P075-01..03 ([kontrakt](docs/AUDIO_LIFECYCLE.md));
+bez syntezy i plików audio, dzieci są w realizacji.
 Ostatnia pełna pula: Debug i Release po 132/132 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
