@@ -29,3 +29,24 @@ wymaga bitmapy z tego samego celu i sprawdzenia EndDraw;
 [WM_PAINT](https://learn.microsoft.com/en-us/windows/win32/gdi/wm-paint)
 zamyka BeginPaint przez EndPaint. Clear służy wyłącznie wyczyszczeniu bufora.
 Nie rysujemy linii, figur, proceduralnych oznaczeń ani nowych ilustracji.
+
+## Jednostki: podział P067
+
+P067-01 projektuje wartościową listę gotowych symboli: gracza, aktywnego
+pakietu i impulsów (rosnąco po ID), a także wejścia, wyjścia i odbiorników.
+Brak pakietu daje brak symbolu, HP zero ukrywa żywego gracza. Nakładające się
+jednostki zajmują osobne narożniki komórki. Porty nie mogą zostać zasłonięte.
+Role pól i zasilenie nie są nowymi mechanikami.
+
+P067-02 składa jedną listę dla AtlasRenderer i BoardView. Centralny kafel
+zajmuje 60% boku komórki; symbole zajmują rozłączne narożniki po 25%.
+Nie ma tła/obrysu generowanego w kodzie. Test kontroluje rozdzielność obszarów
+i porównuje klatkę offscreen z oryginalnymi pikselami gotowych symboli.
+
+P067-03 dodaje wąski adapter sesji okna: przyjęty klawisz tworzy istniejącą
+Command i trafia dokładnie raz do resolve_run_turn. Po przyjęciu cały stan
+i scena pochodzą z tego samego wyniku. Odmowa, repeat i utrata focus nie
+wykonują dodatkowej tury. Callbacki nie wypuszczają wyjątków przez Win32.
+Brak automatycznego przejścia sektora, zapisu, achievementów, HUD i menu.
+
+P068 wymaga P067-03, nie samego ukończenia planu P067.

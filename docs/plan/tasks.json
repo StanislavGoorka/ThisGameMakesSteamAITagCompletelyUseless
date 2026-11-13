@@ -1698,10 +1698,43 @@
             "id": "P067",
             "phase": "M6",
             "title": "Prezentacja jednostek",
-            "scope": "Dodaj render gracza, pakietu i bazowego impulsu gotowymi elementami.",
-            "acceptance": "Stan po turze zgodny z core; nie dodawaj grafiki brakujących obiektów.",
+            "scope": "Wyłącznie rozbij prezentację jednostek na czystą projekcję symboli, złożenie sceny i podłączenie komend okna do istniejącego resolvera. Bez implementacji dzieci.",
+            "acceptance": "Trzy małe kontrakty z testami stanu po turze i odmów; P068 wymaga P067-03. Sam plan nie wdraża jednostek.",
             "depends_on": [
                 "P066-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P067-01",
+            "phase": "M6",
+            "title": "Czysta projekcja jednostek i znaczników",
+            "scope": "Przełóż gracza, pakiet, impulsy oraz istniejące role pól na gotowe symbole atlasu w odrębnych miejscach komórki. Bez rysowania i wykonywania tur.",
+            "acceptance": "Wszystkie 49 pozycji, nakładanie jednostek, brak pakietu i śmierć, stabilna kolejność impulsów oraz pełna niezmienność stanu; D/R.",
+            "depends_on": [
+                "P067"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P067-02",
+            "phase": "M6",
+            "title": "Złożenie planszy i symboli w scenę",
+            "scope": "Połącz projekcje planszy i symboli; zarezerwuj miejsce na symbole bez przesłaniania portów. Podepnij tę samą scenę do BoardView. Bez wykonywania komend.",
+            "acceptance": "Jedna scena po aktualizacji stanu, rozdzielne obszary płytek i jednostek, offscreen zgodny z listą i repaint/resize; D/R.",
+            "depends_on": [
+                "P067-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P067-03",
+            "phase": "M6",
+            "title": "Tury core z klawiatury okna",
+            "scope": "Połącz odfiltrowany klawisz z istniejącym resolve_run_turn i aktualizacją widoku. Jedna akcja na naciśnięcie; bez nowych reguł, zapisu, HUD i ekranów.",
+            "acceptance": "Rzeczywiste komunikaty Win32: move/rotate/overdrive/wait, hold/repeat, focus i terminalne odmowy. Pełny stan i scena po każdej próbie zgodne z core; D/R.",
+            "depends_on": [
+                "P067-02"
             ],
             "gate": null
         },
@@ -1712,7 +1745,7 @@
             "scope": "Dodaj ścieżkę podglądu używając zatwierdzonych znaczników.",
             "acceptance": "Wygląd odpowiada preview; brak generowanych strzałek i linii artystycznych.",
             "depends_on": [
-                "P067"
+                "P067-03"
             ],
             "gate": null
         },

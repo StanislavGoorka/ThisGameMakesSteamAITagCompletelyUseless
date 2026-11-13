@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P067
+Task: P067-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P066-04.
-Sprawdź git status, walidator i zależności: P066-04.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P067.
+Sprawdź git status, walidator i zależności: P067.
 
-Dodaj render gracza, pakietu i bazowego impulsu gotowymi elementami.
+Przełóż gracza, pakiet, impulsy oraz istniejące role pól na gotowe symbole atlasu w odrębnych miejscach komórki. Bez rysowania i wykonywania tur.
 
-Kryteria: Stan po turze zgodny z core; nie dodawaj grafiki brakujących obiektów.
+Kryteria: Wszystkie 49 pozycji, nakładanie jednostek, brak pakietu i śmierć, stabilna kolejność impulsów oraz pełna niezmienność stanu; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakt BOARD_PRESENTATION.md.

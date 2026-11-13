@@ -46,7 +46,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P067**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P067-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -398,3 +398,5 @@ P066-02: Dodano czystą projekcję planszy 7x7 z centrowaniem i dopasowaniem do 
 P066-03: Dodano AtlasRenderer z uploadem wyłącznie zweryfikowanego atlasu 1.2, własnością celu i bitmapy oraz rysowaniem gotowych kafli przez DrawBitmap. Test offscreen porównuje wszystkie piksele 16 masek po obrotach i skalowaniu 2x; błędna lista nie zmienia poprzedniej klatki. [Raport](docs/workflow/history/P066-03.md)
 
 P066-04: Developer_window wyświetla planszę z istniejącego start_run i zatwierdzonego atlasu. Dodano callback WM_PAINT z BeginPaint/EndPaint, resize i odtwarzanie bitmapy po utracie celu. COM i zasoby mają jawny cykl życia; start z dowolnego cwd używa ścieżki checkoutu z CMake. [Raport](docs/workflow/history/P066-04.md)
+
+P067: Rozbito prezentację jednostek na projekcję gotowych symboli, złożenie sceny z rozłącznymi obszarami oraz adapter komend okna do core. P068 wymaga ostatniego dziecka. Plan nie wdraża jednostek ani sesji. [Raport](docs/workflow/history/P067.md)
