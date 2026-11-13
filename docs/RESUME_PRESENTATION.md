@@ -47,3 +47,5 @@ P074-04 jest zaimplementowane: `checkpoint_boundary` (application) zwraca save z
 P074-05 jest zaimplementowane: port `CheckpointStore` (application), `clear_checkpoint_files` i `LocalCheckpointStore` (Windows). Clear usuwa backup przed main, traktuje brak jako sukces i nie dotyka staging.
 
 P074-06 jest zaimplementowane: RunWindow przyjmuje opcjonalny `CheckpointStore` i woła `checkpoint_boundary` po starcie/restarcie, każdej zaakceptowanej turze i przejściu sektora. Tworzenie okna nie zapisuje. Błąd lub wyjątek ustawia wiersz `checkpoint-unsaved` do następnej udanej granicy. Okno developer podłącza magazyn w P074-07.
+
+P074-07 jest zaimplementowane: `create_resumed_window` (Windows) otwiera wznowiony run w sektorze albo ekran startu z oznaczonym błędem odczytu; `show_resume_status` przyjmuje wyłącznie statusy z wierszem w katalogu, a start runu usuwa wiersz. developer_window używa `local_checkpoint_location`, `resume_checkpoint_file` i `LocalCheckpointStore`; bez lokalizacji nic nie czyta, nie zapisuje i nie usuwa. Wszystkie dzieci P074 są zaimplementowane.

@@ -63,6 +63,11 @@ class RunWindow final : public WindowCommandHandler
         auto owner = std::unique_ptr<RunWindow>(
             new RunWindow(window, std::move(initial), std::move(board.view)));
         owner->lifecycle_ = hud_catalog != nullptr;
+        for (const auto status :
+             {ResumeStatus::corrupt, ResumeStatus::unavailable})
+            owner->resume_lines_[static_cast<std::size_t>(status)] =
+                hud_catalog &&
+                hud_catalog->find(presentation::resume_line(status)->id);
         owner->flow_ = SessionFlow{!show_start};
         owner->notice_sink_ = notice_sink;
         // Creation never writes: only later boundaries reach the store.
@@ -107,6 +112,28 @@ class RunWindow final : public WindowCommandHandler
     [[nodiscard]] bool checkpoint_failed() const noexcept
     {
         return checkpoint_failed_;
+    }
+    // Shows why a saved run was not resumed, until a run is started. Only
+    // catalog lines are accepted; platform codes never reach the label.
+    [[nodiscard]] HRESULT show_resume_status(ResumeStatus status) noexcept
+    {
+        const auto index = static_cast<std::size_t>(status);
+        if (index >= resume_lines_.size())
+            return E_INVALIDARG;
+        if (presentation::resume_line(status) && !resume_lines_[index])
+            return HRESULT_FROM_WIN32(ERROR_NOT_FOUND);
+        const auto previous = resume_status_;
+        resume_status_ = status;
+        try
+        {
+            show_live(run_);
+            return S_OK;
+        }
+        catch (...)
+        {
+            resume_status_ = previous;
+            return E_FAIL;
+        }
     }
     void key_available() noexcept override
     {
@@ -156,6 +183,7 @@ class RunWindow final : public WindowCommandHandler
                         achievements_ = std::move(delivery);
                         ++attempt_;
                         window_.discard_point();
+                        resume_status_ = ResumeStatus::none;
                         save_boundary();
                     }
                 }
@@ -244,6 +272,8 @@ class RunWindow final : public WindowCommandHandler
     [[nodiscard]] std::vector<TextLine> status_lines() const
     {
         std::vector<TextLine> lines;
+        if (auto line = presentation::resume_line(resume_status_))
+            lines.push_back(*line);
         if (auto line = presentation::achievement_line(
                 notice_sink_ ? notice_sink_->pending() : std::nullopt))
             lines.push_back(*line);
@@ -374,6 +404,9 @@ class RunWindow final : public WindowCommandHandler
     std::unique_ptr<RunAchievements> achievements_;
     CheckpointStore *checkpoints_ = nullptr;
     bool checkpoint_failed_ = false;
+    // Indexed by ResumeStatus: whether the catalog holds that marked line.
+    std::array<bool, 4> resume_lines_{};
+    ResumeStatus resume_status_ = ResumeStatus::none;
     std::uint64_t attempt_ = 1;
     std::unique_ptr<BoardView> view_;
     HRESULT error_ = S_OK;

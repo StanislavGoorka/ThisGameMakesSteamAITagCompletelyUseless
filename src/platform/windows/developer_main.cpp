@@ -1,9 +1,10 @@
 #include "application/text_build_policy.hpp"
 #include "core/run_start.hpp"
 #include "developer_text.hpp"
+#include "platform/windows/checkpoint_location.hpp"
 #include "platform/windows/local_achievement_sink.hpp"
-#include "platform/windows/profile_location.hpp"
-#include "platform/windows/run_window.hpp"
+#include "platform/windows/local_checkpoint_store.hpp"
+#include "platform/windows/resume_window.hpp"
 using namespace closed_circuit;
 
 struct ComApartment
@@ -30,7 +31,6 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
             windows::NativeWindow::create(*catalog, "developer-window-title");
         if (!created.window)
             return 2;
-        const auto run = start_run(RunSeed{0});
         const AssetManifest assets{presentation::atlas_reference()};
         // CMake supplies a UTF-8 checkout path; launching from another cwd
         // works.
@@ -38,8 +38,19 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         const auto profile = windows::local_profile_location();
         windows::LocalAchievementSink durable{profile.path};
         AchievementNoticeSink notices{durable};
-        auto board = windows::RunWindow::create(
-            *created.window, run, root, assets, {}, &*catalog, true, &notices);
+        // Without a resolved location nothing is read, saved or cleared.
+        const auto location = windows::local_checkpoint_location();
+        std::optional<windows::LocalCheckpointStore> store;
+        windows::CheckpointResume resume{std::nullopt,
+                                         ResumeStatus::unavailable};
+        if (SUCCEEDED(location.error))
+        {
+            store.emplace(location.path);
+            resume = windows::resume_checkpoint_file(location.path);
+        }
+        auto board = windows::create_resumed_window(
+            *created.window, resume, RunSeed{0}, root, assets, *catalog,
+            &notices, store ? &*store : nullptr);
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);
