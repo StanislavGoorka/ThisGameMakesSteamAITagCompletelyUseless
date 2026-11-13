@@ -1,14 +1,13 @@
 # Następny mały krok
 
-Task: P051-02
+Task: P052
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P051-01, bieżący wpis i jego
-zależności w tasks.json. Status i walidator na początku.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P051-02 oraz bieżący wpis
+i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Rozszerz istniejący test Windows o osobny tryb procesu dla rzeczywistego MvpAchievementEvaluator. Odczytaj checkpoint sektora 2, odtwórz sektory 2–3, porównaj pełne stany/payloady oraz dokładne main/bak w dwóch nowych procesach. Restore do pustego profilu nie może dać run_without_overdrive. Dotychczasowy worker P044-03 używa fake i nie spełnia tego kryterium. Bez nowych predykatów i zmian formatów.
+Dodaj deweloperski benchmark podglądu na jawnym korpusie stanów, z opisem sprzętu oraz p50/p95. Bez progów wydajności w CTest i bez deklaracji grywalności; nie mierz debug jako wynik docelowy.
 
-Dla kodu użyj cpp-core-step; czytaj ARCHITECTURE, GAME_DESIGN, TESTING,
-ACHIEVEMENT_PREDICATES, DOMAIN_EVENTS i DOMAIN_DISPATCH. Jeden mały kontrakt.
-Configure, build/CTest Debug i Release, clang-format src/tests/tools, walidator
-i diff --check; raport, STATE/NEXT/README i lokalny commit z kontrolą zakresu.
-Bez assetów, pobrań, tekstów dla gracza, UI, Steam i pushu.
+Dla C++ stosuj cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
+Configure, build i CTest Debug/Release, formatter src/tests/tools; dla samej
+dokumentacji walidator i diff --check. Raport, STATE/NEXT/README i osobny
+lokalny commit z kontrolą hasha oraz zakresu. Bez assetów, pobrań i pushu.

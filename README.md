@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P051-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P052**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -53,6 +53,8 @@ P050: Ukończono pięć predykatów MVP. RunEnded(won) sektora 3 zgłasza comple
 P051: Rozbito integrację na dwa niezależnie oceniane dowody: pełny run i restore w procesie oraz osobny restart procesu. P052 zależy od P051-02; bez implementacji dzieci. [Raport](docs/workflow/history/P051.md)
 
 P051-01: Pełny run root seedu 1 przez rzeczywiste predykaty i lokalny sink odblokowuje maskę 31 z backupem 15. Zapisany/odczytany checkpoint sektora 2 odtwarza wszystkie stany i payloady; pusty profil z nieznaną historią dostaje 27 i backup 11. Preview, duplikaty i świeża gałąź zachowują pliki. Bez zmian produkcyjnych. [Raport](docs/workflow/history/P051-01.md)
+
+P051-02: Dwa nowe procesy odczytują checkpoint sektora 2 i porównują każdy pełny stan oraz payload sektorów 2–3 z niezależną kontynuacją pełnego runu. Rzeczywisty evaluator zgłasza 27; pusty profil otrzymuje 27/backup 11, profil 31/backup 15 zachowuje dokładne bajty. Drugi proces zachowuje oba main/bak. Preview i duplikaty nie wywołują usług. [Raport](docs/workflow/history/P051-02.md)
 
 ## Mapa dokumentacji
 

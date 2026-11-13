@@ -142,15 +142,16 @@ bool worker(const std::filesystem::path &directory)
                LocalProfile{31, 3, 29, true};
 }
 
-bool launch(const std::filesystem::path &directory)
+bool launch(const std::filesystem::path &directory,
+            std::wstring_view mode = L"--replay")
 {
     std::array<wchar_t, 32768> executable{};
     const auto length = GetModuleFileNameW(
         nullptr, executable.data(), static_cast<DWORD>(executable.size()));
     if (length == 0 || length >= executable.size())
         return false;
-    auto command = L"\"" + std::wstring(executable.data()) + L"\" --replay \"" +
-                   directory.native() + L"\"";
+    auto command = L"\"" + std::wstring(executable.data()) + L"\" " +
+                   std::wstring(mode) + L" \"" + directory.native() + L"\"";
     STARTUPINFOW startup{};
     startup.cb = sizeof(startup);
     PROCESS_INFORMATION information{};
@@ -298,6 +299,98 @@ bool transition(RunState &run)
     return true;
 }
 
+bool mvp_worker(const std::filesystem::path &directory)
+{
+    // Rebuild the uninterrupted reference independently of the disk checkpoint.
+    auto reference = start_run(RunSeed{1});
+    std::optional<RunState> boundary;
+    std::array<std::vector<Step>, 2> suffix;
+    for (unsigned number = 1; number <= 3; ++number)
+    {
+        if (number == 2)
+            boundary = reference;
+        SplitMix64 rng(reference.seed);
+        RunSeed seed{0};
+        for (unsigned i = 0; i < number; ++i)
+            seed = RunSeed{rng.next_u64()};
+        const auto commands = developer::build_baseline_witness(
+            seed, developer::sector_fixture(seed));
+        if (!commands)
+            return false;
+        for (const auto &command : *commands)
+        {
+            const auto result = resolve_run_turn_events(reference, command);
+            if (!result.turn.accepted)
+                return false;
+            reference = result.turn.state;
+            if (number >= 2)
+                suffix[number - 2].push_back(
+                    {command, reference, result.events});
+        }
+        if (number < 3 && !transition(reference))
+            return false;
+    }
+    const auto read = windows::read_checkpoint_file(directory / L"mvp_run.dat");
+    const auto restored =
+        read.checkpoint ? restore_checkpoint(*read.checkpoint) : std::nullopt;
+    if (!boundary || !restored || !test::same_run(*boundary, *restored))
+        return false;
+    for (const auto *name : {L"mvp.dat", L"restart.dat"})
+    {
+        const auto profile = directory / name;
+        const auto before = image(profile);
+        const auto initial = windows::read_profile_file(profile).profile;
+        if (!initial)
+            return false;
+        auto run = *restored;
+        ObservedMvpEvaluator evaluator;
+        ObservedSink sink(profile);
+        const auto context = scope(run);
+        EventDispatcher dispatcher(context, evaluator, sink);
+        unsigned events = 0;
+        for (std::size_t i = 0; i < suffix.size(); ++i)
+        {
+            for (const auto &step : suffix[i])
+            {
+                const auto files = image(profile);
+                const auto calls = sink.calls, evaluations = evaluator.calls;
+                const auto input = run;
+                const auto preview = preview_run_turn(run, step.command);
+                const auto actual = resolve_run_turn_events(run, step.command);
+                if (!preview.accepted || !actual.turn.accepted ||
+                    actual.events != step.events ||
+                    !test::same_run(actual.turn.state, step.state) ||
+                    !test::same_run(preview.state, step.state) ||
+                    !test::same_run(run, input) || image(profile) != files ||
+                    sink.calls != calls || evaluator.calls != evaluations ||
+                    !publish(dispatcher, context, actual.events, evaluator,
+                             sink))
+                    return false;
+                run = actual.turn.state;
+                events += static_cast<unsigned>(actual.events.size());
+            }
+            if (i == 0 && !transition(run))
+                return false;
+        }
+        const auto expected_mask = initial->achievement_bits == 31 ? 31 : 27;
+        const auto expected_backup = expected_mask == 31 ? 15 : 11;
+        const auto main = encode_profile(LocalProfile{
+            static_cast<std::uint16_t>(expected_mask), 3, 29, true});
+        const auto backup = encode_profile(LocalProfile{
+            static_cast<std::uint16_t>(expected_backup), 3, 29, true});
+        if (!main || !backup || !test::same_run(run, reference) ||
+            evaluator.calls != events || evaluator.candidates != 27 ||
+            sink.new_unlocks != (initial->achievement_bits == 0 ? 4u : 0u) ||
+            test::read_bytes(profile) !=
+                std::vector<std::uint8_t>(main->begin(), main->end()) ||
+            test::read_bytes(profile.native() + L".bak") !=
+                std::vector<std::uint8_t>(backup->begin(), backup->end()) ||
+            (initial->achievement_bits != 0 && image(profile) != before))
+            return false;
+    }
+    return true;
+}
+
 bool complete_mvp(const std::filesystem::path &directory)
 {
     if (!std::filesystem::create_directory(directory))
@@ -406,6 +499,12 @@ bool complete_mvp(const std::filesystem::path &directory)
             if (!publish(repeated, next_branch, step.events, another_branch,
                          restored_sink))
                 return false;
+    if (!windows::save_profile_file(directory / L"restart.dat", initial))
+        return false;
+    for (int repeat = 0; repeat < 2; ++repeat)
+        if (!launch(directory, L"--mvp-replay") ||
+            image(profile) != original_files)
+            return false;
     return another_branch.calls == suffix_events &&
            another_branch.candidates == 27 && restored_sink.new_unlocks == 4 &&
            image(restored_profile) == restored_files &&
@@ -416,6 +515,8 @@ int wmain(int argc, wchar_t **argv)
 {
     if (argc == 3 && std::wstring_view(argv[1]) == L"--replay")
         return worker(argv[2]) ? 0 : 2;
+    if (argc == 3 && std::wstring_view(argv[1]) == L"--mvp-replay")
+        return mvp_worker(argv[2]) ? 0 : 2;
     if (argc != 1)
         return 2;
     test::CheckpointDirectory directory;

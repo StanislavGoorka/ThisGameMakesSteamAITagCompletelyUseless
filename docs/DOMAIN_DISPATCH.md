@@ -36,8 +36,11 @@ sektorów 2–3 porównuje każdy pełny stan i payload. Z domyślnie nieznaną 
 oraz pustym profilem odblokowuje wyłącznie maskę 27, z backupem 11. Dokładne
 duplikaty nie oceniają ponownie; świeża gałąź ocenia ponownie bez zapisu
 duplikatów. Preview i obie powtórki zachowują dokładne bajty profili/backupów.
-Ten nowy scenariusz nie uruchamia procesu potomnego; taki dowód dla rzeczywistych
-predykatów pozostaje w P051-02.
+P051-02 dodaje dwa nowe procesy z rzeczywistym evaluatorem: odczyt checkpointu
+sektora 2, niezależne odtworzenie referencyjnego pełnego runu i porównanie
+każdego stanu/payloadu sektorów 2–3. Pusty profil uzyskuje 27/backup 11,
+istniejący 31/backup 15 pozostaje identyczny. Drugi proces zachowuje dokładne
+bajty obu par main/bak; preview i duplikaty nie uruchamiają usług.
 
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są

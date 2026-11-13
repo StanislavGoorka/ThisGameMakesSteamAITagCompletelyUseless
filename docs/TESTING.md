@@ -161,8 +161,11 @@ Checkpoint sektora 2 jest zapisany/odczytany przez Windows; sektory 2–3
 porównują każdy stan i payload ze śladem oryginalnego runu. Pusty profil
 odtworzonej gałęzi dostaje 27 i backup 11, bez domniemania braku overdrive.
 Liczniki i dokładne bajty chronią preview, cache duplikatu i świeżą gałąź.
-Nowy scenariusz działa w jednym procesie; istniejące procesy fake testu
-transportu nie zastępują dowodu P051-02 dla prawdziwych predykatów.
+P051-02 uruchamia dwa nowe procesy z rzeczywistym evaluatorem. Każdy odczytuje
+checkpoint i porównuje wszystkie stany/payloady sektorów 2–3 z niezależnym
+pełnym runem. Pierwszy odblokowuje 27/backup 11 w pustym profilu, drugi zachowuje
+dokładne bajty; oba zachowują istniejący profil 31/backup 15. Preview i duplikaty
+nie wywołują usług. Procesy fake testu transportu pozostają odrębnym dowodem.
 
 P050: completed_run wymaga won w sektorze 3, bez wymogu znanej historii.
 Testy odrzucają death/overload i sektory pośrednie. Jedno końcowe zdarzenie
