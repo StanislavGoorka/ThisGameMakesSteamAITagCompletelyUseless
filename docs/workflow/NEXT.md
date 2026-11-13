@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P061-01
+Task: P061-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P061-01, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Polityka developer/public katalogu tekstów. Dodaj jawny TextAudience do walidacji TextCatalog: developer przyjmuje oznaczone placeholdery, public odrzuca całą listę z placeholderem. Bez IO, JSON i CMake.
+Publiczna bramka rejestru napisów. Dodaj skrypt public content gate na bazie bramki approved: content/texts.json musi zawierać wyłącznie approved i żadnego markera. Bez skanera binariów i bez zmiany treści.
 
-Kryteria: Puste i approved-only listy, mixed/placeholder listy, invalid audience, atomowa odmowa i brak fallbacku ID; D/R.
+Kryteria: Izolowane rejestry: pusty i approved fixture przechodzą, oznaczony placeholder dozwolony przez developer walidator jest odrzucony publicznie, mixed i zły status/źródło odrzucone. Właściwe kody procesu.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

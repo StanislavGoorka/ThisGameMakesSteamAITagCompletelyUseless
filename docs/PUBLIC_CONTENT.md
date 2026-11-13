@@ -19,6 +19,12 @@ P062 zależy od P061-03. Przyszły roboczy tytuł okna oznacza, że build z nim
 może być tylko developerski do czasu pozyskania finalnego tytułu ze źródła.
 Żaden tryb konfiguracji nie upoważnia do generowania lub pobierania treści.
 
+P061-01 wdraża wymagany parametr `TextAudience` fabryki TextCatalog.
+Nie ma domyślnej polityki; caller wybiera developer albo public_release.
+Public odrzuca atomowo również mixed listę z jednym poprawnym placeholderem,
+a nieznana wartość enum jest błędem także dla pustej listy. Oba tryby nadal
+wymagają pełnej walidacji wpisów i źródeł. P061-02/03 pozostają do wdrożenia.
+
 Ograniczenie: bramki pól i rejestru nie skanują napisów zakodowanych w EXE
 ani niewymienionych katalogów depotu. P101 i review wszystkich ekranów mają
 objąć faktyczną allowlistę produktu. Pusty katalog napisów nie jest dowodem

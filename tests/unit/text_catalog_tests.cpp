@@ -2,6 +2,12 @@
 #include <iostream>
 using namespace closed_circuit;
 
+auto developer_catalog(std::span<const TextRecord> records,
+                       std::span<const AssetReference> assets)
+{
+    return TextCatalog::from_records(records, assets, TextAudience::developer);
+}
+
 int main()
 {
     const auto source = *AssetReference::from_fields(
@@ -12,23 +18,47 @@ int main()
                               TextStatus::approved, "source"};
     const TextRecord placeholder{"test", "[AI PLACEHOLDER] Test",
                                  TextStatus::ai_placeholder, std::nullopt};
+    for (const auto audience :
+         {TextAudience::developer, TextAudience::public_release})
+    {
+        const std::vector<TextRecord> only_approved{approved};
+        const std::vector<TextRecord> only_placeholder{placeholder};
+        const std::vector<TextRecord> mixed{approved, placeholder};
+        const auto before = mixed;
+        const auto developer = audience == TextAudience::developer;
+        const auto valid =
+            TextCatalog::from_records(only_approved, assets, audience);
+        if (!TextCatalog::from_records({}, {}, audience) || !valid ||
+            valid->find("unknown") ||
+            TextCatalog::from_records(only_placeholder, {}, audience)
+                    .has_value() != developer ||
+            TextCatalog::from_records(mixed, assets, audience).has_value() !=
+                developer ||
+            mixed != before ||
+            TextCatalog::from_records(only_approved, {}, audience))
+            return 1;
+    }
+    if (TextCatalog::from_records({}, {}, static_cast<TextAudience>(255)) ||
+        TextCatalog::from_records(std::span{&approved, 1}, assets,
+                                  static_cast<TextAudience>(255)))
+        return 1;
     std::vector records{placeholder, approved};
-    const auto catalog = TextCatalog::from_records(records, assets);
+    const auto catalog = developer_catalog(records, assets);
     if (!catalog || catalog->records().size() != 2 || !catalog->find("test") ||
         *catalog->find("test") != placeholder.value ||
         !catalog->find(approved.id) ||
         *catalog->find(approved.id) != approved.value ||
         catalog->find("unknown") || catalog->find("") ||
-        !TextCatalog::from_records({}, {}))
+        !developer_catalog({}, {}))
         return 1;
     records[0].value.clear();
     auto copy = *catalog;
-    copy = *TextCatalog::from_records({}, {});
+    copy = *developer_catalog({}, {});
     if (*catalog->find("test") != placeholder.value || copy.find("test"))
         return 1;
     auto rejected = [&](TextRecord record)
     {
-        if (!TextCatalog::from_records(std::span{&record, 1}, assets))
+        if (!developer_catalog(std::span{&record, 1}, assets))
             return true;
         std::cerr << "Unexpected text acceptance: " << record.id << '\n';
         return false;
@@ -75,10 +105,10 @@ int main()
     if (bad.value.size() != 4097 || !rejected(bad))
         return 1;
     bad.value.pop_back();
-    if (!TextCatalog::from_records(std::span{&bad, 1}, {}))
+    if (!developer_catalog(std::span{&bad, 1}, {}))
         return 1;
     std::vector duplicates{placeholder, placeholder};
-    if (TextCatalog::from_records(duplicates, assets))
+    if (developer_catalog(duplicates, assets))
         return 1;
     std::vector<TextRecord> many;
     for (unsigned i = 0; i < 256; ++i)
@@ -86,10 +116,10 @@ int main()
         many.push_back(placeholder);
         many.back().id = "id" + std::to_string(i);
     }
-    if (!TextCatalog::from_records(many, {}))
+    if (!developer_catalog(many, {}))
         return 1;
     many.push_back(approved);
-    if (TextCatalog::from_records(many, assets))
+    if (developer_catalog(many, assets))
         return 1;
     return 0;
 }

@@ -8,6 +8,11 @@
 
 ## C++ i zakres testów
 
+P061-01 rozszerza application_text_catalog o macierz dwóch TextAudience:
+pusty i approved-only katalog, placeholder-only i mixed lista, brak źródła
+oraz unknown audience. Public odrzuca całą listę z placeholderem, developer
+przyjmuje tylko poprawnie oznaczone; dane wejściowe i lookup pozostają chronione.
+
 P060: application_text_catalog sprawdza wartości, niezależne kopie, pusty
 katalog, brak fallbacku ID, dokładny prefiks i brak źródła placeholdera,
 źródło approved i zakaz markera, invalid status/ID/NUL, limit 4096/4097,

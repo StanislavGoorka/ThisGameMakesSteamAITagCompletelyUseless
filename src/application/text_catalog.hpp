@@ -3,6 +3,11 @@
 
 namespace closed_circuit
 {
+enum class TextAudience
+{
+    developer,
+    public_release
+};
 enum class TextStatus
 {
     ai_placeholder,
@@ -24,9 +29,11 @@ class TextCatalog
   public:
     [[nodiscard]] static std::optional<TextCatalog>
     from_records(std::span<const TextRecord> records,
-                 std::span<const AssetReference> assets)
+                 std::span<const AssetReference> assets, TextAudience audience)
     {
-        if (records.size() > 256 || !is_asset_manifest_valid(assets))
+        if ((audience != TextAudience::developer &&
+             audience != TextAudience::public_release) ||
+            records.size() > 256 || !is_asset_manifest_valid(assets))
             return std::nullopt;
         for (std::size_t i = 0; i < records.size(); ++i)
         {
@@ -37,7 +44,8 @@ class TextCatalog
                 return std::nullopt;
             if (record.status == TextStatus::ai_placeholder)
             {
-                if (!record.value.starts_with("[AI PLACEHOLDER]") ||
+                if (audience == TextAudience::public_release ||
+                    !record.value.starts_with("[AI PLACEHOLDER]") ||
                     record.source_asset_id)
                     return std::nullopt;
             }
