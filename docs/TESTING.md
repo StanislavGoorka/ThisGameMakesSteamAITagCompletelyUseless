@@ -346,3 +346,5 @@ P074-02: `windows_checkpoint_resume` sprawdza klasyfikację wszystkich czterech 
 P074-03: `presentation_checkpoint_text` sprawdza brak wiersza dla none/resumed i braku błędu zapisu, dokładne wartości lokalnego katalogu, odmowę pustego katalogu, pełny marker bez cyfr i backslasha w rzeczywistym rejestrze developer, nieznane wartości statusu oraz odmowę katalogu public.
 
 P074-04: `application_checkpoint_boundary` dla seedów 0/1/2/MAX sprawdza zapis startu i początków sektorów 2–3 równy capture_checkpoint (z opłaconym impulsem długu), keep po turze, przy wyborze nagrody i ready_for_next, clear dla won/death/overload, keep dla zmienionego pola w turze 0 oraz dwukrotną decyzję bez mutacji wejścia. Mutacja usuwająca clear dla lost kończy test kodem 8.
+
+P074-05: `windows_checkpoint_store` używa portu CheckpointStore na rzeczywistych plikach: clear bez plików, zapis i backup, dwukrotne clear, blokada backupu zatrzymuje clear przed main, blokada main zatrzymuje clear i save, osierocony backup, uszkodzony main bez nadpisania, odmowa niepoprawnej wartości, pozostawiony staging i brak katalogu. Mutacja odwracająca kolejność usuwania kończy test kodem 1. Timeout 30 s.

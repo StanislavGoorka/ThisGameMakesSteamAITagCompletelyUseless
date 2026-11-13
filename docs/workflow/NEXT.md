@@ -1,20 +1,22 @@
 # Następny mały krok
 
-Task: P074-05
+Task: P074-06
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-04.
-Zależności: P074-04; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-05.
+Zależności: P074-05; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj port zapisu/usunięcia checkpointu i adapter Windows na istniejącym
-save_checkpoint_file. Usuwanie najpierw backup, potem main. Bez UI.
+Połącz checkpoint_boundary z CheckpointStore w RunWindow: start, restart,
+przejście sektora i wynik terminalny. Błąd pokazuje wiersz checkpoint-unsaved.
 
-Kryteria: rzeczywiste pliki: zapis i backup, usunięcie obu, brak plików,
-blokada, uszkodzony main bez nadpisania; powtórka idempotentna.
+Kryteria: HWND: dokładne bajty po starcie i przejściu, brak zapisu po zwykłej
+turze i preview, usunięcie po wyniku, błąd zapisu z markerem bez blokady gry.
 
-Czytaj RESUME_PRESENTATION.md, CHECKPOINT_FORMAT.md, checkpoint_save.hpp,
-checkpoint_boundary.hpp, local_achievement_sink.hpp (wzorzec portu)
-i tests/integration/checkpoint_save_tests.cpp.
+Czytaj RESUME_PRESENTATION.md, run_window.hpp, checkpoint_boundary.hpp,
+checkpoint_store.hpp, local_checkpoint_store.hpp, checkpoint_text.hpp,
+tests/integration/achievement_window_tests.cpp i session_window_tests.cpp.
+Uwaga: dysk ma 1 s rozdzielczości czasu; po przywróceniu pliku z mutacji
+odczekaj i wykonaj touch przed przebudową.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Za szeroki zakres rozbij bez implementacji. Bez nowych mechanik i assetów.
 Kod: configure/build/CTest Debug i Release, formatter src/tests/tools.

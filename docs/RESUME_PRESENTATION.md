@@ -43,3 +43,5 @@ P074-02 jest zaimplementowane: `ResumeStatus` (application) i `resume_checkpoint
 P074-03 jest zaimplementowane: wpisy `checkpoint-corrupt`, `checkpoint-unavailable`, `checkpoint-unsaved` w texts.json oraz `presentation/checkpoint_text.hpp`. Public gate nadal odmawia placeholderów.
 
 P074-04 jest zaimplementowane: `checkpoint_boundary` (application) zwraca save z capture_checkpoint wyłącznie dla dokładnego początku sektora, clear dla won/lost i keep w pozostałych przypadkach; wolno go wołać po każdej zaakceptowanej zmianie.
+
+P074-05 jest zaimplementowane: port `CheckpointStore` (application), `clear_checkpoint_files` i `LocalCheckpointStore` (Windows). Clear usuwa backup przed main, traktuje brak jako sukces i nie dotyka staging.
