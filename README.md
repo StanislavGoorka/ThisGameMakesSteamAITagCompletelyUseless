@@ -437,3 +437,5 @@ P069-02: Dodano RAII TextRenderer dla wartości TextCatalog: systemowy Segoe UI,
 P069-03: Podłączono istniejący tytuł developerski do DirectWrite nad planszą. BoardView posiada napis, wspólnie z oknem wylicza hit-test z obszarem tekstu i DPI aktualnego celu, a cała scena i trasa są przesunięte poniżej napisu. Bez nowych wpisów treści. Zakończono serię 10 kroków: osiem implementacji i dwa podziały planu, każdy osobnym lokalnym commitem. [Raport](docs/workflow/history/P069-03.md)
 
 P070: Podzielono HUD na cztery małe kontrakty: dane, oznaczone wartości, skład wierszy i integrację okna. P071 zależy od P070-04; dzieci pozostają nieukończone. [Raport](docs/workflow/history/P070.md)
+
+P070-01: Dodano niemutującą projekcję HP, wykonanych tur i zasilonych odbiorników. Test obejmuje 49 pól, HP 0/1/3/255 oraz tury 0/47/48/49/MAX, pełny stan i odrzucenie zasilonych pól bez odbiornika. [Raport](docs/workflow/history/P070-01.md)

@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P070-01
+Task: P070-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070.
-Zależności completed: P070. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070-01.
+Zależności completed: P070-01. Sprawdź git status i walidator.
 
-Dodaj niemutujący odczyt HP, wykonanych tur i liczby zasilonych odbiorników. Bez napisów i renderera.
+Dodaj trzy etykiety katalogu i formatowanie liczbowych wartości projekcji, bez renderowania.
 
-Kryteria: Test granic HP/tur, liczenie tylko odbiorników i pełna niezmienność GameState.
+Kryteria: Każdy osobny napis zachowuje prefiks; brak ID daje odmowę, public gate odrzuca placeholdery.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, HUD_PRESENTATION.md
