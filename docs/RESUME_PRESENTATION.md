@@ -35,3 +35,5 @@ backup pozwolił wznowić; agent nie naprawia go automatycznie.
 
 Bez nowych mechanik, assetów i pobrań. Obserwacja pulpitu jest osobnym
 dowodem od testów API i HWND.
+
+P074-01 jest zaimplementowane: `checkpoint_location_in` i `local_checkpoint_location` dzielą z profilem `private_directory_in`; adapter tylko rozwiązuje ścieżkę.

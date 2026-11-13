@@ -27,10 +27,10 @@ struct ProfileLocationResult
     return {std::filesystem::path(raw), S_OK};
 }
 
-// One writer owns this directory. Never repair, truncate or reset a profile.
-// The explicit base keeps tests independent of the user's actual profile.
+// One writer owns this directory and every file in it. Never repair, truncate
+// or reset saved data. The explicit base keeps tests independent of the user.
 [[nodiscard]] inline ProfileLocationResult
-profile_location_in(const std::filesystem::path &base)
+private_directory_in(const std::filesystem::path &base)
 {
     if (!base.is_absolute())
         return {{}, E_INVALIDARG};
@@ -47,7 +47,16 @@ profile_location_in(const std::filesystem::path &base)
     if (!(attributes & FILE_ATTRIBUTE_DIRECTORY) ||
         (attributes & FILE_ATTRIBUTE_REPARSE_POINT))
         return {{}, HRESULT_FROM_WIN32(ERROR_DIRECTORY)};
-    return {directory / L"profile.bin", S_OK};
+    return {directory, S_OK};
+}
+
+[[nodiscard]] inline ProfileLocationResult
+profile_location_in(const std::filesystem::path &base)
+{
+    auto directory = private_directory_in(base);
+    if (SUCCEEDED(directory.error))
+        directory.path /= L"profile.bin";
+    return directory;
 }
 
 [[nodiscard]] inline ProfileLocationResult local_profile_location()

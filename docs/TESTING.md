@@ -338,3 +338,5 @@ focus loss/recovery, limit 48 tur i terminalne odmowy. Repaint po akcjach
 używa rzeczywistego celu HWND poza pulpitem. Brak nowych usług i reguł.
 
 P072-01..04 oraz P073-01..05: pełna pula 125/125 w Debug i Release. Nowe testy chronią oferty 0/1/2, markery katalogu, overlay i brak hit-testu, obie granice sektorów, pełne stany każdej akcji, trwałe potwierdzenie first_delivery, kolejkę retry/wyjątki, known folder i niezmienione bajty istniejącego profilu. Testy HWND i wspólnego renderera DPI nie zastępują obserwacji pulpitu lub VM.
+
+P074-01: `windows_checkpoint_location` sprawdza zapytanie o rzeczywisty LocalAppData bez tworzenia katalogu użytkownika, `ClosedCircuit/checkpoint.bin` we wspólnym katalogu z profilem (w obu kolejnościach), Unicode, powtórki bez zmiany bajtów obu plików, kolizję z plikiem i odmowę pustej, względnej lub brakującej bazy.
