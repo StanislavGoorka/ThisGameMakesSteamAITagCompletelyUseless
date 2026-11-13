@@ -39,7 +39,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P063-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P064**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -371,3 +371,5 @@ P063: Rozbito wejście klawiatury na trzy kontrakty: filtr naciśnięć/focus, c
 P063-01: Dodano przenośny KeyboardInput: jedna akcja do key-up, niezależne klawisze, reset przy focus loss i odmowa repeat po odzyskaniu focus. Redundantny focus=true zachowuje held; unknown jest ignorowany. [Raport](docs/workflow/history/P063-01.md)
 
 P063-02: Dodano map_key_command: strzałki tworzą kandydatów MoveCommand bez zawijania, R i O wskazują pole gracza, Space tworzy WaitCommand. Test wszystkich 49 pól i pełnych payloadów oraz rzeczywistej odmowy resolvera chroni granice i niezmienność stanu. [Raport](docs/workflow/history/P063-02.md)
+
+P063-03: NativeWindow tłumaczy WM_KEYDOWN/UP na filtr i mapowanie; bit30 oraz stan held blokują repeat. take_command konsumuje jedyną akcję, focus loss i zamknięcie czyszczą pending. Test siedmiu komend, powtórek, repress, unknown i krawędzi nie wymaga GameState. [Raport](docs/workflow/history/P063-03.md)

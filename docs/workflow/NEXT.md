@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P063-03
+Task: P064
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P063-02 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P063-03 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i walidator na początku.
 
-Adapter komunikatów klawiatury Win32. Połącz WM_KEYDOWN/UP i focus z filtrem oraz mapowaniem. Okno udostępnia co najwyżej jednego kandydata do pobrania, bez kolejki tur i bez podłączenia sesji gry.
+Urządzenie Direct2D. Dodaj lifecycle zasobów renderer backend, bez tworzenia artworku.
 
-Kryteria: Rzeczywiste wiadomości Windows: pierwszy down, bit repeat, keyup/repress, focus loss z pending, odzyskanie focus i unknown. Brak komendy po zamknięciu, brak zmiany GameState; D/R.
+Kryteria: Resize i odtworzenie urządzenia; brak proceduralnych assetów.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

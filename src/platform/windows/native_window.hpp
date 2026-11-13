@@ -1,4 +1,5 @@
 #pragma once
+#include "application/keyboard_commands.hpp"
 #include "application/text_catalog.hpp"
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -8,6 +9,7 @@
 #endif
 #include <Windows.h>
 #include <memory>
+#include <utility>
 
 namespace closed_circuit::windows
 {
@@ -63,6 +65,12 @@ class NativeWindow
     {
         return focused_;
     }
+    [[nodiscard]] std::optional<Command> take_command(NodeId player)
+    {
+        const auto key = std::exchange(pending_key_, std::nullopt);
+        return key && handle_ && focused_ ? map_key_command(*key, player)
+                                          : std::nullopt;
+    }
     [[nodiscard]] MessageLoopResult run_message_loop()
     {
         if (!handle_ || loop_active_)
@@ -77,6 +85,28 @@ class NativeWindow
 
   private:
     NativeWindow() = default;
+    static std::optional<InputKey> translate_key(WPARAM key) noexcept
+    {
+        switch (key)
+        {
+        case VK_UP:
+            return InputKey::north;
+        case VK_RIGHT:
+            return InputKey::east;
+        case VK_DOWN:
+            return InputKey::south;
+        case VK_LEFT:
+            return InputKey::west;
+        case 'R':
+            return InputKey::rotate;
+        case 'O':
+            return InputKey::overdrive;
+        case VK_SPACE:
+            return InputKey::wait;
+        default:
+            return std::nullopt;
+        }
+    }
     static LRESULT CALLBACK window_proc(HWND handle, UINT message,
                                         WPARAM wparam, LPARAM lparam)
     {
@@ -95,10 +125,30 @@ class NativeWindow
         auto *owner = reinterpret_cast<NativeWindow *>(
             GetWindowLongPtrW(handle, GWLP_USERDATA));
         if (owner && (message == WM_SETFOCUS || message == WM_KILLFOCUS))
+        {
             owner->focused_ = message == WM_SETFOCUS;
+            owner->input_.set_focus(owner->focused_);
+            if (!owner->focused_)
+                owner->pending_key_.reset();
+        }
+        if (owner && (message == WM_KEYDOWN || message == WM_KEYUP))
+        {
+            if (const auto key = translate_key(wparam))
+            {
+                if (message == WM_KEYUP)
+                    owner->input_.key_up(*key);
+                else if (owner->input_.key_down(*key,
+                                                (lparam & (1LL << 30)) != 0) &&
+                         !owner->pending_key_)
+                    owner->pending_key_ = key;
+                return 0;
+            }
+        }
         if (owner && message == WM_DESTROY)
         {
             owner->focused_ = false;
+            owner->input_.set_focus(false);
+            owner->pending_key_.reset();
             if (owner->loop_active_)
                 PostQuitMessage(0);
         }
@@ -115,6 +165,8 @@ class NativeWindow
     HWND handle_ = nullptr;
     bool focused_ = false;
     bool loop_active_ = false;
+    KeyboardInput input_;
+    std::optional<InputKey> pending_key_;
 };
 
 inline WindowCreateResult NativeWindow::create(const TextCatalog &catalog,

@@ -293,3 +293,5 @@ P062-03: windows_window_process sprawdza trzy osobne uruchomienia developer_wind
 P063-01: application_keyboard_input sprawdza każdy klawisz, 100 prób hold/repeat, release/repress, powtórny focus=true, utratę/odzyskanie focus, niezależność klawiszy i unknown. Bez symulacji i Windows.
 
 P063-02: application_keyboard_commands sprawdza wszystkie 49 pól i cztery kierunki przez niezależne współrzędne row/column, pełne payloady rotate/overdrive/wait, unknown oraz odmowę rzeczywistego resolvera dla geometrycznego sąsiada bez portów.
+
+P063-03: windows_window_keyboard wysyła rzeczywiste WM_KEYDOWN/UP, sprawdza siedem komend, 100 powtórzeń każdego klawisza, bit30 i brak bitu przy hold, keyup/repress, focus loss z pending i odzyskanie focus, unknown, brak kolejki, zamknięcie oraz konsumpcję akcji na krawędzi. Brak dostępu wejścia do GameState.

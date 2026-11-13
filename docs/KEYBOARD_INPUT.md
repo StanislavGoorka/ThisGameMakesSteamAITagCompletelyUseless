@@ -24,3 +24,5 @@ a P063-03 rzeczywiste wiadomości Windows. P064 zależy od ostatniego dziecka.
 P063-01 wdraża KeyboardInput bez Win32 i Command: siedem niezależnych stanów held, domyślny brak focus, brak akcji dla repeat/unknown i reset przy focus loss. Powtórne powiadomienie focus=true nie resetuje trzymanego klawisza.
 
 P063-02 wdraża map_key_command(InputKey, NodeId). Zwraca wartościową komendę bez odczytu/mutacji GameState; ruch jest ograniczony jedynie geometrią. Resolver nadal odrzuca ruch bez portów i zachowuje pełny stan.
+
+P063-03 wdraża NativeWindow::take_command(NodeId). Wiadomości WM_KEYDOWN/UP są tłumaczone na filtr; bit30 oznacza repeat. Każde pobranie konsumuje jedyny oczekujący wpis, również na granicy planszy. Focus loss i WM_DESTROY czyszczą pending oraz held; nie ma podłączonej sesji. Kontrakt bit30: https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-keydown .
