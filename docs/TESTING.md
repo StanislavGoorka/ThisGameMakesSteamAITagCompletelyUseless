@@ -305,3 +305,8 @@ P065: windows_png_read porównuje 832x373/stride3328/1241344 bajtów i SHA-256 p
 P066-01: presentation_atlas_tiles sprawdza literalne mapowanie wszystkich 16 masek i porty na krawędziach rzeczywistego PNG. Rotuje indeksy krawędzi niezależnie od helpera produkcyjnego. Kontroluje granice komórek i obrotów; nie tworzy grafiki.
 
 P066-02: presentation_board_projection sprawdza wszystkie 49 pól i 16 masek w pięciu viewportach, w tym 1x1. Kontroluje centrowanie, brak zawijania, odmowę zero/negative/NaN/infinity/overflow i pełną niezmienność stanu.
+
+P066-03: windows_atlas_renderer porównuje wszystkie 65 536 kanałów obrazu
+offscreen 128x128 z pikselami atlasu, z obrotami i skalą 2x. Chroni transform
+callera, odmowę całej błędnej listy bez zmiany klatki, brak pliku, korupcję,
+niezgodny manifest i retry. Oryginalne assety pozostają niezmienione.

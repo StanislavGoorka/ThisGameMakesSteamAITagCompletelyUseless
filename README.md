@@ -46,7 +46,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P066-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P066-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -394,3 +394,5 @@ P066: Rozbito prezentację planszy na cztery kontrakty: kafle portów, projekcja
 P066-01: Dodano mapowanie wszystkich 16 masek portów na sześć istniejących kafli atlasu 1.2 i obroty całych bitmap. Rzeczywiste piksele potwierdzają dokładnie 12 nieprzezroczystych pikseli każdego otwartego brzegu i zero na zamkniętych. [Raport](docs/workflow/history/P066-01.md)
 
 P066-02: Dodano czystą projekcję planszy 7x7 z centrowaniem i dopasowaniem do viewportu. Każdy kafel zachowuje współrzędne NodeId i maskę portów. Poprawiono kodowanie polskich opisów nowych wpisów P066 po wykryciu stratnej konwersji potoku PowerShell. [Raport](docs/workflow/history/P066-02.md)
+
+P066-03: Dodano AtlasRenderer z uploadem wyłącznie zweryfikowanego atlasu 1.2, własnością celu i bitmapy oraz rysowaniem gotowych kafli przez DrawBitmap. Test offscreen porównuje wszystkie piksele 16 masek po obrotach i skalowaniu 2x; błędna lista nie zmienia poprzedniej klatki. [Raport](docs/workflow/history/P066-03.md)
