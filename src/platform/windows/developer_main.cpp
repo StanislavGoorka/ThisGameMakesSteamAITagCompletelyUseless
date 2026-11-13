@@ -34,7 +34,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         // works.
         const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
         auto board = windows::RunWindow::create(*created.window, run, root,
-                                                assets, {}, &*catalog);
+                                                assets, {}, &*catalog, true);
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);

@@ -21,17 +21,20 @@ To kontrola rejestru, a nie gotowa paczka wydania. [Kontrakt](docs/PUBLIC_CONTEN
 
 Obecnie public build celowo odmawia z powodu oznaczonego tytułu developer.
 `build/windows-msvc/Debug/developer_window.exe` (także Release) uruchamia
-planszę start_run z jednostkami i rolami pól z zatwierdzonego atlasu,
+oznaczony ekran startu. Enter otwiera planszę start_run z jednostkami i rolami pól z zatwierdzonego atlasu,
 z obsługą odmalowania, resize i tur core z klawiatury. Nad planszą DirectWrite
 pokazuje oznaczony tytuł developerski i HUD: HP, wykonane tury i dostawy.
 HUD odpowiada rysowanemu stanowi live lub preview; każdy wiersz zachowuje marker.
 Sterowanie developer: strzałki — ruch, R — obrót, O — overdrive, Space — wait.
+Końcowy wynik won/death/overload pokazuje oznaczony komunikat; Enter
+restartuje pełny run z tym samym seedem, bez zmiany profilu. Przytrzymanie
+Enter nie wykonuje dodatkowej tury ani powtórnego restartu.
 R/O używają pola pod kursorem, a bez wskazania własnego pola. Tab przełącza
 planowanie, klawisz akcji wybiera komendę, Enter wykonuje ją raz, Escape
 anuluje. Focus loss czyści wybór. Wybór pokazuje wynik core i trasę pakietu
 gotowymi symbolami; anulowanie przywraca stan sesji. Przejścia sektorów
 i zapis z UI pozostają kolejnymi zadaniami.
-Ostatnia pełna pula: Debug i Release po 113/113 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 116/116 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu (niedostępny Computer Use).
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
@@ -452,3 +455,5 @@ P071: Podzielono cykl start-run-wynik-restart na czysty model, katalog komunikat
 P071-01: Dodano czysty SessionFlow: ekran start/run/wynik i bramkowane rozpoczęcie lub restart z tym samym seedem. Profil oraz IO pozostają poza modelem. [Raport](docs/workflow/history/P071-01.md)
 
 P071-02: Dodano cztery oznaczone komunikaty sesji i niemutujący wybór katalogowego ID dla startu oraz won/death/overload. Nie ma fallbacku dla niespójnej fazy ani brakującej etykiety. [Raport](docs/workflow/history/P071-02.md)
+
+P071-03: Podłączono ekran startu i trzy końcowe wyniki do Enter. Start nie wykonuje tury, terminalny preview pozostaje planszą, a wykonany wynik blokuje akcje. Restart resetuje cały run, wybór i trasę; profil pozostaje nietknięty. [Raport](docs/workflow/history/P071-03.md)

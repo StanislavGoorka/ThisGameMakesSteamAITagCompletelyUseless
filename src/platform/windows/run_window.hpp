@@ -3,6 +3,7 @@
 #include "application/action_selection.hpp"
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
+#include "presentation/session_text.hpp"
 #include <type_traits>
 
 namespace closed_circuit::windows
@@ -28,14 +29,24 @@ class RunWindow final : public WindowCommandHandler
     create(NativeWindow &window, RunState initial,
            const std::filesystem::path &root, const AssetManifest &manifest,
            std::unique_ptr<TextRenderer> label = {},
-           const TextCatalog *hud_catalog = nullptr)
+           const TextCatalog *hud_catalog = nullptr, bool show_start = false)
     {
+        if (show_start && !hud_catalog)
+            return {nullptr, E_INVALIDARG};
+        if (hud_catalog)
+            for (auto id : {"session-start", "session-won", "session-death",
+                            "session-overload"})
+                if (!hud_catalog->find(id))
+                    return {nullptr, HRESULT_FROM_WIN32(ERROR_NOT_FOUND)};
         auto board = BoardView::create(window, initial.sector, root, manifest,
                                        std::move(label), hud_catalog);
         if (!board.view)
             return {nullptr, board.error};
         auto owner = std::unique_ptr<RunWindow>(
             new RunWindow(window, std::move(initial), std::move(board.view)));
+        owner->lifecycle_ = hud_catalog != nullptr;
+        owner->flow_ = SessionFlow{!show_start};
+        owner->show_live(owner->run_);
         window.set_command_handler(owner.get());
         return {std::move(owner), S_OK};
     }
@@ -46,6 +57,10 @@ class RunWindow final : public WindowCommandHandler
     [[nodiscard]] const BoardView &view() const noexcept
     {
         return *view_;
+    }
+    [[nodiscard]] SessionScreen screen() const noexcept
+    {
+        return lifecycle_ ? flow_.screen(run_) : SessionScreen::run;
     }
     [[nodiscard]] const ActionSelection &selection() const noexcept
     {
@@ -62,13 +77,31 @@ class RunWindow final : public WindowCommandHandler
             if (!window_.focused())
             {
                 selection_.reset();
-                view_->set_board(run_.sector);
+                show_live(run_);
                 return;
             }
             selection_.point(window_.pointed());
             const auto key = window_.take_key();
             if (!key)
                 return;
+            if (screen() != SessionScreen::run)
+            {
+                selection_.reset();
+                if (*key == InputKey::confirm)
+                {
+                    auto next = run_;
+                    auto flow = flow_;
+                    if (flow.confirm(next))
+                    {
+                        view_->set_board(next.sector);
+                        run_ = std::move(next);
+                        flow_ = flow;
+                        window_.discard_point();
+                    }
+                }
+                error_ = S_OK;
+                return;
+            }
             std::optional<Command> command;
             switch (*key)
             {
@@ -98,9 +131,15 @@ class RunWindow final : public WindowCommandHandler
             }
             // Copying into the view may throw; publish run_ only after that
             // copy succeeds. Both following move assignments are nonthrowing.
-            view_->set_board(next.state.sector);
+            show_live(next.state);
             run_ = std::move(next.state);
-            selection_.context_changed();
+            if (screen() == SessionScreen::result)
+            {
+                selection_.reset();
+                window_.discard_point();
+            }
+            else
+                selection_.context_changed();
             error_ = S_OK;
         }
         catch (...)
@@ -110,6 +149,13 @@ class RunWindow final : public WindowCommandHandler
     }
 
   private:
+    void show_live(const RunState &run)
+    {
+        view_->set_board(
+            run.sector, {},
+            lifecycle_ ? presentation::session_message(flow_.screen(run), run)
+                       : std::nullopt);
+    }
     void show_selection()
     {
         if (selection_.candidate())
@@ -133,6 +179,8 @@ class RunWindow final : public WindowCommandHandler
     }
     NativeWindow &window_;
     RunState run_;
+    SessionFlow flow_{true};
+    bool lifecycle_ = false;
     ActionSelection selection_;
     std::unique_ptr<BoardView> view_;
     HRESULT error_ = S_OK;

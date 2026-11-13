@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P071-03
+Task: P072
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P071-02.
-Zależności completed: P071-02. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P071-03.
+Zależności completed: P071-03. Sprawdź git status i walidator.
 
-Podłącz start, wynik i restart przez Enter do istniejącego okna. Czyść wybór i podgląd przy przejściu; nie dodawaj wyboru nagrody.
+Dodaj jeden ekran istniejącej oferty modułów.
 
-Kryteria: HWND: start nie wykonuje tury, wynik nie przyjmuje akcji, Enter restartuje raz, hold/focus bez powtórzenia; pełny reset runu i niezmienione pliki profilu.
+Kryteria: Nielegalny wybór odrzucony; fokus i teksty zgodne z polityką.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, HUD_PRESENTATION.md

@@ -108,6 +108,11 @@ class NativeWindow
     {
         return pointed_;
     }
+    // Context transitions discard the old hit without reentering a callback.
+    void discard_point() noexcept
+    {
+        pointed_.reset();
+    }
     [[nodiscard]] MessageLoopResult run_message_loop()
     {
         if (!handle_ || loop_active_)

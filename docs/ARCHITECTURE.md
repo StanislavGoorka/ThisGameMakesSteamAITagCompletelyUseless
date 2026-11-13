@@ -212,3 +212,11 @@ TextRenderer posiada owning UTF-16 katalogu i niezależny od celu layout
 DirectWrite. AtlasRenderer składa opcjonalny napis w tej samej klatce.
 BoardView rezerwuje jego obszar i udostępnia wspólny hit-test oknu; brush
 powstaje na bieżącym celu. Nie ma nowych assetów ani finalnych tekstów.
+
+P070-01..04 i P071-01..03: HUD odczytuje wyłącznie rysowany GameState;
+każdy wiersz jest etykietą katalogu z liczbowym sufiksem. SessionFlow posiada
+jedynie stan nawigacji, a RunWindow nadal posiada RunState i deleguje reguły
+do core. Start/wynik wyłączają rysowanie planszy i hit-test; restart tworzy
+start_run z tym samym seedem i usuwa poprzedni wybór oraz trasę. Ani model,
+ani ten adapter nie posiada profilu lub ścieżek zapisu. Usługi achievementów,
+nagroda i checkpointy nie zostały w tym kroku podłączone do okna.

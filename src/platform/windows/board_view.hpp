@@ -70,10 +70,14 @@ class BoardView final : public WindowPainter
     {
         return label_ ? label_->text() : std::wstring_view{};
     }
+    [[nodiscard]] bool showing_board() const noexcept
+    {
+        return !message_only_;
+    }
     [[nodiscard]] std::optional<NodeId>
     node_at(float x, float y, float width, float height) const noexcept override
     {
-        if (!device_->target())
+        if (message_only_ || !device_->target())
             return std::nullopt;
         float dpi_x = 0, dpi_y = 0;
         device_->target()->GetDpi(&dpi_x, &dpi_y);
@@ -87,17 +91,21 @@ class BoardView final : public WindowPainter
     {
         return route_;
     }
-    void set_board(GameState board, std::vector<NodeId> route = {})
+    void set_board(GameState board, std::vector<NodeId> route = {},
+                   std::optional<TextLine> message = std::nullopt)
     {
+        if (message && !hud_catalog_)
+            throw std::runtime_error("Missing presentation catalog");
         if (hud_catalog_)
         {
-            auto text = make_hud(board);
+            auto text = make_hud(board, message);
             if (!text.renderer)
                 throw std::runtime_error("HUD layout failed");
             label_ = std::move(text.renderer);
         }
         board_ = std::move(board);
         route_ = std::move(route);
+        message_only_ = message.has_value();
         if (window_.handle())
             InvalidateRect(window_.handle(), nullptr, FALSE);
     }
@@ -138,7 +146,7 @@ class BoardView final : public WindowPainter
             }
             const auto size = device_->target()->GetSize();
             std::vector<presentation::TileDraw> draws;
-            if (size.height > board_top())
+            if (!message_only_ && size.height > board_top())
             {
                 auto scene = presentation::scene_draws(
                     board_, size.width, size.height - board_top(), route_);
@@ -162,8 +170,16 @@ class BoardView final : public WindowPainter
     }
 
   private:
-    [[nodiscard]] TextCreateResult make_hud(const GameState &board) const
+    [[nodiscard]] TextCreateResult
+    make_hud(const GameState &board,
+             std::optional<TextLine> message = std::nullopt) const
     {
+        if (message)
+        {
+            const std::array lines{
+                TextLine{"developer-window-title", std::nullopt}, *message};
+            return TextRenderer::create(*hud_catalog_, lines);
+        }
         const auto hud =
             presentation::hud_lines(presentation::hud_values(board));
         const std::array lines{TextLine{"developer-window-title", std::nullopt},
@@ -188,6 +204,7 @@ class BoardView final : public WindowPainter
     std::unique_ptr<AtlasRenderer> atlas_;
     std::unique_ptr<TextRenderer> label_;
     std::optional<TextCatalog> hud_catalog_;
+    bool message_only_ = false;
     HRESULT error_ = S_OK;
     unsigned frames_ = 0;
 };
