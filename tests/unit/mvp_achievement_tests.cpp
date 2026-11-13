@@ -84,7 +84,60 @@ bool sector_completion()
             }
     return true;
 }
+unsigned finish(MvpAchievementEvaluator &evaluator, int used_sector = 0,
+                int first_sector = 1, RunEndReason reason = RunEndReason::won)
+{
+    unsigned candidates = 0;
+    for (int sector = first_sector; sector <= 3; ++sector)
+    {
+        const Command command =
+            sector == used_sector
+                ? Command{OverdriveCommand{*NodeId::from_value(0)}}
+                : Command{WaitCommand{}};
+        candidates |=
+            evaluator.evaluate(event(ActionCommitted{command}, 1, 0, sector));
+        if (sector != 3 || reason == RunEndReason::won)
+            candidates |=
+                evaluator.evaluate(event(SectorCompleted{}, 1, 1, sector));
+    }
+    return candidates |
+           evaluator.evaluate(event(RunEnded{reason}, 1,
+                                    reason == RunEndReason::won ? 2 : 1, 3));
+}
+bool without_overdrive()
+{
+    for (int used = 0; used <= 3; ++used)
+    {
+        MvpAchievementEvaluator fresh(RunHistoryOrigin::fresh_run), restored;
+        if (((finish(fresh, used) & 4) != 0) != (used == 0) ||
+            (finish(restored, used) & 4) != 0)
+            return false;
+    }
+    for (int first = 2; first <= 3; ++first)
+    {
+        MvpAchievementEvaluator invalid_fresh(RunHistoryOrigin::fresh_run),
+            restored;
+        if ((finish(invalid_fresh, 0, first) & 4) != 0 ||
+            (finish(restored, 0, first) & 4) != 0)
+            return false;
+    }
+    for (auto reason : {RunEndReason::death, RunEndReason::overload})
+    {
+        MvpAchievementEvaluator failed(RunHistoryOrigin::fresh_run);
+        if ((finish(failed, 0, 1, reason) & 4) != 0)
+            return false;
+    }
+    MvpAchievementEvaluator incomplete(RunHistoryOrigin::fresh_run);
+    static_cast<void>(
+        incomplete.evaluate(event(ActionCommitted{WaitCommand{}}, 2)));
+    if ((finish(incomplete) & 4) != 0)
+        return false;
+    MvpAchievementEvaluator old(RunHistoryOrigin::fresh_run);
+    static_cast<void>(finish(old, 1));
+    MvpAchievementEvaluator next_attempt(RunHistoryOrigin::fresh_run);
+    return (finish(next_attempt) & 4) != 0 && (finish(old) & 4) == 0;
+}
 int main()
 {
-    return delivery() && sector_completion() ? 0 : 1;
+    return delivery() && sector_completion() && without_overdrive() ? 0 : 1;
 }

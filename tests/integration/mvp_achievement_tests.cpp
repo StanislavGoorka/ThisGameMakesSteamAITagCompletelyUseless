@@ -71,14 +71,15 @@ bool delivery(const std::filesystem::path &path)
            backup == original;
 }
 bool persist(const std::filesystem::path &path,
-             const std::vector<DomainEvent> &events, std::uint16_t expected)
+             const std::vector<DomainEvent> &events, std::uint16_t expected,
+             RunHistoryOrigin origin = RunHistoryOrigin::restored_checkpoint)
 {
     const LocalProfile initial{0, 3, 42, true};
     if (!windows::save_profile_file(path, initial))
         return false;
     const DeliveryScope scope{
         RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
-    MvpAchievementEvaluator evaluator;
+    MvpAchievementEvaluator evaluator(origin);
     windows::LocalAchievementSink sink(path);
     EventDispatcher dispatcher(scope, evaluator, sink);
     for (const auto &e : events)
@@ -108,11 +109,44 @@ bool sector_completion(const std::filesystem::path &path)
     return result.turn.phase == RunPhase::choosing_reward &&
            persist(path, result.events, 3);
 }
+std::vector<DomainEvent> run_events(int used_sector)
+{
+    std::vector<DomainEvent> events;
+    for (int sector = 1; sector <= 3; ++sector)
+    {
+        const auto append = [&](unsigned ordinal, DomainEventPayload payload)
+        {
+            events.push_back(
+                {{RunSeed{1}, *SectorNumber::from_value(sector), TurnIndex{1},
+                  static_cast<std::uint8_t>(ordinal)},
+                 payload});
+        };
+        const Command command = used_sector == sector
+                                    ? Command{OverdriveCommand{node(0)}}
+                                    : Command{WaitCommand{}};
+        append(0, ActionCommitted{command});
+        append(1, PacketDelivered{node(1)});
+        append(2, SectorCompleted{});
+        if (sector == 3)
+            append(3, RunEnded{RunEndReason::won});
+    }
+    return events;
+}
+bool without_overdrive(const std::filesystem::path &directory)
+{
+    for (int used = 0; used <= 3; ++used)
+        if (!persist(directory / (L"overdrive" + std::to_wstring(used)),
+                     run_events(used), used == 0 ? 7 : 3,
+                     RunHistoryOrigin::fresh_run))
+            return false;
+    return persist(directory / L"unknown", run_events(0), 3);
+}
 int main()
 {
     test::CheckpointDirectory directory;
     return delivery(directory.path / L"predykaty.dat") &&
-                   sector_completion(directory.path / L"sektor.dat")
+                   sector_completion(directory.path / L"sektor.dat") &&
+                   without_overdrive(directory.path)
                ? 0
                : 1;
 }

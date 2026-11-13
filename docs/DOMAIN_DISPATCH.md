@@ -7,6 +7,12 @@ first_delivery dla PacketDelivered, a P047 dodaje first_sector wyłącznie dla
 SectorCompleted. Oba predykaty są bez trackera i IO; koniec sektora pochodzi
 z resolvera po obrażeniach i koszcie, więc sama pozycja na wyjściu nie wystarcza.
 
+P048: RunHistoryOrigin domyślnie oznacza restored_checkpoint. Wyłącznie jawny
+fresh_run z pierwszą akcją tury 1 sektora 1 pozwala śledzić run bez overdrive.
+Każda zaakceptowana akcja overdrive wyklucza ten warunek do końca instancji,
+także przez granice sektorów. Kandydat powstaje dopiero na RunEnded(won)
+w sektorze 3. Nowa próba/gałąź wymaga nowego evaluatora; nie ma resetu w miejscu.
+
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są
 niezerowymi wartościami uint64, przydzielanymi przez przyszłą sesję aplikacji.

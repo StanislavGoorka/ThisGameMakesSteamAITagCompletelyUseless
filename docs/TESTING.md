@@ -155,6 +155,12 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P048: testy MVP sprawdzają czysty run i overdrive w każdym z trzech sektorów,
+reset przez nową instancję, death/overload oraz nieznaną historię po restore,
+również sektora 1. Jawny fresh_run z błędnym początkiem strumienia nie wystarcza.
+Trwały profil zachowuje ustawienia i backup przy powtórkach; świeża gałąź
+z nieznaną historią nie dopisuje ani nie usuwa odblokowań.
+
 P047 rozszerza testy MVP o first_sector: trzy sektory, tury 1 i 48, śmierć
 na wyjściu, brak drugiej dostawy i pozostanie poza wyjściem. Rzeczywiste
 zdarzenia sukcesu zapisują bity dostawy/sektora i zachowują dokładne pliki
