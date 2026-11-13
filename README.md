@@ -439,3 +439,5 @@ P069-03: Podłączono istniejący tytuł developerski do DirectWrite nad plansz�
 P070: Podzielono HUD na cztery małe kontrakty: dane, oznaczone wartości, skład wierszy i integrację okna. P071 zależy od P070-04; dzieci pozostają nieukończone. [Raport](docs/workflow/history/P070.md)
 
 P070-01: Dodano niemutującą projekcję HP, wykonanych tur i zasilonych odbiorników. Test obejmuje 49 pól, HP 0/1/3/255 oraz tury 0/47/48/49/MAX, pełny stan i odrzucenie zasilonych pól bez odbiornika. [Raport](docs/workflow/history/P070-01.md)
+
+P070-02: Dodano trzy oznaczone etykiety HUD i formatowanie liczb bez tekstowych fallbacków. Prefiks zostaje na początku każdego wiersza; katalog pozostaje niezmienny. [Raport](docs/workflow/history/P070-02.md)

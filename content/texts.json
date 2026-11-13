@@ -6,6 +6,24 @@
       "value": "[AI PLACEHOLDER] Closed Circuit",
       "status": "ai_placeholder",
       "source_asset_id": null
+    },
+    {
+      "id": "hud-integrity",
+      "value": "[AI PLACEHOLDER] HP:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "hud-turns",
+      "value": "[AI PLACEHOLDER] Turns:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "hud-deliveries",
+      "value": "[AI PLACEHOLDER] Deliveries:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
     }
   ]
 }
