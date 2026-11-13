@@ -469,3 +469,5 @@ P072-03: Podłączono katalogowy blok oferty do istniejącego renderera i RunWin
 P072-04: Podłączono wybór modułu i przejście sektora do okna. Enter bez kandydata daje katalogowy błąd bez mutacji; pełny zestaw przechodzi bez nagrody. Przejście czyści preview, wskazania i tryb planowania. [Raport](docs/workflow/history/P072-04.md)
 
 P073: Rozbito lokalne powiadomienie first_delivery na pięć wąskich zadań: dekorator sinka, katalogowy tekst, kolejka zdarzeń, lokalizacja profilu i integracja okna. P074 wymaga P073-05; dzieci nie są zaimplementowane. [Raport](docs/workflow/history/P073.md)
+
+P073-01: Dodano AchievementNoticeSink: pojedyncze pending dla nowego trwałego first_delivery, przekazywanie wszystkich żądań do istniejącego sinka i idempotentne dismiss bez duplikacji. [Raport](docs/workflow/history/P073-01.md)

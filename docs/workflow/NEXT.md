@@ -1,14 +1,14 @@
 # Następny mały krok
 
-Task: P073-01
+Task: P073-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073.
-Zależności: P073; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P073-01.
+Zależności: P073-01; muszą być completed.
 Sprawdź git status i walidator.
 
-Dodaj dekorator istniejącego AchievementSink, zapamiętujący wyłącznie nowe trwałe odblokowanie first_delivery. Bez IO i renderowania.
+Dodaj katalogowy placeholder first_delivery i kontrolowanego błędu usługi oraz czystą projekcję wiersza. Bez ikon i renderowania.
 
-Kryteria: unlocked tworzy jeden pending; already_unlocked, unavailable, invalid, wyjątek i inne ID nie tworzą powiadomienia; dismiss i powtórka nie dublują.
+Kryteria: Pełny marker, brak ID i nieznany achievement dają odmowę; public gate blokuje robocze wpisy.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, TEXT_PRESENTATION.md.
