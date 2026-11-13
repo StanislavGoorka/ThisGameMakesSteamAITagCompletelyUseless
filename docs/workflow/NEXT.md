@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P069-01
+Task: P069-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P069.
-Zależności: P069. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P069-01.
+Zależności: P069-01. Sprawdź git status i walidator.
 
-Wydziel wspólny owning odczyt tekstu katalogu i ścisłą konwersję Win32 UTF-8/UTF-16; użyj go także dla tytułu NativeWindow. Bez DirectWrite, nowych wpisów tekstu i fallbacku ID.
+Dodaj RAII fabryki/formatu/layoutu DirectWrite dla tekstu wyłącznie z katalogu. Rysuj istniejący tekst na przekazanym celu D2D, bez własnego BeginDraw/EndDraw i bez nowego fontu. Podłącz opcjonalny napis do pojedynczej klatki AtlasRenderer, bez okna UI.
 
-Kryteria: Dokładny prefiks, polskie znaki, pary surogatów, invalid UTF-8, brak ID, niezależność kopii oraz niezmieniony katalog i tytuł okna; D/R.
+Kryteria: Rzeczywisty offscreen: pełny UTF-16 i prefiks, mierzalne piksele tekstu, brak rysowania gdy cały napis nie mieści się w obszarze, invalid target/bounds i ponowne użycie na innym celu; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakty BOARD_PRESENTATION.md

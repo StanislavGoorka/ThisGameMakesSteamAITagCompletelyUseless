@@ -1,6 +1,7 @@
 #pragma once
 #include "application/keyboard_commands.hpp"
 #include "application/text_catalog.hpp"
+#include "platform/windows/text_utf16.hpp"
 #include "presentation/board_projection.hpp"
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -260,19 +261,9 @@ class NativeWindow
 inline WindowCreateResult NativeWindow::create(const TextCatalog &catalog,
                                                std::string_view title_id)
 {
-    const auto *text = catalog.find(title_id);
-    if (!text)
-        return {nullptr, ERROR_NOT_FOUND};
-    const auto length =
-        MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text->data(),
-                            static_cast<int>(text->size()), nullptr, 0);
-    if (!length)
-        return {nullptr, GetLastError()};
-    std::wstring title(length, L'\0');
-    if (!MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text->data(),
-                             static_cast<int>(text->size()), title.data(),
-                             length))
-        return {nullptr, GetLastError()};
+    const auto title = read_text_utf16(catalog, title_id);
+    if (!title.text)
+        return {nullptr, title.error};
     auto owner = std::unique_ptr<NativeWindow>(new NativeWindow);
     owner->instance_ = GetModuleHandleW(nullptr);
     if (!owner->instance_)
@@ -290,7 +281,7 @@ inline WindowCreateResult NativeWindow::create(const TextCatalog &catalog,
     owner->atom_ = RegisterClassExW(&description);
     if (!owner->atom_)
         return {nullptr, GetLastError()};
-    if (!CreateWindowExW(0, MAKEINTRESOURCEW(owner->atom_), title.c_str(),
+    if (!CreateWindowExW(0, MAKEINTRESOURCEW(owner->atom_), title.text->c_str(),
                          WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 640,
                          480, nullptr, nullptr, owner->instance_, owner.get()))
         return {nullptr, GetLastError()};
