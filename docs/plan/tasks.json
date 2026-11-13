@@ -1774,11 +1774,33 @@
         {
             "id": "P068-03",
             "phase": "M6",
-            "title": "Adapter wskazania i planowania Win32",
-            "scope": "Połącz model wyboru z oknem: wskaż pole kursorem przez tę samą geometrię 7x7; Tab/Enter/Escape obsługują tryb planowania. R/O wskazują wybrane pole, legalność nadal sprawdza core. Bez rysowania preview.",
-            "acceptance": "Rzeczywiste wiadomości: hover, marginesy, resize, focus, powtórzenia i anulowanie; wybór sąsiedniego celu R/O, jedna tura dopiero po zatwierdzeniu, pełna zgodność z core; D/R.",
+            "title": "Rozbij adapter wskazania i planowania Win32",
+            "scope": "Wyłącznie rozbij adapter na czysty hit-test wspólnej geometrii i połączenie wiadomości Win32 z modelem wyboru. Bez implementacji dzieci.",
+            "acceptance": "Dwa oddzielne kontrakty z testami granic geometrii i rzeczywistych wiadomości; P068-04 zależy od ostatniego dziecka. Sam podział nie wdraża wskazania.",
             "depends_on": [
                 "P068-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068-05",
+            "phase": "M6",
+            "title": "Hit-test wspólnej geometrii planszy",
+            "scope": "Dodaj czysty hit-test pozycji kursora przez istniejący fit_board. Zwracaj opcjonalny NodeId; bez Win32, zmiany układu i rysowania.",
+            "acceptance": "Wszystkie 49 pól, marginesy, granice półotwarte, brak zawijania, resize i niepoprawne liczby. Dokładna zgodność z geometrią board_draws; D/R.",
+            "depends_on": [
+                "P068-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P068-06",
+            "phase": "M6",
+            "title": "Połącz wskazanie i planowanie z Win32",
+            "scope": "Połącz istniejący hit-test i ActionSelection z wiadomościami okna. Tab/Enter/Escape i focus; R/O używają pola kursora. W trybie planowania dopiero Enter wykonuje istniejący resolver. Bez prezentacji preview.",
+            "acceptance": "Rzeczywiste HWND: hover, marginesy, resize, mouse leave, focus i repeat; sąsiedni cel R/O, brak mutacji przed Enter, jedno zatwierdzenie, anulowanie i pełna zgodność z core; D/R.",
+            "depends_on": [
+                "P068-05"
             ],
             "gate": null
         },
@@ -1789,7 +1811,7 @@
             "scope": "Pokaż wynik modelu preview i trasę wyłącznie gotowymi symbolami atlasu. Po anulowaniu przywróć widok live state; po zatwierdzeniu pokaż identyczny wynik core. Bez nowych linii, strzałek, figur i tekstów.",
             "acceptance": "Offscreen zgodny z oryginalnymi pikselami, marker nie zasłania portów/jednostek, brak trasy i terminalne odmowy nie pokazują starego preview; anulowanie/focus/resize i commit zgodne z modelem; D/R.",
             "depends_on": [
-                "P068-03"
+                "P068-06"
             ],
             "gate": null
         },

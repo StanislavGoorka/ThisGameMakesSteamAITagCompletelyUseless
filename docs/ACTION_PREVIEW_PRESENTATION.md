@@ -1,7 +1,15 @@
 # Podgląd akcji: kontrakt P068
 
 P068 jest wyłącznie podziałem planu. Nie implementuje dzieci ani trybu UI.
-Zależności: P067-03 -> P068 -> P068-01..04 -> P069.
+Zależności: P067-03 -> P068 -> P068-01 -> P068-02 -> P068-03
+-> P068-05 -> P068-06 -> P068-04 -> P069.
+
+P068-03 jest podziałem adaptera: P068-05 dostarcza sam hit-test tej samej
+geometrii co renderer, a P068-06 łączy go z komunikatami i ActionSelection.
+Marginesy i prawa/dolna granica nie należą do planszy; pola są półotwarte.
+Resize usuwa poprzednie wskazanie do następnego ruchu kursora. Mouse leave
+usuwa wskazanie, focus loss dodatkowo tryb i kandydata. Zmiana samego hover
+nie przepisuje wcześniej wybranej Command: nowy cel wybiera dopiero R/O.
 
 1. P068-01 zwróci pełny RunResult przez istniejący preview_run_turn.
    Wynik musi być identyczny z resolve_run_turn dla tej samej komendy.

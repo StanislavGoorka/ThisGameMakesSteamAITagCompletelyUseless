@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P068-03
+Task: P068-05
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P068-02.
-Zależności: P068-02. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P068-03.
+Zależności: P068-03. Sprawdź git status i walidator.
 
-Połącz model wyboru z oknem: wskaż pole kursorem przez tę samą geometrię 7x7; Tab/Enter/Escape obsługują tryb planowania. R/O wskazują wybrane pole, legalność nadal sprawdza core. Bez rysowania preview.
+Dodaj czysty hit-test pozycji kursora przez istniejący fit_board. Zwracaj opcjonalny NodeId; bez Win32, zmiany układu i rysowania.
 
-Kryteria: Rzeczywiste wiadomości: hover, marginesy, resize, focus, powtórzenia i anulowanie; wybór sąsiedniego celu R/O, jedna tura dopiero po zatwierdzeniu, pełna zgodność z core; D/R.
+Kryteria: Wszystkie 49 pól, marginesy, granice półotwarte, brak zawijania, resize i niepoprawne liczby. Dokładna zgodność z geometrią board_draws; D/R.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake i CONTENT_POLICY. Kontrakty BOARD_PRESENTATION.md

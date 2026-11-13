@@ -49,7 +49,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P068-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P068-05**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -415,3 +415,5 @@ P068: Rozbito podgląd akcji na wartościowy wynik i trasę, czysty model wyboru
 P068-01: Dodano wartościowy ActionPreview: pełny wynik istniejącego resolvera oraz trasę BFS pakietu po akcji. Trasa obejmuje nowo wprowadzony pakiet i pozostaje dostępna po dostawie; odmowy nie publikują trasy. [Raport](docs/workflow/history/P068-01.md)
 
 P068-02: Dodano czysty ActionSelection: przełączanie planowania, wybór siedmiu akcji, jednokrotne pobranie Enter, anulowanie, reset focusu i kontekstu oraz opcjonalny cel R/O z powrotem do pola gracza. [Raport](docs/workflow/history/P068-02.md)
+
+P068-03: Rozbito adapter wskazania na P068-05 (czysty hit-test istniejącej geometrii) i P068-06 (wiadomości Win32 oraz ActionSelection). P068-04 wymaga ostatniego dziecka; ustalono półotwarte granice i reset hover po resize. [Raport](docs/workflow/history/P068-03.md)
