@@ -446,3 +446,5 @@ P070-02: Dodano trzy oznaczone etykiety HUD i formatowanie liczb bez tekstowych 
 P070-03: TextRenderer składa kompletne wiersze katalogowe z liczbowymi wartościami w jeden layout. Budowa nowego obiektu nie zmienia poprzedniego, a zbyt mały obszar pomija cały blok. [Raport](docs/workflow/history/P070-03.md)
 
 P070-04: Podłączono HUD do okna developer i wspólnego stanu live/preview. CMake przekazuje etykiety z rejestru; BoardView atomowo wymienia layout i zachowuje wspólny hit-test poniżej tekstów. [Raport](docs/workflow/history/P070-04.md)
+
+P071: Podzielono cykl start-run-wynik-restart na czysty model, katalog komunikatów i adapter okna. P072 zależy od P071-03; nagrody i zapis nie należą do P071. [Raport](docs/workflow/history/P071.md)

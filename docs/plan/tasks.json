@@ -1917,11 +1917,44 @@
         {
             "id": "P071",
             "phase": "M6",
-            "title": "Start i restart",
-            "scope": "Dodaj przejście start->run->wynik->restart bez nowych mechanik.",
-            "acceptance": "Nowy run resetuje stan i zachowuje profil.",
+            "title": "Rozbij start i restart",
+            "scope": "Wyłącznie rozbij cykl start-run-wynik-restart na model, oznaczone komunikaty i adapter okna.",
+            "acceptance": "Dzieci mają osobne testy; P072 zależy od rzeczywistej integracji P071-03.",
             "depends_on": [
                 "P070-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P071-01",
+            "phase": "M6",
+            "title": "Model startu i restartu",
+            "scope": "Dodaj czysty model ekranu start/run/wynik i bramkowane rozpoczęcie lub restart tego samego seedu. Bez UI i usług.",
+            "acceptance": "Start i terminalny restart resetują pełny run; aktywny run oraz nagroda odmawiają restartu. Profil pozostaje poza modelem.",
+            "depends_on": [
+                "P071"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P071-02",
+            "phase": "M6",
+            "title": "Oznaczone komunikaty sesji",
+            "scope": "Dodaj katalogowe komunikaty startu i wyniku won/death/overload oraz niemutujący wybór ID. Bez renderowania.",
+            "acceptance": "Każdy osobny komunikat ma prefiks; brak fallbacku i public gate odrzuca robocze komunikaty.",
+            "depends_on": [
+                "P071-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P071-03",
+            "phase": "M6",
+            "title": "Cykl sesji w oknie",
+            "scope": "Podłącz start, wynik i restart przez Enter do istniejącego okna. Czyść wybór i podgląd przy przejściu; nie dodawaj wyboru nagrody.",
+            "acceptance": "HWND: start nie wykonuje tury, wynik nie przyjmuje akcji, Enter restartuje raz, hold/focus bez powtórzenia; pełny reset runu i niezmienione pliki profilu.",
+            "depends_on": [
+                "P071-02"
             ],
             "gate": null
         },
@@ -1932,7 +1965,7 @@
             "scope": "Dodaj jeden ekran istniejącej oferty modułów.",
             "acceptance": "Nielegalny wybór odrzucony; fokus i teksty zgodne z polityką.",
             "depends_on": [
-                "P071"
+                "P071-03"
             ],
             "gate": null
         },

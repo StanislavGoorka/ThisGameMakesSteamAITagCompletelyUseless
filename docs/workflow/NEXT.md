@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P071
+Task: P071-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P070-04.
-Zależności completed: P070-04. Sprawdź git status i walidator.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P071.
+Zależności completed: P071. Sprawdź git status i walidator.
 
-Dodaj przejście start->run->wynik->restart bez nowych mechanik.
+Dodaj czysty model ekranu start/run/wynik i bramkowane rozpoczęcie lub restart tego samego seedu. Bez UI i usług.
 
-Kryteria: Nowy run resetuje stan i zachowuje profil.
+Kryteria: Start i terminalny restart resetują pełny run; aktywny run oraz nagroda odmawiają restartu. Profil pozostaje poza modelem.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
 Dla treści: asset-intake, CONTENT_POLICY, REGISTRY, HUD_PRESENTATION.md
