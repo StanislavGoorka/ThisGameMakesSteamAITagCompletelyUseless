@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P062-03
+Task: P063
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P062-02 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P062-03 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i walidator na początku.
 
-Developer entrypoint okna i smoke procesu. Połącz okno i pętlę w minimalnym celu WIN32 wyłącznie developer. Każdy widoczny tytuł pochodzi z katalogu z oznaczonym wpisem odnotowanym w texts.json. Bez ikon, grafiki, audio i logiki gry.
+Mapowanie klawiatury. Dodaj wejście przekładane na komendy, bez nowych widoków.
 
-Kryteria: Start, focus, zamknięcie i zwolnienie zasobów; proces smoke z timeoutem i kilkoma startami. Public gate odrzuca roboczy wpis, bez publicznego binarium z placeholderem. D/R; oddziel brak VM i ocenę wizualną.
+Kryteria: Repeat klawisza i focus loss nie generują niekontrolowanych tur.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

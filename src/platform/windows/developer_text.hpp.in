@@ -1,0 +1,8 @@
+#pragma once
+#include "application/text_catalog.hpp"
+namespace closed_circuit::windows
+{
+inline const TextRecord developer_title_record{
+    "developer-window-title", R"CC_TEXT(@developer_title@)CC_TEXT",
+    TextStatus::ai_placeholder, std::nullopt};
+}

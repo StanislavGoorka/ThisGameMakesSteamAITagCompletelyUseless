@@ -49,3 +49,5 @@ Ograniczenie: bramki pól i rejestru nie skanują napisów zakodowanych w EXE
 ani niewymienionych katalogów depotu. P101 i review wszystkich ekranów mają
 objąć faktyczną allowlistę produktu. Pusty katalog napisów nie jest dowodem
 ukończenia UI, autorstwa ludzkiego ani gotowości wydania.
+
+Od P062-03 rejestr zawiera oznaczony tytuł developer-window-title. Rzeczywisty public build jest celowo zablokowany do dostarczenia ludzkiej treści; developer_window nie istnieje jako cel w public. CI public po negatywnej kontroli bramki buduje tylko infrastrukturę testową z pustym katalogiem w swoim checkout.

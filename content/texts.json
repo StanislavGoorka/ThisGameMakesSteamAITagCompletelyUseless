@@ -1,4 +1,11 @@
 {
   "schema_version": 1,
-  "texts": []
+  "texts": [
+    {
+      "id": "developer-window-title",
+      "value": "[AI PLACEHOLDER] Closed Circuit",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    }
+  ]
 }

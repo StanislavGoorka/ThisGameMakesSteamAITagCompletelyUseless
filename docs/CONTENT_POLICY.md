@@ -49,3 +49,5 @@ Automatyczne wyszukiwanie prefiksu i rozszerzeń wykrywa tylko część błędó
 Nasza interpretacja projektowa: używać AI do kodu i pracy wewnętrznej, a nie do treści dla gracza. To nie jest gwarancja zwolnienia dla każdego fragmentu kodu ani zapewnienie decyzji Valve. Potoczne „tag AI” traktujemy jako wymaganie dotyczące ujawnienia AI, nie zwykły tag gatunkowy.
 
 Przed wysłaniem gry ponownie sprawdź aktualną ankietę i cały produkt, w tym marketing. Ankietę wypełnia się zgodnie z prawdą. Jeżeli rzeczywista zawartość wymaga ujawnienia AI, wydanie bez niego jest zablokowane; usuń problematyczną treść lub przedstaw fakt właścicielowi, bez fałszywej deklaracji.
+
+P062-03 dodaje jeden oznaczony tytuł developerski do texts.json. Public gate go odrzuca; katalog nie jest już pusty.

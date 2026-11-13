@@ -26,6 +26,15 @@ jobs:
         run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-AssetPackage.ps1
       - name: Test public content and build modes
         run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-PublicContent.ps1 -BuildModes
+      - name: Check developer title rejection before public infrastructure tests
+        if: contains(matrix.preset, 'public')
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-PublicContent.ps1
+          if ($LASTEXITCODE -eq 0) { throw 'Expected developer title rejection' }
+          # This runner only builds test infrastructure with an empty catalog.
+          # The developer window target is excluded from public configurations.
+          [IO.File]::WriteAllText((Join-Path $PWD 'content/texts.json'), '{"schema_version":1,"texts":[]}', [Text.UTF8Encoding]::new($false))
+          $global:LASTEXITCODE = 0
       - name: Configure
         run: |
           $configure = if ('${{ matrix.preset }}' -like 'windows-public-*') { 'windows-public' } else { 'windows-msvc' }

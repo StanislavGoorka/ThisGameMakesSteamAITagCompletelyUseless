@@ -42,3 +42,5 @@ i [UnregisterClassW](https://learn.microsoft.com/en-us/windows/win32/api/winuser
 P062-03 pozostaje następnym krokiem: entrypoint developer.
 
 P062-02: focused() śledzi WM_SETFOCUS/KILLFOCUS i zeruje się przy WM_DESTROY. run_message_loop() używa blokującego GetMessageW bez filtra HWND; tylko zniszczenie okna z aktywną pętlą wysyła PostQuitMessage. Pozostałe okna i destruktory nie zanieczyszczają kolejki WM_QUIT. dispatch_messages rozróżnia wynik -1, 0 i dodatni; błąd zachowuje kod Win32, WM_QUIT zachowuje kod wyjścia. Brak HWND lub rekurencyjna pętla daje kontrolowaną odmowę. Kontrakt GetMessage: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getmessagew .
+
+P062-03: developer_window.exe jest celem WIN32 wyłącznie developer. CMake odczytuje oznaczony developer-window-title z content/texts.json i przekazuje go do TextCatalog; brak poprawnego wpisu kończy start niezerowo. Program pokazuje wyłącznie ramkę systemową i kończy się po WM_CLOSE. Nie zawiera renderera ani logiki. windows_window_process uruchamia trzy procesy z timeoutem, kontroluje tytuł i zamknięcie; test API focus pozostaje w P062-02. Bez oceny wizualnej i VM.
