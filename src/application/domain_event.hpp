@@ -2,6 +2,7 @@
 
 #include "core/command.hpp"
 #include "core/run_state.hpp"
+#include <optional>
 #include <type_traits>
 #include <variant>
 
@@ -36,6 +37,9 @@ struct DomainEventKey
 struct ActionCommitted
 {
     Command command;
+    // Target of the active packet whose BFS route this rotation changed.
+    // Empty unless a nonempty, different route was observed before movement.
+    std::optional<NodeId> reconfigured_packet_target = std::nullopt;
     constexpr bool operator==(const ActionCommitted &) const noexcept = default;
 };
 struct PacketDelivered

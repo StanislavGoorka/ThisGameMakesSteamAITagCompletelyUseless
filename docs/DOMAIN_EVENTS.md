@@ -1,5 +1,9 @@
 # Zdarzenia domenowe v1
 
+P045-01 dodaje do ActionCommitted opcjonalny reconfigured_packet_target.
+Domyślnie brak dowodu; dozwolony tylko dla rotate/overdrive. Wartość celu
+uczestniczy w równości i kontroli konfliktu dispatchera. Ekstrakcja w P045-02.
+
 P041-01 opisuje i wdraża wyłącznie wartości w application. Nie ma usługi,
 callbacku, IO, serializacji ani evaluatorów achievementów. Core pozostaje
 wspólnym źródłem reguł. Zdarzenia to dane wewnętrzne, bez treści dla gracza.

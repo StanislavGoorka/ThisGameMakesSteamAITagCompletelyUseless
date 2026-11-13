@@ -1,4 +1,6 @@
+﻿#include "../support/achievement_fakes.hpp"
 #include "application/domain_event.hpp"
+#include "application/event_dispatcher.hpp"
 #include <array>
 using namespace closed_circuit;
 
@@ -47,5 +49,27 @@ int main()
             copy.kind() != DomainEventKind::action_committed)
             return 1;
     }
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
+    test::CountingEvaluator evaluator;
+    test::RecordingSink sink;
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    DomainEvent evidence{{scope.seed, scope.first_sector, TurnIndex{1}, 0},
+                         ActionCommitted{RotateCommand{target}, target}};
+    auto absent = evidence;
+    std::get<ActionCommitted>(absent.payload)
+        .reconfigured_packet_target.reset();
+    if (absent == evidence ||
+        ActionCommitted{WaitCommand{}}.reconfigured_packet_target)
+        return 1;
+    auto invalid = evidence;
+    std::get<ActionCommitted>(invalid.payload).command = WaitCommand{};
+    if (dispatcher.dispatch(scope, invalid) != DispatchResult::invalid_event ||
+        evaluator.calls != 0 || !sink.calls.empty() ||
+        dispatcher.dispatch(scope, evidence) != DispatchResult::delivered ||
+        dispatcher.dispatch(scope, absent) != DispatchResult::conflict ||
+        dispatcher.dispatch(scope, evidence) != DispatchResult::delivered ||
+        evaluator.calls != 1 || !sink.calls.empty())
+        return 1;
     return 0;
 }

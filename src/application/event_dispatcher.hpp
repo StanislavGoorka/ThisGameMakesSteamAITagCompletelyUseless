@@ -65,6 +65,12 @@ class EventDispatcher
         if (key.seed != scope_.seed || turn == 0 || turn > 48 ||
             key.ordinal > 3 || action != (key.ordinal == 0))
             return false;
+        if (const auto *committed =
+                std::get_if<ActionCommitted>(&event.payload))
+            if (committed->reconfigured_packet_target &&
+                !std::holds_alternative<RotateCommand>(committed->command) &&
+                !std::holds_alternative<OverdriveCommand>(committed->command))
+                return false;
         if (const auto *end = std::get_if<RunEnded>(&event.payload))
             return (end->reason == RunEndReason::won &&
                     key.sector.value() == 3) ||
