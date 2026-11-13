@@ -2,6 +2,7 @@
 #include "../support/checkpoint_files.hpp"
 #include "../support/run_checks.hpp"
 #include "application/event_dispatcher.hpp"
+#include "application/mvp_achievement_evaluator.hpp"
 #include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
 #include "core/run_start.hpp"
@@ -53,9 +54,10 @@ DeliveryScope scope(const RunState &run, unsigned attempt = 1,
     return {run.seed, {attempt}, {branch}, run.sector_number};
 }
 
+template <typename Evaluator>
 bool publish(EventDispatcher &dispatcher, const DeliveryScope &context,
-             const std::vector<DomainEvent> &events,
-             test::CountingEvaluator &evaluator, ObservedSink &sink)
+             const std::vector<DomainEvent> &events, Evaluator &evaluator,
+             ObservedSink &sink)
 {
     for (const auto &event : events)
     {
@@ -73,8 +75,9 @@ bool publish(EventDispatcher &dispatcher, const DeliveryScope &context,
     return true;
 }
 
+template <typename Evaluator>
 bool sector(RunState &run, EventDispatcher &dispatcher,
-            const DeliveryScope &context, test::CountingEvaluator &evaluator,
+            const DeliveryScope &context, Evaluator &evaluator,
             ObservedSink &sink, const std::filesystem::path &profile,
             std::vector<Step> &trace)
 {
@@ -262,6 +265,153 @@ bool complete(RunSeed seed, const std::filesystem::path &directory)
     return true;
 }
 
+class ObservedMvpEvaluator final : public AchievementEvaluator
+{
+  public:
+    explicit ObservedMvpEvaluator(
+        RunHistoryOrigin origin = RunHistoryOrigin::restored_checkpoint)
+        : actual(origin)
+    {
+    }
+    [[nodiscard]] std::uint16_t
+    evaluate(const DomainEvent &event) noexcept override
+    {
+        ++calls;
+        const auto result = actual.evaluate(event);
+        candidates |= result;
+        return result;
+    }
+    MvpAchievementEvaluator actual;
+    unsigned calls = 0;
+    std::uint16_t candidates = 0;
+};
+
+bool transition(RunState &run)
+{
+    const auto offer = module_offer(run.sector.modules);
+    if (!offer[0] || !choose_run_module(run, *offer[0]))
+        return false;
+    const auto next = advance_run(run);
+    if (!next.accepted)
+        return false;
+    run = next.state;
+    return true;
+}
+
+bool complete_mvp(const std::filesystem::path &directory)
+{
+    if (!std::filesystem::create_directory(directory))
+        return false;
+    const auto profile = directory / L"mvp.dat";
+    const auto checkpoint_path = directory / L"mvp_run.dat";
+    const LocalProfile initial{0, 3, 29, true};
+    if (!windows::save_profile_file(profile, initial))
+        return false;
+    auto run = start_run(RunSeed{1});
+    const auto context = scope(run);
+    ObservedMvpEvaluator evaluator(RunHistoryOrigin::fresh_run);
+    ObservedSink sink(profile);
+    EventDispatcher dispatcher(context, evaluator, sink);
+    std::array<std::vector<Step>, 2> suffix;
+    std::optional<RunState> boundary;
+    unsigned total_events = 0;
+    for (unsigned number = 1; number <= 3; ++number)
+    {
+        if (number == 2)
+        {
+            boundary = run;
+            const auto checkpoint = capture_checkpoint(run);
+            if (!checkpoint ||
+                !windows::save_checkpoint_file(checkpoint_path, *checkpoint))
+                return false;
+        }
+        std::vector<Step> trace;
+        if (!sector(run, dispatcher, context, evaluator, sink, profile, trace))
+            return false;
+        for (const auto &step : trace)
+            total_events += static_cast<unsigned>(step.events.size());
+        if (number >= 2)
+            suffix[number - 2] = trace;
+        if (number < 3 && !transition(run))
+            return false;
+    }
+    if (run_phase(run) != RunPhase::won || evaluator.candidates != 31 ||
+        evaluator.calls != total_events || sink.new_unlocks != 5 ||
+        windows::read_profile_file(profile).profile !=
+            LocalProfile{31, 3, 29, true} ||
+        windows::read_profile_file(profile.native() + L".bak").profile !=
+            LocalProfile{15, 3, 29, true})
+        return false;
+    const auto original_files = image(profile);
+    const auto read = windows::read_checkpoint_file(checkpoint_path);
+    auto replay =
+        read.checkpoint ? restore_checkpoint(*read.checkpoint) : std::nullopt;
+    if (!replay || !boundary || !test::same_run(*replay, *boundary))
+        return false;
+    const auto restored_profile = directory / L"restored.dat";
+    if (!windows::save_profile_file(restored_profile, initial))
+        return false;
+    ObservedMvpEvaluator unknown;
+    ObservedSink restored_sink(restored_profile);
+    const auto branch = scope(*replay, 1, 2);
+    EventDispatcher restored_dispatcher(branch, unknown, restored_sink);
+    unsigned suffix_events = 0;
+    for (std::size_t i = 0; i < suffix.size(); ++i)
+    {
+        for (const auto &step : suffix[i])
+        {
+            const auto files = image(restored_profile);
+            const auto evaluations = unknown.calls, calls = restored_sink.calls;
+            const auto result = resolve_run_turn_events(*replay, step.command);
+            const auto preview = preview_run_turn(*replay, step.command);
+            if (!result.turn.accepted || result.events != step.events ||
+                !test::same_run(result.turn.state, step.state) ||
+                !test::same_run(preview.state, step.state) ||
+                image(restored_profile) != files ||
+                evaluations != unknown.calls || calls != restored_sink.calls)
+                return false;
+            *replay = result.turn.state;
+            if (!publish(restored_dispatcher, branch, result.events, unknown,
+                         restored_sink))
+                return false;
+            suffix_events += static_cast<unsigned>(result.events.size());
+        }
+        if (i == 0 && !transition(*replay))
+            return false;
+    }
+    if (!test::same_run(*replay, run) || unknown.calls != suffix_events ||
+        unknown.candidates != 27 || restored_sink.new_unlocks != 4 ||
+        windows::read_profile_file(restored_profile).profile !=
+            LocalProfile{27, 3, 29, true} ||
+        windows::read_profile_file(restored_profile.native() + L".bak")
+                .profile != LocalProfile{11, 3, 29, true} ||
+        image(profile) != original_files)
+        return false;
+    const auto restored_files = image(restored_profile);
+    const auto evaluations = unknown.calls, calls = restored_sink.calls;
+    for (const auto &trace : suffix)
+        for (const auto &step : trace)
+            for (const auto &event : step.events)
+                if (restored_dispatcher.dispatch(branch, event) !=
+                    DispatchResult::delivered)
+                    return false;
+    if (unknown.calls != evaluations || restored_sink.calls != calls ||
+        image(restored_profile) != restored_files)
+        return false;
+    ObservedMvpEvaluator another_branch;
+    const auto next_branch = scope(*boundary, 1, 3);
+    EventDispatcher repeated(next_branch, another_branch, restored_sink);
+    for (const auto &trace : suffix)
+        for (const auto &step : trace)
+            if (!publish(repeated, next_branch, step.events, another_branch,
+                         restored_sink))
+                return false;
+    return another_branch.calls == suffix_events &&
+           another_branch.candidates == 27 && restored_sink.new_unlocks == 4 &&
+           image(restored_profile) == restored_files &&
+           image(profile) == original_files;
+}
+
 int wmain(int argc, wchar_t **argv)
 {
     if (argc == 3 && std::wstring_view(argv[1]) == L"--replay")
@@ -272,5 +422,5 @@ int wmain(int argc, wchar_t **argv)
     for (const auto raw : {0ull, 1ull, UINT64_MAX})
         if (!complete(RunSeed{raw}, directory.path / std::to_wstring(raw)))
             return 1;
-    return 0;
+    return complete_mvp(directory.path / L"rzeczywiste") ? 0 : 1;
 }

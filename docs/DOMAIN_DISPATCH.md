@@ -23,10 +23,21 @@ P050 zamyka pięć predykatów MVP: RunEnded(won) w sektorze 3 zgłasza complete
 niezależnie od pochodzenia historii. Z czystą historią zgłasza równocześnie
 run_without_overdrive. SectorCompleted sam nie zgłasza ukończenia runu.
 
-P051 jest wyłącznie podziałem planu: P051-01 połączy rzeczywiste predykaty,
+P051 jest wyłącznie podziałem planu: P051-01 łączy rzeczywiste predykaty,
 trzy generowane sektory, profil i restore w procesie. P051-02 osobno sprawdzi
 ponowienie w nowych procesach. Dotychczasowy dowód P044-03 używał stałej maski,
 więc nie zastępuje tych kryteriów. P052 czeka na oba dzieci.
+
+Dowód P051-01 dla root seedu 1 przechodzi pełny run przez start, nagrody
+i przejścia. Rzeczywisty evaluator zgłasza wszystkie pięć ID (31); profil
+zachowuje ustawienia, a backup przed końcowym ID ma maskę 15. Zapis i odczyt
+checkpointu sektora 2 daje pełną granicę równą oryginałowi. Odtworzenie
+sektorów 2–3 porównuje każdy pełny stan i payload. Z domyślnie nieznaną historią
+oraz pustym profilem odblokowuje wyłącznie maskę 27, z backupem 11. Dokładne
+duplikaty nie oceniają ponownie; świeża gałąź ocenia ponownie bez zapisu
+duplikatów. Preview i obie powtórki zachowują dokładne bajty profili/backupów.
+Ten nowy scenariusz nie uruchamia procesu potomnego; taki dowód dla rzeczywistych
+predykatów pozostaje w P051-02.
 
 DeliveryScope zawiera seed, silny RunAttemptToken, silny RunBranchToken
 oraz first_sector (granicę, od której zaczyna się strumień). Tokeny są

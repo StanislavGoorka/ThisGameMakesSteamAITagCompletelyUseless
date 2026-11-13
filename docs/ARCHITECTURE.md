@@ -103,8 +103,9 @@ P041-01/02: [kontrakt zdarzeń v1](DOMAIN_EVENTS.md) definiuje wartościowe
 payloady i klucz wewnątrz próby. `resolve_run_turn_events` wywołuje istniejący
 resolver raz i zwraca listę: akcja, dostawa, sukces sektora, koniec runu.
 Odmowa daje pustą listę; preview nadal zwraca tylko wynik core, bez usług.
-Korpus pełnych sekwencji i restore sprawdzono w P041-03. Integrację pełnego
-runu z rzeczywistymi predykatami zaplanowano w P051. Brak trwałego outboxu i globalnej tożsamości
+Korpus pełnych sekwencji i restore sprawdzono w P041-03. P051-01 sprawdza pełny
+run z rzeczywistymi predykatami i restore w procesie; osobny dowód restartu
+czeka na P051-02. Brak trwałego outboxu i globalnej tożsamości
 prób; seed nie jest unikalnym ID runu. Dispatch opisano poniżej.
 
 Port `AchievementSink` ma backend lokalny i później Steam. Najpierw trwały zapis lokalny, potem idempotentna synchronizacja z kolejką i potwierdzeniami. Offline i brak Steam nie blokują gry. [Dokumentacja Steamworks](https://partner.steamgames.com/doc/features/achievements) opisuje odblokowanie i zapis statystyk; aktualne API sprawdzić przy implementacji. Ikony, opisy i nazwy wymagają pochodzenia tak samo jak reszta treści.

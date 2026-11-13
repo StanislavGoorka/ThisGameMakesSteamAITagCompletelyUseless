@@ -1,11 +1,11 @@
 # Następny mały krok
 
-Task: P051-01
+Task: P051-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P051, bieżący wpis i jego
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P051-01, bieżący wpis i jego
 zależności w tasks.json. Status i walidator na początku.
 
-Połącz istniejący świadek baseline z rzeczywistym MvpAchievementEvaluator i lokalnym sinkiem. Nowa próba: maska 31. Restore granicy sektora 2 do pustego profilu: 27, bez nieuzasadnionego run_without_overdrive. Porównaj pełne stany/payloady i pliki po duplikatach oraz preview; bez uruchamiania nowego procesu.
+Rozszerz istniejący test Windows o osobny tryb procesu dla rzeczywistego MvpAchievementEvaluator. Odczytaj checkpoint sektora 2, odtwórz sektory 2–3, porównaj pełne stany/payloady oraz dokładne main/bak w dwóch nowych procesach. Restore do pustego profilu nie może dać run_without_overdrive. Dotychczasowy worker P044-03 używa fake i nie spełnia tego kryterium. Bez nowych predykatów i zmian formatów.
 
 Dla kodu użyj cpp-core-step; czytaj ARCHITECTURE, GAME_DESIGN, TESTING,
 ACHIEVEMENT_PREDICATES, DOMAIN_EVENTS i DOMAIN_DISPATCH. Jeden mały kontrakt.

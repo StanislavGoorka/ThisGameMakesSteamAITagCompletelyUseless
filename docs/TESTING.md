@@ -155,6 +155,15 @@ trwałego outboxu, utraty zasilania i podłączenia do sesji UI.
 
 ## Ocena grywalności
 
+P051-01 rozszerza windows_event_dispatcher o pełny run root seedu 1 z prawdziwym
+MvpAchievementEvaluator. Wszystkie pięć odblokowań daje maskę 31 i backup 15.
+Checkpoint sektora 2 jest zapisany/odczytany przez Windows; sektory 2–3
+porównują każdy stan i payload ze śladem oryginalnego runu. Pusty profil
+odtworzonej gałęzi dostaje 27 i backup 11, bez domniemania braku overdrive.
+Liczniki i dokładne bajty chronią preview, cache duplikatu i świeżą gałąź.
+Nowy scenariusz działa w jednym procesie; istniejące procesy fake testu
+transportu nie zastępują dowodu P051-02 dla prawdziwych predykatów.
+
 P050: completed_run wymaga won w sektorze 3, bez wymogu znanej historii.
 Testy odrzucają death/overload i sektory pośrednie. Jedno końcowe zdarzenie
 zgłasza dwa ID; częściowy sukces i retry zachowują potwierdzone bity. Test
