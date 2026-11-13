@@ -20,4 +20,11 @@ Agent nie zatwierdza własnego wniosku i nie fabrykuje cytatu. Zmiana wersji wym
 
 ## Paczkowanie w przyszłości
 
+P059: przed użyciem payloadu checkout uruchom
+`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-AssetPackage.ps1`.
+Bramka wymaga kontroli rejestru przez Validate-Project oraz śledzenia każdego
+pliku approved przez Git; odrzuca hidden orphan i reparse. Sprawdza stan
+roboczy, więc zmiana zatwierdzonego hasha musi przejść rejestr i zwykły review.
+Nie jest podpisem paczki ani dowodem pochodzenia ludzkiego.
+
 P101 wprowadzi osobną allowlistę plików binarnych i zasobów. Kod gry i generowane binaria mają pochodzenie kodowe, nie są wpisami `assets`. Przyjęcie assetu nie zastępuje bramki paczki. Testy, dokumentacja, narzędzia i pliki kwarantanny nie trafiają do depotu Steam.

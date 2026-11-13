@@ -8,6 +8,14 @@
 
 ## C++ i zakres testów
 
+P059: `scripts/Validate-AssetPackage.ps1` jest bramką assets/approved
+w dokładnym checkout Git, używaną również w CI. Wymaga poprawnego rejestru,
+zgód, hashy i śledzenia plików. Jawne wyliczanie obejmuje hidden i odrzuca
+reparse. `scripts/Test-AssetPackage.ps1` sprawdza 7 wyników na własnym repo:
+poprawny payload, orphan, hidden orphan, registered/untracked, korupcja,
+odmowa zgody i powrót do poprawnego stanu. P101 obejmie finalną allowlistę
+całego depotu; P059 nie sprawdza binarium ani autorstwa.
+
 P058-04: windows_asset_manifest_integration czyta rzeczywisty rejestr P057
 i porównuje pełne bajty trzech zatwierdzonych plików przez parse/lookup/read.
 Kontroluje nieznane ID, traversal, zły hash, korupcję i brak własnych kopii.

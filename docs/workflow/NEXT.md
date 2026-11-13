@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P059
+Task: P060
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P058-04, bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P059, bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Walidacja paczki assetów. Dodaj bramkę odrzucającą nieśledzone i niezatwierdzone zasoby.
+Kontrakt tekstów runtime. Dodaj wąski katalog tekstów, bez finalnych tekstów AI.
 
-Kryteria: Negatywne próbki: plik bez rejestru, zła zgoda, zmieniony hash.
+Kryteria: Każdy generated visible string wymaga prefiksu; brak fallbacku z ID.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,
