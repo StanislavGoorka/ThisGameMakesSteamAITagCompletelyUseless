@@ -43,8 +43,9 @@ i wznowienie checkpointu z UI rozbito w P074 na P074-01..07
 LocalAppData/ClosedCircuit/checkpoint.bin, a P074-02 klasyfikuje odczyt
 jako none/resumed/corrupt/unavailable, P074-03 dodaje oznaczone wiersze
 błędów, P074-04 wyznacza granice zapisu, a P074-05 dodaje lokalny magazyn
-z usuwaniem; dalsze dzieci są w realizacji.
-Ostatnia pełna pula: Debug i Release po 130/130 CTest. Brak testów VM,
+z usuwaniem, a P074-06 zapisuje granice w RunWindow z oznaczonym wierszem
+błędu; okno developer podłączy zapis i wznowienie w P074-07.
+Ostatnia pełna pula: Debug i Release po 131/131 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)

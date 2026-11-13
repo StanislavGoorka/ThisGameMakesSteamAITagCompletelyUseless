@@ -1,6 +1,8 @@
 #pragma once
 #include "application/action_preview.hpp"
 #include "application/action_selection.hpp"
+#include "application/checkpoint_boundary.hpp"
+#include "application/checkpoint_store.hpp"
 #include "application/run_achievements.hpp"
 #include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
@@ -8,6 +10,7 @@
 #include "core/run_turn.hpp"
 #include "platform/windows/board_view.hpp"
 #include "presentation/achievement_text.hpp"
+#include "presentation/checkpoint_text.hpp"
 #include "presentation/reward_text.hpp"
 #include "presentation/session_text.hpp"
 #include <type_traits>
@@ -36,10 +39,13 @@ class RunWindow final : public WindowCommandHandler
            const std::filesystem::path &root, const AssetManifest &manifest,
            std::unique_ptr<TextRenderer> label = {},
            const TextCatalog *hud_catalog = nullptr, bool show_start = false,
-           AchievementNoticeSink *notice_sink = nullptr)
+           AchievementNoticeSink *notice_sink = nullptr,
+           CheckpointStore *checkpoints = nullptr)
     {
-        if ((show_start || notice_sink) && !hud_catalog)
+        if ((show_start || notice_sink || checkpoints) && !hud_catalog)
             return {nullptr, E_INVALIDARG};
+        if (checkpoints && !hud_catalog->find("checkpoint-unsaved"))
+            return {nullptr, HRESULT_FROM_WIN32(ERROR_NOT_FOUND)};
         if (notice_sink)
             for (auto id :
                  {"achievement-first-delivery", "achievement-unavailable"})
@@ -59,6 +65,8 @@ class RunWindow final : public WindowCommandHandler
         owner->lifecycle_ = hud_catalog != nullptr;
         owner->flow_ = SessionFlow{!show_start};
         owner->notice_sink_ = notice_sink;
+        // Creation never writes: only later boundaries reach the store.
+        owner->checkpoints_ = checkpoints;
         if (notice_sink)
             owner->achievements_ = owner->make_achievements(
                 owner->run_, 1,
@@ -95,6 +103,10 @@ class RunWindow final : public WindowCommandHandler
     [[nodiscard]] bool achievements_pending() const noexcept
     {
         return achievements_ && achievements_->pending();
+    }
+    [[nodiscard]] bool checkpoint_failed() const noexcept
+    {
+        return checkpoint_failed_;
     }
     void key_available() noexcept override
     {
@@ -144,6 +156,7 @@ class RunWindow final : public WindowCommandHandler
                         achievements_ = std::move(delivery);
                         ++attempt_;
                         window_.discard_point();
+                        save_boundary();
                     }
                 }
                 show_live(run_);
@@ -202,11 +215,11 @@ class RunWindow final : public WindowCommandHandler
             }
             else
                 selection_.context_changed();
+            save_boundary();
             if (achievements_)
-            {
                 static_cast<void>(achievements_->flush());
+            if (achievements_ || checkpoints_)
                 show_live(run_);
-            }
             error_ = S_OK;
         }
         catch (...)
@@ -237,7 +250,29 @@ class RunWindow final : public WindowCommandHandler
         if (auto line =
                 presentation::achievement_storage_line(achievements_pending()))
             lines.push_back(*line);
+        if (auto line =
+                presentation::checkpoint_storage_line(checkpoint_failed_))
+            lines.push_back(*line);
         return lines;
+    }
+    // Called after every published run change. A failure keeps the game
+    // playable and stays visible until the next boundary succeeds.
+    void save_boundary() noexcept
+    {
+        if (!checkpoints_)
+            return;
+        try
+        {
+            const auto boundary = checkpoint_boundary(run_);
+            if (boundary.action == CheckpointAction::save)
+                checkpoint_failed_ = !checkpoints_->save(*boundary.checkpoint);
+            else if (boundary.action == CheckpointAction::clear)
+                checkpoint_failed_ = !checkpoints_->clear();
+        }
+        catch (...)
+        {
+            checkpoint_failed_ = true;
+        }
     }
     void reward_key(InputKey key)
     {
@@ -266,6 +301,9 @@ class RunWindow final : public WindowCommandHandler
                 run_ = std::move(next.state);
                 reward_selection_.reset();
                 window_.discard_point();
+                save_boundary();
+                if (checkpoints_)
+                    show_live(run_);
                 error_ = S_OK;
                 return;
             }
@@ -334,6 +372,8 @@ class RunWindow final : public WindowCommandHandler
     RewardSelection reward_selection_;
     AchievementNoticeSink *notice_sink_ = nullptr;
     std::unique_ptr<RunAchievements> achievements_;
+    CheckpointStore *checkpoints_ = nullptr;
+    bool checkpoint_failed_ = false;
     std::uint64_t attempt_ = 1;
     std::unique_ptr<BoardView> view_;
     HRESULT error_ = S_OK;

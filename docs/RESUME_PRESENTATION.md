@@ -45,3 +45,5 @@ P074-03 jest zaimplementowane: wpisy `checkpoint-corrupt`, `checkpoint-unavailab
 P074-04 jest zaimplementowane: `checkpoint_boundary` (application) zwraca save z capture_checkpoint wyłącznie dla dokładnego początku sektora, clear dla won/lost i keep w pozostałych przypadkach; wolno go wołać po każdej zaakceptowanej zmianie.
 
 P074-05 jest zaimplementowane: port `CheckpointStore` (application), `clear_checkpoint_files` i `LocalCheckpointStore` (Windows). Clear usuwa backup przed main, traktuje brak jako sukces i nie dotyka staging.
+
+P074-06 jest zaimplementowane: RunWindow przyjmuje opcjonalny `CheckpointStore` i woła `checkpoint_boundary` po starcie/restarcie, każdej zaakceptowanej turze i przejściu sektora. Tworzenie okna nie zapisuje. Błąd lub wyjątek ustawia wiersz `checkpoint-unsaved` do następnej udanej granicy. Okno developer podłącza magazyn w P074-07.

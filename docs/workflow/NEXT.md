@@ -1,20 +1,23 @@
 # Następny mały krok
 
-Task: P074-06
+Task: P074-07
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-05.
-Zależności: P074-05; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P074-06.
+Zależności: P074-06; muszą być completed.
 Sprawdź git status i walidator.
 
-Połącz checkpoint_boundary z CheckpointStore w RunWindow: start, restart,
-przejście sektora i wynik terminalny. Błąd pokazuje wiersz checkpoint-unsaved.
+Uruchom okno developer z odczytanego checkpointu (origin restored_checkpoint)
+albo z ekranu startu z kontrolowanym wierszem błędu corrupt/unavailable.
+Podłącz local_checkpoint_location, resume_checkpoint_file i LocalCheckpointStore
+w developer_main.
 
-Kryteria: HWND: dokładne bajty po starcie i przejściu, brak zapisu po zwykłej
-turze i preview, usunięcie po wyniku, błąd zapisu z markerem bez blokady gry.
+Kryteria: zamknięcie i ponowne utworzenie okna wznawia pełny początek sektora;
+uszkodzony lub niedostępny zapis pokazuje wyłącznie tekst z prefiksem;
+proces developer działa.
 
-Czytaj RESUME_PRESENTATION.md, run_window.hpp, checkpoint_boundary.hpp,
-checkpoint_store.hpp, local_checkpoint_store.hpp, checkpoint_text.hpp,
-tests/integration/achievement_window_tests.cpp i session_window_tests.cpp.
+Czytaj RESUME_PRESENTATION.md, run_window.hpp, developer_main.cpp,
+checkpoint_resume.hpp, checkpoint_location.hpp, checkpoint_text.hpp,
+tests/integration/checkpoint_window_tests.cpp i window_process_tests.cpp.
 Uwaga: dysk ma 1 s rozdzielczości czasu; po przywróceniu pliku z mutacji
 odczekaj i wykonaj touch przed przebudową.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
