@@ -32,7 +32,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P052**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P053**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -56,7 +56,12 @@ P051-01: Pełny run root seedu 1 przez rzeczywiste predykaty i lokalny sink odbl
 
 P051-02: Dwa nowe procesy odczytują checkpoint sektora 2 i porównują każdy pełny stan oraz payload sektorów 2–3 z niezależną kontynuacją pełnego runu. Rzeczywisty evaluator zgłasza 27; pusty profil otrzymuje 27/backup 11, profil 31/backup 15 zachowuje dokładne bajty. Drugi proces zachowuje oba main/bak. Preview i duplikaty nie wywołują usług. [Raport](docs/workflow/history/P051-02.md)
 
+P052: Dodano developer_preview_benchmark: 1000 stałych seedów, trzy rodziny obciążenia, legalny wait i odmowa ruchu, po 3000 próbek na przypadek. Raport sprzętu i dwóch pomiarów Release w docs/PREVIEW_BENCHMARK.md: p95 maksymalnie 4700 ns w syntetycznym stresie 49 impulsów. CTest kontroluje kontrakt CLI bez progu czasu; wynik nie ocenia grywalności. [Raport](docs/workflow/history/P052.md)
+
 ## Mapa dokumentacji
+
+Pomiar podglądu: `.\build\windows-msvc\Release\developer_preview_benchmark.exe`.
+[Korpus, sprzęt i p50/p95](docs/PREVIEW_BENCHMARK.md).
 
 | Dokument | Zastosowanie |
 | --- | --- |

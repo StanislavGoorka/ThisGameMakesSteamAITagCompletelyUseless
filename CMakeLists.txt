@@ -8,6 +8,17 @@ target_compile_features(game_core INTERFACE cxx_std_20)
 target_include_directories(game_core INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 include(CTest)
+add_executable(developer_preview_benchmark tools/benchmark/main.cpp)
+target_link_libraries(developer_preview_benchmark PRIVATE game_core)
+target_include_directories(developer_preview_benchmark PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/tools")
+if(MSVC)
+    target_compile_options(developer_preview_benchmark PRIVATE /W4 /permissive-)
+endif()
+if(BUILD_TESTING)
+    add_test(NAME developer_preview_benchmark_cli
+        COMMAND "${CMAKE_COMMAND}" -DBENCHMARK_EXE=$<TARGET_FILE:developer_preview_benchmark>
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/benchmark_cli_tests.cmake")
+endif()
 if(BUILD_TESTING)
     add_executable(application_mvp_achievement_tests tests/unit/mvp_achievement_tests.cpp)
     target_link_libraries(application_mvp_achievement_tests PRIVATE game_core)
