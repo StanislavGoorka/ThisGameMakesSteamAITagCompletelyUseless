@@ -1,7 +1,9 @@
 # Wniosek P056 — jedno pobranie Kenney 1-Bit Pack 1.2
 
 Data: 2026-11-13. ID zgody: `kenney-1bit-1.2-2026-11-13`.
-Status przed odpowiedzią: pending. Niniejszy wniosek nie jest zgodą.
+Status: approved. Dnia 2026-11-13 użytkownik odpowiedział na poniższy zakres:
+„Tak, zgadzam się na ten zakres”. Dowód i zakres są w content/approvals.json.
+Zgoda nie zastępuje weryfikacji pobranego archiwum.
 
 - Pakiet i plik: Kenney (Assets), 1-Bit Pack **1.2**, `1bitpack_kenney_1.2.zip`.
 - Źródło: [strona konkretnego pakietu](https://kenney-assets.itch.io/1-bit-pack).

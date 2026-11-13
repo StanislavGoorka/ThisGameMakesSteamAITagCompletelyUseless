@@ -125,15 +125,10 @@
         "P052",
         "P053",
         "P054",
-        "P055"
+        "P055",
+        "P056"
     ],
-    "current_task": "P056",
-    "blocked": [
-        {
-            "task_id": "P056",
-            "reason": "Wniosek kenney-1bit-1.2-2026-11-13 przedstawiono użytkownikowi; nie otrzymano rzeczywistej odpowiedzi. Zgoda pozostaje pending. Polecenie wykonania 10 kroków nie jest zgodą na konkretny pakiet.",
-            "unblock_when": "Rzeczywista wyraźna zgoda na zakres docs/assets/REQUEST_KENNEY_1BIT_1_2.md; zapisz wierną odpowiedź i datę w content/approvals.json. Odmowa zatrzymuje ten import i wymaga innego dossier."
-        }
-    ],
+    "current_task": "P057",
+    "blocked": [],
     "last_report": "docs/workflow/history/P056.md"
 }

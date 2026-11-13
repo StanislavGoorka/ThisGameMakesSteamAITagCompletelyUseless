@@ -32,12 +32,12 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P056**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P057**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
-P056 jest zablokowane do rzeczywistej odpowiedzi na
-[wniosek o Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
-Zgoda ma status pending; niczego nie pobrano. W poleceniu wykonania 10 kroków
-ukończono dotąd pięć, a dalsza kolejka wymaga tej zgody.
+P056 otrzymało rzeczywistą zgodę na
+[jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
+Zakres zapisano w rejestrze; import pozostaje P057. W poleceniu wykonania
+10 kroków ukończono dotąd sześć.
 
 P045: Specyfikacja pięciu predykatów z przykładami, resetem i konserwatywną historią po restore; zaplanowano dwa dzieci dowodu zmiany trasy przed P046. [Raport](docs/workflow/history/P045.md)
 
@@ -68,6 +68,8 @@ P053: Dodano deterministyczny test 16384 komend: 64 seedy, dwie rodziny zagroże
 P054: Przejrzano i przyjęto bramkę headless M4: przejście do dossier treści M5, bez nowych reguł. docs/HEADLESS_GATE.md wiąże dowody core, seedów, replayów, checkpointów, profilu i pięciu predykatów z ich ograniczeniami. Powtórzone Debug/Release i osobny Release AddressSanitizer: po 83/83 testy PASS; 11 testów walidatora PASS. Brak QA wizualnego i oceny grywalności. [Raport](docs/workflow/history/P054.md)
 
 P055: Dossier Kenney 1-Bit Pack 1.2 dokumentuje CC0 dla gry i publicznego Git, deklarację non-AI przy konkretnym pliku i devlog autora. Zapisano różnice nazw/rozmiarów archiwów i brakujące kontrole po zgodzie. Nie pobrano plików ani preview; rejestry assetów i zgód pozostają puste. [Raport](docs/workflow/history/P055.md)
+
+P056: Zapisano rzeczywistą odpowiedź użytkownika: „Tak, zgadzam się na ten zakres”. Zgoda kenney-1bit-1.2-2026-11-13 ma status approved; usunięto blokadę. Dotyczy wyłącznie jednego darmowego pobrania wersji 1.2 z itch.io i minimalnego importu niezmienionych PNG/not po weryfikacji. Bez pobrania w kroku P056. [Raport](docs/workflow/history/P056.md)
 
 ## Mapa dokumentacji
 

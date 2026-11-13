@@ -1,34 +1,13 @@
 # Następny mały krok
 
-Task: P056
+Task: P057
 
-P056 jest blocked, nie completed. Przeczytaj AGENTS, next-step, WORKFLOW,
-STATE, raport P056, wpis P056 i zależność P055. Status i walidator na początku.
-Stosuj asset-intake i CONTENT_POLICY.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P056 oraz bieżący wpis
+i jego zależności w tasks.json. Sprawdź status i uruchom walidator na początku.
 
-Wniosek przygotowany i przedstawiony użytkownikowi:
-[zakres zgody](../assets/REQUEST_KENNEY_1BIT_1_2.md),
-[dossier 1.2](../assets/KENNEY_1BIT_1_2.md).
-content/approvals.json zawiera kenney-1bit-1.2-2026-11-13 jako pending.
-Nie pobrano archiwum, preview ani grafik. Nie wykonano P057.
+Po zatwierdzonej zgodzie pobierz jeden 1bitpack_kenney_1.2.zip ze wskazanej strony itch.io do .local/asset-intake/kenney-1bit-1.2/. Stosuj asset-intake, CONTENT_POLICY i REGISTRY; czytaj dossier i wniosek. Sprawdź wersję, License.txt, pełną listę i hashe. Przyjmij tylko minimalne niezmienione PNG/noty z kompletnymi dowodami i rejestrem; bez preview, scen, logo, skryptów, innych pakietów, darowizny i zakupu. Nie pytaj ponownie o zatwierdzony zakres.
 
-Najpierw sprawdź, czy użytkownik odpowiedział na ten konkretny wniosek.
-Jeśli zgodził się na cały wskazany zakres, zapisz wierną odpowiedź i datę,
-zmień zgodę na approved, usuń blokadę i zakończ P056 osobnym commitem.
-Nie pytaj ponownie o tę samą udzieloną zgodę. Przy braku odpowiedzi zachowaj
-blokadę; przy odmowie nie pobieraj i przygotuj inne dossier w osobnym kroku.
-
-Dopiero potem P057: jedno darmowe archiwum 1.2 ze wskazanego itch.io,
-weryfikacja wersji, licencji, hashy i minimalny import niezmienionych PNG/not.
-Inna wersja lub źródło wymaga nowej oceny i zgody. Brak potrzebnych płytek
-nie pozwala tworzyć grafiki kodem.
-
-W tym poleceniu wykonano pięć z dziesięciu zamówionych ukończonych kroków:
-P051-02, P052, P053, P054, P055. Zapis P056 jest przekazaniem blokady,
-nie szóstym ukończonym zadaniem. Po odblokowaniu pozostaje pięć kroków
-zamówionego zakresu, wliczając ukończenie P056. Audyt gotowych wpisów
-nie znalazł innego niezależnego zadania.
-
-Walidator i diff --check; raport, STATE/NEXT/README i lokalny commit.
-Nie twórz pustego commitu ponownego sprawdzenia niezmienionej blokady.
-Bez pobrań przed odpowiedzią, zakupu, darowizny, generowania assetów i pushu.
+Dla C++ stosuj cpp-core-step, ARCHITECTURE, GAME_DESIGN i TESTING.
+Configure, build i CTest Debug/Release, formatter src/tests/tools; dla samej
+dokumentacji walidator i diff --check. Raport, STATE/NEXT/README i osobny
+lokalny commit z kontrolą hasha oraz zakresu. Bez assetów, pobrań i pushu.
