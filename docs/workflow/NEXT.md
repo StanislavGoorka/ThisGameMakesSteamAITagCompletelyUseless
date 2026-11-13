@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P064-02
+Task: P065
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P064-01 oraz bieżący wpis
+Czytaj AGENTS, next-step, WORKFLOW, STATE, raport P064-02 oraz bieżący wpis
 i jego zależności w tasks.json. Sprawdź status i walidator na początku.
 
-Resize i odtworzenie celu Direct2D. Rozszerz istniejący adapter o resize, zawieszenie przy zerowym rozmiarze i odtworzenie celu po D2DERR_RECREATE_TARGET. Fabryka pozostaje żywa. Bez rysowania i bez sesji produktu.
+Dekodowanie WIC. Dodaj odczyt jednego zatwierdzonego PNG.
 
-Kryteria: Rzeczywiste resize i recreate, zerowy rozmiar bez celu do rysowania, powrót z zawieszenia, kontrolowana odmowa po zniszczeniu HWND oraz retry. Symulowany status utraty urządzenia odróżnij od fizycznego resetu GPU; D/R.
+Kryteria: Poprawny plik, plik uszkodzony i brak zasobu bez generowanego fallbacku.
 
 Jeżeli zakres przekracza mikro-krok, wykonaj wyłącznie podział i przepnij
 zależności konsumentów. Dla C++ stosuj cpp-core-step, ARCHITECTURE,

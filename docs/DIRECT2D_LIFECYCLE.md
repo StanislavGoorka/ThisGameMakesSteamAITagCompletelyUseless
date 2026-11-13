@@ -29,3 +29,5 @@ Kontrakty systemowe:
 P065 wymaga ukończenia ostatniego dziecka, a nie samego podziału.
 
 P064-01 wdraża Direct2DTarget::create(HWND). Wynik zawiera unique_ptr albo HRESULT; cel i fabryka mają własność ComPtr. Wskaźniki target()/factory() są pożyczone, nie przenoszą własności. Brak publicznego konstruktora, copy i move. Adapter nie niszczy HWND, nie rysuje ani nie prezentuje bufora.
+
+P064-02 wdraża resize(width,height) i handle_draw_result(HRESULT). Zero zwraca S_FALSE i usuwa cel; dodatni rozmiar tworzy lub zmienia cel. Nieudany resize usuwa cel. Status D2DERR_RECREATE_TARGET usuwa wyłącznie zasoby celu, pozostałe statusy są przekazywane bez zmiany celu. Fabryka pozostaje ta sama. Podłączenie WM_SIZE/EndDraw do przyszłego produktu pozostaje poza adapterem.

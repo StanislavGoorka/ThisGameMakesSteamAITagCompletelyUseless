@@ -33,6 +33,37 @@ class Direct2DTarget
     {
         return factory_.Get();
     }
+    [[nodiscard]] HRESULT resize(UINT32 width, UINT32 height) noexcept
+    {
+        if (!IsWindow(window_))
+        {
+            target_.Reset();
+            return HRESULT_FROM_WIN32(ERROR_INVALID_WINDOW_HANDLE);
+        }
+        if (!width || !height)
+        {
+            target_.Reset();
+            return S_FALSE;
+        }
+        const auto size = D2D1::SizeU(width, height);
+        const auto result =
+            target_ ? target_->Resize(size)
+                    : factory_->CreateHwndRenderTarget(
+                          D2D1::RenderTargetProperties(),
+                          D2D1::HwndRenderTargetProperties(window_, size),
+                          target_.GetAddressOf());
+        if (FAILED(result))
+            target_.Reset();
+        return result;
+    }
+    // The future drawing caller supplies the actual EndDraw result.
+    // Tests inject only the status; no image is drawn or presented here.
+    [[nodiscard]] HRESULT handle_draw_result(HRESULT result) noexcept
+    {
+        if (result == D2DERR_RECREATE_TARGET)
+            target_.Reset();
+        return result;
+    }
     [[nodiscard]] static Direct2DCreateResult create(HWND window)
     {
         if (!IsWindow(window))
@@ -48,12 +79,8 @@ class Direct2DTarget
                                         owner->factory_.GetAddressOf());
         if (FAILED(result))
             return {nullptr, result};
-        result = owner->factory_->CreateHwndRenderTarget(
-            D2D1::RenderTargetProperties(),
-            D2D1::HwndRenderTargetProperties(
-                window, D2D1::SizeU(static_cast<UINT32>(client.right),
-                                    static_cast<UINT32>(client.bottom))),
-            owner->target_.GetAddressOf());
+        result = owner->resize(static_cast<UINT32>(client.right),
+                               static_cast<UINT32>(client.bottom));
         if (FAILED(result))
             return {nullptr, result};
         return {std::move(owner), S_OK};

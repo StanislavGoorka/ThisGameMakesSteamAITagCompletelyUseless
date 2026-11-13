@@ -297,3 +297,5 @@ P063-02: application_keyboard_commands sprawdza wszystkie 49 pól i cztery kieru
 P063-03: windows_window_keyboard wysyła rzeczywiste WM_KEYDOWN/UP, sprawdza siedem komend, 100 powtórzeń każdego klawisza, bit30 i brak bitu przy hold, keyup/repress, focus loss z pending i odzyskanie focus, unknown, brak kolejki, zamknięcie oraz konsumpcję akcji na krawędzi. Brak dostępu wejścia do GameState.
 
 P064-01: windows_direct2d_target tworzy rzeczywiste fabryki i cele HWND dla dwóch ukrytych okien, czterokrotnie. Kontroluje GetHwnd/GetPixelSize, niezależność celów i zachowanie drugiego po zwolnieniu pierwszego. Null i zniszczony HWND są odrzucane bez obiektu. Brak draw/present, fizycznego resetu GPU i VM.
+
+P064-02: windows_direct2d_resize czterokrotnie sprawdza rzeczywiste rozmiary 1x1, 321x197 i 624x441, trzy warianty zera i powrót, zachowanie fabryki oraz nową tożsamość COM celu po kontrolowanym D2DERR_RECREATE_TARGET. Rzeczywisty SetWindowPos i GetClientRect zasilają Resize; zamknięty HWND odmawia dwukrotnie. S_OK/E_FAIL przechodzą bez zmiany celu. Brak fizycznego resetu GPU, draw/present i VM.
