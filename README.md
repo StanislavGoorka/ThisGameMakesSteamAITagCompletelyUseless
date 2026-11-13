@@ -38,7 +38,8 @@ przechodzi bez dodatkowej nagrody. Pierwsza nowa dostawa pokazuje katalogowe
 powiadomienie dopiero po trwałym odblokowaniu; Escape je chowa. Profil
 używa LocalAppData/ClosedCircuit/profile.bin i istniejącego formatu.
 Błąd profilu zachowuje zdarzenia w pamięci; Enter ponawia zapis. Zapis
-i wznowienie checkpointu z UI pozostają P074.
+i wznowienie checkpointu z UI rozbito w P074 na P074-01..07
+([kontrakt](docs/RESUME_PRESENTATION.md)); dzieci są w realizacji.
 Ostatnia pełna pula: Debug i Release po 125/125 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 

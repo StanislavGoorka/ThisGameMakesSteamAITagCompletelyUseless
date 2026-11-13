@@ -2082,11 +2082,88 @@
         {
             "id": "P074",
             "phase": "M6",
-            "title": "Wznowienie sesji",
-            "scope": "Dodaj w UI odczyt istniejącego checkpointu i kontrolowane błędy.",
-            "acceptance": "Zamknięcie i restart; zły zapis nie pokazuje wewnętrznych tekstów bez prefiksu.",
+            "title": "Rozbij wznowienie sesji",
+            "scope": "Wyłącznie podziel odczyt i zapis checkpointu w UI na lokalizację, klasyfikację odczytu, katalogowe teksty, granice zapisu, magazyn plików, zapis w oknie i wznowienie. Bez implementacji dzieci.",
+            "acceptance": "Każde dziecko ma jeden kontrakt i testy; P075 zależy od ostatniego dziecka. Bez nowych mechanik, grafik i pobrań.",
             "depends_on": [
                 "P073-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-01",
+            "phase": "M6",
+            "title": "Lokalizacja checkpointu okna",
+            "scope": "Dodaj ścieżkę checkpoint.bin w tym samym prywatnym katalogu LocalAppData co profil. Bez odczytu, zapisu i zmian UI.",
+            "acceptance": "Rzeczywisty i prywatny testowy katalog, wspólny katalog z profilem, powtórka, Unicode, kolizja z plikiem i ścieżka względna; kontrolowane błędy.",
+            "depends_on": [
+                "P074"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-02",
+            "phase": "M6",
+            "title": "Klasyfikacja odczytu wznowienia",
+            "scope": "Dodaj odczyt istniejącego recover_checkpoint_file z odtworzeniem RunState i statusem none/resumed/corrupt/unavailable. Bez UI i zapisu.",
+            "acceptance": "Rzeczywiste pliki main/bak: brak, poprawny main, fallback backupu, uszkodzenie, blokada odczytu; pełny stan równy restore, brak modyfikacji plików.",
+            "depends_on": [
+                "P074-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-03",
+            "phase": "M6",
+            "title": "Oznaczone teksty checkpointu",
+            "scope": "Dodaj katalogowe placeholdery uszkodzonego, niedostępnego i niezapisanego checkpointu oraz czystą projekcję wierszy. Bez renderowania.",
+            "acceptance": "Każdy status ma pełny marker lub brak wiersza; brak ID daje odmowę; public gate blokuje robocze wpisy; bez kodów błędów w tekście.",
+            "depends_on": [
+                "P074-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-04",
+            "phase": "M6",
+            "title": "Granice zapisu checkpointu",
+            "scope": "Dodaj czystą decyzję granicy: zapis początku sektora, usunięcie po wyniku terminalnym, brak akcji w trakcie sektora. Bez IO.",
+            "acceptance": "Start, każdy sektor po przejściu, tura w sektorze, nagroda, won/death/overload; zapis zgodny z capture_checkpoint, wejście bez mutacji.",
+            "depends_on": [
+                "P074-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-05",
+            "phase": "M6",
+            "title": "Lokalny magazyn checkpointu",
+            "scope": "Dodaj port zapisu/usunięcia checkpointu i adapter Windows na istniejącym save_checkpoint_file. Usuwanie najpierw backup, potem main. Bez UI.",
+            "acceptance": "Rzeczywiste pliki: zapis i backup, usunięcie obu, brak plików, blokada, uszkodzony main bez nadpisania; powtórka idempotentna.",
+            "depends_on": [
+                "P074-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-06",
+            "phase": "M6",
+            "title": "Zapis granic w oknie",
+            "scope": "Połącz decyzję granicy z magazynem w RunWindow: start, restart, przejście sektora i wynik terminalny. Błąd pokazuje katalogowy wiersz.",
+            "acceptance": "HWND: dokładne bajty po starcie i przejściu, brak zapisu po zwykłej turze i preview, usunięcie po wyniku, błąd zapisu z markerem bez blokady gry.",
+            "depends_on": [
+                "P074-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P074-07",
+            "phase": "M6",
+            "title": "Wznowienie w oknie",
+            "scope": "Uruchom okno developer z odczytanego checkpointu albo z ekranu startu z kontrolowanym wierszem błędu. Origin restored_checkpoint dla wznowienia.",
+            "acceptance": "Zamknięcie i ponowne utworzenie okna wznawia pełny początek sektora; uszkodzony lub niedostępny zapis pokazuje wyłącznie tekst z prefiksem; proces developer działa.",
+            "depends_on": [
+                "P074-06"
             ],
             "gate": null
         },
@@ -2097,7 +2174,7 @@
             "scope": "Dodaj tylko lifecycle urządzenia i kontrakt odtwarzania, bez dźwięku zastępczego.",
             "acceptance": "Brak urządzenia nie blokuje gry; brak syntezy i wbudowanych nagrań.",
             "depends_on": [
-                "P074"
+                "P074-07"
             ],
             "gate": null
         },
