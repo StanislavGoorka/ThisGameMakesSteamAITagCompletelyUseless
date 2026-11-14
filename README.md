@@ -71,7 +71,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P079-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P079-05**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -529,3 +529,5 @@ P079-01: Dodano poprawną wartość RotationBinding i ścisły kodek 16 bajtów 
 P079-02: Dodano port RotationBindingStore oraz Windows bounded read i save przez flush/staging/rename. Duplikat niczego nie zapisuje, korupcja i blokady nie nadpisują main. Test chroni pliki profilu i checkpointu. [Raport](docs/workflow/history/P079-02.md)
 
 P079-03: NativeWindow mapuje wszystkie zatwierdzone litery obrotu i daje opcjonalny callback pierwszego fizycznego naciśnięcia. Physical held chroni zmianę mapowania podczas hold; focus czyści pending i stan naciśnięć. Bez IO i UI. [Raport](docs/workflow/history/P079-03.md)
+
+P079-04: RunWindow z portem ustawienia obsługuje F2 i wybór litery, zapisuje przed aktywacją, izoluje błąd i wyjątek store oraz anuluje po Escape/focus. Dodano pięć katalogowych AI PLACEHOLDER, bez finalnych tekstów i nowych assetów. [Raport](docs/workflow/history/P079-04.md)

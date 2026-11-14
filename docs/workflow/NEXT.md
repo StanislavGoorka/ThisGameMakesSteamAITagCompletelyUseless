@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P079-04
+Task: P079-05
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-03.
-Zależności: P079-03; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-04.
+Zależności: P079-04; muszą być completed.
 
-Podłącz F2, wybór litery i port ustawienia do RunWindow, z oznaczonymi tekstami katalogu. Zmieniaj aktywne mapowanie dopiero po udanym zapisie; Escape i focus anulują.
+Rozwiąż rotation-key.bin obok profilu i podłącz bounded read, store i aktywne mapowanie do developer entrypoint. Brak ustawienia daje R; błąd nie naprawia pliku.
 
-Kryteria: HWND: sukces, konflikt O, błąd/wyjątek store i retry, cancel/focus, brak tur podczas capture. Pełne stany, preview i pliki gry bez zmian.
+Kryteria: Bootstrap na prywatnym katalogu: missing, saved, corrupt, locked i brak lokalizacji. Brak zapisu przy starcie, bez zmiany profilu/checkpointu. Smoke procesu.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie

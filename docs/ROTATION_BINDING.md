@@ -57,3 +57,11 @@ i usuwa oczekujący klawisz logiczny. Physical held pozostaje do key-up;
 focus loss i destrukcja czyszczą go. Opcjonalny binding_key w handlerze
 otrzymuje tylko pierwszy key-down przed mapowaniem. Zwrócenie true
 konsumuje go bez komendy. Adapter nie zapisuje ustawień i nie ma UI.
+
+P079-04: RunWindow otrzymuje pożyczony RotationBindingStore. Z nim F2
+resetuje preview i pokazuje katalogową instrukcję; kolejne naciśnięcia
+do końca capture nie trafiają do symulacji. Błąd/wyjątek save zachowuje
+stare przypisanie i pozwala wybrać ponownie. Udany save przełącza mapowanie
+bez tury; Escape i focus przywracają pomoc. Bez portu zachowanie pozostaje
+domyślne. Pięć osobnych placeholderów jest wymaganych przed utworzeniem UI;
+brak wpisu odmawia utworzenia, zamiast drukować identyfikator.

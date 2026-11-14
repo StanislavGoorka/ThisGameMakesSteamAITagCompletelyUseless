@@ -4,6 +4,7 @@
 #include "application/audio_output.hpp"
 #include "application/checkpoint_boundary.hpp"
 #include "application/checkpoint_store.hpp"
+#include "application/rotation_binding_store.hpp"
 #include "application/run_achievements.hpp"
 #include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
@@ -42,10 +43,19 @@ class RunWindow final : public WindowCommandHandler
            const TextCatalog *hud_catalog = nullptr, bool show_start = false,
            AchievementNoticeSink *notice_sink = nullptr,
            CheckpointStore *checkpoints = nullptr,
-           std::unique_ptr<AudioOutput> audio = {})
+           std::unique_ptr<AudioOutput> audio = {},
+           RotationBindingStore *bindings = nullptr)
     {
-        if ((show_start || notice_sink || checkpoints) && !hud_catalog)
+        if ((show_start || notice_sink || checkpoints || bindings) &&
+            !hud_catalog)
             return {nullptr, E_INVALIDARG};
+        if (bindings)
+            for (auto id :
+                 {"rotation-binding-help", "rotation-binding-prompt",
+                  "rotation-binding-conflict", "rotation-binding-unavailable",
+                  "rotation-binding-saved"})
+                if (!hud_catalog->find(id))
+                    return {nullptr, HRESULT_FROM_WIN32(ERROR_NOT_FOUND)};
         if (checkpoints && !hud_catalog->find("checkpoint-unsaved"))
             return {nullptr, HRESULT_FROM_WIN32(ERROR_NOT_FOUND)};
         if (notice_sink)
@@ -75,6 +85,7 @@ class RunWindow final : public WindowCommandHandler
         // Creation never writes: only later boundaries reach the store.
         owner->checkpoints_ = checkpoints;
         owner->audio_ = std::move(audio);
+        owner->bindings_ = bindings;
         if (notice_sink)
             owner->achievements_ = owner->make_achievements(
                 owner->run_, 1,
@@ -144,6 +155,11 @@ class RunWindow final : public WindowCommandHandler
         {
             if (!window_.focused())
             {
+                if (binding_capture_)
+                {
+                    binding_capture_ = false;
+                    binding_line_ = "rotation-binding-help";
+                }
                 selection_.reset();
                 reward_selection_.reset();
                 show_live(run_);
@@ -259,6 +275,54 @@ class RunWindow final : public WindowCommandHandler
             error_ = E_FAIL;
         }
     }
+    bool binding_key(std::uint32_t key) noexcept override
+    {
+        if (!bindings_ || (!binding_capture_ && key != VK_F2))
+            return false;
+        try
+        {
+            if (key == VK_F2)
+            {
+                binding_capture_ = true;
+                binding_line_ = "rotation-binding-prompt";
+                selection_.reset();
+                reward_selection_.reset();
+                window_.discard_point();
+            }
+            else if (key == VK_ESCAPE)
+            {
+                binding_capture_ = false;
+                binding_line_ = "rotation-binding-help";
+            }
+            else if (const auto candidate = RotationBinding::from_letter(key))
+            {
+                bool saved = false;
+                try
+                {
+                    saved = bindings_->save(*candidate);
+                }
+                catch (...)
+                {
+                }
+                binding_line_ = saved ? "rotation-binding-saved"
+                                      : "rotation-binding-unavailable";
+                if (saved)
+                {
+                    window_.set_rotation_binding(*candidate);
+                    binding_capture_ = false;
+                }
+            }
+            else
+                binding_line_ = "rotation-binding-conflict";
+            show_live(run_);
+            error_ = S_OK;
+        }
+        catch (...)
+        {
+            error_ = E_FAIL;
+        }
+        return true;
+    }
 
   private:
     void play_deliveries(std::span<const DomainEvent> events) noexcept
@@ -291,6 +355,8 @@ class RunWindow final : public WindowCommandHandler
     [[nodiscard]] std::vector<TextLine> status_lines() const
     {
         std::vector<TextLine> lines;
+        if (bindings_)
+            lines.push_back({binding_line_, std::nullopt});
         if (auto line = presentation::resume_line(resume_status_))
             lines.push_back(*line);
         if (auto line = presentation::achievement_line(
@@ -423,6 +489,9 @@ class RunWindow final : public WindowCommandHandler
     std::unique_ptr<RunAchievements> achievements_;
     CheckpointStore *checkpoints_ = nullptr;
     std::unique_ptr<AudioOutput> audio_;
+    RotationBindingStore *bindings_ = nullptr;
+    bool binding_capture_ = false;
+    std::string_view binding_line_ = "rotation-binding-help";
     bool checkpoint_failed_ = false;
     // Indexed by ResumeStatus: whether the catalog holds that marked line.
     std::array<bool, 4> resume_lines_{};

@@ -12,11 +12,12 @@ create_resumed_window(NativeWindow &window, const CheckpointResume &resume,
                       RunSeed seed, const std::filesystem::path &root,
                       const AssetManifest &manifest, const TextCatalog &catalog,
                       AchievementNoticeSink *notices, CheckpointStore *store,
-                      std::unique_ptr<AudioOutput> audio = {})
+                      std::unique_ptr<AudioOutput> audio = {},
+                      RotationBindingStore *bindings = nullptr)
 {
     auto made = RunWindow::create(
         window, resume.run ? *resume.run : start_run(seed), root, manifest, {},
-        &catalog, !resume.run, notices, store, std::move(audio));
+        &catalog, !resume.run, notices, store, std::move(audio), bindings);
     if (!made.session)
         return made;
     if (const auto status = made.session->show_resume_status(resume.status);

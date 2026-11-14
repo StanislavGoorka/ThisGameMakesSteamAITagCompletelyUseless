@@ -2,6 +2,36 @@
   "schema_version": 1,
   "texts": [
     {
+      "id": "rotation-binding-help",
+      "value": "[AI PLACEHOLDER] F2: choose rotation key; choose R to restore default.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "rotation-binding-prompt",
+      "value": "[AI PLACEHOLDER] Press A-Z except O for rotation; Escape cancels.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "rotation-binding-conflict",
+      "value": "[AI PLACEHOLDER] Choose A-Z except O. Escape cancels.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "rotation-binding-unavailable",
+      "value": "[AI PLACEHOLDER] Key setting unavailable. Choose again or Escape.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "rotation-binding-saved",
+      "value": "[AI PLACEHOLDER] Rotation key saved. F2 changes it.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "achievement-first-delivery",
       "value": "[AI PLACEHOLDER] Achievement unlocked: First delivery. Escape dismisses.",
       "status": "ai_placeholder",

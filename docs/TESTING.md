@@ -1,5 +1,12 @@
 # Testy i bramki jakości
 
+P079-04: windows_rotation_binding_window przez rzeczywiste HWND sprawdza
+anulowanie preview, F2, konflikt O i Space, błąd i wyjątek portu, hold/repeat,
+jawny retry, dokładny zapis T, brak starego R, Escape i utratę focusu.
+Podczas konfiguracji pełny RunState i widok pozostają live, a dopiero
+późniejsze T wykonuje jedną rzeczywistą turę obrotu. Bajty profilu oraz
+checkpointu są niezmienne. Brak katalogu odmawia UI z portem ustawienia.
+
 P079-03: windows_rotation_binding_input sprawdza wszystkie 25 przypisań,
 brak starego R, zachowanie O, przechwycenie 100 powtórek, zmianę podczas
 hold, release/repress, pending przy utracie focusu i bit30 po odzyskaniu.
