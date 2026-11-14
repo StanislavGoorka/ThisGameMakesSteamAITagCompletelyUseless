@@ -89,7 +89,7 @@ bool cases()
                         if (!rejected(bad))
                             return false;
                     }
-                for (int field = 0; field < 12; ++field)
+                for (int field = 0; field < 13; ++field)
                 {
                     auto bad = boundary;
                     if (field == 0)
@@ -118,6 +118,10 @@ bool cases()
                         bad.sector.reserve = 4;
                     if (field == 11)
                         bad.sector.overload_debt = UINT32_MAX;
+                    if (field == 12)
+                        bad.sector.emitters.push_back(
+                            *PeriodicEmitter::from_values(
+                                *EntityId::from_value(0), node(0), 2, 0, 1));
                     if (!rejected(bad))
                         return false;
                 }

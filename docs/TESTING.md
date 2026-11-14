@@ -473,3 +473,5 @@ P082-02: core_periodic_emitter sprawdza walidację pełnych liczb przed zawęże
 P082-03: core_emitter_footprint sprawdza dokładne zbiory pól, cykle, rozgałęzienia, jednostronne porty, rotację i brak zawijania 6/7. Pełna siatka: 49 źródeł × 48 zasięgów × 49 niezależnych dystansów. Bez obrażeń i resolvera.
 
 P082-04: core_emitter_phase obejmuje 3136 przypadków pozycji/fazy/HP/limitu, pustą listę, obrót, krótki zasięg i sześć kolejności trzech emiterów. Chroni pełny pozostały stan i konfiguracje. Kontakt impulsu przed/po helperze współdzieli limit. Integracja resolvera pozostaje w P082-06.
+
+P082-05: core_emitter_state chroni każde pole, kolejność i kopie kolekcji oraz niezależny wektor hash v5. application_run_checkpoint odrzuca emiter na granicach sektora. Stare wersje replay odrzucane, literalne ślady CLI uaktualnione niezależnym byte oracle tools/replay/hash_vectors.cjs.

@@ -2,6 +2,7 @@
 
 #include "core/identifiers.hpp"
 #include "core/module_loadout.hpp"
+#include "core/periodic_emitter.hpp"
 #include "core/port_mask.hpp"
 
 #include <algorithm>
@@ -70,6 +71,7 @@ struct GameState
     ModuleLoadout modules{};
     // Shared once-per-sector allowance for fixed terminal rotations.
     bool terminal_rotation_used{false};
+    std::vector<PeriodicEmitter> emitters{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

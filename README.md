@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Emiter okresowy ma samodzielny harmonogram, zasięg grafowy i helper obrażeń ze wspólnym limitem. Integracja ze stanem i resolverem pozostaje w P082-05/06. [Aktualne przekazanie](docs/workflow/NEXT.md). Seria dziewięciu kroków zakończona na P082-04.
+Emiter okresowy ma harmonogram, zasięg i helper obrażeń oraz wartościową kolekcję w GameState, hash v5 i replay v9. Integracja resolvera pozostaje w P082-06. [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 1/10 bieżącej serii: P082-05.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
