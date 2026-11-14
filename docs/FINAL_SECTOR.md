@@ -40,7 +40,8 @@ wejścia na wyjście też nie. Resolver i preview nadal dzielą implementację,
 a terminalna lub nielegalna akcja nie wykonuje faz ani nie pobiera tury.
 
 Próg dopisujemy jako jeden bajt na końcu pełnego hasha v7; pozostałe pola
-zachowują kolejność v6. Replay v13 wiąże tę zmianę. Niezależny bajtowy oracle
+zachowują kolejność v6. Replay v13 wiąże migrację danych P084-08, a v14
+wiąże użycie progu przez wynik sektora P084-09. Niezależny bajtowy oracle
 aktualizuje literalne wektory również zwykłych stanów. Żadna nowa losowość
 nie trafia do resolvera.
 

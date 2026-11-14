@@ -2654,11 +2654,33 @@
         {
             "id": "P084-04",
             "phase": "M7",
-            "title": "Jawny próg dostaw sektora",
-            "scope": "Dodaj ograniczony model wymogu dwóch lub trzech dostaw i uwzględnij go w wyniku sektora, porównaniach, hashu/replay oraz ochronie checkpointu; domyślne generowane sektory pozostają normalne.",
-            "acceptance": "Dwie dostawy nie kończą finału, trzecia plus wyjście kończy; niecelowe powered_nodes nie liczą się. Śmierć i granica 48/49, odmowy/preview, kopie i niezależne wektory nowego pola. Restore normalnego checkpointu pozostaje normalny, capture odrzuca obcy wymóg. Debug/Release.",
+            "title": "Rozbij próg dostaw i zgodność danych",
+            "scope": "Wyłącznie rozdziel migrację modelu/hasha/replay/checkpointu od zmiany predykatu sukcesu. Bez implementacji.",
+            "acceptance": "Dwa małe dzieci: dane i ochrona pełnego stanu, następnie wynik sektora. P084-05 wymaga obu przez zależność ostatniego dziecka; zamknięcie podziału nie aktywuje progu.",
             "depends_on": [
                 "P084-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-08",
+            "phase": "M7",
+            "title": "Wartość wymogu dostaw i zgodność danych",
+            "scope": "Dodaj ograniczoną wartość 2/3 w GameState, pełne porównania, hash v7/replay v13 i ochronę checkpointu/witness. Wynik sektora zachowuje dotychczasowy próg.",
+            "acceptance": "Granice modelu i niezależne kopie; niezależne wektory hash obu wartości. Restore pozostaje normalny, capture i baseline witness odrzucają obcy wymóg bez mutacji. Zwykłe wektory replay zaktualizowane przez niezależny oracle; Debug/Release.",
+            "depends_on": [
+                "P084-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-09",
+            "phase": "M7",
+            "title": "Wynik sektora według wymogu dostaw",
+            "scope": "Użyj ograniczonego progu w sector_outcome i zwiąż regułę wersją replay v14. Bez aktywowania finału w runie.",
+            "acceptance": "Dwie dostawy nie kończą finału, trzecia z wyjściem kończy. Niecelowe powered nie liczą się. Śmierć przed sukcesem, sukces w 48 przed overload, brak sukcesu w 49; preview i odmowy zachowują pełny stan. Normalne regresje oraz Debug/Release.",
+            "depends_on": [
+                "P084-08"
             ],
             "gate": null
         },
@@ -2669,7 +2691,7 @@
             "scope": "Wydziel jeden builder początkowego GameState sektora, współdzielony przez start, przejście i restore, z obsługą jawnego wariantu. Zachowaj dotychczasowy wybór normalnego sektora u produkcyjnych callerów.",
             "acceptance": "Pełna równoważność istniejących normalnych granic dla seedów, modułów, HP, rezerwy, długu i impulsu wejścia; jawny wariant finału ma trzy odbiorniki i właściwy próg. Brak podwójnego pobrania długu. Debug/Release. Jeśli przekracza mikro-zakres, wyłącznie dalszy podział.",
             "depends_on": [
-                "P084-04"
+                "P084-09"
             ],
             "gate": null
         },
