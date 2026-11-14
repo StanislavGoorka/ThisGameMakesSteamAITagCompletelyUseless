@@ -236,6 +236,7 @@ class RunWindow final : public WindowCommandHandler
             // copy succeeds. Both following move assignments are nonthrowing.
             show_live(next.state);
             run_ = std::move(next.state);
+            play_deliveries(resolved.events);
             if (achievements_)
                 achievements_->publish(std::move(pending));
             reward_selection_.sync(run_);
@@ -260,6 +261,21 @@ class RunWindow final : public WindowCommandHandler
     }
 
   private:
+    void play_deliveries(std::span<const DomainEvent> events) noexcept
+    {
+        if (!audio_)
+            return;
+        for (const auto &event : events)
+            if (std::holds_alternative<PacketDelivered>(event.payload))
+                try
+                {
+                    static_cast<void>(audio_->play(AudioCue::delivery));
+                }
+                catch (...)
+                {
+                    // A committed turn and its durable services must continue.
+                }
+    }
     [[nodiscard]] std::unique_ptr<RunAchievements>
     make_achievements(const RunState &run, std::uint64_t attempt,
                       RunHistoryOrigin origin)

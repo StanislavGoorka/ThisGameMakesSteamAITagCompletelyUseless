@@ -124,3 +124,9 @@ bez submit/start i bez kolejki do późniejszego odtworzenia. Stan mute
 ustawia się przez AudioOutput::set_muted i dotyczy kolejnych sygnałów;
 nie przerywa już przyjętego krótkiego bufora. Brak nowych klawiszy/tekstów,
 regulacji głośności ani zapisu ustawienia. Mapowanie zdarzeń w P078-06.
+
+P078-06: RunWindow po publikacji nowego RunState przekazuje każdy
+PacketDelivered do AudioOutput dokładnie raz. Wynik portu jest best effort,
+a wyjątek jest izolowany od checkpointów i achievementów. Preview, odmowa,
+powtórka klawisza, focus oraz retry trwałego odblokowania nie publikują
+ponownie audio. Nie ma trwałego outboxu audio ani odtworzenia po restore.

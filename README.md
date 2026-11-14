@@ -45,9 +45,10 @@ zapis pokazuje oznaczony wiersz na ekranie startu; błąd zapisu nie blokuje gry
 ([kontrakt](docs/RESUME_PRESENTATION.md)).
 Backend audio ma port sygnałów, RAII XAudio2 i mastering voice, callback
 błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posiada
-urządzenie przez port; zatwierdzony WAV z P077 czeka na podłączenie odtwarzania.
-Brak urządzenia nie blokuje gry. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 139/139 CTest. Brak testów VM,
+urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
+zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
+urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
+Ostatnia pełna pula: Debug i Release po 141/141 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
@@ -70,7 +71,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P070**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P079**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -518,3 +519,5 @@ P078-03: Dodano RAII source voice i odtwarzanie oryginalnego WAV, z testami syst
 P078-04: Rozbito integrację audio na P078-05 (port, mute i wczytanie) oraz P078-06 (zdarzenie zatwierdzonej dostawy w HWND). P079 wymaga ostatniego dziecka; bez implementacji dzieci. [Raport](docs/workflow/history/P078-04.md)
 
 P078-05: XAudio2Output wczytuje przypięty WAV i posiada playback. AudioOutput udostępnia mute dla kolejnych sygnałów, bez submit i retry. Entry point przekazuje root checkoutu. Wspólny fake voice chroni bajty i lifetime. [Raport](docs/workflow/history/P078-05.md)
+
+P078-06: RunWindow odtwarza PacketDelivered raz po publikacji zatwierdzonej tury. Wyjątek portu pozostaje best effort, bez wpływu na pełny stan, checkpoint i retry achievementu. Test HWND porównuje cztery tryby audio. [Raport](docs/workflow/history/P078-06.md)

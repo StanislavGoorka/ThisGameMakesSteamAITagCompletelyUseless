@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P078-06: windows_audio_delivery_window sprawdza prawdziwe HWND, preview,
+odmowę, hold/repeat i focus, pojedynczą dostawę oraz retry achievementu
+w czterech trybach portu (played/muted/unavailable/wyjątek). Każdy tryb
+porównuje pełne RunState i planszę oraz dokładne bajty checkpointu,
+profilu i backupu. Wyjątek audio nie ustawia błędu sesji.
+
 P078-05: windows_xaudio2_output przez AudioOutput sprawdza unknown,
 mute/unmute, dwa submits i jeden Start, brak WAV oraz błędy silnika,
 mastering, submit, start i callback. Błędy nie ponawiają operacji;
