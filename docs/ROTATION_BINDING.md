@@ -51,3 +51,9 @@ P079-02: RotationBindingStore ma operację save, a LocalRotationBindingStore
 realizuje ją przez zwalidowane .tmp i rename. Read wymaga absolutnej ścieżki,
 zwykłego pliku i dokładnie 16 bajtów, odrzuca reparse oraz błędny kodek.
 Identyczny zapis nie otwiera staging. Nie tworzymy katalogu w adapterze.
+
+P079-03: NativeWindow::set_rotation_binding zmienia wyłącznie mapowanie
+i usuwa oczekujący klawisz logiczny. Physical held pozostaje do key-up;
+focus loss i destrukcja czyszczą go. Opcjonalny binding_key w handlerze
+otrzymuje tylko pierwszy key-down przed mapowaniem. Zwrócenie true
+konsumuje go bez komendy. Adapter nie zapisuje ustawień i nie ma UI.

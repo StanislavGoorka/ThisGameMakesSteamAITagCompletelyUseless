@@ -1,5 +1,6 @@
 #pragma once
 #include "application/keyboard_commands.hpp"
+#include "application/rotation_binding.hpp"
 #include "application/text_catalog.hpp"
 #include "platform/windows/text_utf16.hpp"
 #include "presentation/board_projection.hpp"
@@ -29,6 +30,12 @@ struct WindowCommandHandler
 {
     virtual ~WindowCommandHandler() = default;
     virtual void key_available() noexcept = 0;
+    // Optional first physical press, before command translation. Consuming it
+    // cannot enqueue a gameplay command; key-up/repeats never reach this hook.
+    virtual bool binding_key(std::uint32_t) noexcept
+    {
+        return false;
+    }
 };
 struct MessageLoopResult
 {
@@ -82,6 +89,18 @@ class NativeWindow
     {
         return focused_;
     }
+    void set_rotation_binding(RotationBinding binding) noexcept
+    {
+        rotation_binding_ = binding;
+        pending_key_.reset();
+        input_.set_focus(false);
+        input_.set_focus(focused_);
+        // Physical held keys survive a mapping change until key-up.
+    }
+    [[nodiscard]] RotationBinding rotation_binding() const noexcept
+    {
+        return rotation_binding_;
+    }
     // Borrowed callback, detached by its owner before destruction.
     void set_painter(WindowPainter *painter) noexcept
     {
@@ -127,8 +146,10 @@ class NativeWindow
 
   private:
     NativeWindow() = default;
-    static std::optional<InputKey> translate_key(WPARAM key) noexcept
+    std::optional<InputKey> translate_key(WPARAM key) const noexcept
     {
+        if (key == rotation_binding_.letter())
+            return InputKey::rotate;
         switch (key)
         {
         case VK_UP:
@@ -139,8 +160,6 @@ class NativeWindow
             return InputKey::south;
         case VK_LEFT:
             return InputKey::west;
-        case 'R':
-            return InputKey::rotate;
         case 'O':
             return InputKey::overdrive;
         case VK_SPACE:
@@ -206,6 +225,7 @@ class NativeWindow
             if (!owner->focused_)
             {
                 owner->pending_key_.reset();
+                owner->physical_held_.fill(false);
                 owner->pointed_.reset();
                 if (owner->command_handler_)
                     owner->command_handler_->key_available();
@@ -213,7 +233,23 @@ class NativeWindow
         }
         if (owner && (message == WM_KEYDOWN || message == WM_KEYUP))
         {
-            if (const auto key = translate_key(wparam))
+            if (wparam < owner->physical_held_.size())
+            {
+                auto &held = owner->physical_held_[wparam];
+                if (message == WM_KEYUP)
+                    held = false;
+                else
+                {
+                    if (!owner->focused_ || held || (lparam & (1LL << 30)) != 0)
+                        return 0;
+                    held = true;
+                    if (owner->command_handler_ &&
+                        owner->command_handler_->binding_key(
+                            static_cast<std::uint32_t>(wparam)))
+                        return 0;
+                }
+            }
+            if (const auto key = owner->translate_key(wparam))
             {
                 if (message == WM_KEYUP)
                     owner->input_.key_up(*key);
@@ -232,6 +268,7 @@ class NativeWindow
         {
             owner->focused_ = false;
             owner->input_.set_focus(false);
+            owner->physical_held_.fill(false);
             owner->pending_key_.reset();
             owner->pointed_.reset();
             if (owner->command_handler_)
@@ -268,6 +305,8 @@ class NativeWindow
     bool focused_ = false;
     bool loop_active_ = false;
     KeyboardInput input_;
+    RotationBinding rotation_binding_;
+    std::array<bool, 256> physical_held_{};
     std::optional<InputKey> pending_key_;
     WindowPainter *painter_ = nullptr;
     WindowCommandHandler *command_handler_ = nullptr;

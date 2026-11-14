@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P079-03
+Task: P079-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-02.
-Zależności: P079-02; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-03.
+Zależności: P079-03; muszą być completed.
 
-NativeWindow mapuje zatwierdzoną literę obrotu i udostępnia opcjonalny callback surowego pierwszego naciśnięcia do konfiguracji. Zachowaj filtr powtórek i focusu.
+Podłącz F2, wybór litery i port ustawienia do RunWindow, z oznaczonymi tekstami katalogu. Zmieniaj aktywne mapowanie dopiero po udanym zapisie; Escape i focus anulują.
 
-Kryteria: HWND: nowa litera działa, stara nie działa, O zachowuje overdrive; przechwycenie nie wydaje komendy, hold/repeat/focus i zmiana podczas hold nie powodują akcji.
+Kryteria: HWND: sukces, konflikt O, błąd/wyjątek store i retry, cancel/focus, brak tur podczas capture. Pełne stany, preview i pliki gry bez zmian.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie

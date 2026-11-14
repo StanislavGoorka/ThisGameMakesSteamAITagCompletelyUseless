@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P079-03: windows_rotation_binding_input sprawdza wszystkie 25 przypisań,
+brak starego R, zachowanie O, przechwycenie 100 powtórek, zmianę podczas
+hold, release/repress, pending przy utracie focusu i bit30 po odzyskaniu.
+Istniejący windows_window_keyboard nadal chroni domyślne klawisze i brak
+kolejki. Testy korzystają z rzeczywistych HWND, bez zapisu plików.
+
 P079-02: windows_rotation_binding_file używa rzeczywistych plików w Unicode
 katalogu. Sprawdza missing, save/read i dokładne bajty, no-op przy zajętym
 staging, blokadę odczytu oraz blokadę rename z pozostawionym staging i retry,
