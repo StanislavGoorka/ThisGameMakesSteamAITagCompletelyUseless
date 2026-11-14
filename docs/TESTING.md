@@ -359,3 +359,9 @@ P075-04: windows_xaudio2_device sprawdza kolejność engine/mastering/destroy/re
 błędy obu etapów, S_OK z pustym uchwytem i częściowe zasoby po odmowie.
 Trzy rzeczywiste utworzenia XAudio2 i mastering voice dają S_OK i available.
 Bez próbek audio, source voice i generowania nawet cichych buforów.
+
+P075-05: windows_xaudio2_recovery wywołuje zarejestrowany callback z osobnego
+wątku i sprawdza zachowanie pierwszego błędu, brak operacji API w callbacku,
+trzy odtworzenia, błędy engine/register/mastering oraz callback przy rejestracji
+i wyrejestrowaniu. Sprawdza unregister przed destroy/release, brak callbacka
+po zwolnieniu i brak niejawnego retry. Fizycznego odłączenia nie testowano.

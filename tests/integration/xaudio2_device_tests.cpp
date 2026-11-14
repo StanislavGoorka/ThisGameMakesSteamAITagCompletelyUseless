@@ -16,11 +16,13 @@ int main()
         {
             windows::XAudio2Device device{api};
             if (!device.available() || device.error() != S_OK ||
-                !api.matches({Fake::engine, Fake::mastering}))
+                !api.matches(
+                    {Fake::engine, Fake::register_engine, Fake::mastering}))
                 return 1;
         }
-        if (!api.matches(
-                {Fake::engine, Fake::mastering, Fake::destroy, Fake::release}))
+        if (!api.matches({Fake::engine, Fake::register_engine, Fake::mastering,
+                          Fake::unregister_engine, Fake::destroy,
+                          Fake::release}))
             return 2;
         for (int failure = 0; failure < 6; ++failure)
         {
@@ -55,12 +57,14 @@ int main()
             }
             else if (failure == 5)
             {
-                if (!broken.matches({Fake::engine, Fake::mastering,
+                if (!broken.matches({Fake::engine, Fake::register_engine,
+                                     Fake::mastering, Fake::unregister_engine,
                                      Fake::destroy, Fake::release}))
                     return 6;
             }
-            else if (!broken.matches(
-                         {Fake::engine, Fake::mastering, Fake::release}))
+            else if (!broken.matches({Fake::engine, Fake::register_engine,
+                                      Fake::mastering, Fake::unregister_engine,
+                                      Fake::release}))
                 return 7;
         }
     }

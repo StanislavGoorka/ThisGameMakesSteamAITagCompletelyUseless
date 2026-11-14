@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P075-05
+Task: P075-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075-04.
-Zależności: P075-04; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075-05.
+Zależności: P075-05; muszą być completed.
 
-Dodaj atomowy stan błędu krytycznego przez IXAudio2EngineCallback i jawne odtworzenie zasobów poza callbackiem.
+Podłącz lifecycle urządzenia jako port audio w developer_window; brak urządzenia lub zatwierdzonego sygnału nie zmienia gry. Bez odtwarzania i nowych tekstów.
 
-Kryteria: Błąd rejestracji, callback z innego wątku, powtórki odtworzenia i porządek unregister/voice/engine przetestowane; callback nie zwalnia zasobów.
+Kryteria: HWND z niedostępnym urządzeniem: tury, preview, zapis i focus jak dotąd; smoke procesu działa; port nigdy nie odtwarza bez zatwierdzonego pliku.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.

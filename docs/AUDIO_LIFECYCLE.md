@@ -40,3 +40,15 @@ Microsoft Learn sprawdzono 2026-11-14:
 [XAudio2Create](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-xaudio2create),
 [CreateMasteringVoice](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2-createmasteringvoice).
 Linkowanie xaudio2.lib z Windows SDK; bez pobierania SDK i treści.
+
+P075-05: callback wykonuje wyłącznie lock-free zapis pierwszego błędu
+do atomic HRESULT. available() natychmiast uwzględnia błąd; callback nie
+zwalnia zasobów i nie tworzy urządzenia. recreate() na wątku sesji wykonuje
+unregister, DestroyVoice, Release, czyści stary błąd i tworzy nowe zasoby.
+API fabryki musi zakończyć callbacki przed powrotem z release_engine.
+Rejestracja nieudana nie wymaga unregister. Bez automatycznych prób.
+
+Źródła sprawdzone 2026-11-14:
+[Callbacks](https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-callbacks),
+[OnCriticalError](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2enginecallback-oncriticalerror),
+[UnregisterForCallbacks](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2-unregisterforcallbacks).

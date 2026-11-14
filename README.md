@@ -495,3 +495,5 @@ P073-05: Połączono zdarzenia wykonanej tury z lokalnym profilem, kolejką retr
 P075-02: Rozbito RAII XAudio2 i callback na dwa osobne zadania; bez implementacji dzieci. [Raport](docs/workflow/history/P075-02.md)
 
 P075-04: Dodano RAII silnika i mastering voice XAudio2 oraz testy fabryki i systemowego API. [Raport](docs/workflow/history/P075-04.md)
+
+P075-05: Dodano atomową obsługę błędu krytycznego i jawne odtworzenie XAudio2; bez audio danych. [Raport](docs/workflow/history/P075-05.md)

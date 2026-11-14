@@ -14,7 +14,9 @@ class FakeXAudio2Api final : public windows::XAudio2Api
         engine,
         mastering,
         destroy,
-        release
+        release,
+        register_engine,
+        unregister_engine
     };
     HRESULT engine_result = S_OK;
     HRESULT mastering_result = S_OK;
@@ -23,6 +25,10 @@ class FakeXAudio2Api final : public windows::XAudio2Api
     bool partial_engine = false;
     bool partial_voice = false;
     bool valid = true;
+    HRESULT register_result = S_OK;
+    IXAudio2EngineCallback *callback = nullptr;
+    bool critical_on_register = false;
+    bool critical_on_unregister = false;
     std::array<Call, 64> calls{};
     std::size_t count = 0;
     HRESULT create_engine(IXAudio2 **out) noexcept override
@@ -52,6 +58,26 @@ class FakeXAudio2Api final : public windows::XAudio2Api
     {
         valid &= in == engine_pointer();
         record(release);
+    }
+    HRESULT register_callback(IXAudio2 *in,
+                              IXAudio2EngineCallback *cb) noexcept override
+    {
+        valid &= in == engine_pointer() && !callback;
+        record(register_engine);
+        if (SUCCEEDED(register_result))
+            callback = cb;
+        if (critical_on_register)
+            cb->OnCriticalError(E_ABORT);
+        return register_result;
+    }
+    void unregister_callback(IXAudio2 *in,
+                             IXAudio2EngineCallback *cb) noexcept override
+    {
+        valid &= in == engine_pointer() && callback == cb;
+        record(unregister_engine);
+        if (critical_on_unregister)
+            cb->OnCriticalError(E_ABORT);
+        callback = nullptr;
     }
     bool matches(std::initializer_list<Call> expected) const
     {
