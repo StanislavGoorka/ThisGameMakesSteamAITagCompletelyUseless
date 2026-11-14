@@ -11,9 +11,8 @@ namespace closed_circuit
 
 // One phase shares one damage limit. Existing contacts are removed before
 // any movement; new contacts free their node before the next ID acts.
-inline void resolve_pulse_phase(GameState &state)
+inline void resolve_pulse_phase(GameState &state, bool &damage_applied)
 {
-    bool damage_applied = false;
     std::vector<EntityId> order;
     order.reserve(state.pulses.size());
     for (const auto &pulse : state.pulses)
@@ -34,6 +33,13 @@ inline void resolve_pulse_phase(GameState &state)
             static_cast<void>(resolve_pulse_contact(state, id, damage_applied));
         }
     }
+}
+
+// Preserve the standalone pulse-only contract.
+inline void resolve_pulse_phase(GameState &state)
+{
+    bool damage_applied = false;
+    resolve_pulse_phase(state, damage_applied);
 }
 
 } // namespace closed_circuit

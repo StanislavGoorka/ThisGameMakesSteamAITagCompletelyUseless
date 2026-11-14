@@ -77,12 +77,13 @@ pól, zakres 1/48, cykle, rozgałęzienia, jednostronne porty i obrót. P082-04
 testuje aktywną/przerwaną fazę, zasięg, wiele emiterów, HP0 i wspólny limit,
 chroniąc pełny pozostały stan oraz dane wejściowe.
 
-P082-05 dopiero doda kolekcję do GameState, porównań i kanonicznego hasha
-z nową wersją. Checkpoint z obecnego generatora nadal odtwarza pustą kolekcję;
-capture ma odrzucać obcy nieodtwarzalny stan, zamiast cicho gubić emiter.
+P082-05 dodał kolekcję do GameState, pełnych porównań i kanonicznego hasha
+v5. Checkpoint z obecnego generatora odtwarza pustą kolekcję;
+capture odrzuca obcy nieodtwarzalny stan, zamiast cicho gubić emiter.
 Format zapisu nie przechowuje arbitralnej planszy ani mid-sector countdown.
 Wersję replay zmieniamy jawnie przy zmianie stanu/reguł i chronimy wektorami.
-P082-06 podłączy resolver, wspólny limit i regresje preview/replay/odmów.
-Do tego czasu helpery są samodzielną logiką, a gra nie zawiera emiterów.
+P082-06 podłączył resolver, wspólny limit i regresje preview/replay/odmów.
+Replay v10 wiąże nowe reguły; dotychczasowy helper impulsów zachowuje wrapper.
+Generator i prezentacja nadal nie zawierają emiterów.
 Rozmieszczenie i prezentacja wymagają przyszłego osobnego zakresu i dowodów;
 te kroki nie mogą wyświetlić niezatwierdzonego zastępczego symbolu.

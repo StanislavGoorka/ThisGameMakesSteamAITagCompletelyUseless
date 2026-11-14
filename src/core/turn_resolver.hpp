@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/command.hpp"
+#include "core/emitter_phase.hpp"
 #include "core/packet_delivery.hpp"
 #include "core/packet_introduction.hpp"
 #include "core/packet_movement.hpp"
@@ -55,7 +56,9 @@ struct TurnResult
         command);
     static_cast<void>(advance_packet(next));
     static_cast<void>(deliver_packet(next));
-    resolve_pulse_phase(next);
+    bool damage_applied = false;
+    resolve_pulse_phase(next, damage_applied);
+    resolve_emitter_phase(next, next.emitters, damage_applied);
     charge_turn(next);
     result.outcome = sector_outcome(next);
     return result;
