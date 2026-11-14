@@ -46,3 +46,8 @@ mutowania rzeczywistego LocalAppData użytkownika.
 P079-01 wdraża RotationBinding i kodek pamięciowy. Wektor domyślnego R:
 43 43 4b 42 01 52 00 00 e5 33 a5 cf 5e 39 d6 7f. Prywatne pole wartości
 uniemożliwia encode niepoprawnej litery. IO i interfejs czekają na dzieci.
+
+P079-02: RotationBindingStore ma operację save, a LocalRotationBindingStore
+realizuje ją przez zwalidowane .tmp i rename. Read wymaga absolutnej ścieżki,
+zwykłego pliku i dokładnie 16 bajtów, odrzuca reparse oraz błędny kodek.
+Identyczny zapis nie otwiera staging. Nie tworzymy katalogu w adapterze.

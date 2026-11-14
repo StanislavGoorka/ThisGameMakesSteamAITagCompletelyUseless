@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P079-02
+Task: P079-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-01.
-Zależności: P079-01; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-02.
+Zależności: P079-02; muszą być completed.
 
-Dodaj port RotationBindingStore oraz bounded read i zapis przez staging/rename osobnego pliku Windows, bez nadpisania uszkodzonego lub niedostępnego main.
+NativeWindow mapuje zatwierdzoną literę obrotu i udostępnia opcjonalny callback surowego pierwszego naciśnięcia do konfiguracji. Zachowaj filtr powtórek i focusu.
 
-Kryteria: Rzeczywiste pliki: brak, save/read, duplikat, korupcja, blokada, błąd staging, retry. Profil i checkpoint pozostają identyczne.
+Kryteria: HWND: nowa litera działa, stara nie działa, O zachowuje overdrive; przechwycenie nie wydaje komendy, hold/repeat/focus i zmiana podczas hold nie powodują akcji.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie

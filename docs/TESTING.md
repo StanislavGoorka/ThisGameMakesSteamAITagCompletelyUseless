@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P079-02: windows_rotation_binding_file używa rzeczywistych plików w Unicode
+katalogu. Sprawdza missing, save/read i dokładne bajty, no-op przy zajętym
+staging, blokadę odczytu oraz blokadę rename z pozostawionym staging i retry,
+corrupt/truncated/oversized main, względną ścieżkę i brak katalogu. Profil
+oraz checkpoint zachowują dokładne oryginalne bajty.
+
 P079-01: application_rotation_binding obejmuje 256 bajtów litery, konflikt
 O, niezależny literalny wektor R, round-trip każdej poprawnej wartości,
 16 ucięć, nadmiar i 128 pojedynczych zmian bitu. Zmiany magic/version/key/
