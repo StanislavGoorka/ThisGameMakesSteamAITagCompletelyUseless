@@ -14,9 +14,9 @@
       "id": "comigo-bleeps-4947244-2026-11-14",
       "source_url": "https://comigo.itch.io/bleeps-n-bloops",
       "source_version": "itch-upload-4947244-2026-11-14",
-      "status": "pending",
-      "approved_at": null,
-      "evidence": "2026-11-14: przygotowano konkretny wniosek docs/assets/REQUEST_COMIGO_BLEEPS_4947244.md. Użytkownik nie udzielił jeszcze zgody na ten pakiet. Polecenie 10 kroków nie jest zgodą na pobranie.",
+      "status": "approved",
+      "approved_at": "2026-11-14",
+      "evidence": "2026-11-14: w odpowiedzi na konkretny wniosek REQUEST_COMIGO_BLEEPS_4947244.md użytkownik napisał: „masz zgodę na pobranie assetów i kontynuację pracy nad pozostałymi krokami”. Zgoda dotyczy wskazanego uploadu 4947244 i zakresu tego wniosku.",
       "scope": "Jedno darmowe pobranie uploadu itch.io 4947244: Comigo's Bleeps n Bloops.zip (2.3 MB) do .local/asset-intake/comigo-bleeps-4947244/, kontrola licencji/formatu/hashów i odsłuch, import najwyżej jednego niezmienionego WAV bez głosu oraz koniecznych oryginalnych not do assets/approved/comigo-bleeps-4947244/, lokalny commit w publicznym repo i dołączenie do gry. Bez innych wersji/uploadów, płatności, darowizny, konta, muzyki, głosów, grafik, preview, skryptów i pushu."
     }
   ]

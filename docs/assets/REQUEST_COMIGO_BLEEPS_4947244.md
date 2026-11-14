@@ -1,6 +1,8 @@
 # Wniosek o jedną partię audio
 
-Stan 2026-11-14: pending; brak odpowiedzi nie oznacza zgody.
+Stan 2026-11-14: approved. Użytkownik odpowiedział: „masz zgodę na pobranie
+assetów i kontynuację pracy nad pozostałymi krokami”. Rejestr approvals
+zawiera tę rzeczywistą odpowiedź; zakres poniżej pozostaje wiążący.
 
 Proponowany pakiet: **CoMiGo's Bleeps and Bloops**, autor Cosmo Myzrail
 Gorynych, [źródło](https://comigo.itch.io/bleeps-n-bloops).

@@ -204,15 +204,10 @@
         "P075-02",
         "P075-04",
         "P075-05",
-        "P075-03"
+        "P075-03",
+        "P076"
     ],
-    "current_task": "P076",
-    "blocked": [
-        {
-            "task_id": "P076",
-            "reason": "Brak wyraźnej zgody na upload itch.io 4947244. Odblokowanie: rzeczywista odpowiedź użytkownika na docs/assets/REQUEST_COMIGO_BLEEPS_4947244.md, zapisana w content/approvals.json; bez niej nie pobierać. Innych gotowych niezależnych zadań brak.",
-            "unblock_when": "Wyraźna odpowiedź na REQUEST_COMIGO_BLEEPS_4947244.md zapisana w approvals; po zgodzie zamknąć P076 bez ponownego pytania i przejść do P077."
-        }
-    ],
+    "current_task": "P077",
+    "blocked": [],
     "last_report": "docs/workflow/history/P076.md"
 }

@@ -18,5 +18,5 @@ Przy braku pasującego artworku agent upraszcza wygląd do dostępnych, zatwierd
 
 P076 (2026-11-14): [CoMiGo Bleeps, upload 4947244](assets/COMIGO_BLEEPS_4947244.md)
 ma dossier CC0 i deklarację non-AI; [konkretny wniosek](assets/REQUEST_COMIGO_BLEEPS_4947244.md)
-oczekuje na odpowiedź. Brak pobrania i importu. Kenney Interface Sounds
+ma zgodę użytkownika z 2026-11-14. Brak pobrania i importu w P076. Kenney Interface Sounds
 nie ma wystarczającego odrębnego dowodu non-AI na stronie tej wersji.

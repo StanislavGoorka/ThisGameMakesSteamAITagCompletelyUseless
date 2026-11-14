@@ -1,6 +1,6 @@
 # Dossier audio: CoMiGo's Bleeps and Bloops
 
-Sprawdzono 2026-11-14. Stan: dossier gotowe, pobranie oczekuje na zgodę.
+Sprawdzono 2026-11-14. Stan: zgoda udzielona na zakres wniosku, bez pobrania w P076.
 
 - Autor: Cosmo Myzrail Gorynych (CoMiGo).
 - Źródło pierwotne: [strona autora](https://comigo.itch.io/bleeps-n-bloops).
@@ -36,5 +36,5 @@ non-AI tej wersji. Deklaracji płatnego All-in-1 nie przeniesiono na ten plik.
 Dlatego wniosek dotyczy wyłącznie powyższego uploadu CoMiGo.
 
 Nie pobrano archiwum, obrazów, preview ani nagrań. Nie uruchomiono skryptów
-i nie kontaktowano się z autorem. Brak zgody blokuje P076 i zależne zadania.
+i nie kontaktowano się z autorem. Zgoda z 2026-11-14 odblokowuje P076 i import P077.
 Pełny zakres: [wniosek](REQUEST_COMIGO_BLEEPS_4947244.md).

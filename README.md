@@ -502,3 +502,5 @@ P075-05: Dodano atomową obsługę błędu krytycznego i jawne odtworzenie XAudi
 P075-03: Okno posiada port XAudio2; brak urządzenia pozostawia tury, preview i zapis sprawne. Debug/Release 136/136. [Raport](docs/workflow/history/P075-03.md)
 
 P076: Dossier audio i konkretny wniosek są gotowe; P076 blocked do rzeczywistej zgody. Niczego nie pobrano. [Raport](docs/workflow/history/P076.md)
+
+P076: Zapisano zgodę na upload CoMiGo 4947244 i zamknięto P076; import jest odblokowany. [Raport](docs/workflow/history/P076.md)
