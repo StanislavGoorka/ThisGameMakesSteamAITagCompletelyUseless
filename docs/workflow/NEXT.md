@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P077
+Task: P078
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P076.
-Zależności: P076; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P077.
+Zależności: P077; muszą być completed.
 
-Po zgodzie przyjmij minimalny zestaw plików z jednego pakietu.
+Podepnij jeden zatwierdzony sygnał do dostawy.
 
-Kryteria: Hash każdego WAV, dowody i zgodność z rejestrem zgód.
+Kryteria: Jedno zdarzenie daje jedno odtworzenie; mute i brak pliku obsłużone.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.

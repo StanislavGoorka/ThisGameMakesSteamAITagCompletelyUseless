@@ -45,8 +45,8 @@ zapis pokazuje oznaczony wiersz na ekranie startu; błąd zapisu nie blokuje gry
 ([kontrakt](docs/RESUME_PRESENTATION.md)).
 Backend audio ma port sygnałów, RAII XAudio2 i mastering voice, callback
 błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posiada
-urządzenie przez port; bez zatwierdzonych plików nie odtwarza sygnałów.
-Brak urządzenia nie blokuje gry. Bez syntezy i danych audio.
+urządzenie przez port; zatwierdzony WAV z P077 czeka na podłączenie odtwarzania.
+Brak urządzenia nie blokuje gry. Bez syntezy.
 Ostatnia pełna pula: Debug i Release po 136/136 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
@@ -504,3 +504,5 @@ P075-03: Okno posiada port XAudio2; brak urządzenia pozostawia tury, preview i 
 P076: Dossier audio i konkretny wniosek są gotowe; P076 blocked do rzeczywistej zgody. Niczego nie pobrano. [Raport](docs/workflow/history/P076.md)
 
 P076: Zapisano zgodę na upload CoMiGo 4947244 i zamknięto P076; import jest odblokowany. [Raport](docs/workflow/history/P076.md)
+
+P077: Przyjęto niezmieniony PowerUp_01.wav z uploadu 4947244; hash i źródła w dossier importu. [Raport](docs/workflow/history/P077.md)

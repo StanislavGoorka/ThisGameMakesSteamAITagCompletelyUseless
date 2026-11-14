@@ -42,6 +42,20 @@
       "non_ai_evidence": "Plik z archiwum 1.2 SHA256 129A0E74E1DC9091A769D5118BE5C88780484C7A3771EE33AC9EF0DF02583A9A; strona konkretnego pakietu deklaruje No generative AI was used, devlog 1.2 opisuje dodanie metadanych. Przegląd 2026-11-13: docs/assets/KENNEY_1BIT_1_2_IMPORT.md.",
       "approval_id": "kenney-1bit-1.2-2026-11-13",
       "status": "approved"
+    },
+    {
+      "id": "comigo4947244-powerup01",
+      "path": "assets/approved/comigo-bleeps-4947244/PowerUp_01.wav",
+      "sha256": "85D03C812DD83C7D264D2EF6450508190F99BBBC9757170DC1CB22788D5F00F7",
+      "bytes": 71836,
+      "author": "Cosmo Myzrail Gorynych (CoMiGo)",
+      "source_url": "https://comigo.itch.io/bleeps-n-bloops",
+      "source_version": "itch-upload-4947244-2026-11-14",
+      "license": "CC0-1.0",
+      "license_evidence": "Strona autora przypisuje całemu pakietowi CC0-1.0; archiwum zawiera wyłącznie 67 WAV, bez dodatkowych not lub wyjątków. CC0 legalcode.en sekcje 2-3 dopuszczają komercyjną grę i redystrybucję w publicznym Git. https://creativecommons.org/publicdomain/zero/1.0/legalcode.en; docs/assets/COMIGO_BLEEPS_4947244_IMPORT.md.",
+      "non_ai_evidence": "Deklaracja autora No generative AI was used na stronie z jedynym uploadem 4947244, sprawdzona 2026-11-14. ZIP SHA256 988074A2DB1F71F5387DABE5926599D7E09EE43FB165949AFE8E2FE37193F263. Deklaracja źródłowa, nie niezależny audyt; dossier docs/assets/COMIGO_BLEEPS_4947244.md.",
+      "approval_id": "comigo-bleeps-4947244-2026-11-14",
+      "status": "approved"
     }
   ]
 }

@@ -20,3 +20,7 @@ P076 (2026-11-14): [CoMiGo Bleeps, upload 4947244](assets/COMIGO_BLEEPS_4947244.
 ma dossier CC0 i deklarację non-AI; [konkretny wniosek](assets/REQUEST_COMIGO_BLEEPS_4947244.md)
 ma zgodę użytkownika z 2026-11-14. Brak pobrania i importu w P076. Kenney Interface Sounds
 nie ma wystarczającego odrębnego dowodu non-AI na stronie tej wersji.
+
+P077: przyjęto jeden niezmieniony WAV PowerUp_01 z uploadu CoMiGo 4947244;
+[hash i inspekcja](assets/COMIGO_BLEEPS_4947244_IMPORT.md). Bez not w ZIP;
+licencja CC0 ze strony autora, bez dodatkowych assetów i odtwarzania w grze.

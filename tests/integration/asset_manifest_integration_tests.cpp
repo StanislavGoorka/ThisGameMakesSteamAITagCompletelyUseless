@@ -13,11 +13,12 @@ int wmain(int argc, wchar_t **argv)
     const auto registry_bytes = test::read_bytes(root / L"content/assets.json");
     const std::string json(registry_bytes.begin(), registry_bytes.end());
     const auto manifest = windows::parse_asset_manifest(json);
-    if (!manifest || manifest->size() != 3 || find_asset(*manifest, "unknown"))
+    if (!manifest || manifest->size() != 4 || find_asset(*manifest, "unknown"))
         return 1;
     test::CheckpointDirectory isolated;
     const std::array ids{"kenney1bit12-monochrome", "kenney1bit12-license",
-                         "kenney1bit12-tilesheet-info"};
+                         "kenney1bit12-tilesheet-info",
+                         "comigo4947244-powerup01"};
     for (const auto id : ids)
     {
         const auto *ref = find_asset(*manifest, id);

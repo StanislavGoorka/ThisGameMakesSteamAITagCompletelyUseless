@@ -371,3 +371,8 @@ oraz prawdziwe HWND i pliki checkpointu w czterech trybach: urządzenie fake
 dostępne, błąd silnika, brak urządzenia wyjściowego, krytyczny błąd.
 Chroni pełny stan tury/preview, focus, resize, zapis startu i jego niezmienne
 bajty po turze, brak prób odtwarzania i zwolnienie callbacka z sesją.
+
+P077: windows_asset_manifest_integration obejmuje również czwarty wpis,
+comigo4947244-powerup01; pełne oryginalne bajty, CRC po uszkodzeniu i brak
+pliku sprawdzane na kopiach. Oryginalnego WAV nie modyfikuje się w testach.
+Test-AssetPackage.ps1 zalicza 7 przypadków (w tym korupcja i odmowa zgody).
