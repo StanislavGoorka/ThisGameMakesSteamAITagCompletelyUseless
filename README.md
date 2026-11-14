@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Samodzielny finał ma trzy odbiorniki i próg trzech dostaw. Wspólny builder obsługuje normal/final, a start, przejście i checkpoint współdzielą normalną budowę. Zasoby i jednorazowy koszt długu zachowane. Hash v7/replay v14. Następny jest certyfikat finału. [Kontrakt finału](docs/FINAL_SECTOR.md) [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 6/10 bieżącej serii: P084-05.
+Samodzielny finał ma trzy odbiorniki i próg trzech dostaw. Certyfikaty 257 seedów kończą go w maksymalnie 31 zaakceptowanych akcjach przy limicie 48. Wspólny builder jest gotowy; produkcyjny run i checkpoint nadal używają normalnych sektorów. Hash v7/replay v14. [Kontrakt finału](docs/FINAL_SECTOR.md) [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 7/10 bieżącej serii: P084-06.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -88,7 +88,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P084-06**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P084-07**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).

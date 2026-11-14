@@ -5,12 +5,13 @@
 
 namespace closed_circuit::developer
 {
-// Only the exact baseline for this seed is supported. This is a developer
-// witness for P028's two perimeter paths, never a general solver or filter.
-[[nodiscard]] inline std::optional<std::vector<Command>>
-build_baseline_witness(RunSeed seed, const GameState &initial)
+namespace witness_detail
 {
-    const auto expected = sector_fixture(seed);
+// Exact initial state only; shared by the normal and final perimeter wrappers.
+[[nodiscard]] inline std::optional<std::vector<Command>>
+build_exact_perimeter_witness(const GameState &initial,
+                              const GameState &expected)
+{
     if (initial.delivery_requirement != expected.delivery_requirement ||
         !std::ranges::equal(initial.ports, expected.ports, {}, &PortMask::bits,
                             &PortMask::bits) ||
@@ -77,5 +78,14 @@ build_baseline_witness(RunSeed seed, const GameState &initial)
     if (sector_outcome(state) != SectorOutcome::completed)
         return std::nullopt;
     return commands;
+}
+} // namespace witness_detail
+
+// Developer witness for P028's two perimeter paths, never a general solver.
+[[nodiscard]] inline std::optional<std::vector<Command>>
+build_baseline_witness(RunSeed seed, const GameState &initial)
+{
+    return witness_detail::build_exact_perimeter_witness(initial,
+                                                         sector_fixture(seed));
 }
 } // namespace closed_circuit::developer

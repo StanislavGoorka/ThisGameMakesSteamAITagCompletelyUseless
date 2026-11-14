@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P084-06
+Task: P084-07
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-05. P084-06: tylko developer witness samodzielnego finału dla korpusu 0..255/MAX. Korzystaj z build_sector_state(final), wspólnego resolvera i validate_solution. Wymagaj trzech dostaw/wyjścia <=48, powtarzalności, pełnej niezmienności i odmowy fałszywych/uciętych certyfikatów. Bez aktywowania finału w runie. Czytaj FINAL_SECTOR, baseline_witness i solution_certificate. Zależność P084-05 ukończona.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-06. P084-07: atomowo aktywuj finał tylko dla ostatniego sektora względem jednej stałej liczby sektorów, wraz z checkpoint rules2 i niezależnymi literalnymi bajtami. Wybór start/przejście/restore wspólny. Korpus granic, pełny run, preview, eventy/achievementy, HWND i backup starego main. Bez nowych treści i bez rozszerzania do sześciu sektorów (to P084-01). Czytaj FINAL_SECTOR, CHECKPOINT_FORMAT i gotowe witnessy. Zależność P084-06 ukończona.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 
