@@ -5,7 +5,8 @@ Plan, nie opis zaimplementowanych modułów. Budujemy małą grę testowalną be
 P084-08: GameState posiada ograniczony DeliveryRequirement (2 lub 3, domyślnie 2).
 Hash v7 dopisuje jego jeden bajt po kondensatorach; replay v13 wiąże tę migrację.
 Capture checkpointu i dokładny baseline witness odrzucają obcy próg. Restore
-reguł1 nadal buduje zwykłe sektory. Użycie progu w wyniku czeka na P084-09.
+reguł1 nadal buduje zwykłe sektory. P084-09 używa progu w sector_outcome,
+zachowując pierwszeństwo śmierci i sukcesu w turze48; replay v14 wiąże regułę.
 Samodzielna topologia finału i docelowa zgodność: [FINAL_SECTOR](FINAL_SECTOR.md).
 
 Aktualizacja P082-06/P083-06: resolver po pakiecie/dostawie rozwiązuje impulsy,

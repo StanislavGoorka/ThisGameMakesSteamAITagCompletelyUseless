@@ -1,4 +1,6 @@
+#include "../support/state_checks.hpp"
 #include "core/sector_outcome.hpp"
+#include "core/turn_preview.hpp"
 
 #include <algorithm>
 #include <array>
@@ -188,11 +190,84 @@ bool only_powered_receivers_count_and_pending_phases_stay_pending()
     return true;
 }
 
+bool explicit_requirements()
+{
+    using namespace closed_circuit;
+    for (int requirement : {2, 3})
+        for (auto turn : {0U, 47U, 48U, 49U, UINT32_MAX})
+            for (int deliveries = 0; deliveries <= 3; ++deliveries)
+                for (int hp : {0, 1, 3})
+                    for (bool on_exit : {false, true})
+                    {
+                        GameState state{.player_position = node(0)};
+                        state.delivery_requirement =
+                            *DeliveryRequirement::from_value(requirement);
+                        state.sector_exit = node(on_exit ? 0 : 1);
+                        state.player_integrity = static_cast<std::uint8_t>(hp);
+                        state.turns_taken = TurnIndex{turn};
+                        state.powered_nodes[7] = true; // Never a receiver.
+                        int index = 0;
+                        for (int n : {0, 24, 48})
+                        {
+                            state.receiver_nodes[n] = true;
+                            state.powered_nodes[n] = index++ < deliveries;
+                        }
+                        const auto expected =
+                            hp == 0 ? SectorOutcome::death
+                            : on_exit && deliveries >= requirement && turn <= 48
+                                ? SectorOutcome::completed
+                            : turn >= 48 ? SectorOutcome::overload
+                                         : SectorOutcome::ongoing;
+                        if (!outcome_is(state, expected))
+                            return false;
+                    }
+    // Actual third delivery in turn 48, with and without a lethal contact.
+    for (bool lethal : {false, true})
+    {
+        GameState state{.player_position = node(1)};
+        state.delivery_requirement = *DeliveryRequirement::from_value(3);
+        state.turns_taken = TurnIndex{47};
+        state.sector_exit = node(1);
+        state.packet = Packet{node(0), node(0)};
+        for (int n : {0, 2, 3})
+            state.receiver_nodes[n] = true;
+        state.powered_nodes[2] = state.powered_nodes[3] = true;
+        if (lethal)
+        {
+            state.player_integrity = 1;
+            state.pulses.push_back({*EntityId::from_value(0), node(1)});
+        }
+        const auto before = state;
+        const auto refused = resolve_turn(state, MoveCommand{node(48)});
+        if (refused.accepted || !test::same_state(refused.state, before))
+            return false;
+        const auto preview = preview_turn(state, WaitCommand{});
+        auto actual = resolve_turn(state, WaitCommand{});
+        if (!actual.accepted || !preview.accepted ||
+            actual.outcome !=
+                (lethal ? SectorOutcome::death : SectorOutcome::completed) ||
+            actual.state.turns_taken != TurnIndex{48} ||
+            !actual.state.powered_nodes[0] || actual.state.packet ||
+            !test::same_state(preview.state, actual.state) ||
+            !test::same_state(state, before))
+            return false;
+        const auto stopped = resolve_turn(actual.state, WaitCommand{});
+        if (stopped.accepted || !test::same_state(stopped.state, actual.state))
+            return false;
+        actual.state.delivery_requirement = DeliveryRequirement{};
+        if (preview.state.delivery_requirement.value() != 3 ||
+            !test::same_state(state, before))
+            return false;
+    }
+    return true;
+}
+
 } // namespace
 
 int main()
 {
-    return outcomes_obey_delivery_exit_life_and_turn_boundaries() &&
+    return explicit_requirements() &&
+                   outcomes_obey_delivery_exit_life_and_turn_boundaries() &&
                    only_powered_receivers_count_and_pending_phases_stay_pending()
                ? 0
                : 1;

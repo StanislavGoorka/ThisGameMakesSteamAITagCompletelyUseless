@@ -38,7 +38,7 @@ sector_outcome(const GameState &state) noexcept
                 ++powered_receivers;
             }
         }
-        if (powered_receivers >= 2)
+        if (powered_receivers >= state.delivery_requirement.value())
         {
             return SectorOutcome::completed;
         }
