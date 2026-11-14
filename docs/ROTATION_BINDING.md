@@ -1,6 +1,6 @@
 # Jedno przypisanie obrotu
 
-P079 to podział na sześć dzieci, nie implementacja. Zmieniamy tylko rotate;
+P079 to podział na sześć dzieci. Zmieniamy tylko rotate;
 pozostałe klawisze zachowują KEYBOARD_INPUT. Brak zmian zasad core.
 
 RotationBinding jest poprawną wartością jednej wielkiej litery ASCII A-Z,
@@ -42,3 +42,7 @@ Bootstrap używa istniejącego prywatnego katalogu. Nie ma zapisu przy
 wczytywaniu, fallbacku do staging ani automatycznej naprawy korupcji.
 Testy restartu uruchamiają własne procesy na własnym katalogu, bez
 mutowania rzeczywistego LocalAppData użytkownika.
+
+P079-01 wdraża RotationBinding i kodek pamięciowy. Wektor domyślnego R:
+43 43 4b 42 01 52 00 00 e5 33 a5 cf 5e 39 d6 7f. Prywatne pole wartości
+uniemożliwia encode niepoprawnej litery. IO i interfejs czekają na dzieci.

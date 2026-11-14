@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P079-01
+Task: P079-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079.
-Zależności: P079; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-01.
+Zależności: P079-01; muszą być completed.
 
-Dodaj niezależną wartość RotationBinding dla jednej litery A-Z z odmową O oraz ścisły pamięciowy kodek ustawienia według ROTATION_BINDING.
+Dodaj port RotationBindingStore oraz bounded read i zapis przez staging/rename osobnego pliku Windows, bez nadpisania uszkodzonego lub niedostępnego main.
 
-Kryteria: Wszystkie wartości bajtu, konflikt O, kanoniczny wektor, ucięcia, nadmiar i korupcja; brak IO i zmian gry.
+Kryteria: Rzeczywiste pliki: brak, save/read, duplikat, korupcja, blokada, błąd staging, retry. Profil i checkpoint pozostają identyczne.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie

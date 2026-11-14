@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P079-01: application_rotation_binding obejmuje 256 bajtów litery, konflikt
+O, niezależny literalny wektor R, round-trip każdej poprawnej wartości,
+16 ucięć, nadmiar i 128 pojedynczych zmian bitu. Zmiany magic/version/key/
+reserved z ponownie policzoną checksumą także są odrzucane. Bez IO.
+
 P078-06: windows_audio_delivery_window sprawdza prawdziwe HWND, preview,
 odmowę, hold/repeat i focus, pojedynczą dostawę oraz retry achievementu
 w czterech trybach portu (played/muted/unavailable/wyjątek). Każdy tryb

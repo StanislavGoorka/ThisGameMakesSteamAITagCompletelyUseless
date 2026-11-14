@@ -71,7 +71,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P079-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P079-02**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -523,3 +523,5 @@ P078-05: XAudio2Output wczytuje przypięty WAV i posiada playback. AudioOutput u
 P078-06: RunWindow odtwarza PacketDelivered raz po publikacji zatwierdzonej tury. Wyjątek portu pozostaje best effort, bez wpływu na pełny stan, checkpoint i retry achievementu. Test HWND porównuje cztery tryby audio. [Raport](docs/workflow/history/P078-06.md)
 
 P079: Rozbito zmianę klawisza obrotu na sześć kontraktów: wartość/kodek, osobny plik, wejście Win32, konfiguracja okna, bootstrap i dowód restartu. ROTATION_BINDING ustala F2 i litery A-Z poza O. P080 wymaga P079-06; bez implementacji dzieci. [Raport](docs/workflow/history/P079.md)
+
+P079-01: Dodano poprawną wartość RotationBinding i ścisły kodek 16 bajtów z checksumą, bez IO. Konflikt O i inne niedozwolone bajty są odrzucane. Test ma niezależny literalny wektor i semantyczne korupcje z poprawioną checksumą. [Raport](docs/workflow/history/P079-01.md)
