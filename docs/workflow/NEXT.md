@@ -1,9 +1,9 @@
 # Następny mały krok
 
-Task: P082-01
+Task: P082-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P082.
-Ustal wy??cznie kontrakt logiczny emitera w docs/PERIODIC_EMITTER.md. Uwzgl?dnij harmonogram bez overflow, topologi? po rotacji, zasi?g grafowy, wsp?lny limit HP i niezmienno?? przy odmowie. Nie implementuj jeszcze warto?ci ani fazy.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P082-01.
+Zaimplementuj tylko walidowan? warto?? PeriodicEmitter i predykat fires na podstawie turns_taken. Testuj pe?ne zakresy wej?ciowe, jawne fazy, granice 2/48 i UINT32_MAX. Bez GameState, footprint i obra?e?.
 
 Computer Use nie jest wymagane do developmentu według decyzji użytkownika z 2026-11-14. Obserwacja pulpitu i percepcyjna czytelność pozostają niewykonane do P104. Nie generuj assetów ani finalnych napisów, nie pobieraj pakietów.
 
