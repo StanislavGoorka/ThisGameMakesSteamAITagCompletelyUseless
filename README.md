@@ -12,6 +12,8 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
+P081-01: Dodano dow?d pe?nego runu HWND z trwa?ymi us?ugami. [Raport](docs/workflow/history/P081-01.md). Następne: P081-02.
+
 P081: Rozbito dowód integracji MVP na trzy małe zadania. [Raport](docs/workflow/history/P081.md). Następne: P081-01.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc

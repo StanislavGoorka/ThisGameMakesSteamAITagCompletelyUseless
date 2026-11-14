@@ -463,3 +463,5 @@ Rzeczywisty XAudio2 przyjął bufor i opróżnił kolejkę bez Stop/Flush/Destro
 dodatkowy submit sprawdza bezpieczną destrukcję w trakcie odtwarzania.
 SamplesPlayed resetuje się po END_OF_STREAM, więc kryterium to obserwacja
 pełnej kolejki przed Start oraz pustej po zakończeniu; peak jest diagnostyką.
+
+P081-01: windows_mvp_window wykonuje trzy sektory od ?wie?ego startu przez HWND z lokalnym checkpointem i profilem. Ka?da komenda por?wnuje pe?ny stan i plansz? z core; preview/odmowa chroni? pliki, trzy granice i won chroni? zapis, wynik profilu to 31. To automatyczny dow?d integracji, bez obserwacji i playtestu.
