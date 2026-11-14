@@ -12,21 +12,9 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
-P082-03: Dodano czysty zasi?g grafowy emitera. [Raport](docs/workflow/history/P082-03.md). Następne: P082-04.
+Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-P082-02: Dodano walidowan? warto?? i harmonogram emitera. [Raport](docs/workflow/history/P082-02.md). Następne: P082-03.
-
-P082-01: Ustalono kontrakt logiczny emitera okresowego. [Raport](docs/workflow/history/P082-01.md). Następne: P082-02.
-
-P082: Rozbito emiter na sze?? oddzielnych kontrakt?w. [Raport](docs/workflow/history/P082.md). Następne: P082-01.
-
-P081-03: Przyj?to automatyczn? bramk? techniczn? MVP. [Raport](docs/workflow/history/P081-03.md). Następne: P082.
-
-P081-02: Potwierdzono wznowienie runu HWND w nowym procesie. [Raport](docs/workflow/history/P081-02.md). Następne: P081-03.
-
-P081-01: Dodano dow?d pe?nego runu HWND z trwa?ymi us?ugami. [Raport](docs/workflow/history/P081-01.md). Następne: P081-02.
-
-P081: Rozbito dowód integracji MVP na trzy małe zadania. [Raport](docs/workflow/history/P081.md). Następne: P081-01.
+Emiter okresowy ma samodzielny harmonogram, zasięg grafowy i helper obrażeń ze wspólnym limitem. Integracja ze stanem i resolverem pozostaje w P082-05/06. [Aktualne przekazanie](docs/workflow/NEXT.md). Seria dziewięciu kroków zakończona na P082-04.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -69,7 +57,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 151/151 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 152/152 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika
@@ -77,7 +65,7 @@ z 2026-11-14: Computer Use nie jest wymagane do dalszego developmentu.
 Testy obejmują DPI renderera, resize/HUD/stany HWND oraz parami różne
 kształty ośmiu symboli bez RGB. Obserwowana macierz pulpitu i percepcyjna
 czytelność pozostają niewykonane, do kontroli przed wydaniem w P104.
-P081 wymaga teraz automatycznego dowodu integracji runu i usług.
+P081-01/02/03 potwierdzają automatyczną integrację runu i usług. Techniczna bramka MVP jest ukończona.
 [Dowody i ograniczenia P080](docs/workflow/history/P080.md).
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)

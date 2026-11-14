@@ -464,10 +464,12 @@ dodatkowy submit sprawdza bezpieczną destrukcję w trakcie odtwarzania.
 SamplesPlayed resetuje się po END_OF_STREAM, więc kryterium to obserwacja
 pełnej kolejki przed Start oraz pustej po zakończeniu; peak jest diagnostyką.
 
-P081-01: windows_mvp_window wykonuje trzy sektory od ?wie?ego startu przez HWND z lokalnym checkpointem i profilem. Ka?da komenda por?wnuje pe?ny stan i plansz? z core; preview/odmowa chroni? pliki, trzy granice i won chroni? zapis, wynik profilu to 31. To automatyczny dow?d integracji, bez obserwacji i playtestu.
+P081-01: windows_mvp_window wykonuje trzy sektory od świeżego startu przez HWND z checkpointem i profilem. Pełny stan i plansza po każdej komendzie, preview/odmowa bez zapisu, trzy granice i won z kontrolą plików, profil 31. Bez obserwacji i playtestu.
 
-P081-02: windows_mvp_restart por?wnuje pliki granicy sektora 2 z niezale?nym przebiegiem HWND, a potem trzy nowe procesy zapisuj?, wznawiaj? i odczytuj? prywatny run. Ka?da kontynuowana tura por?wnuje stan i plansz? z core; odczyt nie zapisuje, won usuwa checkpoint, profil 27/backup 11 wyklucza achievement nieznanej historii.
+P081-02: windows_mvp_restart porównuje pliki granicy sektora 2 z niezależnym przebiegiem HWND. Trzy nowe procesy zapisują, wznawiają i odczytują prywatny run. Pełna zgodność kontynuacji z core, odczyt bez zapisu, clear po won i profil 27/backup 11 bez nagrody za nieznaną historię.
 
-P082-02: core_periodic_emitter sprawdza walidacj? pe?nych liczb przed zaw??eniem, wszystkie harmonogramy period 2?48, literaln? tabel? faz i niezale?ny wynik uint64 przy UINT32_MAX. Warto?? jest samodzielna, bez zmian resolvera i GameState.
+P082-02: core_periodic_emitter sprawdza walidację pełnych liczb przed zawężeniem, wszystkie harmonogramy period 2–48, literalną tabelę faz i niezależny wynik uint64 przy UINT32_MAX. Bez zmian GameState i resolvera.
 
-P082-03: core_emitter_footprint sprawdza dok?adne grafowe zbiory p?l, cykle, rozga??zienia, jednostronne porty, rotacj? i brak zawijania 6/7. Pe?na siatka: 49 ?r?de? ? 48 promieni ? 49 niezale?nych dystans?w; ?r?d?o zawsze nale?y do zasi?gu. Bez obra?e? i pod??czenia resolvera.
+P082-03: core_emitter_footprint sprawdza dokładne zbiory pól, cykle, rozgałęzienia, jednostronne porty, rotację i brak zawijania 6/7. Pełna siatka: 49 źródeł × 48 zasięgów × 49 niezależnych dystansów. Bez obrażeń i resolvera.
+
+P082-04: core_emitter_phase obejmuje 3136 przypadków pozycji/fazy/HP/limitu, pustą listę, obrót, krótki zasięg i sześć kolejności trzech emiterów. Chroni pełny pozostały stan i konfiguracje. Kontakt impulsu przed/po helperze współdzieli limit. Integracja resolvera pozostaje w P082-06.
