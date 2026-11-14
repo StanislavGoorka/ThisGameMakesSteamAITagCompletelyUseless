@@ -16,7 +16,8 @@ struct Vector
     bool top;
     std::array<std::uint8_t, 13> masks;
 };
-// Independent BigInt root draws and mask calculation: P035-05-vectors.js.
+// Independent BigInt vectors: P035-05 history and
+// tools/corpus/topology_vectors.cjs.
 const Vector vectors[]{
     {0, 2, true, {2, 10, 10, 10, 10, 5, 6, 5, 5, 5, 5, 5, 1}},
     {0, 3, true, {2, 10, 5, 5, 10, 5, 9, 5, 5, 10, 10, 10, 1}},
@@ -25,7 +26,19 @@ const Vector vectors[]{
     {2, 2, true, {2, 5, 5, 5, 10, 10, 9, 10, 5, 10, 5, 5, 1}},
     {2, 3, true, {2, 10, 5, 5, 10, 10, 12, 5, 5, 5, 10, 10, 1}},
     {UINT64_MAX, 2, false, {4, 10, 10, 10, 5, 10, 12, 10, 10, 5, 10, 5, 8}},
-    {UINT64_MAX, 3, true, {2, 10, 10, 10, 10, 5, 3, 5, 5, 10, 5, 10, 1}}};
+    {UINT64_MAX, 3, true, {2, 10, 10, 10, 10, 5, 3, 5, 5, 10, 5, 10, 1}},
+    {0, 4, true, {2, 5, 5, 5, 10, 5, 9, 10, 5, 5, 5, 10, 1}},
+    {0, 5, true, {2, 5, 10, 10, 10, 5, 6, 5, 5, 5, 10, 5, 1}},
+    {0, 6, true, {2, 5, 5, 5, 10, 5, 12, 10, 5, 10, 10, 5, 1}},
+    {1, 4, true, {2, 10, 5, 10, 10, 5, 12, 10, 5, 5, 10, 10, 1}},
+    {1, 5, true, {2, 10, 5, 10, 10, 5, 9, 5, 5, 5, 5, 5, 1}},
+    {1, 6, false, {4, 10, 10, 10, 5, 10, 12, 5, 10, 5, 10, 10, 8}},
+    {2, 4, false, {4, 5, 5, 5, 5, 5, 12, 5, 10, 10, 5, 5, 8}},
+    {2, 5, false, {4, 10, 10, 5, 5, 10, 9, 10, 10, 10, 5, 5, 8}},
+    {2, 6, true, {2, 10, 5, 10, 10, 5, 3, 10, 5, 5, 10, 10, 1}},
+    {UINT64_MAX, 4, true, {2, 10, 10, 5, 10, 5, 3, 5, 5, 10, 10, 5, 1}},
+    {UINT64_MAX, 5, true, {2, 10, 10, 5, 10, 5, 6, 5, 5, 5, 5, 10, 1}},
+    {UINT64_MAX, 6, true, {2, 5, 5, 10, 10, 5, 3, 10, 5, 5, 10, 10, 1}}};
 RunState completed(std::uint64_t seed, int number)
 {
     auto run = start_run(RunSeed{seed});
@@ -109,7 +122,7 @@ bool cases()
                 }
     for (int scenario = 0; scenario < 5; ++scenario)
     {
-        auto run = completed(0, scenario == 4 ? 3 : 1);
+        auto run = completed(0, scenario == 4 ? sector_count : 1);
         if (scenario == 0)
             run.sector.player_position = node(0);
         if (scenario == 1)

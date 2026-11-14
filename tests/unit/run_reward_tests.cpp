@@ -7,7 +7,7 @@ namespace
 bool cases()
 {
     const auto zero = *NodeId::from_value(0), last = *NodeId::from_value(48);
-    for (int number = 1; number <= 3; ++number)
+    for (int number = 1; number <= sector_count; ++number)
         for (int outcome = 0; outcome < 4; ++outcome)
             for (unsigned modules = 0; modules < 4; ++modules)
                 for (const bool claimed : {false, true})
@@ -44,7 +44,7 @@ bool cases()
                             run.sector.turns_taken = TurnIndex{49};
                         const auto before = run;
                         const bool accepted =
-                            outcome == 1 && number < 3 && !claimed &&
+                            outcome == 1 && number < sector_count && !claimed &&
                             ((choice == 1 && !(modules & 1)) ||
                              (choice == 2 && !(modules & 2)));
                         auto expected = before;

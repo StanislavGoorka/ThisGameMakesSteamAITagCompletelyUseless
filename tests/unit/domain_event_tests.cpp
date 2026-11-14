@@ -14,7 +14,8 @@ static_assert(static_cast<unsigned>(RunEndReason::overload) == 3);
 
 int main()
 {
-    const DomainEventKey key{RunSeed{UINT64_MAX}, *SectorNumber::from_value(3),
+    const DomainEventKey key{RunSeed{UINT64_MAX},
+                             *SectorNumber::from_value(sector_count),
                              TurnIndex{48}, 0};
     const auto target = *NodeId::from_value(48);
     const std::array<DomainEventPayload, 4> payloads{

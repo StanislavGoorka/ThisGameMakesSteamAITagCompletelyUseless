@@ -203,8 +203,27 @@ bool complete(std::uint64_t seed, bool range_first, RunState &final)
         !boundary.state.sector.pulses.empty())
         return false;
     run = std::move(boundary.state);
-    if (!solve(run, false) || run.sector.player_integrity != 2 ||
-        !terminal_refuses(run, RunPhase::won))
+    for (int number = 3; number <= sector_count; ++number)
+    {
+        if (run.sector_number.value() != number ||
+            run.sector.delivery_requirement.value() !=
+                (number == sector_count ? 3 : 2) ||
+            !solve(run, false) || run.sector.player_integrity != 2)
+            return false;
+        if (number < sector_count)
+        {
+            const auto before = run;
+            if (run_phase(run) != RunPhase::ready_for_next ||
+                choose_run_module(run, ModuleId::rotation_range) ||
+                !test::same_run(run, before))
+                return false;
+            const auto next = advance_run(run);
+            if (!next.accepted || next.state.sector.modules.size() != 2)
+                return false;
+            run = next.state;
+        }
+    }
+    if (!terminal_refuses(run, RunPhase::won))
         return false;
     final = std::move(run);
     return true;
@@ -239,7 +258,7 @@ int main()
 {
     if (!cases())
     {
-        std::cerr << "Three-sector integration mismatch\n";
+        std::cerr << "Six-sector integration mismatch\n";
         return 1;
     }
     return 0;

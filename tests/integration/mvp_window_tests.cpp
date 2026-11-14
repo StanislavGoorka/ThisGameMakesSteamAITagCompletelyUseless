@@ -12,12 +12,12 @@ bool scenario(const std::filesystem::path &root)
     launch.tap(VK_RETURN);
     if (!launch.matches(run) || !launch.checkpoint(run))
         return test::mvp_fail("start boundary");
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
     {
         if (run.sector_number.value() != sector || !launch.quiet(run) ||
             !launch.solve(run))
             return test::mvp_fail("sector witness");
-        if (sector < 3 && !launch.advance(run))
+        if (sector < sector_count && !launch.advance(run))
             return false;
     }
     const LocalProfile expected{31};

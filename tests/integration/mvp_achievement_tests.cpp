@@ -111,7 +111,7 @@ bool sector_completion(const std::filesystem::path &path)
 std::vector<DomainEvent> run_events(int used_sector)
 {
     std::vector<DomainEvent> events;
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
     {
         const auto append = [&](unsigned ordinal, DomainEventPayload payload)
         {
@@ -126,14 +126,14 @@ std::vector<DomainEvent> run_events(int used_sector)
         append(0, ActionCommitted{command});
         append(1, PacketDelivered{node(1)});
         append(2, SectorCompleted{});
-        if (sector == 3)
+        if (sector == sector_count)
             append(3, RunEnded{RunEndReason::won});
     }
     return events;
 }
 bool without_overdrive(const std::filesystem::path &directory)
 {
-    for (int used = 0; used <= 3; ++used)
+    for (int used = 0; used <= sector_count; ++used)
         if (!persist(directory / (L"overdrive" + std::to_wstring(used)),
                      run_events(used), used == 0 ? 23 : 19,
                      RunHistoryOrigin::fresh_run))
@@ -154,7 +154,7 @@ bool reconfiguration(const std::filesystem::path &path)
 bool completed_run(const std::filesystem::path &path)
 {
     auto run = fixture();
-    run.sector_number = *SectorNumber::from_value(3);
+    run.sector_number = *SectorNumber::from_value(sector_count);
     run.sector.receiver_nodes[7] = run.sector.powered_nodes[7] = true;
     run.sector.sector_exit = node(1);
     const auto result = resolve_run_turn_events(run, MoveCommand{node(1)});

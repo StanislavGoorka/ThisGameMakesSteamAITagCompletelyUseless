@@ -19,7 +19,7 @@ int main()
         !selects(run, SessionScreen::result, {}) ||
         !selects(run, static_cast<SessionScreen>(99), {}))
         return 1;
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
     {
         run = start_run(RunSeed{1});
         run.sector_number = *SectorNumber::from_value(sector);
@@ -30,9 +30,9 @@ int main()
             run.sector.turns_taken =
                 TurnIndex{static_cast<std::uint32_t>(turn)};
             if (!selects(run, SessionScreen::result,
-                         turn > 48     ? "session-overload"
-                         : sector == 3 ? "session-won"
-                                       : ""))
+                         turn > 48                ? "session-overload"
+                         : sector == sector_count ? "session-won"
+                                                  : ""))
                 return 2;
             run.sector.player_integrity = 0;
             if (!selects(run, SessionScreen::result, "session-death"))

@@ -41,7 +41,7 @@ int wmain(int argc, wchar_t **argv)
                      SWP_NOACTIVATE | SWP_NOZORDER | SWP_SHOWWINDOW);
         UpdateWindow(hwnd);
         SendMessageW(hwnd, WM_SETFOCUS, 0, 0);
-        for (int boundary = 0; boundary < 2; ++boundary)
+        for (int boundary = 0; boundary < sector_count - 1; ++boundary)
         {
             const auto before = run;
             if (run_phase(run) == RunPhase::choosing_reward)

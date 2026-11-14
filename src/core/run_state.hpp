@@ -4,7 +4,7 @@
 
 namespace closed_circuit
 {
-inline constexpr std::uint8_t sector_count = 3;
+inline constexpr std::uint8_t sector_count = 6;
 
 class SectorNumber
 {

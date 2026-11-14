@@ -57,7 +57,7 @@ int main()
                 changed.sector.player_position = *changed.sector.sector_entry;
                 break;
             case 5:
-                changed.sector_number = *SectorNumber::from_value(3);
+                changed.sector_number = *SectorNumber::from_value(sector_count);
                 break;
             case 6:
                 static_cast<void>(

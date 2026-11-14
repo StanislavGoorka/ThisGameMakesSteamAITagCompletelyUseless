@@ -45,7 +45,7 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
         }
         if (const auto *end = std::get_if<RunEnded>(&event.payload))
             if (end->reason == RunEndReason::won &&
-                event.key.sector.value() == 3)
+                event.key.sector.value() == sector_count)
                 return without_overdrive_ ? 20 : 16;
         if (std::holds_alternative<SectorCompleted>(event.payload))
             return 2;

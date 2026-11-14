@@ -10,7 +10,7 @@ NodeId node(int n)
 }
 bool cases()
 {
-    for (int number = 1; number <= 3; ++number)
+    for (int number = 1; number <= sector_count; ++number)
         for (int scenario = 0; scenario < 5; ++scenario)
         {
             RunState run{.seed = RunSeed{123},
@@ -53,7 +53,7 @@ bool cases()
             }
             const auto phase = scenario == 0 ? RunPhase::playing
                                : scenario == 2 || scenario == 3 ? RunPhase::lost
-                               : number == 3                    ? RunPhase::won
+                               : number == sector_count         ? RunPhase::won
                                : scenario == 4 ? RunPhase::ready_for_next
                                                : RunPhase::choosing_reward;
             for (int repeat = 0; repeat < 3; ++repeat)

@@ -18,7 +18,7 @@ bool rejected(const RunState &run)
 bool cases()
 {
     for (const std::uint64_t seed : {0ull, 1ull, 2ull, UINT64_MAX})
-        for (int number = 1; number <= 3; ++number)
+        for (int number = 1; number <= sector_count; ++number)
             for (const std::uint32_t debt : {0u, 2u, 3u, 6u, UINT32_MAX})
             {
                 auto boundary = start_run(RunSeed{seed});
@@ -152,13 +152,14 @@ bool cases()
                     for (std::uint32_t debt : {0u, 2u, 3u, UINT32_MAX - 3,
                                                UINT32_MAX - 2, UINT32_MAX})
                     {
-                        RunCheckpoint cp{RunSeed{0},
-                                         *SectorNumber::from_value(3),
-                                         static_cast<std::uint8_t>(hp),
-                                         static_cast<std::uint8_t>(reserve),
-                                         debt,
-                                         {},
-                                         pulse};
+                        RunCheckpoint cp{
+                            RunSeed{0},
+                            *SectorNumber::from_value(sector_count),
+                            static_cast<std::uint8_t>(hp),
+                            static_cast<std::uint8_t>(reserve),
+                            debt,
+                            {},
+                            pulse};
                         if (modules & 1)
                             static_cast<void>(
                                 cp.modules.add(ModuleId::rotation_range));

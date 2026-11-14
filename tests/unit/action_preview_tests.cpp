@@ -94,7 +94,8 @@ bool scenarios()
             terminal.sector.sector_exit = terminal.sector.player_position;
             terminal.reward_claimed = phase == 3;
             if (phase == 4)
-                terminal.sector_number = *SectorNumber::from_value(3);
+                terminal.sector_number =
+                    *SectorNumber::from_value(sector_count);
         }
         for (const auto &command : std::array<Command, 4>{
                  WaitCommand{}, RotateCommand{node(1)},

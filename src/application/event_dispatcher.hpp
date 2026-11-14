@@ -73,7 +73,7 @@ class EventDispatcher
                 return false;
         if (const auto *end = std::get_if<RunEnded>(&event.payload))
             return (end->reason == RunEndReason::won &&
-                    key.sector.value() == 3) ||
+                    key.sector.value() == sector_count) ||
                    end->reason == RunEndReason::death ||
                    end->reason == RunEndReason::overload;
         return true;

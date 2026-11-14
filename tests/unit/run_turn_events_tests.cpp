@@ -104,7 +104,7 @@ int main()
                RunPhase::playing))
         return 1;
 
-    for (int number = 1; number <= 3; ++number)
+    for (int number = 1; number <= sector_count; ++number)
     {
         auto run = fixture(number);
         run.sector.turns_taken = TurnIndex{47};
@@ -112,15 +112,15 @@ int main()
         std::vector<DomainEventPayload> events{ActionCommitted{move}, delivery,
                                                complete};
         const auto phase =
-            number == 3 ? RunPhase::won : RunPhase::choosing_reward;
-        if (number == 3)
+            number == sector_count ? RunPhase::won : RunPhase::choosing_reward;
+        if (number == sector_count)
             events.emplace_back(RunEnded{RunEndReason::won});
         if (!check(run, move, events, true, phase))
             return 1;
         const auto ended = resolve_run_turn(run, move);
         if (!check(ended.state, wait, {}, false, phase))
             return 1;
-        if (number != 3)
+        if (number != sector_count)
         {
             auto ready = ended.state;
             ready.reward_claimed = true;

@@ -1,8 +1,8 @@
 // Independent schema1 byte oracle: no C++ encoder or decoder calls.
 function vectors(rules) {
   const cases = [
-    [0n,1,3,2,0,0,0,0], [18446744073709551615n,3,1,0,3,1,2,1],
-    [0x0123456789abcdefn,2,2,3,2,2,0,0], [1n,3,3,1,4294967292,1,0,1]
+    [0n,1,3,2,0,0,0,0], [18446744073709551615n,6,1,0,3,1,2,1],
+    [0x0123456789abcdefn,2,2,3,2,2,0,0], [1n,6,3,1,4294967292,1,0,1]
   ];
   return cases.map(([seed,number,hp,reserve,debt,a,b,pulse]) => {
     const bytes=[67,67,67,80];
@@ -15,5 +15,5 @@ function vectors(rules) {
     return bytes;
   });
 }
-if(require.main===module)console.log(JSON.stringify(vectors(Number(process.argv[2]??2))));
+if(require.main===module)console.log(JSON.stringify(vectors(Number(process.argv[2]??3))));
 module.exports={vectors};

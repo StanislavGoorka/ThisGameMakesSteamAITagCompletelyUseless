@@ -19,11 +19,13 @@ int main()
         event(1, 0, action),
         event(1, 1, PacketDelivered{*NodeId::from_value(4)}),
         event(1, 2, SectorCompleted{})};
-    const std::vector rest{event(2, 0, ActionCommitted{WaitCommand{}}),
-                           event(2, 1, SectorCompleted{}),
-                           event(3, 0, ActionCommitted{WaitCommand{}}),
-                           event(3, 1, SectorCompleted{}),
-                           event(3, 2, RunEnded{RunEndReason::won})};
+    std::vector<DomainEvent> rest;
+    for (int sector = 2; sector <= sector_count; ++sector)
+    {
+        rest.push_back(event(sector, 0, ActionCommitted{WaitCommand{}}));
+        rest.push_back(event(sector, 1, SectorCompleted{}));
+    }
+    rest.push_back(event(sector_count, 2, RunEnded{RunEndReason::won}));
     for (auto origin :
          {RunHistoryOrigin::fresh_run, RunHistoryOrigin::restored_checkpoint})
     {

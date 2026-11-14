@@ -34,9 +34,12 @@ bool finish(const std::filesystem::path &root, const std::filesystem::path &dir)
         return test::mvp_fail("worker resume boundary");
     auto run = *expected;
     if (!window.quiet(run) || !window.solve(run) ||
-        test::mvp_files(dir) != saved || window.notices.pending() ||
-        !window.advance(run) || !window.solve(run))
+        test::mvp_files(dir) != saved || window.notices.pending())
         return test::mvp_fail("worker continuation");
+    for (int number = 3; number <= sector_count; ++number)
+        if (!window.advance(run) || !window.solve(run) ||
+            run.sector_number.value() != number)
+            return test::mvp_fail("worker suffix");
     return run_phase(run) == RunPhase::won &&
            window.session->screen() == SessionScreen::result &&
            windows::read_profile_file(dir / L"profile.bin").profile ==

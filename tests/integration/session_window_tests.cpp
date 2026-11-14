@@ -36,7 +36,7 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
             run.sector.turns_taken = TurnIndex{47};
         else
         {
-            run.sector_number = *SectorNumber::from_value(3);
+            run.sector_number = *SectorNumber::from_value(sector_count);
             run.sector.powered_nodes = run.sector.receiver_nodes;
             const int exit = run.sector.sector_exit->value();
             run.sector.player_position =

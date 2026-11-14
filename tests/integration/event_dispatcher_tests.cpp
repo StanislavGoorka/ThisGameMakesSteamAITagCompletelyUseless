@@ -181,7 +181,7 @@ bool complete(RunSeed seed, const std::filesystem::path &directory)
     std::optional<RunCheckpoint> second_boundary;
     std::vector<Step> second_trace;
     unsigned total_events = 0;
-    for (unsigned number = 1; number <= 3; ++number)
+    for (unsigned number = 1; number <= sector_count; ++number)
     {
         if (number == 2)
         {
@@ -198,10 +198,10 @@ bool complete(RunSeed seed, const std::filesystem::path &directory)
             total_events += static_cast<unsigned>(step.events.size());
         if (number == 2)
             second_trace = trace;
-        if (number < 3)
+        if (number < sector_count)
         {
             const auto offer = module_offer(run.sector.modules);
-            if (!offer[0] || !choose_run_module(run, *offer[0]))
+            if (offer[0] && !choose_run_module(run, *offer[0]))
                 return false;
             const auto next = advance_run(run);
             if (!next.accepted)
@@ -285,7 +285,7 @@ class ObservedMvpEvaluator final : public AchievementEvaluator
 bool transition(RunState &run)
 {
     const auto offer = module_offer(run.sector.modules);
-    if (!offer[0] || !choose_run_module(run, *offer[0]))
+    if (offer[0] && !choose_run_module(run, *offer[0]))
         return false;
     const auto next = advance_run(run);
     if (!next.accepted)
@@ -299,8 +299,8 @@ bool mvp_worker(const std::filesystem::path &directory)
     // Rebuild the uninterrupted reference independently of the disk checkpoint.
     auto reference = start_run(RunSeed{1});
     std::optional<RunState> boundary;
-    std::array<std::vector<Step>, 2> suffix;
-    for (unsigned number = 1; number <= 3; ++number)
+    std::array<std::vector<Step>, sector_count - 1> suffix;
+    for (unsigned number = 1; number <= sector_count; ++number)
     {
         if (number == 2)
             boundary = reference;
@@ -317,7 +317,7 @@ bool mvp_worker(const std::filesystem::path &directory)
                 suffix[number - 2].push_back(
                     {command, reference, result.events});
         }
-        if (number < 3 && !transition(reference))
+        if (number < sector_count && !transition(reference))
             return false;
     }
     const auto read = windows::read_checkpoint_file(directory / L"mvp_run.dat");
@@ -359,7 +359,7 @@ bool mvp_worker(const std::filesystem::path &directory)
                 run = actual.turn.state;
                 events += static_cast<unsigned>(actual.events.size());
             }
-            if (i == 0 && !transition(run))
+            if (i + 1 < suffix.size() && !transition(run))
                 return false;
         }
         const auto expected_mask = initial->achievement_bits == 31 ? 31 : 27;
@@ -395,10 +395,10 @@ bool complete_mvp(const std::filesystem::path &directory)
     ObservedMvpEvaluator evaluator(RunHistoryOrigin::fresh_run);
     ObservedSink sink(profile);
     EventDispatcher dispatcher(context, evaluator, sink);
-    std::array<std::vector<Step>, 2> suffix;
+    std::array<std::vector<Step>, sector_count - 1> suffix;
     std::optional<RunState> boundary;
     unsigned total_events = 0;
-    for (unsigned number = 1; number <= 3; ++number)
+    for (unsigned number = 1; number <= sector_count; ++number)
     {
         if (number == 2)
         {
@@ -415,7 +415,7 @@ bool complete_mvp(const std::filesystem::path &directory)
             total_events += static_cast<unsigned>(step.events.size());
         if (number >= 2)
             suffix[number - 2] = trace;
-        if (number < 3 && !transition(run))
+        if (number < sector_count && !transition(run))
             return false;
     }
     if (run_phase(run) != RunPhase::won || evaluator.candidates != 31 ||
@@ -459,7 +459,7 @@ bool complete_mvp(const std::filesystem::path &directory)
                 return false;
             suffix_events += static_cast<unsigned>(result.events.size());
         }
-        if (i == 0 && !transition(*replay))
+        if (i + 1 < suffix.size() && !transition(*replay))
             return false;
     }
     if (!test::same_run(*replay, run) || unknown.calls != suffix_events ||

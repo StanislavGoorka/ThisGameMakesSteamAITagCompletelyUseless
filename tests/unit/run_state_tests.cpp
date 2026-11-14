@@ -2,6 +2,7 @@
 #include <iostream>
 #include <type_traits>
 using namespace closed_circuit;
+static_assert(sector_count == 6);
 static_assert(!std::is_convertible_v<int, SectorNumber>);
 static_assert(!std::is_default_constructible_v<SectorNumber>);
 static_assert(!SectorNumber::from_value(-1));
@@ -10,11 +11,11 @@ namespace
 {
 bool cases()
 {
-    for (const int invalid : {-100, -1, 0, 4, 255})
+    for (const int invalid : {-100, -1, 0, 7, 255})
         if (SectorNumber::from_value(invalid))
             return false;
     const auto zero = *NodeId::from_value(0), last = *NodeId::from_value(48);
-    for (int number = 1; number <= 3; ++number)
+    for (int number = 1; number <= sector_count; ++number)
         for (int outcome = 0; outcome < 6; ++outcome)
             for (unsigned modules = 0; modules < 4; ++modules)
                 for (const bool claimed : {false, true})
@@ -49,12 +50,12 @@ bool cases()
                         run.sector.sector_exit = last;
                     if (outcome == 5)
                         run.sector.turns_taken = TurnIndex{49};
-                    const RunPhase expected = outcome >= 3   ? RunPhase::lost
-                                              : outcome == 0 ? RunPhase::playing
-                                              : number == 3  ? RunPhase::won
-                                              : (claimed || modules == 3)
-                                                  ? RunPhase::ready_for_next
-                                                  : RunPhase::choosing_reward;
+                    const RunPhase expected =
+                        outcome >= 3                ? RunPhase::lost
+                        : outcome == 0              ? RunPhase::playing
+                        : number == sector_count    ? RunPhase::won
+                        : (claimed || modules == 3) ? RunPhase::ready_for_next
+                                                    : RunPhase::choosing_reward;
                     const auto before = run;
                     for (int repeat = 0; repeat < 3; ++repeat)
                         if (run_phase(run) != expected ||
@@ -64,8 +65,8 @@ bool cases()
                     copy.sector.pulses.clear();
                     copy.sector.modules = {};
                     copy.reward_claimed = !claimed;
-                    copy.sector_number =
-                        *SectorNumber::from_value(number == 3 ? 1 : 3);
+                    copy.sector_number = *SectorNumber::from_value(
+                        number == sector_count ? 1 : sector_count);
                     copy.seed = RunSeed{0};
                     if (!test::same_run(run, before) ||
                         test::same_run(copy, before))

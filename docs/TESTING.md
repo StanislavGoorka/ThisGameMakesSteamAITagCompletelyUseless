@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P084-01: pełny run sześciu sektorów, preview/zdarzenia, kolejka achievementów,
+nagrody przy pełnym loadoucie, rzeczywiste HWND i wznowienie w nowym procesie.
+Checkpoint corpus obejmuje 26000 pełnych granic i pierwszą turę po restore.
+Literalne maski sektorów4..6 dla czterech root seedów wylicza niezależny
+tools/corpus/topology_vectors.cjs. Stare reguły1/2 nie uszkadzają backupu3.
+
 P084-03..07: korpus 257 seedów topologii/buildera i certyfikatów finału.
 developer_final_witness potwierdza trzy dostawy i wyjście w maksymalnie
 31 zaakceptowanych akcjach, chroniąc pełny stan i odmowy certyfikatów.

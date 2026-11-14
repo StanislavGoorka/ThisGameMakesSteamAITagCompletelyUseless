@@ -41,10 +41,10 @@ int main()
         const auto waited = resolve_run_turn(run, WaitCommand{});
         if (!waited.accepted || !decides(waited.state, CheckpointAction::keep))
             return 2;
-        for (int number = 1; number <= 3; ++number)
+        for (int number = 1; number <= sector_count; ++number)
         {
             auto finished = completed(run);
-            if (number == 3)
+            if (number == sector_count)
             {
                 if (run_phase(finished) != RunPhase::won ||
                     !decides(finished, CheckpointAction::clear))

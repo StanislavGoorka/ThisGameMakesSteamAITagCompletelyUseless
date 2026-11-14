@@ -162,8 +162,10 @@ class MvpWindow
         const auto before = mvp_files(directory);
         tap(VK_RIGHT);
         const auto candidate = session->reward_candidate();
-        if (!candidate || mvp_files(directory) != before ||
-            !choose_run_module(run, *candidate))
+        if (mvp_files(directory) != before ||
+            (candidate
+                 ? !choose_run_module(run, *candidate)
+                 : run.sector.modules.size() != ModuleLoadout::slot_limit))
             return mvp_fail("reward selection");
         const auto expected = advance_run(run);
         tap(VK_RETURN);

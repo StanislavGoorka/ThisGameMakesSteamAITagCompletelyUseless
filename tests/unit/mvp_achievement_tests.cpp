@@ -13,7 +13,7 @@ DomainEvent event(DomainEventPayload payload, unsigned turn = 1,
 bool delivery()
 {
     MvpAchievementEvaluator evaluator;
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
         for (int target = 0; target < 49; ++target)
             if (evaluator.evaluate(
                     event(PacketDelivered{*NodeId::from_value(target)}, 48, 1,
@@ -49,7 +49,7 @@ bool delivery()
 bool sector_completion()
 {
     const auto node = [](int n) { return *NodeId::from_value(n); };
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
         for (unsigned turn : {0u, 47u})
             for (int outcome = 0; outcome < 4; ++outcome)
             {
@@ -88,7 +88,7 @@ unsigned finish(MvpAchievementEvaluator &evaluator, int used_sector = 0,
                 int first_sector = 1, RunEndReason reason = RunEndReason::won)
 {
     unsigned candidates = 0;
-    for (int sector = first_sector; sector <= 3; ++sector)
+    for (int sector = first_sector; sector <= sector_count; ++sector)
     {
         const Command command =
             sector == used_sector
@@ -96,24 +96,24 @@ unsigned finish(MvpAchievementEvaluator &evaluator, int used_sector = 0,
                 : Command{WaitCommand{}};
         candidates |=
             evaluator.evaluate(event(ActionCommitted{command}, 1, 0, sector));
-        if (sector != 3 || reason == RunEndReason::won)
+        if (sector != sector_count || reason == RunEndReason::won)
             candidates |=
                 evaluator.evaluate(event(SectorCompleted{}, 1, 1, sector));
     }
-    return candidates |
-           evaluator.evaluate(event(RunEnded{reason}, 1,
-                                    reason == RunEndReason::won ? 2 : 1, 3));
+    return candidates | evaluator.evaluate(event(
+                            RunEnded{reason}, 1,
+                            reason == RunEndReason::won ? 2 : 1, sector_count));
 }
 bool without_overdrive()
 {
-    for (int used = 0; used <= 3; ++used)
+    for (int used = 0; used <= sector_count; ++used)
     {
         MvpAchievementEvaluator fresh(RunHistoryOrigin::fresh_run), restored;
         if (((finish(fresh, used) & 4) != 0) != (used == 0) ||
             (finish(restored, used) & 4) != 0)
             return false;
     }
-    for (int first = 2; first <= 3; ++first)
+    for (int first = 2; first <= sector_count; ++first)
     {
         MvpAchievementEvaluator invalid_fresh(RunHistoryOrigin::fresh_run),
             restored;
@@ -188,13 +188,14 @@ bool reconfiguration()
 }
 bool completed_run()
 {
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
         for (auto reason :
              {RunEndReason::won, RunEndReason::death, RunEndReason::overload})
         {
             MvpAchievementEvaluator evaluator;
             if (evaluator.evaluate(event(RunEnded{reason}, 48, 2, sector)) !=
-                (sector == 3 && reason == RunEndReason::won ? 16 : 0))
+                (sector == sector_count && reason == RunEndReason::won ? 16
+                                                                       : 0))
                 return false;
         }
     MvpAchievementEvaluator evaluator(RunHistoryOrigin::fresh_run);
@@ -203,13 +204,13 @@ bool completed_run()
     const DeliveryScope scope{
         RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
     EventDispatcher dispatcher(scope, evaluator, sink);
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
         for (const auto &e :
              {event(ActionCommitted{WaitCommand{}}, 1, 0, sector),
               event(SectorCompleted{}, 1, 1, sector)})
             if (dispatcher.dispatch(scope, e) != DispatchResult::delivered)
                 return false;
-    const auto won = event(RunEnded{RunEndReason::won}, 1, 2, 3);
+    const auto won = event(RunEnded{RunEndReason::won}, 1, 2, sector_count);
     if (dispatcher.dispatch(scope, won) != DispatchResult::retry ||
         sink.profile.achievement_bits != 6)
         return false;

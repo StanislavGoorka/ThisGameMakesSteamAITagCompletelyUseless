@@ -3,14 +3,16 @@
 Plan, nie opis zaimplementowanych modułów. Budujemy małą grę testowalną bez wyświetlania treści, nie silnik ogólnego zastosowania.
 
 P084-08: GameState posiada ograniczony DeliveryRequirement (2 lub 3, domyślnie 2).
-Hash v7 dopisuje jego jeden bajt po kondensatorach; replay v13 wiąże tę migrację.
-Capture checkpointu i dokładny baseline witness odrzucają obcy próg. Restore
-reguł1 nadal buduje zwykłe sektory. P084-09 używa progu w sector_outcome,
+Hash v7 dopisuje jego jeden bajt po kondensatorach; replay v13 wiązał tę migrację.
+Capture checkpointu i dokładny baseline witness odrzucają obcy próg.
+P084-09 używa progu w sector_outcome,
 zachowując pierwszeństwo śmierci i sukcesu w turze48; replay v14 wiąże regułę.
 Samodzielna topologia finału i docelowa zgodność: [FINAL_SECTOR](FINAL_SECTOR.md).
 P084-05: build_sector_state(SectorVariant) jest wspólną budową lokalnych pól
 startu, przejścia i restore. P084-07 wybiera przez sector_variant_for ostatni
-sektor jako finał, względem jednej stałej sector_count=3; checkpoint rules2.
+sektor jako finał. P084-01 ustawia sector_count=6 i checkpoint rules3;
+sektory1..5 są normalne, 6 jest finałem. Walidacja RunEnded i evaluator
+achievementów używają tej samej stałej. Pełny loadout przechodzi bez nagrody.
 Nakładanie odziedziczonych zasobów i odtwarzanie opłaconego impulsu nie są
 odpowiedzialnością buildera; nie wprowadza on drugiej próby spawnu długu.
 

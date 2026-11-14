@@ -37,7 +37,7 @@ int main()
                 run.sector.player_position = *run.sector.sector_exit;
                 run.reward_claimed = phase == 3;
                 if (phase == 4)
-                    run.sector_number = *SectorNumber::from_value(3);
+                    run.sector_number = *SectorNumber::from_value(sector_count);
             }
             const auto terminal = phase < 2 || phase == 4;
             const auto snapshot = run;

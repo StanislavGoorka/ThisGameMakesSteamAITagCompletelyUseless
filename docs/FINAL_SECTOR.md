@@ -1,5 +1,9 @@
 # Kontrakt finału — P084-02
 
+Stan po P084-01: zaimplementowany run sześciu sektorów, jedyny finał w 6,
+checkpoint schema1/rules3, hashv7/replay14. Poniższe rozdzielenie P084-05/07/01
+opisuje kolejność wdrożenia; wcześniejsze wersje reguł nie są akceptowane.
+
 Dokument roboczy, bez tekstów ani assetów gry. Implementacje P084-03..07
 powstają oddzielnie; samo przyjęcie kontraktu nie aktywuje finału.
 

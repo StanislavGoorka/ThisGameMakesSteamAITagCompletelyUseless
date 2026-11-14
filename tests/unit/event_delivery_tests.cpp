@@ -40,7 +40,7 @@ int main()
     copy = scope;
     copy.seed = RunSeed{UINT64_MAX};
     copy.attempt.value = copy.branch.value = UINT64_MAX;
-    copy.first_sector = *SectorNumber::from_value(3);
+    copy.first_sector = *SectorNumber::from_value(sector_count);
     if (!is_delivery_scope_valid(copy) || scope == copy ||
         scope.seed != RunSeed{0})
         return 1;

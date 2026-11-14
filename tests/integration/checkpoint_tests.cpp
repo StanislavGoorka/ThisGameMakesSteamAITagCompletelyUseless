@@ -62,7 +62,7 @@ bool boundaries()
         if (!round_trip(first))
             return false;
         ++count;
-        for (int number = 2; number <= 3; ++number)
+        for (int number = 2; number <= sector_count; ++number)
             for (const std::uint32_t debt : {0u, 2u, 3u, 6u, UINT32_MAX})
             {
                 // Completion/resources are explicit synthetic fixtures;
@@ -95,7 +95,7 @@ bool boundaries()
             }
     }
     std::cout << "checkpoint_boundaries " << count << '\n';
-    return count == 11000;
+    return count == 26000;
 }
 bool corruption()
 {
@@ -143,7 +143,9 @@ bool semantic_fields()
                 bool valid = true;
                 if (offset < 12)
                     valid = value == v.bytes[offset];
-                if (offset == 20 || offset == 21)
+                if (offset == 20)
+                    valid = value >= 1 && value <= 6;
+                if (offset == 21)
                     valid = value >= 1 && value <= 3;
                 if (offset == 22)
                     valid = value <= 3;

@@ -66,7 +66,7 @@ bool cases()
                 copy.sector.modules.add(ModuleId::rotation_range));
             copy.sector.terminal_rotation_used = true;
             copy.reward_claimed = true;
-            copy.sector_number = *SectorNumber::from_value(3);
+            copy.sector_number = *SectorNumber::from_value(sector_count);
             run.sector.ports[0] = *PortMask::from_bits(15);
             if (!test::same_run(start_run(v.seed), before) ||
                 test::same_run(copy, before))

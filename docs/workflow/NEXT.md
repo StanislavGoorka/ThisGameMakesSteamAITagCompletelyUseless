@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P084-01
+Task: P085
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-07. P084-01: rozszerz konfigurację do sześciu sektorów i checkpoint rules3 według FINAL_SECTOR. Sprawdź mikro-zakres; zmiana wymaga również końca achievementów, pełnego runu, nagród po zapełnieniu loadoutu i wznowienia. Finał tylko w sektorze6, sektor3 ponownie normalny. Czytaj run_state, mvp_achievement_evaluator, testy runu/eventów/HWND i CHECKPOINT_FORMAT. Zależność P084-07 ukończona.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-01. P085: tylko podział rozszerzenia katalogu z2 do maksymalnie12 modułów, po jednym module na dziecko. Zaplanuj najpierw kontrakt i ewentualną wspólną obsługę katalogu/ofert/kodeków, potem dziesięć wąskich reguł z testem dodatnim/ujemnym i interakcjami. Zachowaj dwa sloty, brak nowych treści i jawne wersje zapisu. Przepnij P086 na ostatnie wymagane dziecko. Czytaj GAME_DESIGN, module_loadout/catalog/offer, rotation_rules, resolver i CHECKPOINT_FORMAT. Zależność P084-01 ukończona.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 

@@ -178,7 +178,7 @@ bool full_stream()
     test::RecordingSink sink;
     EventDispatcher dispatcher(scope(), evaluator, sink);
     std::vector<DomainEvent> trace;
-    for (int sector = 1; sector <= 3; ++sector)
+    for (int sector = 1; sector <= sector_count; ++sector)
         for (unsigned turn = 1; turn <= 48; ++turn)
         {
             trace.push_back(
@@ -188,7 +188,7 @@ bool full_stream()
                 trace.push_back(event(
                     turn, 1, PacketDelivered{*NodeId::from_value(48)}, sector));
                 trace.push_back(event(turn, 2, SectorCompleted{}, sector));
-                if (sector == 3)
+                if (sector == sector_count)
                     trace.push_back(
                         event(turn, 3, RunEnded{RunEndReason::won}, sector));
             }
@@ -206,15 +206,20 @@ bool full_stream()
         sink.profile.achievement_bits != 31)
         return false;
     test::CountingEvaluator terminal_evaluator;
-    EventDispatcher terminal(scope(3), terminal_evaluator, sink);
-    if (terminal.dispatch(scope(3), event(1, 0, ActionCommitted{WaitCommand{}},
-                                          3)) != DispatchResult::delivered ||
-        terminal.dispatch(scope(3), event(1, 1, RunEnded{RunEndReason::won},
-                                          3)) != DispatchResult::out_of_order ||
-        terminal.dispatch(scope(3), event(1, 1, RunEnded{RunEndReason::death},
-                                          3)) != DispatchResult::delivered ||
-        terminal.dispatch(scope(3), event(2, 0, ActionCommitted{WaitCommand{}},
-                                          3)) != DispatchResult::out_of_order)
+    EventDispatcher terminal(scope(sector_count), terminal_evaluator, sink);
+    if (terminal.dispatch(scope(sector_count),
+                          event(1, 0, ActionCommitted{WaitCommand{}},
+                                sector_count)) != DispatchResult::delivered ||
+        terminal.dispatch(
+            scope(sector_count),
+            event(1, 1, RunEnded{RunEndReason::won}, sector_count)) !=
+            DispatchResult::out_of_order ||
+        terminal.dispatch(scope(sector_count),
+                          event(1, 1, RunEnded{RunEndReason::death},
+                                sector_count)) != DispatchResult::delivered ||
+        terminal.dispatch(scope(sector_count),
+                          event(2, 0, ActionCommitted{WaitCommand{}},
+                                sector_count)) != DispatchResult::out_of_order)
         return false;
     return terminal_evaluator.calls == 2;
 }
