@@ -60,16 +60,32 @@ int wmain(int argc, wchar_t **argv)
         p::valid_tile({0, 0, 4}) || !p::valid_tile({48, 21, 3}) ||
         PortMask::from_bits(16))
         return 7;
+    std::array<std::array<bool, 256>, 8> silhouettes{};
     for (unsigned kind = 0; kind < 8; ++kind)
     {
         const auto tile = *p::tile_for_symbol(static_cast<p::SymbolKind>(kind));
         unsigned alpha = 0;
         for (unsigned y = 0; y < 16; ++y)
             for (unsigned x = 0; x < 16; ++x)
+            {
                 alpha += image.pixels[(tile.row * 17 + y) * image.stride +
                                       (tile.column * 17 + x) * 4 + 3];
+                silhouettes[kind][y * 16 + x] =
+                    image.pixels[(tile.row * 17 + y) * image.stride +
+                                 (tile.column * 17 + x) * 4 + 3] != 0;
+            }
         if (!p::valid_tile(tile) || !alpha)
             return 8;
     }
+    // Ignore RGB entirely: different atlas coordinates alone are insufficient.
+    // This checks shape identity, not perceptual readability at display scale.
+    for (unsigned a = 0; a < silhouettes.size(); ++a)
+        for (unsigned b = a + 1; b < silhouettes.size(); ++b)
+            if (silhouettes[a] == silhouettes[b])
+            {
+                std::cerr << "Identical symbol silhouettes: " << a << ',' << b
+                          << '\n';
+                return 9;
+            }
     return 0;
 }

@@ -1,5 +1,19 @@
 # Testy i bramki jakości
 
+P080 (zmiana kryteriów zatwierdzona przez użytkownika 2026-11-14): techniczny
+odbiór nie wymaga Computer Use. `presentation_atlas_tiles` sprawdza niepuste
+i parami różne maski alfa wszystkich ośmiu symboli, całkowicie ignorując RGB.
+`windows_scene_renderer` chroni rozłączne pozycje i piksele zatwierdzonego
+atlasu. `windows_text_renderer` sprawdza 96/144/192 DPI, pełny blok tekstu
+i odmowę rysowania przy braku miejsca. `windows_hud_view` sprawdza resize,
+49 pól hit-testu i live/preview/cancel/focus/commit. Testy session/reward/
+achievement/resume/rotation_binding_window sprawdzają odpowiadające stanom
+teksty i przejścia. Pełny CTest musi przejść w Debug i Release.
+To dowody techniczne; różne maski nie dowodzą łatwego rozpoznawania symboli.
+Obserwowana macierz DPI/resize i percepcyjna czytelność są niewykonane,
+odroczone do P104 przed wydaniem. Nie blokują P081 ani dalszego developmentu.
+P081 nadal wymaga dowodu zintegrowanego runu z usługami, nie samego bota core.
+
 P079-06: windows_rotation_binding_restart uruchamia cztery nowe procesy
 na jednym prywatnym katalogu. Pierwszy ustawia T przez F2 bez tury, drugi
 wczytuje T i wykonuje jeden obrót mimo hold/repeat (R nie działa), trzeci

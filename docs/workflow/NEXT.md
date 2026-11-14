@@ -1,26 +1,28 @@
-# Następny mały krok
+﻿# Następny mały krok
 
-Task: P080
+Task: P081
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P080.
-Zależność P079-06 jest completed. P080 pozostaje nieukończone i blocked;
-nie ma innego nieukończonego zadania z ukończonymi zależnościami.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P080.
+P079-06 i P080 są completed. Decyzja użytkownika z 2026-11-14 pozwala
+kontynuować development bez Computer Use; nie ponawiaj starej blokady.
 
-Najpierw sprawdź dostęp do pulpitu zgodnie ze skillem computer-use.
-Oba dostępne interfejsy zgłosiły native pipe unavailable (os error 2).
-Nie buduj własnego obejścia przechwytywania pulpitu. Ponowne stwierdzenie
-tej samej blokady bez nowych dowodów nie wymaga pustego commitu.
+Zakres P081: automatyczny dowód zintegrowanego przejścia trzech sektorów
+z runem, zapisem, restartem i achievementami. Najpierw porównaj istniejące
+testy core_run_integration, application_checkpoint_integration,
+windows_resume_window, windows_checkpoint_window, windows_achievement_window
+i windows_profile_unlock_restart z kryteriami tasks.json. Sam bot core
+nie dowodzi integracji usług. Jeśli brakuje kilku niezależnych kontraktów,
+wykonaj wyłącznie podział P081 na dzieci i przepnij P082 na ostatnie dziecko.
+Nie rozpoczynaj P082 w tym kroku.
 
-Po przywróceniu hosta wykonaj macierz 96/144/192 DPI i rozpoznawanie stanów
-opisaną w raporcie P080. Zapisz rzeczywiste DPI, rozmiary, obserwacje i
-identyfikację badanego builda. Testy offscreen/HWND nie zastępują obserwacji.
-Pojedynczy wykryty problem napraw osobnym krokiem; nie rozpoczynaj P081
-przed spełnieniem kryteriów P080. Nie generuj assetów ani finalnych napisów.
+Czytelność techniczną sprawdza P080. Obserwacja pulpitu i percepcyjna ocena
+stanów pozostają jawnie niewykonane do kontroli przed wydaniem w P104;
+nie przedstawiaj testów automatycznych jako obserwacji ani playtestu.
+Nie generuj assetów ani finalnych napisów, nie pobieraj nowych pakietów.
 
-Czytaj BOARD_PRESENTATION, HUD_PRESENTATION, TESTING i README oraz kontrakty
-wskazane w raporcie P079-06. Zawsze: walidator, diff --check, raport,
-STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Bez push.
-.claude/ pozostaw poza zmianami. Zmiana wyłącznie dokumentacyjna nie wymaga
-ponownego builda i CTest. Dla zmiany C++ stosuj cpp-core-step oraz pełne
-bramki Debug/Release i formatter src/tests/tools.
-Dysk ma rozdzielczość czasu 1 s; po mutacji kodu odczekaj i touch przed build.
+Kontrole: walidator, diff --check, raport, STATE/NEXT/README, lokalny commit
+i kontrola hasha/zakresu. Bez push. .claude/ pozostaw poza zmianami.
+Dla zmian C++ stosuj cpp-core-step, build i pełny CTest Debug/Release,
+formatter src/tests/tools. Dla samego podziału dokumentacyjnego build i CTest
+nie są wymagane. Dysk ma rozdzielczość czasu 1 s: po mutacji kodu odczekaj
+i touch przed buildem. Komendy z katalogu repo, git z lokalnym -c safe.directory.

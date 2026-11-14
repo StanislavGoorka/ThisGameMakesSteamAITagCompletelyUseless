@@ -37,6 +37,15 @@ Przy braku zgody lub narzędzia zachowaj nieukończone zadanie w `blocked` z prz
 
 ## Autonomia i rzeczywiste wyjątki
 
+Decyzja użytkownika z 2026-11-14 dla P080/P081: Computer Use nie jest
+warunkiem dalszego developmentu. Techniczne kryteria tych bramek sprawdzamy
+automatycznie przez CTest, renderer offscreen i integrację HWND. Brak
+obserwacji oraz percepcyjnej oceny czytelności zapisujemy jako niewykonane
+kontrole przed wydaniem w P104, bez blokowania kolejki developerskiej.
+Nie oznacza to zaliczenia obserwacji ani zwolnienia z pozostałych testów,
+kontroli zawartości, testów VM lub wymogów publikacji. Dokładne kryteria
+P080/P081/P104 znajdują się w tasks.json.
+
 Agent sam wybiera szczegóły implementacji, balans i podział zadań w ramach [koncepcji](GAME_DESIGN.md). Użytkownik nie jest kierownikiem projektu ani testerem każdego kroku. Brak decyzji nie oznacza zgody na zmianę wizji.
 
 Wyraźne zgody wymagane przez założenia: pobranie każdego wskazanego pakietu assetów. Zgody mają konkretny zakres i wersję, więc nie trzeba pytać ponownie dla zatwierdzonego zakresu. Wniosek przygotowuje agent; człowiek tylko zezwala lub odmawia. Nie pytamy o pobieranie, dopóki brak ten nie jest potrzebny do konkretnego etapu.

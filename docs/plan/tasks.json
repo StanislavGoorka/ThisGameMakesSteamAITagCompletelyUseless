@@ -2397,8 +2397,8 @@
             "id": "P080",
             "phase": "M6",
             "title": "Dostępność MVP",
-            "scope": "Zweryfikuj jedną macierz DPI i rozpoznawanie stanów bez polegania na kolorze.",
-            "acceptance": "Zapisz rzeczywiste wyniki; pojedynczy problem napraw osobnym krokiem.",
+            "scope": "Techniczna bramka dostępności bez Computer Use: testy DPI, resize, tekstów stanów oraz różnych kształtów zatwierdzonych symboli bez RGB.",
+            "acceptance": "Debug/Release: pełny CTest, w tym presentation_atlas_tiles (niepuste i parami różne maski alfa ośmiu symboli), windows_text_renderer (96/144/192 DPI i odmowa częściowego tekstu), windows_hud_view i testy stanów HWND. Raport mapuje kryteria na testy i jawnie pozostawia ocenę percepcyjnej czytelności do kontroli przed wydaniem P104. Nie jest wymagany dostęp Computer Use.",
             "depends_on": [
                 "P079-06"
             ],
@@ -2408,8 +2408,8 @@
             "id": "P081",
             "phase": "M6",
             "title": "Brama grywalnego MVP",
-            "scope": "Wykonaj i opisz obserwowane przejście trzech sektorów, bez nowej zawartości.",
-            "acceptance": "Run, zapis, restart, achievementy i czytelność; bot nie zastępuje obserwacji.",
+            "scope": "Zweryfikuj zintegrowane przejście trzech sektorów automatycznie, bez nowej zawartości i wymagania Computer Use.",
+            "acceptance": "Dowód integracyjny trzech sektorów obejmuje run, zapis, restart i achievementy w Debug/Release; sam bot core nie wystarcza do integracji usług. Czytelność techniczna według P080; obserwacja i ocena percepcyjna pozostają jawnie niewykonane do P104. Rozbij zadanie, jeśli dowód wymaga kilku niezależnych zmian.",
             "depends_on": [
                 "P080"
             ],
@@ -2673,7 +2673,7 @@
             "phase": "M10",
             "title": "Macierz urządzeń",
             "scope": "Sprawdź jeden wpis macierzy DPI/resize/audio; rozszerzenia jako oddzielne dzieci.",
-            "acceptance": "Rzeczywiste logi i reprodukcja błędów; nie oznaczaj całej macierzy po jednym wpisie.",
+            "acceptance": "Rzeczywiste logi i reprodukcja błędów; nie oznaczaj całej macierzy po jednym wpisie. Przed wydaniem domknij odroczoną z P080/P081 obserwowaną macierz 96/144/192 DPI, resize i ocenę czytelności stanów; automatyczne testy kształtów/tekstów nie są dowodem percepcji. Computer Use nie jest wymagane: dopuszczalny udokumentowany test ręczny przez człowieka.",
             "depends_on": [
                 "P103"
             ],
