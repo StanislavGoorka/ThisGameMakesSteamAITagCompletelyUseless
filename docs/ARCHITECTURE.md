@@ -1,5 +1,11 @@
 # Architektura docelowa
 
+P085-15: wartościowy first_overdrive_used jest domyślnie false, resetowany
+na granicy i porównywany w capture oraz dokładnym witness. Hashv8 dopisuje
+jeden bajt po delivery_requirement; replay16 i checkpoint rules5 wiążą
+ten kontrakt. Schema1 odtwarza false i odrzuca capture true. Akcje jeszcze
+nie ustawiają tego znacznika; ID4 pozostaje niezaimplementowane.
+
 P085-04: module_catalog odróżnia zaimplementowane ID1..3 od reward_module_catalog
 ID1/2. Wspólny decoder slotów i loadout odrzucają przyszłe ID; dwa sloty.
 Oferty są czystą funkcją root seedu, ukończonego sektora i loadoutu. ID3

@@ -67,7 +67,8 @@ capture_checkpoint(const RunState &run)
     const auto &a = run.sector;
     const auto &b = restored->sector;
     // Compare every field: a boundary projection must never silently lose data.
-    if (a.delivery_requirement != b.delivery_requirement ||
+    if (a.first_overdrive_used != b.first_overdrive_used ||
+        a.delivery_requirement != b.delivery_requirement ||
         run.reward_claimed != restored->reward_claimed ||
         a.player_position != b.player_position ||
         a.turns_taken != b.turns_taken || a.packet != b.packet ||

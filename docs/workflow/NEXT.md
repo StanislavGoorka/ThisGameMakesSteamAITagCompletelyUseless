@@ -1,7 +1,7 @@
 # Następny mały krok
 
-Task: P085-15
+Task: P085-16
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P085-05. P085-15: wyłącznie first_overdrive_used=false, reset/capture/witness/porównania i hashv8 z niezależnymi wektorami. Nie dodawaj ID4 ani ustawiania znacznika w akcjach. Jawne wersje replay/checkpoint, schema1; pełny Debug/Release.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P085-15. P085-16: tylko aktywuj ID4 i znacznik po każdym udanym overdrive. Pierwszy z modułem bez długu także przy MAX, następne +1; rezerwa i tura nadal kosztują. Odmowy, preview, pary modułów, reset/restore, wersje i niezależne ślady. Bez ofert/UI.
 
 Dla kodu: skill cpp-core-step, pełny build/CTest Debug i Release, clang-format src/tests/tools. Po mutacji odczekaj ponad 1 s i touch przed buildem. Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Bez nowych assetów i finalnych napisów. Obserwacja pulpitu i percepcyjna czytelność w P104.

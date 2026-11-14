@@ -15,5 +15,5 @@ function vectors(rules) {
     return bytes;
   });
 }
-if(require.main===module)console.log(JSON.stringify(vectors(Number(process.argv[2]??4))));
+if(require.main===module)console.log(JSON.stringify(vectors(Number(process.argv[2]??5))));
 module.exports={vectors};

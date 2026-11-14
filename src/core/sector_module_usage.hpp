@@ -8,5 +8,6 @@ namespace closed_circuit
 constexpr void reset_sector_module_usage(GameState &state) noexcept
 {
     state.terminal_rotation_used = false;
+    state.first_overdrive_used = false;
 }
 } // namespace closed_circuit

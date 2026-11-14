@@ -54,7 +54,8 @@ GameState board_with_receivers(std::initializer_list<int> receivers)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    if (left.delivery_requirement != right.delivery_requirement)
+    if (left.first_overdrive_used != right.first_overdrive_used ||
+        left.delivery_requirement != right.delivery_requirement)
         return false;
     return left.terminal_rotation_used == right.terminal_rotation_used &&
            left.modules == right.modules && left.reserve == right.reserve &&

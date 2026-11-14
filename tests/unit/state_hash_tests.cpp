@@ -24,7 +24,8 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    if (left.delivery_requirement != right.delivery_requirement)
+    if (left.first_overdrive_used != right.first_overdrive_used ||
+        left.delivery_requirement != right.delivery_requirement)
         return false;
     return left.capacitors == right.capacitors &&
            left.emitters == right.emitters &&
@@ -232,19 +233,19 @@ int main()
     final.delivery_requirement = *DeliveryRequirement::from_value(3);
     auto copy = final;
     copy.delivery_requirement = DeliveryRequirement{};
-    if (checked_hash(minimal) != 3815129539053621483ULL ||
-        checked_hash(final) != 3815128439541993272ULL ||
+    if (checked_hash(minimal) != 5173095973100270318ULL ||
+        checked_hash(final) != 5174052548216624663ULL ||
         same_state(minimal, final) || !same_state(minimal, copy) ||
         final.delivery_requirement.value() != 3)
         return 1;
     const auto full = full_state();
     // Independent byte oracle: tools/replay/hash_vectors.cjs.
-    if (checked_hash(minimal) != 3815129539053621483ULL)
+    if (checked_hash(minimal) != 5173095973100270318ULL)
     {
         std::cerr << "Minimal state must match canonical v7 vector\n";
         return 1;
     }
-    if (checked_hash(full) != 3392071015549595647ULL)
+    if (checked_hash(full) != 18147842807136425162ULL)
     {
         std::cerr << "Full state must match canonical v7 vector\n";
         return 1;
@@ -256,10 +257,10 @@ int main()
         std::uint64_t hash;
     };
     const ResourceVector resources[]{
-        {0, 0, 239870644231180817ULL},         {1, 0, 16898983071506255678ULL},
-        {2, 0, 3815129539053621483ULL},        {3, 0, 2027497892619144728ULL},
-        {255, 0, 14159175325959859228ULL},     {2, 1, 1029752968502193494ULL},
-        {2, UINT32_MAX, 159006394723750663ULL}};
+        {0, 0, 9911112253329031004ULL},         {1, 0, 12282033543676120037ULL},
+        {2, 0, 5173095973100270318ULL},         {3, 0, 7544017263447359351ULL},
+        {255, 0, 8697682439761145115ULL},       {2, 1, 6956901319069329693ULL},
+        {2, UINT32_MAX, 4161644210207945858ULL}};
     for (const auto &vector : resources)
     {
         auto value = minimal;

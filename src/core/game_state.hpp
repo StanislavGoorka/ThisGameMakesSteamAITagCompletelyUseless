@@ -76,6 +76,8 @@ struct GameState
     std::vector<PeriodicEmitter> emitters{};
     std::vector<DelayedCapacitor> capacitors{};
     DeliveryRequirement delivery_requirement{};
+    // Sector-local use; activated by the separate overdrive rule step.
+    bool first_overdrive_used{false};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

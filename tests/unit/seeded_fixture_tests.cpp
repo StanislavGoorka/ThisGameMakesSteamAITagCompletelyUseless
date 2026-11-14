@@ -25,7 +25,8 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    if (left.delivery_requirement != right.delivery_requirement)
+    if (left.first_overdrive_used != right.first_overdrive_used ||
+        left.delivery_requirement != right.delivery_requirement)
         return false;
     return left.capacitors == right.capacitors &&
            left.emitters == right.emitters &&
@@ -78,10 +79,10 @@ struct Vector
 // Independent BigInteger SplitMix64 and canonical byte stream calculations;
 // see history/P024-02.md. These four seeds cover every initial orientation.
 constexpr std::array vectors{
-    Vector{RunSeed{0}, 6, 4099969442105450169ULL},
-    Vector{RunSeed{1}, 9, 8373147188733755196ULL},
-    Vector{RunSeed{2}, 3, 7823323222518848886ULL},
-    Vector{RunSeed{UINT64_MAX}, 12, 7611831467147708935ULL}};
+    Vector{RunSeed{0}, 6, 18124141683206860506ULL},
+    Vector{RunSeed{1}, 9, 11143070163232789709ULL},
+    Vector{RunSeed{2}, 3, 6611266586381166547ULL},
+    Vector{RunSeed{UINT64_MAX}, 12, 11315812889313394140ULL}};
 
 bool vectors_repeat_without_changing_external_rng()
 {

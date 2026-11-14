@@ -1,4 +1,4 @@
-// Independent byte oracle for canonical hash v7. No C++ or resolver calls.
+// Independent byte oracle for canonical hash v8. No C++ or resolver calls.
 const minimal = () => ({ports: Array(49).fill(0), rot: Array(49).fill(0),
   blocked: Array(49).fill(0), player: 0, hp: 3, turns: 0, packet: [],
   powered: Array(49).fill(0), receivers: Array(49).fill(0), entry: [], exit: [],
@@ -23,14 +23,15 @@ function hash(s, version) {
     for (const [id,...fields] of s.capacitors) { le(id,4); bytes.push(...fields); }
   }
   if (version >= 7) bytes.push(s.requirement ?? 2);
+  if (version >= 8) bytes.push(s.firstUsed ?? 0);
   let h=14695981039346656037n;
   for (const b of bytes) h=BigInt.asUintN(64,(h^BigInt(b))*1099511628211n);
   return h.toString();
 }
 const vectors = [];
 const migration = {};
-const migrate = s => { const next=hash(s,7); migration[hash(s,6)]=next; return next; };
-const add = s => vectors.push([hash(s,6),migrate(s)]);
+const migrate = s => { const next=hash(s,8); migration[hash(s,7)]=next; return next; };
+const add = s => vectors.push([hash(s,7),migrate(s)]);
 add(minimal());
 for (const reserve of [0,1,3,255]) add({...minimal(),reserve});
 for (const debt of [1,4294967295]) add({...minimal(),debt});
@@ -73,9 +74,10 @@ for(const [bits,turns,remaining,reserve,debt] of [[10,0,2,2,0],[10,1,1,2,0],
   Object.assign(s,{turns,reserve,debt,capacitors:[[0,2,2,2,remaining]]});
   capacitorTrace.push(migrate(s));
 }
-const requirements = [hash(minimal(),7), hash({...minimal(),requirement:3},7)];
+const requirements = [migrate(minimal()), migrate({...minimal(),requirement:3})];
+const firstOverdriveHashes = [hash(minimal(),8), hash({...minimal(),firstUsed:1},8)];
 migrate(emitter);
 if (require.main === module) {
-  console.log(JSON.stringify({vectors,emitter:hash(emitter,7),capacitor:capacitorHashes,capacitorTrace,requirements,migration},null,2));
+  console.log(JSON.stringify({vectors,emitter:hash(emitter,8),capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration},null,2));
 }
-module.exports = {vectors, emitter:hash(emitter,7), capacitor:capacitorHashes,capacitorTrace,requirements,migration};
+module.exports = {vectors, emitter:hash(emitter,8), capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration,hash,minimal};

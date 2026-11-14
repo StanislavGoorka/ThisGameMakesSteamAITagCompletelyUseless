@@ -1,4 +1,9 @@
-# Checkpoint granicy sektora — schema1, rules4
+# Checkpoint granicy sektora — schema1, rules5
+
+P085-15: bieżące run_rules=5, hashv8/replay16. Nowy lokalny znacznik
+first_overdrive_used jest resetowany do false; capture odrzuca true, aby
+schema1 nie traciła pola. Nie jest jeszcze ustawiany przez akcje. ID1..3
+pozostają zaimplementowane, nagrody1/2. Wcześniejsze wersje są odrzucane.
 
 P085-04: bieżące run_rules=4 dopuszcza zaimplementowane ID1..3, nadal przy
 dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
@@ -51,6 +56,7 @@ nie będzie ponownie przechwytywać stanu po ruchu.
 | packet | Brak |
 | pulses | Puste albo dokładnie jeden impuls EntityId0 na wejściu, według flagi |
 | terminal_rotation_used | false |
+| first_overdrive_used | false; true jest odrzucane przez capture |
 | reward_claimed | false |
 | RunPhase, SectorOutcome | Wyliczane, nigdy serializowane; playing / ongoing |
 
@@ -70,7 +76,7 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 4 |
+| 8 | 4 | run_rules_version | 5 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
