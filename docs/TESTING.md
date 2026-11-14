@@ -465,3 +465,5 @@ SamplesPlayed resetuje się po END_OF_STREAM, więc kryterium to obserwacja
 pełnej kolejki przed Start oraz pustej po zakończeniu; peak jest diagnostyką.
 
 P081-01: windows_mvp_window wykonuje trzy sektory od ?wie?ego startu przez HWND z lokalnym checkpointem i profilem. Ka?da komenda por?wnuje pe?ny stan i plansz? z core; preview/odmowa chroni? pliki, trzy granice i won chroni? zapis, wynik profilu to 31. To automatyczny dow?d integracji, bez obserwacji i playtestu.
+
+P081-02: windows_mvp_restart por?wnuje pliki granicy sektora 2 z niezale?nym przebiegiem HWND, a potem trzy nowe procesy zapisuj?, wznawiaj? i odczytuj? prywatny run. Ka?da kontynuowana tura por?wnuje stan i plansz? z core; odczyt nie zapisuje, won usuwa checkpoint, profil 27/backup 11 wyklucza achievement nieznanej historii.
