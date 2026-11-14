@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P085
+Task: P085-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-01. P085: tylko podział rozszerzenia katalogu z2 do maksymalnie12 modułów, po jednym module na dziecko. Zaplanuj najpierw kontrakt i ewentualną wspólną obsługę katalogu/ofert/kodeków, potem dziesięć wąskich reguł z testem dodatnim/ujemnym i interakcjami. Zachowaj dwa sloty, brak nowych treści i jawne wersje zapisu. Przepnij P086 na ostatnie wymagane dziecko. Czytaj GAME_DESIGN, module_loadout/catalog/offer, rotation_rules, resolver i CHECKPOINT_FORMAT. Zależność P084-01 ukończona.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P085. P085-01: wyłącznie dokument kontraktu katalogu do12 typów przy dwóch slotach, dopuszczenia do nagród i deterministycznych ofert. Czytaj MODULE_EXPANSION_PLAN, GAME_DESIGN, module_loadout/offer/choice, run_reward, reward_selection/rows, kodeki i CHECKPOINT_FORMAT. Doprecyzuj API, reset, korpus i wersje reguł; bez implementacji, nowych assetów i napisów. Zależność P085 ukończona; podział nie oznacza nowych modułów.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 

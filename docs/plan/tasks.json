@@ -2732,10 +2732,164 @@
             "id": "P085",
             "phase": "M7",
             "title": "Rozbij rozszerzenie modułów",
-            "scope": "Wyłącznie zaplanuj dzieci dla brakujących modułów do maksymalnie 12; po jednym na dziecko.",
-            "acceptance": "Dzieci mają predykaty i testy, a konsumenci zależą od wszystkich wymaganych dzieci.",
+            "scope": "Wyłącznie zaplanuj kontrakt, katalog, deterministyczne oferty i po jednym dziecku dla dziesięciu nowych modułów do katalogu12, z oddzielną prezentacją developerską. Bez implementacji.",
+            "acceptance": "MODULE_EXPANSION_PLAN opisuje ID3..12, pojedyncze predykaty, testy +/−, dwa sloty i osiągalność ofert. Dzieci mają domknięte zależności; P086 wymaga ostatniej integracji. Podział nie implementuje nowych modułów.",
             "depends_on": [
                 "P084-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-01",
+            "phase": "M7",
+            "title": "Kontrakt rozszerzonego katalogu",
+            "scope": "Wyłącznie udokumentuj kontrakt ID1..12, dwóch slotów, dopuszczenia do ofert, modeli/resetów i wersjonowania według MODULE_EXPANSION_PLAN. Bez kodu.",
+            "acceptance": "Wąskie API dla katalogu i ofert, korpus i negatywne przypadki; brak milczącej utraty nowych pól w checkpointach. Doprecyzowane reguły dziesięciu dzieci, bez zmiany gatunku, assetów i finalnych tekstów.",
+            "depends_on": [
+                "P085"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-02",
+            "phase": "M7",
+            "title": "Wspólny katalog i kanoniczny loadout",
+            "scope": "Przygotuj jeden katalog zaimplementowanych ID i odrębną pulę ofert oraz wspólną walidację modelu/kodeków, nadal wyłącznie ID1/2. Bez nowego modułu.",
+            "acceptance": "Dwa sloty; nieznane ID, duplikat, luka i zły porządek odrzucone. Oferty przy pełnym loadoucie puste; stare bajty i zachowanie bez zmiany. Nie akceptuj przyszłych ID. Debug/Release; jeśli za szerokie, tylko podział.",
+            "depends_on": [
+                "P085-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-03",
+            "phase": "M7",
+            "title": "Deterministyczny wybór ofert runu",
+            "scope": "Dodaj wybór najwyżej dwóch dopuszczonych nieposiadanych ID zależny od seedu/numeru sektora i wspólny dla wyboru, projekcji oraz okna. Pula nadal ID1/2.",
+            "acceptance": "Obecne oferty bez zmiany. Niezależny korpus indeksów puli1..12 dowodzi osiągalności wszystkich, braku duplikatów i stabilności; pełny loadout, odmowy, preview, restart i restore bez mutacji/RNG. Debug/Release; bez nowych etykiet.",
+            "depends_on": [
+                "P085-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-04",
+            "phase": "M7",
+            "title": "Moduł delivery_reserve",
+            "scope": "Tylko ID3 i odnawianie2 rezerwy po dostawie, limit3; bez dopuszczenia do ofert/UI.",
+            "acceptance": "Rezerwa0/1/2/3, faktyczna i powtórzona dostawa; bez modułu +1. Kopie, resolver/preview, hash/kodek i oba buildy; żadnej tury lub waluty dodatkowo.",
+            "depends_on": [
+                "P085-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-05",
+            "phase": "M7",
+            "title": "Moduł first_overdrive_debt",
+            "scope": "Tylko ID4: pierwszy zaakceptowany overdrive sektora dodaje0 długu, kolejne +1. Bez ofert/UI.",
+            "acceptance": "Pierwszy/kolejny, debtMAX, rezerwa/tura nadal kosztują, odmowy i preview nie zużywają; reset granicy, capture/restore i niezależny hash nowego pola. Debug/Release.",
+            "depends_on": [
+                "P085-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-06",
+            "phase": "M7",
+            "title": "Moduł packet_stride",
+            "scope": "Tylko ID5: pakiet przechodzi do2 krawędzi na turę, jedna faza dostawy i jeden aktywny pakiet. Bez ofert/UI.",
+            "acceptance": "Trasy0/1/2/3, brak trasy, cel po pierwszej/drugiej krawędzi, następny pakiet dopiero kolejna tura. Normalne regresje, preview/odmowy, jeden koszt i Debug/Release.",
+            "depends_on": [
+                "P085-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-07",
+            "phase": "M7",
+            "title": "Moduł pulse_cadence",
+            "scope": "Tylko ID6: ruch impulsów w parzystych zaakceptowanych turach, kontakty w każdej. Bez ofert/UI.",
+            "acceptance": "1/2/47/48, kontakty przed ruchem także w nieparzystej turze, stabilne ID i limit1HP; odmowa nie przesuwa harmonogramu, brak modułu bez zmiany. Debug/Release.",
+            "depends_on": [
+                "P085-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-08",
+            "phase": "M7",
+            "title": "Moduł powered_pulse_barrier",
+            "scope": "Tylko ID7: impuls czeka przed wybranym krokiem BFS na zasilony odbiornik; bez alternatywnej trasy i bez ofert/UI.",
+            "acceptance": "Obie flagi razem blokują, każda osobno nie; kontakt zastany, kolejność jednostek i zwolnienie pola zachowane. Pakiet/gracz bez zmiany, preview/odmowy i Debug/Release.",
+            "depends_on": [
+                "P085-07"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-09",
+            "phase": "M7",
+            "title": "Moduł entry_insulation",
+            "scope": "Tylko ID8: pierwsza zaakceptowana tura na wejściu chroni przed HP od kontaktu impulsu, który nadal jest usuwany. Bez ofert/UI.",
+            "acceptance": "Wejście/poza, pierwsza/druga tura, normalny i opłacony impuls, brak zwrotu długu; emiter/kondensator nadal mogą zadać1HP. Reset na kolejnej granicy, preview/odmowy i Debug/Release.",
+            "depends_on": [
+                "P085-08"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-10",
+            "phase": "M7",
+            "title": "Moduł delivery_debt_relief",
+            "scope": "Tylko ID9: rzeczywista dostawa redukuje dług o1 do0. Bez ofert/UI.",
+            "acceptance": "Dług0/1/MAX i duplikat, overdrive przed dostawą, zachowanie rezerwy, brak modułu i wznowienie. Pełny stan, preview/odmowy i Debug/Release.",
+            "depends_on": [
+                "P085-09"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-11",
+            "phase": "M7",
+            "title": "Moduł overdrive_range",
+            "scope": "Tylko ID10: +1 Manhattan zasięgu overdrive, bez zmiany rotate. Bez ofert/UI.",
+            "acceptance": "Zasięg2 samodzielnie i3 z rotation_range, granice/rogi, nieruchomy terminal i jego limit, brak rezerwy oraz odmowa bez kosztu. Debug/Release.",
+            "depends_on": [
+                "P085-10"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-12",
+            "phase": "M7",
+            "title": "Moduł reverse_rotation",
+            "scope": "Tylko ID11: rotate przeciwnie do wskazówek; overdrive nadal180 stopni. Bez ofert/UI.",
+            "acceptance": "Wszystkie16 masek, cykl4, dokładnie jedna zgoda terminal_rotation, zasięg i koszty, wspólny resolver/preview i normalne regresje. Debug/Release.",
+            "depends_on": [
+                "P085-11"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-13",
+            "phase": "M7",
+            "title": "Moduł packet_priority",
+            "scope": "Tylko ID12: następny cel to najwyższy niezasilony odbiornik. Bez zmiany celu aktywnego pakietu, ofert/UI.",
+            "acceptance": "Pusto/jeden/kilka/wszystkie zasilone, niecelowe powered, normalny/finał, współpraca z packet_stride, preview/odmowy i Debug/Release.",
+            "depends_on": [
+                "P085-12"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-14",
+            "phase": "M7",
+            "title": "Prezentacja i dopuszczenie nowych modułów",
+            "scope": "Dla gotowych ID3..12 dodaj katalogową projekcję i oznaczone robocze etykiety, następnie dopuść je do deterministycznych ofert. Bez nowych assetów i finalnych treści.",
+            "acceptance": "Każdy gotowy ID osiągalny w korpusie seedów, dwa sloty/oferty, brak fallbacku i brakujący tekst odrzucony. Public odmawia placeholderów. Pełny run, checkpoint/backup, achievementy i HWND Debug/Release. Stosuj asset-intake; jeśli ponad mikro-zakres, wyłącznie podział.",
+            "depends_on": [
+                "P085-13"
             ],
             "gate": null
         },
@@ -2746,7 +2900,7 @@
             "scope": "Wyłącznie zaplanuj oddzielne dzieci dla dwóch dodatkowych konfiguracji.",
             "acceptance": "Każda równorzędna, bez permanentnych bonusów; zależności domknięte.",
             "depends_on": [
-                "P085"
+                "P085-14"
             ],
             "gate": null
         },
