@@ -223,6 +223,12 @@
         "P079-06"
     ],
     "current_task": "P080",
-    "blocked": [],
-    "last_report": "docs/workflow/history/P079-06.md"
+    "blocked": [
+        {
+            "task_id": "P080",
+            "reason": "Oba interfejsy Computer Use odmawiają dostępu do pulpitu: native pipe unavailable (os error 2). Nie wykonano obserwowanej macierzy DPI ani oceny rozpoznawania stanów. P080 jest jedynym nieukończonym zadaniem z ukończonymi zależnościami.",
+            "unblock_when": "Działający host Windows Computer Use pozwala wybrać okno developer_window, obejrzeć rzeczywiste klatki i wykonać udokumentowaną macierz DPI oraz ocenę stanów bez polegania na kolorze."
+        }
+    ],
+    "last_report": "docs/workflow/history/P080.md"
 }
