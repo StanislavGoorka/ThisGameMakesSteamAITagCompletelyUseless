@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/capacitor_phase.hpp"
 #include "core/command.hpp"
 #include "core/emitter_phase.hpp"
 #include "core/packet_delivery.hpp"
@@ -59,6 +60,7 @@ struct TurnResult
     bool damage_applied = false;
     resolve_pulse_phase(next, damage_applied);
     resolve_emitter_phase(next, next.emitters, damage_applied);
+    resolve_capacitor_phase(next, next.capacitors, damage_applied);
     charge_turn(next);
     result.outcome = sector_outcome(next);
     return result;

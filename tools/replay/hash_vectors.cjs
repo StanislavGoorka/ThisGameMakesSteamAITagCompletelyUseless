@@ -62,7 +62,15 @@ capacitor.capacitors[0][4]=0;capacitor.capacitors[1][4]=47;
 capacitorHashes.pending=hash(capacitor,6);
 capacitor.capacitors[1][4]=0;
 capacitorHashes.spent=hash(capacitor,6);
-if (require.main === module) {
-  console.log(JSON.stringify({vectors,emitter:hash(emitter,6),capacitor:capacitorHashes},null,2));
+// Explicit snapshots of the capacitor turn corpus, including a refused move.
+const capacitorTrace=[];
+for(const [bits,turns,remaining,reserve,debt] of [[10,0,2,2,0],[10,1,1,2,0],
+  [10,1,1,2,0],[5,2,0,2,0],[10,3,0,2,0],[10,4,0,2,0],[10,5,0,1,1]]) {
+  const s=minimal();s.ports[0]=2;s.ports[1]=bits;s.ports[2]=8;s.rot[1]=1;
+  Object.assign(s,{turns,reserve,debt,capacitors:[[0,2,2,2,remaining]]});
+  capacitorTrace.push(hash(s,6));
 }
-module.exports = {vectors, emitter:hash(emitter,6), capacitor:capacitorHashes};
+if (require.main === module) {
+  console.log(JSON.stringify({vectors,emitter:hash(emitter,6),capacitor:capacitorHashes,capacitorTrace},null,2));
+}
+module.exports = {vectors, emitter:hash(emitter,6), capacitor:capacitorHashes,capacitorTrace};

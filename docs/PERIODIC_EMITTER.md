@@ -84,7 +84,8 @@ Format zapisu nie przechowuje arbitralnej planszy ani mid-sector countdown.
 Wersję replay zmieniamy jawnie przy zmianie stanu/reguł i chronimy wektorami.
 P082-06 podłączył resolver, wspólny limit i regresje preview/replay/odmów.
 Replay v10 wiąże nowe reguły; dotychczasowy helper impulsów zachowuje wrapper.
-P083-05 rozszerzył stan o kondensatory: aktualnie obowiązują hash v6 i replay v11.
+P083-05 rozszerzył stan o kondensatory (hash v6), a P083-06 podłączył ich fazę:
+aktualnie obowiązuje replay v12.
 Generator i prezentacja nadal nie zawierają emiterów.
 Rozmieszczenie i prezentacja wymagają przyszłego osobnego zakresu i dowodów;
 te kroki nie mogą wyświetlić niezatwierdzonego zastępczego symbolu.

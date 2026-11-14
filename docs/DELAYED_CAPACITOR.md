@@ -68,14 +68,15 @@ za jedno wywołanie na zaakceptowaną akcję.
 
 ## Stan, zapis i dowody
 
-P083-02 dostarcza wartość i licznik; P083-03 współdzielony grafowy BFS
-i footprint; P083-04 samodzielną fazę na jawnej liście. Dopiero P083-05
-dodaje kolekcję do GameState, pełne porównania i wersjonowany hash/replay.
+P083-02 dostarczył wartość i licznik; P083-03 współdzielony grafowy BFS
+i footprint; P083-04 samodzielną fazę na jawnej liście. P083-05
+dodał kolekcję do GameState, pełne porównania i wersjonowany hash/replay.
 Wdrożony w P083-05 hash v6 obejmuje id, position, delay, range i remaining, również spent, liczbę
 i kolejność elementów. Niezależne wektory nie pochodzą z implementacji C++.
-Replay v11 wiąże tę wersję stanu. Checkpoint obecnego generatora odtwarza pustą kolekcję; capture odrzuca
+P083-05 wprowadził replay v11; reguły resolvera z P083-06 wiąże aktualny v12.
+Checkpoint obecnego generatora odtwarza pustą kolekcję; capture odrzuca
 każdą niepustą, również spent, zamiast cicho ją usuwać. Format zapisu nadal
-nie serializuje dowolnego stanu śródsektorowego. P083-06 podłącza resolver.
+nie serializuje dowolnego stanu śródsektorowego. P083-06 podłączył resolver.
 
 Testy: walidacja granic i pełnych liczb; delay 1/2/48 i powtarzane ticki po
 spent; kopie; dokładne zbiory footprint z cyklem/rozgałęzieniem/obrotem;

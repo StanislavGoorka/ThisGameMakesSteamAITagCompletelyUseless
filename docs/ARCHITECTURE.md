@@ -2,6 +2,16 @@
 
 Plan, nie opis zaimplementowanych modułów. Budujemy małą grę testowalną bez wyświetlania treści, nie silnik ogólnego zastosowania.
 
+Aktualizacja P082-06/P083-06: resolver po pakiecie/dostawie rozwiązuje impulsy,
+emitery i kondensatory, współdzieląc jeden bool damage_applied. Dopiero potem
+nalicza jedną turę i wynik. Preview nadal używa tego samego resolvera na kopii.
+Kondensator wybucha tylko przy przejściu remaining 1→0; aktualny graf wyznacza
+footprint, a spent nie odnawia się. GameState posiada obie kolekcje wartościowo;
+hash v6 obejmuje wszystkie pola i kolejność, replay v12 wiąże aktualne reguły.
+Checkpoint i dokładny baseline witness odrzucają obce kolekcje. Generator,
+prezentacja i format checkpointu nie dodają tych zagrożeń. Kontrakty:
+[emiter](PERIODIC_EMITTER.md), [kondensator](DELAYED_CAPACITOR.md).
+
 ## Stos
 
 Windows x64, desktop Win32, C++20, MSVC z Visual Studio 2022 i Windows SDK, CMake 3.26+. Windows 11 jest celem wsparcia 1.0; Windows 10 można sprawdzać dodatkowo bez obiecywania zgodności. Narzędzia musi zweryfikować P001; ich obecność nie jest założona.

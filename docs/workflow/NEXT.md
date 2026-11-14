@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P083-06
+Task: P084
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P083-05. P083-06: czytaj docs/DELAYED_CAPACITOR.md. Podłącz fazę kondensatorów po emiterach przed kosztem i wynikiem, ze wspólnym bool. Testuj preview/commit po rotacji między tickami i podczas detonacji, odmowy/terminalne bez ticka, koszt 1, kilka zagrożeń z limitem 1 HP, brak podwójnego wybuchu i śmierć przed sukcesem. Zaktualizuj wersję replay dla nowych reguł; bez generatora i UI. Zależność P083-05 ukończona.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P083-06. P084: wyłącznie rozbij końcowy sektor na małe dzieci, ponieważ wariant trzech dostaw dotyka generatora, warunku sukcesu, runu i checkpointu oraz certyfikatu. Zachowaj istniejące P084-01 (run sześciu sektorów); nowe dzieci mogą mieć ID P084-02..06. Przepnij P084-01 na ostatnią wymaganą implementację. Czytaj GAME_DESIGN, sector_topology, sector_outcome, run_start/run_transition i run_checkpoint. Zależność P083-06 ukończona.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 
