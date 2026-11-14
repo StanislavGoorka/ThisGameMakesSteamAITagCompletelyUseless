@@ -9,7 +9,8 @@ reguł1 nadal buduje zwykłe sektory. P084-09 używa progu w sector_outcome,
 zachowując pierwszeństwo śmierci i sukcesu w turze48; replay v14 wiąże regułę.
 Samodzielna topologia finału i docelowa zgodność: [FINAL_SECTOR](FINAL_SECTOR.md).
 P084-05: build_sector_state(SectorVariant) jest wspólną budową lokalnych pól
-startu, przejścia i restore. Wszystkie trzy wywołania pozostają normalne.
+startu, przejścia i restore. P084-07 wybiera przez sector_variant_for ostatni
+sektor jako finał, względem jednej stałej sector_count=3; checkpoint rules2.
 Nakładanie odziedziczonych zasobów i odtwarzanie opłaconego impulsu nie są
 odpowiedzialnością buildera; nie wprowadza on drugiej próby spawnu długu.
 

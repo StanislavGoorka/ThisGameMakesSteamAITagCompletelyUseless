@@ -79,6 +79,16 @@ bool cases()
                     if (debt >= 3)
                         expected.sector.pulses = {
                             {*EntityId::from_value(0), node(0)}};
+                    if (v.number == sector_count)
+                    {
+                        const auto third = node(v.top ? 34 : 46);
+                        expected.sector.ports[third.value()] =
+                            *PortMask::from_bits(v.top ? 5 : 10);
+                        expected.sector.rotatable_nodes[third.value()] = false;
+                        expected.sector.receiver_nodes[third.value()] = true;
+                        expected.sector.delivery_requirement =
+                            *DeliveryRequirement::from_value(3);
+                    }
                     for (int repeat = 0; repeat < 2; ++repeat)
                     {
                         auto actual = advance_run(run);

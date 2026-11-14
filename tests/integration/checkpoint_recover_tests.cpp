@@ -1,3 +1,4 @@
+#include "../support/checkpoint_bytes.hpp"
 #include "../support/checkpoint_files.hpp"
 #include "../support/checkpoint_vectors.hpp"
 #include "../support/run_checks.hpp"
@@ -115,6 +116,28 @@ bool cases()
                                         primary.bytes))
                     return false;
             }
+    // Incompatible rules with a valid checksum must preserve a usable backup.
+    for (std::uint8_t rules = 1; rules < checkpoint_run_rules_version; ++rules)
+    {
+        auto old = primary.bytes;
+        old[8] = rules;
+        test::reseal(old);
+        const auto &valid = test::checkpoint_vectors[1];
+        test::write_bytes(main, old);
+        test::write_bytes(backup, valid.bytes);
+        const auto result = windows::recover_checkpoint_file(main);
+        const auto restored = result.checkpoint
+                                  ? restore_checkpoint(*result.checkpoint)
+                                  : std::nullopt;
+        if (result.source != windows::CheckpointSource::backup ||
+            result.main_error != ERROR_INVALID_DATA ||
+            result.checkpoint != valid.checkpoint || !restored ||
+            restored->sector.delivery_requirement.value() != 3 ||
+            test::read_bytes(main) != std::vector(old.begin(), old.end()) ||
+            test::read_bytes(backup) !=
+                std::vector(valid.bytes.begin(), valid.bytes.end()))
+            return false;
+    }
     const auto missing =
         windows::recover_checkpoint_file(directory.path / L"missing" / L"run");
     return !missing.checkpoint &&

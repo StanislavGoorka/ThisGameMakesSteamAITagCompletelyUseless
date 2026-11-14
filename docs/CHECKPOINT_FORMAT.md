@@ -1,4 +1,8 @@
-# Checkpoint granicy sektora v1
+# Checkpoint granicy sektora — schema1, rules2
+
+P084-07: bieżące run_rules=2 aktywuje finał tylko dla ostatniego z trzech
+sektorów. Schema1 i układ 40 bajtów pozostają. Rules1 jest odrzucane,
+nawet przy poprawnej checksumie, bez migracji i bez nadpisania backupu.
 
 Specyfikacja P036; kodek pamięciowy wdrożono w P037-01..04, adapter plików Windows w P038-01..04.
 Automatyczne odzyskiwanie pozostaje P039. Checkpoint odtwarza
@@ -33,8 +37,9 @@ nie będzie ponownie przechwytywać stanu po ruchu.
 | --- | --- |
 | seed, sector_number | Bezpośrednio z checkpointu |
 | player_integrity, reserve, overload_debt, modules | Bezpośrednio; bez leczenia i regeneracji |
-| ports, rotatable_nodes | `generate_sector_topology` z N-tego `next_u64` lokalnego SplitMix64(root seed) |
+| ports, rotatable_nodes | `build_sector_state` z N-tego `next_u64` lokalnego SplitMix64(root seed), normal lub final według `sector_variant_for` |
 | sector_entry, sector_exit, receiver_nodes | Z tej samej topologii |
+| delivery_requirement | 2 dla normalnego, 3 dla ostatniego sektora; wariant nie jest osobnym zapisanym polem |
 | player_position | Wejście wygenerowanego sektora |
 | blocked_nodes, powered_nodes | Wszystkie false |
 | turns_taken | 0 |
@@ -60,7 +65,7 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 1 |
+| 8 | 4 | run_rules_version | 2 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..3 |
 | 21 | 1 | player_integrity | 1..3 |
@@ -75,9 +80,11 @@ FNV-1a64: start14695981039346656037; dla każdego bajtu XOR, potem mnożenie
 przez1099511628211 modulo2^64. To kontrola przypadkowego uszkodzenia, bez
 uwierzytelniania i bez gwarancji wykrycia każdej zmiany. Nie używa `state_hash`:
 tamten hashv4 dotyczy pełnego GameState i służy replay. Checksum obejmuje wersje,
-seed, wszystkie pola i bajty zarezerwowane. Wersja reguł runu1 zamraża kontrakty
-M3, w tym zasady tury replay8, hashv4 i generator P028/P035. Wersje checkpointu
-i replay są odrębne; dodanie kodeka nie zmienia istniejących replayów.
+seed, wszystkie pola i bajty zarezerwowane. Historyczne reguły1 odtwarzały
+wyłącznie normalne sektory. Reguły2 odtwarzają trzeci sektor z trzema
+odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
+Wersje checkpointu i replay są odrębne; obecny hashv7/replay14 nie jest
+checksumą checkpointu. Niezależny oracle: `tools/checkpoint/vectors.cjs 2`.
 
 ## Odrzucanie i dowody
 
@@ -102,4 +109,4 @@ checkpoint, źródło none/main/backup, surowy main_error oraz optional backup_e
 (pusty = nie próbowano). Błąd backupu daje brak checkpointu z obiema diagnozami;
 ERROR_INVALID_DATA oznacza uszkodzenie, dwa NOT_FOUND oznaczają brak,
 pozostałe kody oznaczają IO. Nie ma naprawy, nadpisania lub promocji temp.
-Schema1/run_rules1, hashv4/replay8 bez zmian.
+Schema1/run_rules2; odczyt backupu nie zmienia żadnego pliku.

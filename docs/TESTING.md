@@ -1,5 +1,14 @@
 # Testy i bramki jakości
 
+P084-03..07: korpus 257 seedów topologii/buildera i certyfikatów finału.
+developer_final_witness potwierdza trzy dostawy i wyjście w maksymalnie
+31 zaakceptowanych akcjach, chroniąc pełny stan i odmowy certyfikatów.
+core_sector_outcome obejmuje oba progi, śmierć, wyjście i granice 48/49.
+core_run_transition i application_run_checkpoint sprawdzają normal/final,
+zasoby oraz opłacony impuls. windows_checkpoint_recover sprawdza stare
+reguły z poprawną checksumą oraz zachowanie dokładnych bajtów backupu.
+Pełny run i HWND korzystają z właściwego wariantu; nie jest to playtest.
+
 P080 (zmiana kryteriów zatwierdzona przez użytkownika 2026-11-14): techniczny
 odbiór nie wymaga Computer Use. `presentation_atlas_tiles` sprawdza niepuste
 i parami różne maski alfa wszystkich ośmiu symboli, całkowicie ignorując RGB.

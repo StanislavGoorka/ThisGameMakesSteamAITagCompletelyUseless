@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/debt_spawn.hpp"
+#include "core/run_sector_variant.hpp"
 #include "core/run_turn.hpp"
-#include "core/sector_boundary.hpp"
 #include "core/sector_module_usage.hpp"
 
 namespace closed_circuit
@@ -18,7 +18,7 @@ namespace closed_circuit
     RunSeed sector_seed{0};
     for (unsigned i = 0; i < number.value(); ++i)
         sector_seed = RunSeed{rng.next_u64()};
-    auto next = *build_sector_state(sector_seed, SectorVariant::normal);
+    auto next = *build_sector_state(sector_seed, sector_variant_for(number));
     next.player_integrity = run.sector.player_integrity;
     next.reserve = run.sector.reserve;
     next.overload_debt = run.sector.overload_debt;

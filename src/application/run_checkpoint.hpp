@@ -1,7 +1,7 @@
 #pragma once
 
+#include "core/run_sector_variant.hpp"
 #include "core/run_state.hpp"
-#include "core/sector_boundary.hpp"
 
 namespace closed_circuit
 {
@@ -38,7 +38,8 @@ restore_checkpoint(const RunCheckpoint &checkpoint)
     RunSeed sector_seed{0};
     for (unsigned i = 0; i < checkpoint.sector_number.value(); ++i)
         sector_seed = RunSeed{rng.next_u64()};
-    auto state = *build_sector_state(sector_seed, SectorVariant::normal);
+    auto state = *build_sector_state(
+        sector_seed, sector_variant_for(checkpoint.sector_number));
     state.player_integrity = checkpoint.player_integrity;
     state.reserve = checkpoint.reserve;
     state.overload_debt = checkpoint.overload_debt;

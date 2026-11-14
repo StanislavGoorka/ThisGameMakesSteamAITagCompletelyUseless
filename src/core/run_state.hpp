@@ -4,6 +4,8 @@
 
 namespace closed_circuit
 {
+inline constexpr std::uint8_t sector_count = 3;
+
 class SectorNumber
 {
   public:
@@ -13,7 +15,7 @@ class SectorNumber
     from_value(Integer value) noexcept
     {
         const auto number = static_cast<std::uint64_t>(value);
-        if (number < 1 || number > 3)
+        if (number < 1 || number > sector_count)
             return std::nullopt;
         return SectorNumber{static_cast<std::uint8_t>(number)};
     }
@@ -59,7 +61,7 @@ enum class RunPhase : std::uint8_t
     case SectorOutcome::ongoing:
         return RunPhase::playing;
     case SectorOutcome::completed:
-        if (run.sector_number.value() == 3)
+        if (run.sector_number.value() == sector_count)
             return RunPhase::won;
         return run.reward_claimed ||
                        run.sector.modules.size() == ModuleLoadout::slot_limit

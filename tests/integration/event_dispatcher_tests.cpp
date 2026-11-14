@@ -1,13 +1,13 @@
 #include "../support/achievement_fakes.hpp"
 #include "../support/checkpoint_files.hpp"
 #include "../support/run_checks.hpp"
+#include "../support/run_witness.hpp"
 #include "application/event_dispatcher.hpp"
 #include "application/mvp_achievement_evaluator.hpp"
 #include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
 #include "core/run_start.hpp"
 #include "core/run_transition.hpp"
-#include "corpus/baseline_witness.hpp"
 #include "platform/windows/checkpoint_save.hpp"
 #include "platform/windows/local_achievement_sink.hpp"
 #include <string_view>
@@ -81,13 +81,8 @@ bool sector(RunState &run, EventDispatcher &dispatcher,
             ObservedSink &sink, const std::filesystem::path &profile,
             std::vector<Step> &trace)
 {
-    SplitMix64 rng(run.seed);
-    RunSeed sector_seed{0};
-    for (unsigned i = 0; i < run.sector_number.value(); ++i)
-        sector_seed = RunSeed{rng.next_u64()};
     // Reuse the certified baseline commands, not its default resource state.
-    const auto commands = developer::build_baseline_witness(
-        sector_seed, developer::sector_fixture(sector_seed));
+    const auto commands = test::sector_commands(run);
     if (!commands)
         return false;
     for (const auto &command : *commands)
@@ -309,12 +304,7 @@ bool mvp_worker(const std::filesystem::path &directory)
     {
         if (number == 2)
             boundary = reference;
-        SplitMix64 rng(reference.seed);
-        RunSeed seed{0};
-        for (unsigned i = 0; i < number; ++i)
-            seed = RunSeed{rng.next_u64()};
-        const auto commands = developer::build_baseline_witness(
-            seed, developer::sector_fixture(seed));
+        const auto commands = test::sector_commands(reference);
         if (!commands)
             return false;
         for (const auto &command : *commands)

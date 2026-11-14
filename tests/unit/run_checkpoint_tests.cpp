@@ -42,6 +42,11 @@ bool cases()
                     boundary = next.state;
                 }
                 const auto before = boundary;
+                const auto required = number == sector_count ? 3 : 2;
+                if (boundary.sector.delivery_requirement.value() != required ||
+                    std::ranges::count(boundary.sector.receiver_nodes, true) !=
+                        required)
+                    return false;
                 const auto cp = capture_checkpoint(boundary);
                 const RunCheckpoint expected{
                     RunSeed{seed},
@@ -125,7 +130,8 @@ bool cases()
                                 *EntityId::from_value(0), node(0), 2, 0, 1));
                     if (field == 15)
                         bad.sector.delivery_requirement =
-                            *DeliveryRequirement::from_value(3);
+                            *DeliveryRequirement::from_value(required == 3 ? 2
+                                                                           : 3);
                     if (field == 13 || field == 14)
                     {
                         auto capacitor = *DelayedCapacitor::from_values(
