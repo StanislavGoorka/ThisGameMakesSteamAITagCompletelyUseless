@@ -354,3 +354,8 @@ P074-06: `windows_checkpoint_window` (rzeczywisty HWND) sprawdza brak zapisu prz
 P074-07: `windows_resume_window` symuluje kolejne uruchomienia okna z jednym plikiem: brak zapisu -> start, Enter zapisuje, dwie tury nie są zapisywane; trzy ponowne uruchomienia wznawiają pełny początek sektora (stan, plansza, tura) bez zmiany plików; sektor3 z opłaconym impulsem wznawia się dokładnie. Uszkodzony main pokazuje oznaczony wiersz na starcie, Enter zastępuje go wierszem błędu zapisu bez nadpisania pliku; wyłączna blokada daje wiersz unavailable, po zwolnieniu plik znów się wznawia. Każdy wiersz etykiety zaczyna się od markera. Katalog bez wpisu odmawia corrupt, nieznany status daje E_INVALIDARG. Mutacja bez statusu kończy test etapem corrupt launch. Smoke `windows_window_process` uruchamia exe odczytujące rzeczywisty LocalAppData tylko do odczytu; katalog ClosedCircuit pozostał pusty.
 
 P075-01: `application_audio_output` sprawdza wszystkie 256 surowych wartości sygnału trzykrotnie: cicha implementacja zwraca unavailable dla dostawy i unknown dla pozostałych, bezpośrednio i przez port (noexcept). Fake przez port zwraca played/unknown/muted i zachowuje kolejność wywołań. Bez próbek audio i plików. Mutacja zwracająca played z cichej implementacji kończy test kodem 2.
+
+P075-04: windows_xaudio2_device sprawdza kolejność engine/mastering/destroy/release,
+błędy obu etapów, S_OK z pustym uchwytem i częściowe zasoby po odmowie.
+Trzy rzeczywiste utworzenia XAudio2 i mastering voice dają S_OK i available.
+Bez próbek audio, source voice i generowania nawet cichych buforów.

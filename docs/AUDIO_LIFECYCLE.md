@@ -29,3 +29,14 @@ P075-01 jest zaimplementowane: `application/audio_output.hpp` (AudioCue::deliver
 
 P075-02 jest podziałem na P075-04 (RAII pary zasobów) i P075-05
 (callback oraz jawne odtworzenie). P075-03 wymaga drugiego dziecka.
+
+P075-04 wdraża XAudio2Device i pożyczony XAudio2Api. Obiekt bez copy/move
+tworzy silnik i mastering voice w apartamencie COM wątku sesji. Błąd lub
+pusty wynik fabryki usuwa częściowe zasoby; error() zachowuje HRESULT.
+Destruktor niszczy voice przed Release silnika. Fabryka żyje dłużej od
+adaptera. Testowe uchwyty są nieodczytywanymi tokenami. Bez source voice.
+
+Microsoft Learn sprawdzono 2026-11-14:
+[XAudio2Create](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-xaudio2create),
+[CreateMasteringVoice](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2-createmasteringvoice).
+Linkowanie xaudio2.lib z Windows SDK; bez pobierania SDK i treści.

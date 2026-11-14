@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P075-04
+Task: P075-05
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075-02.
-Zależności: P075-02; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075-04.
+Zależności: P075-04; muszą być completed.
 
-Dodaj RAII pary silnik XAudio2/mastering voice z wstrzykiwaną fabryką API. Bez callbacka krytycznego, odtwarzania i buforów.
+Dodaj atomowy stan błędu krytycznego przez IXAudio2EngineCallback i jawne odtworzenie zasobów poza callbackiem.
 
-Kryteria: Rzeczywista próba utworzenia daje spójny stan; błędy fabryki silnika i voice oraz zwolnienie voice przed silnikiem potwierdzone testami.
+Kryteria: Błąd rejestracji, callback z innego wątku, powtórki odtworzenia i porządek unregister/voice/engine przetestowane; callback nie zwalnia zasobów.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
