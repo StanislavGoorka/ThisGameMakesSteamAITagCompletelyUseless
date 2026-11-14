@@ -12,6 +12,8 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
+P081: Rozbito dowód integracji MVP na trzy małe zadania. [Raport](docs/workflow/history/P081.md). Następne: P081-01.
+
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
 `cmake --build --preset windows-public-debug` lub `windows-public-release`

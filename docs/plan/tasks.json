@@ -2316,7 +2316,9 @@
             "title": "Port zatwierdzonego odtwarzania i mute",
             "scope": "Podłącz XAudio2Playback do XAudio2Output, dodaj stan mute przez AudioOutput i wczytaj tylko zatwierdzony WAV w entrypoint. Bez mapowania zdarzeń.",
             "acceptance": "Port odtwarza zatwierdzony bufor; mute i unknown nie submitują. Brak pliku, błędy urządzenia i odtwarzania są unavailable bez retry. Debug/Release i smoke procesu przechodzą.",
-            "depends_on": ["P078-04"],
+            "depends_on": [
+                "P078-04"
+            ],
             "gate": null
         },
         {
@@ -2325,7 +2327,9 @@
             "title": "Dźwięk pojedynczej zatwierdzonej dostawy",
             "scope": "Wywołaj AudioOutput raz dla PacketDelivered po publikacji zatwierdzonej tury RunWindow. Błędy portu izoluj od gry i zapisów.",
             "acceptance": "HWND: dostawa daje jedno play, preview/odmowa/repeat/retry achievementu nie odtwarzają. Played/muted/unavailable/wyjątek zachowują te same pełne stany i pliki. Smoke procesu przechodzi.",
-            "depends_on": ["P078-05"],
+            "depends_on": [
+                "P078-05"
+            ],
             "gate": null
         },
         {
@@ -2345,7 +2349,9 @@
             "title": "Wartość i kodek klawisza obrotu",
             "scope": "Dodaj niezależną wartość RotationBinding dla jednej litery A-Z z odmową O oraz ścisły pamięciowy kodek ustawienia według ROTATION_BINDING.",
             "acceptance": "Wszystkie wartości bajtu, konflikt O, kanoniczny wektor, ucięcia, nadmiar i korupcja; brak IO i zmian gry.",
-            "depends_on": ["P079"],
+            "depends_on": [
+                "P079"
+            ],
             "gate": null
         },
         {
@@ -2354,7 +2360,9 @@
             "title": "Osobny plik ustawienia obrotu",
             "scope": "Dodaj port RotationBindingStore oraz bounded read i zapis przez staging/rename osobnego pliku Windows, bez nadpisania uszkodzonego lub niedostępnego main.",
             "acceptance": "Rzeczywiste pliki: brak, save/read, duplikat, korupcja, blokada, błąd staging, retry. Profil i checkpoint pozostają identyczne.",
-            "depends_on": ["P079-01"],
+            "depends_on": [
+                "P079-01"
+            ],
             "gate": null
         },
         {
@@ -2363,7 +2371,9 @@
             "title": "Zmienny obrót i przechwycenie naciśnięcia Win32",
             "scope": "NativeWindow mapuje zatwierdzoną literę obrotu i udostępnia opcjonalny callback surowego pierwszego naciśnięcia do konfiguracji. Zachowaj filtr powtórek i focusu.",
             "acceptance": "HWND: nowa litera działa, stara nie działa, O zachowuje overdrive; przechwycenie nie wydaje komendy, hold/repeat/focus i zmiana podczas hold nie powodują akcji.",
-            "depends_on": ["P079-02"],
+            "depends_on": [
+                "P079-02"
+            ],
             "gate": null
         },
         {
@@ -2372,7 +2382,9 @@
             "title": "Wybór i trwałe zatwierdzenie klawisza w oknie",
             "scope": "Podłącz F2, wybór litery i port ustawienia do RunWindow, z oznaczonymi tekstami katalogu. Zmieniaj aktywne mapowanie dopiero po udanym zapisie; Escape i focus anulują.",
             "acceptance": "HWND: sukces, konflikt O, błąd/wyjątek store i retry, cancel/focus, brak tur podczas capture. Pełne stany, preview i pliki gry bez zmian.",
-            "depends_on": ["P079-03"],
+            "depends_on": [
+                "P079-03"
+            ],
             "gate": null
         },
         {
@@ -2381,7 +2393,9 @@
             "title": "Wczytanie przypisania przy starcie aplikacji",
             "scope": "Rozwiąż rotation-key.bin obok profilu i podłącz bounded read, store i aktywne mapowanie do developer entrypoint. Brak ustawienia daje R; błąd nie naprawia pliku.",
             "acceptance": "Bootstrap na prywatnym katalogu: missing, saved, corrupt, locked i brak lokalizacji. Brak zapisu przy starcie, bez zmiany profilu/checkpointu. Smoke procesu.",
-            "depends_on": ["P079-04"],
+            "depends_on": [
+                "P079-04"
+            ],
             "gate": null
         },
         {
@@ -2390,7 +2404,9 @@
             "title": "Dowód restartu zmienionego klawisza",
             "scope": "Dodaj test nowych procesów korzystających z tego samego pliku ustawienia i rzeczywistego HWND. Pierwszy zmienia klawisz przez F2, kolejny wczytuje i wykonuje obrót.",
             "acceptance": "Restart zachowuje nowe przypisanie i dokładne bajty; stary klawisz nie obraca. Konflikt, focus i odmowa zapisu nie zmieniają ustawienia, profilu ani checkpointu.",
-            "depends_on": ["P079-05"],
+            "depends_on": [
+                "P079-05"
+            ],
             "gate": null
         },
         {
@@ -2407,11 +2423,44 @@
         {
             "id": "P081",
             "phase": "M6",
-            "title": "Brama grywalnego MVP",
-            "scope": "Zweryfikuj zintegrowane przejście trzech sektorów automatycznie, bez nowej zawartości i wymagania Computer Use.",
-            "acceptance": "Dowód integracyjny trzech sektorów obejmuje run, zapis, restart i achievementy w Debug/Release; sam bot core nie wystarcza do integracji usług. Czytelność techniczna według P080; obserwacja i ocena percepcyjna pozostają jawnie niewykonane do P104. Rozbij zadanie, jeśli dowód wymaga kilku niezależnych zmian.",
+            "title": "Rozbij bramkę grywalnego MVP",
+            "scope": "Wyłącznie porównaj dowody i zaplanuj dzieci wspólnego przebiegu HWND, usług i restartu procesu; bez implementacji dzieci.",
+            "acceptance": "Mapa istniejących testów i braków, osobne dzieci z testami, P082 zależy od końcowej oceny dowodów. Obserwacja i percepcja pozostają w P104.",
             "depends_on": [
                 "P080"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P081-01",
+            "phase": "M6",
+            "title": "Pełny run HWND z usługami",
+            "scope": "Dodaj automatyczny dowód trzech sektorów przez rzeczywiste wejście HWND, lokalny checkpoint i achievement sink; bez nowych reguł.",
+            "acceptance": "Świeży run bez podmiany stanu, pełne stany i plansza zgodne z core po każdej komendzie, oba wybory nagród, checkpoint na trzech granicach i clear po won, trwałe achievementy; preview/odmowa nie zapisują. Debug/Release.",
+            "depends_on": [
+                "P081"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P081-02",
+            "phase": "M6",
+            "title": "Restart procesu zintegrowanego runu",
+            "scope": "Rozszerz dowód HWND o zamknięcie w sektorze 2 i kontynuację sektorów 2–3 w nowym procesie na tych samych prywatnych plikach.",
+            "acceptance": "Rzeczywisty bootstrap resume, dokładny początek sektora 2, zgodność stanów kontynuacji, zachowany profil, brak nagrody za nieznaną historię no-overdrive, clear po won i brak zapisu przy samym odczycie. Timeout kończy tylko własne dzieci. Debug/Release.",
+            "depends_on": [
+                "P081-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P081-03",
+            "phase": "M6",
+            "title": "Oceń automatyczną bramkę MVP",
+            "scope": "Wyłącznie zestaw dowody pełnego runu, usług i restartu z techniczną czytelnością P080; bez nowych reguł ani zawartości.",
+            "acceptance": "Aktualna pełna pula CTest Debug/Release i mapa dowodów z ograniczeniami; obserwacja pulpitu, percepcja i playtest jawnie niewykonane do P104.",
+            "depends_on": [
+                "P081-02"
             ],
             "gate": null
         },
@@ -2422,7 +2471,7 @@
             "scope": "Dodaj wyłącznie logiczny typ okresowego emitera; jeśli zbyt duże, ten krok tylko rozbija zadanie.",
             "acceptance": "Specyfikacja fazy, telegraph=wynik, granice zasięgu; nowy asset wymaga osobnej zgody.",
             "depends_on": [
-                "P081"
+                "P081-03"
             ],
             "gate": null
         },
