@@ -5,6 +5,7 @@
 #include "platform/windows/local_achievement_sink.hpp"
 #include "platform/windows/local_checkpoint_store.hpp"
 #include "platform/windows/resume_window.hpp"
+#include "platform/windows/xaudio2_output.hpp"
 using namespace closed_circuit;
 
 struct ComApartment
@@ -50,7 +51,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         }
         auto board = windows::create_resumed_window(
             *created.window, resume, RunSeed{0}, root, assets, *catalog,
-            &notices, store ? &*store : nullptr);
+            &notices, store ? &*store : nullptr,
+            std::make_unique<windows::XAudio2Output>());
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);

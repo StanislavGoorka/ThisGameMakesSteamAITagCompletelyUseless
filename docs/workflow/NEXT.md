@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P075-03
+Task: P076
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075-05.
-Zależności: P075-05; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P075-03.
+Zależności: P075-03; muszą być completed.
 
-Podłącz lifecycle urządzenia jako port audio w developer_window; brak urządzenia lub zatwierdzonego sygnału nie zmienia gry. Bez odtwarzania i nowych tekstów.
+Sprawdź jeden pakiet audio i wystąp o konkretną zgodę bez pobierania.
 
-Kryteria: HWND z niedostępnym urządzeniem: tury, preview, zapis i focus jak dotąd; smoke procesu działa; port nigdy nie odtwarza bez zatwierdzonego pliku.
+Kryteria: Dokumentacja wersji, non-AI, licencji i faktycznej odpowiedzi.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.

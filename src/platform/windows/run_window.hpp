@@ -1,6 +1,7 @@
 #pragma once
 #include "application/action_preview.hpp"
 #include "application/action_selection.hpp"
+#include "application/audio_output.hpp"
 #include "application/checkpoint_boundary.hpp"
 #include "application/checkpoint_store.hpp"
 #include "application/run_achievements.hpp"
@@ -40,7 +41,8 @@ class RunWindow final : public WindowCommandHandler
            std::unique_ptr<TextRenderer> label = {},
            const TextCatalog *hud_catalog = nullptr, bool show_start = false,
            AchievementNoticeSink *notice_sink = nullptr,
-           CheckpointStore *checkpoints = nullptr)
+           CheckpointStore *checkpoints = nullptr,
+           std::unique_ptr<AudioOutput> audio = {})
     {
         if ((show_start || notice_sink || checkpoints) && !hud_catalog)
             return {nullptr, E_INVALIDARG};
@@ -72,6 +74,7 @@ class RunWindow final : public WindowCommandHandler
         owner->notice_sink_ = notice_sink;
         // Creation never writes: only later boundaries reach the store.
         owner->checkpoints_ = checkpoints;
+        owner->audio_ = std::move(audio);
         if (notice_sink)
             owner->achievements_ = owner->make_achievements(
                 owner->run_, 1,
@@ -403,6 +406,7 @@ class RunWindow final : public WindowCommandHandler
     AchievementNoticeSink *notice_sink_ = nullptr;
     std::unique_ptr<RunAchievements> achievements_;
     CheckpointStore *checkpoints_ = nullptr;
+    std::unique_ptr<AudioOutput> audio_;
     bool checkpoint_failed_ = false;
     // Indexed by ResumeStatus: whether the catalog holds that marked line.
     std::array<bool, 4> resume_lines_{};

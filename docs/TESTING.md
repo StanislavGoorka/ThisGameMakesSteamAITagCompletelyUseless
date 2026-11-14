@@ -365,3 +365,9 @@ wątku i sprawdza zachowanie pierwszego błędu, brak operacji API w callbacku,
 trzy odtworzenia, błędy engine/register/mastering oraz callback przy rejestracji
 i wyrejestrowaniu. Sprawdza unregister przed destroy/release, brak callbacka
 po zwolnieniu i brak niejawnego retry. Fizycznego odłączenia nie testowano.
+
+P075-03: windows_audio_window sprawdza port dla wszystkich 256 wartości
+oraz prawdziwe HWND i pliki checkpointu w czterech trybach: urządzenie fake
+dostępne, błąd silnika, brak urządzenia wyjściowego, krytyczny błąd.
+Chroni pełny stan tury/preview, focus, resize, zapis startu i jego niezmienne
+bajty po turze, brak prób odtwarzania i zwolnienie callbacka z sesją.

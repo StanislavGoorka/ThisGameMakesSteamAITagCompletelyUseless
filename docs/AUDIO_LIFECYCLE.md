@@ -52,3 +52,9 @@ Rejestracja nieudana nie wymaga unregister. Bez automatycznych prób.
 [Callbacks](https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-callbacks),
 [OnCriticalError](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2enginecallback-oncriticalerror),
 [UnregisterForCallbacks](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2-unregisterforcallbacks).
+
+P075-03: XAudio2Output implementuje AudioOutput i posiada XAudio2Device.
+RunWindow posiada opcjonalny port przez unique_ptr; entrypoint przekazuje
+XAudio2Output przez create_resumed_window. Port jest zwalniany przed COM.
+Bez mapowania zdarzeń (P078) i bez plików wszystkie znane sygnały zwracają
+unavailable, niezależnie od dostępności urządzenia. Unknown daje unknown.
