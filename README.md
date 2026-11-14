@@ -491,3 +491,5 @@ P073-03: Dodano RunAchievements, właściciela istniejącego evaluatora i dispat
 P073-04: Dodano adapter systemowego LocalAppData i prywatnej ścieżki ClosedCircuit/profile.bin. Tworzy tylko katalog, zachowuje istniejące pliki i odmawia kolizji oraz katalogu reparse. [Raport](docs/workflow/history/P073-04.md)
 
 P073-05: Połączono zdarzenia wykonanej tury z lokalnym profilem, kolejką retry i oznaczonym wierszem first_delivery. Preview i odmowy nie uruchamiają usług; błąd nie gubi zdarzeń, Enter ponawia bez tury, Escape chowa powiadomienie. To dziesiąty krok serii: dziewięć implementacji i jeden podział. [Raport](docs/workflow/history/P073-05.md)
+
+P075-02: Rozbito RAII XAudio2 i callback na dwa osobne zadania; bez implementacji dzieci. [Raport](docs/workflow/history/P075-02.md)

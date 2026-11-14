@@ -26,3 +26,6 @@ Testy nie generują próbek audio, także cichych buforów. Odtwarzanie bufora
 zatwierdzonego pliku zostanie sprawdzone po imporcie w P078.
 
 P075-01 jest zaimplementowane: `application/audio_output.hpp` (AudioCue::delivery, AudioPlayResult, port AudioOutput, SilentAudioOutput).
+
+P075-02 jest podziałem na P075-04 (RAII pary zasobów) i P075-05
+(callback oraz jawne odtworzenie). P075-03 wymaga drugiego dziecka.

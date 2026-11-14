@@ -2192,11 +2192,33 @@
         {
             "id": "P075-02",
             "phase": "M6",
-            "title": "Lifecycle urządzenia XAudio2",
-            "scope": "Dodaj RAII silnika XAudio2 i mastering voice z wstrzykiwaną fabryką, stanem unavailable po błędzie tworzenia lub krytycznym błędzie silnika i ponownym utworzeniem. Bez source voice i buforów.",
-            "acceptance": "Rzeczywista próba utworzenia daje spójny stan z urządzeniem lub bez; wstrzyknięte błędy, krytyczny callback, odtworzenie i zwolnienie w poprawnej kolejności; bez wyjątków i syntezy.",
+            "title": "Rozbij lifecycle XAudio2",
+            "scope": "Wyłącznie rozbij własność zasobów XAudio2 i obsługę błędu krytycznego na dwa małe zadania. Bez implementacji.",
+            "acceptance": "Dzieci mają oddzielne kontrakty i testy; P075-03 zależy od ostatniego dziecka.",
             "depends_on": [
                 "P075-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P075-04",
+            "phase": "M6",
+            "title": "Własność silnika i mastering voice",
+            "scope": "Dodaj RAII pary silnik XAudio2/mastering voice z wstrzykiwaną fabryką API. Bez callbacka krytycznego, odtwarzania i buforów.",
+            "acceptance": "Rzeczywista próba utworzenia daje spójny stan; błędy fabryki silnika i voice oraz zwolnienie voice przed silnikiem potwierdzone testami.",
+            "depends_on": [
+                "P075-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P075-05",
+            "phase": "M6",
+            "title": "Błąd krytyczny i odtworzenie audio",
+            "scope": "Dodaj atomowy stan błędu krytycznego przez IXAudio2EngineCallback i jawne odtworzenie zasobów poza callbackiem.",
+            "acceptance": "Błąd rejestracji, callback z innego wątku, powtórki odtworzenia i porządek unregister/voice/engine przetestowane; callback nie zwalnia zasobów.",
+            "depends_on": [
+                "P075-04"
             ],
             "gate": null
         },
@@ -2207,7 +2229,7 @@
             "scope": "Podłącz lifecycle urządzenia jako port audio w developer_window; brak urządzenia lub zatwierdzonego sygnału nie zmienia gry. Bez odtwarzania i nowych tekstów.",
             "acceptance": "HWND z niedostępnym urządzeniem: tury, preview, zapis i focus jak dotąd; smoke procesu działa; port nigdy nie odtwarza bez zatwierdzonego pliku.",
             "depends_on": [
-                "P075-02"
+                "P075-05"
             ],
             "gate": null
         },
