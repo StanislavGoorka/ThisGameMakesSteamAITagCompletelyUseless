@@ -85,3 +85,32 @@ błąd daje nullopt. Konstruktor z bajtów jest prywatny; nie ma fallbacku.
 Obiekt posiada vector bajtów, a view() oblicza pożyczony widok we własnym
 buforze. Kopie i move nie przenoszą zapisanych wskaźników między obiektami;
 przeniesiony pusty obiekt daje pusty widok. Bez tworzenia urządzeń/audio.
+
+P078-03: XAudio2Playback posiada ApprovedDeliveryWave, XAudio2Device
+i source voice przez pożyczony XAudio2VoiceApi. Wszystkie operacje sesji
+wykonuje wątek właściciela w apartamencie COM. Bez copy/move i source
+callbacków. Domyślne API używa CreateSourceVoice bez pitch i efektów.
+Play przesyła dokładnie pełne, oryginalne data przez SubmitSourceBuffer,
+bez loop i bez zmiany częstotliwości. Start wykonuje tylko raz na voice.
+Kolejne wywołania dodają ten sam, stale posiadany bufor do kolejki XAudio2.
+Played oznacza przyjęcie do kolejki, bez gwarancji słyszalności.
+
+Błąd create/submit/start daje unavailable; voice i jego kolejka są niszczone,
+bez niejawnego retry. Błąd submit usuwa także wcześniejszą kolejkę. Krytyczny
+callback tylko oznacza urządzenie jako unavailable; kolejny play usuwa voice.
+Recreate/destrukcja zawsze niszczy source przed mastering voice, silnikiem
+i bajtami WAV. Fabryki muszą żyć dłużej; destroy_source musi zakończyć
+wszystkie odczyty danych. Borrowed engine() służy tylko do tworzenia source
+na tym samym wątku; wszystkie source muszą zniknąć przed lifecycle silnika.
+Tworzenie voice pobiera wskaźnik silnika raz, zanim sprawdzi go na null,
+aby callback zmieniający stan nie dał innego wyniku w drugim zapytaniu.
+
+Dokumenty Microsoft sprawdzone 2026-11-14:
+[CreateSourceVoice](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2-createsourcevoice),
+[SubmitSourceBuffer](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2sourcevoice-submitsourcebuffer),
+[Start](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2sourcevoice-start),
+[DestroyVoice](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2voice-destroyvoice),
+[VOICE_STATE](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/ns-xaudio2-xaudio2_voice_state).
+
+W produkcie XAudio2Output pozostaje cichy do P078-04; standalone playback
+sprawdzono w integracji. Zatwierdzony WAV jest jedynym źródłem próbek.

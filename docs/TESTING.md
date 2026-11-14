@@ -388,3 +388,13 @@ copy, move i przypisaniach. Trzykrotnie sprawdza realne pliki: brak, blokada
 wyłączna, błędny nagłówek/hash, zła długość i usunięcie, bez mutacji approved.
 Wcześniej wczytany właściciel zachowuje dane. Test rzeczywistego manifestu
 porównuje przypięte ID, ścieżkę, rozmiar i digest z rekordem rejestru.
+
+P078-03: windows_xaudio2_playback sprawdza trzy submits i jeden Start,
+pełne oryginalne bajty i pola bufora, błąd krytyczny z innego wątku,
+odtworzenie z aktywną kolejką, siedem błędów tworzenia/submit/start,
+częściowy uchwyt i pusty sukces, brak retry i moved-from właściciela.
+Przy DestroyVoice dane są wciąż żywe, a master/engine wymagają zera source.
+Rzeczywisty XAudio2 przyjął bufor i opróżnił kolejkę bez Stop/Flush/Destroy;
+dodatkowy submit sprawdza bezpieczną destrukcję w trakcie odtwarzania.
+SamplesPlayed resetuje się po END_OF_STREAM, więc kryterium to obserwacja
+pełnej kolejki przed Start oraz pustej po zakończeniu; peak jest diagnostyką.

@@ -113,6 +113,12 @@ class XAudio2Device : private IXAudio2EngineCallback
     {
         return engine_ && voice_ && SUCCEEDED(error());
     }
+    // Borrowed for source voice creation on the session thread. Every source
+    // must be destroyed before recreating or destroying this device.
+    [[nodiscard]] IXAudio2 *engine() const noexcept
+    {
+        return available() ? engine_ : nullptr;
+    }
     [[nodiscard]] HRESULT error() const noexcept
     {
         const auto critical = critical_error_.load();

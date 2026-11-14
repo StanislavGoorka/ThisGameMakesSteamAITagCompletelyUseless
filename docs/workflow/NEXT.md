@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P078-03
+Task: P078-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-02.
-Zależności: P078-02; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-03.
+Zależności: P078-03; muszą być completed.
 
-Dodaj wąski RAII source voice posiadający zatwierdzony WAV i urządzenie. Fabryka API pozwala testować submit/start, błąd i jawne odtworzenie. Bez mapowania zdarzeń i zmian okna.
+Podłącz zweryfikowane odtwarzanie do AudioOutput i jednego zdarzenia dostawy zatwierdzonej tury. Dodaj stan mute przez istniejący port, bez nowych tekstów i klawiszy.
 
-Kryteria: Każde play przesyła raz oryginalny bufor. Błędy nie zostawiają zaległego odtwarzania; source voice niszczony przed mastering voice i danymi, także przy odtworzeniu i krytycznym callbacku. Próba realnego odtwarzania wyłącznie zatwierdzonego pliku.
+Kryteria: Jedno zdarzenie daje jedno play, preview/odmowa/powtórka klawisza nie odtwarzają. Mute, brak pliku/urządzenia i błąd portu nie zmieniają gry ani trwałych zapisów. HWND i smoke procesu przechodzą.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.

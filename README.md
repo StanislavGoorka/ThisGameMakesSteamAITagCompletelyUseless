@@ -47,7 +47,7 @@ Backend audio ma port sygnałów, RAII XAudio2 i mastering voice, callback
 błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posiada
 urządzenie przez port; zatwierdzony WAV z P077 czeka na podłączenie odtwarzania.
 Brak urządzenia nie blokuje gry. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 136/136 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 139/139 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
@@ -512,3 +512,5 @@ P078: Rozbito dekoder WAV, zweryfikowane wczytanie, source voice i mapowanie zda
 P078-01: Dodano ścisły dekoder RIFF/WAVE PCM16 z pożyczonym widokiem i testami błędnych metadanych. [Raport](docs/workflow/history/P078-01.md)
 
 P078-02: Dodano właściciela WAV po sprawdzeniu przypiętego SHA-256, z testami kopii, move i błędów plików. [Raport](docs/workflow/history/P078-02.md)
+
+P078-03: Dodano RAII source voice i odtwarzanie oryginalnego WAV, z testami systemowego API i błędów. Podłączenie dostawy w P078-04. [Raport](docs/workflow/history/P078-03.md)

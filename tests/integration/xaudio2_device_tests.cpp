@@ -15,7 +15,8 @@ int main()
         Fake api;
         {
             windows::XAudio2Device device{api};
-            if (!device.available() || device.error() != S_OK ||
+            if (!device.available() || !device.engine() ||
+                device.error() != S_OK ||
                 !api.matches(
                     {Fake::engine, Fake::register_engine, Fake::mastering}))
                 return 1;
@@ -42,7 +43,8 @@ int main()
                                       : failure == 1 || failure == 5
                                           ? HRESULT_FROM_WIN32(ERROR_NOT_FOUND)
                                           : E_UNEXPECTED;
-                if (device.available() || device.error() != expected)
+                if (device.available() || device.engine() ||
+                    device.error() != expected)
                     return 3;
             }
             if (failure == 0 || failure == 2)

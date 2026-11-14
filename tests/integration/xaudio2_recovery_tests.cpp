@@ -22,7 +22,7 @@ int main()
                     cb->OnCriticalError(E_FAIL);
                 }};
             worker.join();
-            if (device.available() ||
+            if (device.available() || device.engine() ||
                 device.error() != XAUDIO2_E_DEVICE_INVALIDATED ||
                 api.count != count)
                 return 2;

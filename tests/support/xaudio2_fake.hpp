@@ -25,6 +25,7 @@ class FakeXAudio2Api final : public windows::XAudio2Api
     bool partial_engine = false;
     bool partial_voice = false;
     bool valid = true;
+    unsigned live_sources = 0;
     HRESULT register_result = S_OK;
     IXAudio2EngineCallback *callback = nullptr;
     bool critical_on_register = false;
@@ -51,11 +52,13 @@ class FakeXAudio2Api final : public windows::XAudio2Api
     }
     void destroy_mastering(IXAudio2MasteringVoice *in) noexcept override
     {
+        valid &= live_sources == 0;
         valid &= in == voice_pointer();
         record(destroy);
     }
     void release_engine(IXAudio2 *in) noexcept override
     {
+        valid &= live_sources == 0;
         valid &= in == engine_pointer();
         record(release);
     }
