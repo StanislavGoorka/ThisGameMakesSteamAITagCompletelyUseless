@@ -477,3 +477,5 @@ P082-04: core_emitter_phase obejmuje 3136 przypadków pozycji/fazy/HP/limitu, pu
 P082-05: core_emitter_state chroni każde pole, kolejność i kopie kolekcji oraz niezależny wektor hash v5. application_run_checkpoint odrzuca emiter na granicach sektora. Stare wersje replay odrzucane, literalne ślady CLI uaktualnione niezależnym byte oracle tools/replay/hash_vectors.cjs.
 
 P082-06: core_emitter_turn porównuje pełne preview/commit i stan źródłowy po odłączeniu i połączeniu obrotem, przy impulsach, dostawie zakończonej śmiercią, odmowach i trzech stanach terminalnych. Jawna sześcioturowa sekwencja chroni harmonogram, koszt 1 i deterministyczne hashe; istniejący replay/CLI chroni fixture bez emiterów. Sprawdzony zewnętrzny wykorzystany limit helpera impulsów.
+
+P083-02: core_delayed_capacitor sprawdza wszystkie 2304 kombinacje delay/range, po 96 ticków każda, granice pełnych uint64 przed zawężeniem, jeden sygnał i brak underflow, pola ID/pozycji oraz dwie niezależne kopie. constexpr i brak domyślnego konstruktora weryfikowane przy kompilacji.
