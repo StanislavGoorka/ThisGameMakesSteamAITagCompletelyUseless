@@ -30,6 +30,18 @@ class AudioOutput
   public:
     virtual ~AudioOutput() = default;
     [[nodiscard]] virtual AudioPlayResult play(AudioCue cue) = 0;
+    // Applies to subsequent cues; never queues a muted cue for later replay.
+    void set_muted(bool value) noexcept
+    {
+        muted_ = value;
+    }
+    [[nodiscard]] bool muted() const noexcept
+    {
+        return muted_;
+    }
+
+  private:
+    bool muted_ = false;
 };
 
 // Used when no device or approved file exists. Never produces sound.
@@ -38,8 +50,9 @@ class SilentAudioOutput final : public AudioOutput
   public:
     [[nodiscard]] AudioPlayResult play(AudioCue cue) noexcept override
     {
-        return is_audio_cue(cue) ? AudioPlayResult::unavailable
-                                 : AudioPlayResult::unknown;
+        if (!is_audio_cue(cue))
+            return AudioPlayResult::unknown;
+        return muted() ? AudioPlayResult::muted : AudioPlayResult::unavailable;
     }
 };
 } // namespace closed_circuit

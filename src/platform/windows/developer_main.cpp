@@ -52,7 +52,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         auto board = windows::create_resumed_window(
             *created.window, resume, RunSeed{0}, root, assets, *catalog,
             &notices, store ? &*store : nullptr,
-            std::make_unique<windows::XAudio2Output>());
+            std::make_unique<windows::XAudio2Output>(root));
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);

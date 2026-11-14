@@ -1,13 +1,13 @@
 # NastÄ™pny maĹ‚y krok
 
-Task: P078-05
+Task: P078-06
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-04.
-ZaleĹĽnoĹ›ci: P078-04; muszÄ… byÄ‡ completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-05.
+ZaleĹĽnoĹ›ci: P078-05; muszÄ… byÄ‡ completed.
 
-Podłącz XAudio2Playback do XAudio2Output, dodaj stan mute przez AudioOutput i wczytaj tylko zatwierdzony WAV w entrypoint. Bez mapowania zdarzeń.
+Wywołaj AudioOutput raz dla PacketDelivered po publikacji zatwierdzonej tury RunWindow. Błędy portu izoluj od gry i zapisów.
 
-Kryteria: Port odtwarza zatwierdzony bufor; mute i unknown nie submitują. Brak pliku, błędy urządzenia i odtwarzania są unavailable bez retry. Debug/Release i smoke procesu przechodzą.
+Kryteria: HWND: dostawa daje jedno play, preview/odmowa/repeat/retry achievementu nie odtwarzają. Played/muted/unavailable/wyjątek zachowują te same pełne stany i pliki. Smoke procesu przechodzi.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie

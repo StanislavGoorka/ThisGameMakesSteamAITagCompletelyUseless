@@ -112,5 +112,15 @@ Dokumenty Microsoft sprawdzone 2026-11-14:
 [DestroyVoice](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/nf-xaudio2-ixaudio2voice-destroyvoice),
 [VOICE_STATE](https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/ns-xaudio2-xaudio2_voice_state).
 
-W produkcie XAudio2Output pozostaje cichy do P078-04; standalone playback
-sprawdzono w integracji. Zatwierdzony WAV jest jedynym źródłem próbek.
+P078-04 podzielono na P078-05 (port, mute i wczytanie w entrypoint)
+oraz P078-06 (publikacja zdarzenia okna). P079 wymaga P078-06.
+
+P078-05: XAudio2Output posiada opcjonalny XAudio2Playback dopiero po
+poprawnym ApprovedDeliveryWave::load. Brak/odmowa pliku lub wyjątek IO daje
+cichy port bez urządzenia. Nie ponawia IO ani odtwarzania. Entry point
+przekazuje trusted root checkoutu; nie ma alternatywnej ścieżki próbek.
+Unknown zwraca unknown przed mute; znany sygnał podczas mute daje muted,
+bez submit/start i bez kolejki do późniejszego odtworzenia. Stan mute
+ustawia się przez AudioOutput::set_muted i dotyczy kolejnych sygnałów;
+nie przerywa już przyjętego krótkiego bufora. Brak nowych klawiszy/tekstów,
+regulacji głośności ani zapisu ustawienia. Mapowanie zdarzeń w P078-06.

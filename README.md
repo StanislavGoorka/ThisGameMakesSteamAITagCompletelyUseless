@@ -516,3 +516,5 @@ P078-02: Dodano właściciela WAV po sprawdzeniu przypiętego SHA-256, z testami
 P078-03: Dodano RAII source voice i odtwarzanie oryginalnego WAV, z testami systemowego API i błędów. Podłączenie dostawy w P078-04. [Raport](docs/workflow/history/P078-03.md)
 
 P078-04: Rozbito integrację audio na P078-05 (port, mute i wczytanie) oraz P078-06 (zdarzenie zatwierdzonej dostawy w HWND). P079 wymaga ostatniego dziecka; bez implementacji dzieci. [Raport](docs/workflow/history/P078-04.md)
+
+P078-05: XAudio2Output wczytuje przypięty WAV i posiada playback. AudioOutput udostępnia mute dla kolejnych sygnałów, bez submit i retry. Entry point przekazuje root checkoutu. Wspólny fake voice chroni bajty i lifetime. [Raport](docs/workflow/history/P078-05.md)

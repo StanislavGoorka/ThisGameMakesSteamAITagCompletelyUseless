@@ -11,10 +11,9 @@ class RecordingOutput final : public AudioOutput
         cues.push_back(cue);
         if (!is_audio_cue(cue))
             return AudioPlayResult::unknown;
-        return muted ? AudioPlayResult::muted : AudioPlayResult::played;
+        return muted() ? AudioPlayResult::muted : AudioPlayResult::played;
     }
     std::vector<AudioCue> cues;
-    bool muted = false;
 };
 } // namespace
 int main()
@@ -40,10 +39,19 @@ int main()
     if (recorded.play(AudioCue::delivery) != AudioPlayResult::played ||
         recorded.play(unknown) != AudioPlayResult::unknown)
         return 3;
-    recording.muted = true;
+    recorded.set_muted(true);
     if (recorded.play(AudioCue::delivery) != AudioPlayResult::muted ||
         recording.cues !=
             std::vector{AudioCue::delivery, unknown, AudioCue::delivery})
         return 4;
+    port.set_muted(true);
+    if (!port.muted() ||
+        port.play(AudioCue::delivery) != AudioPlayResult::muted ||
+        port.play(unknown) != AudioPlayResult::unknown)
+        return 5;
+    port.set_muted(false);
+    if (port.muted() ||
+        port.play(AudioCue::delivery) != AudioPlayResult::unavailable)
+        return 6;
     return 0;
 }

@@ -1,5 +1,12 @@
 # Testy i bramki jakości
 
+P078-05: windows_xaudio2_output przez AudioOutput sprawdza unknown,
+mute/unmute, dwa submits i jeden Start, brak WAV oraz błędy silnika,
+mastering, submit, start i callback. Błędy nie ponawiają operacji;
+fake weryfikuje oryginalne bajty oraz lifetime. SilentAudioOutput respektuje
+mute. Dotychczasowy windows_audio_window chroni ścieżkę bez pliku;
+awarie urządzenia obejmuje osobny test portu z zatwierdzonym WAV.
+
 ## Obecnie
 
 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Validate-Project.ps1` kontroluje spójność dokumentacji, kolejki i pustych rejestrów. `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Test-ProjectValidator.ps1` sprawdza 11 przypadków, w tym uszkodzony hash i brak zgody, na izolowanych kopiach. Syntetyczne rekordy testowe nie są prawdziwymi zgodami ani dowodami autorstwa.

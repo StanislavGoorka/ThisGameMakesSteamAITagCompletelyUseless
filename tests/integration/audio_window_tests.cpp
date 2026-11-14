@@ -17,9 +17,10 @@ bool check(const TextCatalog &catalog, const std::filesystem::path &root,
         api.engine_result = E_FAIL;
     if (mode == 2)
         api.mastering_result = HRESULT_FROM_WIN32(ERROR_NOT_FOUND);
-    auto audio = std::make_unique<windows::XAudio2Output>(api);
+    auto audio =
+        std::make_unique<windows::XAudio2Output>(std::filesystem::path{}, api);
     AudioOutput &port = *audio;
-    if (mode == 3)
+    if (mode == 3 && api.callback)
         api.callback->OnCriticalError(XAUDIO2_E_DEVICE_INVALIDATED);
     const auto count = api.count;
     for (unsigned raw = 0; raw < 256; ++raw)
