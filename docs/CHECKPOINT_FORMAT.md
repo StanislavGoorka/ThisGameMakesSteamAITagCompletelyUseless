@@ -1,15 +1,16 @@
-# Checkpoint granicy sektora — schema1, rules8
+# Checkpoint granicy sektora — schema1, rules9
 
-P085-07: bieżące run_rules=8, hashv8/replay19. Zaimplementowane ID1..6, nagrody nadal1/2. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych. Wcześniejsze wersje reguł są odrzucane bez nadpisania backupu.
+P085-08: bieżące run_rules=9, hashv8/replay20. Zaimplementowane ID1..7, nagrody nadal1/2. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych. Wcześniejsze wersje reguł są odrzucane bez nadpisania backupu.
 
 Historyczne P085-04: run_rules=4 dopuszczało ID1..3, nadal przy
 dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
 odrzucane bez zmiany backupu. Schema1 i układ40 bajtów pozostają. Poniższe
 opisy reguł3 dokumentują historyczną zmianę długości runu w P084-01.
 
-P084-01: bieżące run_rules=3 aktywuje finał tylko dla ostatniego z sześciu
-sektorów. Schema1 i układ 40 bajtów pozostają. Rules1/2 są odrzucane,
-nawet przy poprawnej checksumie, bez migracji i bez nadpisania backupu.
+Historyczne P084-01 wprowadziło run_rules=3 z finałem tylko w ostatnim
+z sześciu sektorów. Bieżące reguły9 zachowują tę długość i schema1;
+wszystkie wcześniejsze reguły są odrzucane nawet z poprawną checksumą,
+bez migracji i bez nadpisania backupu.
 
 Specyfikacja P036; kodek pamięciowy wdrożono w P037-01..04, adapter plików Windows w P038-01..04.
 Automatyczne odzyskiwanie pozostaje P039. Checkpoint odtwarza
@@ -27,7 +28,7 @@ Odtworzenie ustawia ten impuls bez ponownego wywołania `spawn_debt_pulse`.
 Zakresy: każdy seed uint64, sektor1..6, HP1..3, rezerwa0..3, dług uint32.
 Przy braku impulsu dług musi wynosić0..2 (nowy sektor ma wolne wejście).
 Przy impulsie reszta mieści się w0..UINT32_MAX−3; doliczenie wcześniejszego
-kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..6.
+kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..7.
 Nie dowodzimy historii zdobywania zasobów ani modułów.
 
 `restore_checkpoint` odrzuca niepoprawne zakresy, a następnie buduje niezależny
@@ -73,13 +74,13 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 8 |
+| 8 | 4 | run_rules_version | 9 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
 | 22 | 1 | reserve | 0..3 |
 | 23 | 4 | overload_debt | Reszta po spawnie, według zakresów powyżej |
-| 27 | 2 | modules | Znane ID1..6 rosnąco; 00 wyłącznie na końcu |
+| 27 | 2 | modules | Znane ID1..7 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
 | 30 | 2 | reserved | 00 00 |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
@@ -91,11 +92,11 @@ tamten hashv4 dotyczy pełnego GameState i służy replay. Checksum obejmuje wer
 seed, wszystkie pola i bajty zarezerwowane. Historyczne reguły1 odtwarzały
 wyłącznie normalne sektory. Reguły2 odtwarzają trzeci sektor z trzema
 odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
-Obecne reguły3 rozszerzają run do sześciu sektorów: 1..5 są normalne,
-a wyłącznie 6 jest finałem. Nie akceptujemy reguł2, bo ich sektor3 był finałem.
-Wersje checkpointu i replay są odrębne; obecny hashv7/replay14 nie jest
-checksumą checkpointu. Obecny replay15 wiąże ID3, hashv7 pozostaje.
-Niezależny oracle: `tools/checkpoint/vectors.cjs 8`.
+Reguły3 rozszerzyły run do sześciu sektorów: 1..5 są normalne,
+a wyłącznie 6 jest finałem. Bieżące reguły9 zachowują tę topologię,
+wiążąc również obecny katalog i reguły modułów. Wersje checkpointu
+i replay są odrębne; obecny hashv8/replay20 nie jest checksumą checkpointu.
+Niezależny oracle: `tools/checkpoint/vectors.cjs 9`.
 
 ## Odrzucanie i dowody
 
@@ -120,4 +121,4 @@ checkpoint, źródło none/main/backup, surowy main_error oraz optional backup_e
 (pusty = nie próbowano). Błąd backupu daje brak checkpointu z obiema diagnozami;
 ERROR_INVALID_DATA oznacza uszkodzenie, dwa NOT_FOUND oznaczają brak,
 pozostałe kody oznaczają IO. Nie ma naprawy, nadpisania lub promocji temp.
-Schema1/run_rules3; odczyt backupu nie zmienia żadnego pliku.
+Schema1/run_rules9; odczyt backupu nie zmienia żadnego pliku.

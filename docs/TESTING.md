@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P085-08: core_pulse_barrier sprawdza cztery pary receiver/powered,
+brak modułu, blokadę bez objazdu przy dwóch równych trasach, sześć kolejności
+ID i zwolnienie pola przed późniejszym impulsem. Zastany kontakt i limit1HP,
+pary z cadence/stride, pełne preview/commit/odmowy oraz kodek. Pakiet i gracz
+przechodzą przez to samo zasilone pole, które zatrzymuje impuls.
+
 P085-07: core_pulse_cadence sprawdza tury1/2/47/48 i uint32MAX+1 w helperze,
 zastany kontakt i wejście impulsu, sześć kolejności ID i wcześniej zużyty
 limit obrażeń. Pełne preview/commit, odmowy i terminalny stan bez faz;

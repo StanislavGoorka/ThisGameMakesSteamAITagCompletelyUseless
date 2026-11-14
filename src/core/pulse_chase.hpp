@@ -28,7 +28,11 @@ next_pulse_step(const GameState &state, EntityId id)
     {
         return std::nullopt;
     }
-    return route[1];
+    const auto next = route[1];
+    if (state.modules.contains(ModuleId::powered_pulse_barrier) &&
+        state.receiver_nodes[next.value()] && state.powered_nodes[next.value()])
+        return std::nullopt;
+    return next;
 }
 
 } // namespace closed_circuit
