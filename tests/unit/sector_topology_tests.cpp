@@ -1,3 +1,4 @@
+#include "core/final_sector_topology.hpp"
 #include "core/grid_adjacency.hpp"
 #include "core/sector_topology.hpp"
 #include <algorithm>
@@ -60,9 +61,67 @@ bool valid(const SectorTopology &s)
         return false;
     return true;
 }
+
+bool final_topologies()
+{
+    bool saw_top = false;
+    bool saw_bottom = false;
+    for (std::uint64_t index = 0; index <= 256; ++index)
+    {
+        const RunSeed seed{index == 256 ? UINT64_MAX : index};
+        const auto normal = generate_sector_topology(seed);
+        const auto final = generate_final_sector_topology(seed);
+        const bool top = normal.receivers[0] == node(4);
+        saw_top |= top;
+        saw_bottom |= !top;
+        const int third = top ? 34 : 46;
+        if (final.entry != node(0) || final.exit != node(48) ||
+            final.receivers != std::array{normal.receivers[0],
+                                          normal.receivers[1], node(third)} ||
+            final.ports[third].bits() != (top ? 5 : 10) ||
+            final.rotatable_nodes[third])
+            return false;
+        for (int n = 0; n < 49; ++n)
+        {
+            if (n != third &&
+                (final.ports[n].bits() != normal.ports[n].bits() ||
+                 final.rotatable_nodes[n] != normal.rotatable_nodes[n]))
+                return false;
+            // Every open edge is mutual, in bounds, and never wraps rows.
+            for (const auto neighbor :
+                 connected_neighbors(final.ports, node(n)))
+            {
+                if (!neighbor)
+                    continue;
+                const auto reverse =
+                    connected_neighbors(final.ports, *neighbor);
+                if (std::ranges::find(reverse, node(n)) == reverse.end() ||
+                    (std::abs(n / 7 - neighbor->value() / 7) +
+                     std::abs(n % 7 - neighbor->value() % 7)) != 1)
+                    return false;
+            }
+        }
+        auto changed = final;
+        changed.ports[third] = *PortMask::from_bits(0);
+        changed.rotatable_nodes[third] = true;
+        changed.receivers[2] = node(0);
+        for (int repeat = 0; repeat < 3; ++repeat)
+        {
+            const auto again = generate_final_sector_topology(seed);
+            if (again.receivers != final.receivers ||
+                again.rotatable_nodes != final.rotatable_nodes ||
+                !std::ranges::equal(again.ports, final.ports, {},
+                                    &PortMask::bits, &PortMask::bits))
+                return false;
+        }
+    }
+    return saw_top && saw_bottom;
+}
 } // namespace
 int main()
 {
+    if (!final_topologies())
+        return 1;
     SplitMix64 external{RunSeed{8}};
     auto reference = external;
     for (const auto &v : vectors)
