@@ -9,7 +9,7 @@ namespace closed_circuit
                                                ModuleId id) noexcept
 {
     if (run_phase(run) != RunPhase::choosing_reward ||
-        !choose_module(run.sector, id))
+        !choose_module(run.sector, id, run.seed, run.sector_number.value()))
         return false;
     run.reward_claimed = true;
     return true;

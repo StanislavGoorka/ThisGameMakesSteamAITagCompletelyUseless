@@ -7,10 +7,12 @@ namespace closed_circuit
 {
 // Low-level installation only. The run owns the post-sector reward window.
 // Always recompute the offer from the live loadout, never accept stale offers.
-[[nodiscard]] constexpr bool choose_module(GameState &state,
-                                           ModuleId id) noexcept
+[[nodiscard]] constexpr bool
+choose_module(GameState &state, ModuleId id, RunSeed seed = RunSeed{0},
+              std::uint8_t completed_sector = 1) noexcept
 {
-    for (const auto candidate : module_offer(state.modules))
+    for (const auto candidate :
+         module_offer(state.modules, seed, completed_sector))
         if (candidate == id)
             return state.modules.add(id);
     return false;

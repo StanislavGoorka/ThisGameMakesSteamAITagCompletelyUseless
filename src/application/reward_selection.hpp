@@ -8,7 +8,8 @@ namespace closed_circuit
 [[nodiscard]] constexpr ModuleOffer reward_offer(const RunState &run) noexcept
 {
     return run_phase(run) == RunPhase::choosing_reward
-               ? module_offer(run.sector.modules)
+               ? module_offer(run.sector.modules, run.seed,
+                              run.sector_number.value())
                : ModuleOffer{};
 }
 
