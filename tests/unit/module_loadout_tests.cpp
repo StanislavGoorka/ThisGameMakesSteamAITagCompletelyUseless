@@ -16,6 +16,26 @@ constexpr bool canonical()
 static_assert(canonical());
 int main()
 {
+    for (unsigned first = 0; first <= 255; ++first)
+        for (unsigned second = 0; second <= 255; ++second)
+        {
+            const bool valid = (first == 0 && second == 0) ||
+                               ((first == 1 || first == 2) && second == 0) ||
+                               (first == 1 && second == 2);
+            const auto decoded =
+                decode_module_slots({static_cast<std::uint8_t>(first),
+                                     static_cast<std::uint8_t>(second)});
+            if (decoded.has_value() != valid)
+                return 2;
+            if (decoded)
+            {
+                const auto &slots = decoded->slots();
+                if ((slots[0] ? static_cast<unsigned>(*slots[0]) : 0) !=
+                        first ||
+                    (slots[1] ? static_cast<unsigned>(*slots[1]) : 0) != second)
+                    return 3;
+            }
+        }
     const ModuleLoadout empty;
     if (empty.size() != 0 || empty.slots()[0] || empty.slots()[1] ||
         empty.contains(ModuleId::rotation_range) || !canonical())

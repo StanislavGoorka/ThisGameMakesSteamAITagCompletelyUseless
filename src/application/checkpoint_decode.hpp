@@ -36,23 +36,16 @@ decode_checkpoint(std::span<const std::uint8_t> bytes) noexcept
     const auto number = SectorNumber::from_value(bytes[20]);
     if (!number)
         return std::nullopt;
-    // Reject gaps, duplicates and non-canonical order, rather than normalizing.
-    if (!((bytes[27] == 0 && bytes[28] == 0) ||
-          (bytes[27] == 1 && bytes[28] == 0) ||
-          (bytes[27] == 2 && bytes[28] == 0) ||
-          (bytes[27] == 1 && bytes[28] == 2)))
+    const auto modules = decode_module_slots({bytes[27], bytes[28]});
+    if (!modules)
         return std::nullopt;
-    ModuleLoadout modules;
-    for (const auto byte : bytes.subspan(27, 2))
-        if (byte != 0)
-            static_cast<void>(modules.add(static_cast<ModuleId>(byte)));
     RunCheckpoint checkpoint{
         static_cast<RunSeed>(checkpoint_detail::get_le(bytes, 12, 8)),
         *number,
         bytes[21],
         bytes[22],
         static_cast<std::uint32_t>(checkpoint_detail::get_le(bytes, 23, 4)),
-        modules,
+        *modules,
         bytes[29] == 1};
     if (!is_checkpoint_valid(checkpoint))
         return std::nullopt;

@@ -6,15 +6,15 @@ namespace closed_circuit
 {
 using ModuleOffer = std::array<std::optional<ModuleId>, 2>;
 
-// The MVP catalog has two modules. Offers are compact, canonical and contain
-// only uninstalled modules. Exhaustion produces an empty offer, never a repeat.
+// Offers contain only admitted, uninstalled modules in canonical order.
 [[nodiscard]] constexpr ModuleOffer
 module_offer(const ModuleLoadout &modules) noexcept
 {
     ModuleOffer offer{};
+    if (modules.size() == ModuleLoadout::slot_limit)
+        return offer;
     std::size_t count = 0;
-    for (const auto id :
-         {ModuleId::rotation_range, ModuleId::terminal_rotation})
+    for (const auto id : reward_module_catalog)
         if (!modules.contains(id))
             offer[count++] = id;
     return offer;

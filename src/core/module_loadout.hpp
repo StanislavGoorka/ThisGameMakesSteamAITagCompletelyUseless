@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/module_catalog.hpp"
+
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -7,13 +9,6 @@
 
 namespace closed_circuit
 {
-// Stable internal IDs, never player-facing labels. Zero is not a module.
-enum class ModuleId : std::uint8_t
-{
-    rotation_range = 1,
-    terminal_rotation = 2
-};
-
 class ModuleLoadout
 {
   public:
@@ -40,9 +35,7 @@ class ModuleLoadout
     // Atomic rejection; occupied slots are always sorted by numeric ID.
     [[nodiscard]] constexpr bool add(ModuleId id) noexcept
     {
-        if ((id != ModuleId::rotation_range &&
-             id != ModuleId::terminal_rotation) ||
-            contains(id) || size() == slot_limit)
+        if (!is_known_module(id) || contains(id) || size() == slot_limit)
             return false;
         slots_[size()] = id;
         if (slots_[1] && *slots_[1] < *slots_[0])
@@ -55,4 +48,25 @@ class ModuleLoadout
   private:
     std::array<std::optional<ModuleId>, slot_limit> slots_{};
 };
+
+[[nodiscard]] constexpr std::optional<ModuleLoadout>
+decode_module_slots(const std::array<std::uint8_t, 2> &bytes) noexcept
+{
+    ModuleLoadout result;
+    std::uint8_t previous = 0;
+    bool empty_seen = false;
+    for (const auto byte : bytes)
+    {
+        if (byte == 0)
+        {
+            empty_seen = true;
+            continue;
+        }
+        if (empty_seen || byte <= previous ||
+            !result.add(static_cast<ModuleId>(byte)))
+            return std::nullopt;
+        previous = byte;
+    }
+    return result;
+}
 } // namespace closed_circuit
