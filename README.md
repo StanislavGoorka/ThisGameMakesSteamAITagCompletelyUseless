@@ -12,6 +12,8 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
+P082: Rozbito emiter na sze?? oddzielnych kontrakt?w. [Raport](docs/workflow/history/P082.md). Następne: P082-01.
+
 P081-03: Przyj?to automatyczn? bramk? techniczn? MVP. [Raport](docs/workflow/history/P081-03.md). Następne: P082.
 
 P081-02: Potwierdzono wznowienie runu HWND w nowym procesie. [Raport](docs/workflow/history/P081-02.md). Następne: P081-03.

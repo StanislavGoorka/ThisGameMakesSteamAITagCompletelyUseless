@@ -2467,11 +2467,77 @@
         {
             "id": "P082",
             "phase": "M7",
-            "title": "Emiter okresowy",
-            "scope": "Dodaj wyłącznie logiczny typ okresowego emitera; jeśli zbyt duże, ten krok tylko rozbija zadanie.",
-            "acceptance": "Specyfikacja fazy, telegraph=wynik, granice zasięgu; nowy asset wymaga osobnej zgody.",
+            "title": "Rozbij logiczny emiter okresowy",
+            "scope": "Wy??cznie zaplanuj osobne kontrakty emitera: regu?y, harmonogram, zasi?g grafowy, faza obra?e?, stan/hash i integracja tury. Bez implementacji dzieci.",
+            "acceptance": "Dzieci maj? w?skie kryteria i testy; zachowuj? wsp?lny limit obra?e?, preview=commit i pe?ny stan w hash/checkpoint. P083 wymaga ostatniego dziecka; bez prezentacji i nowych asset?w.",
             "depends_on": [
                 "P081-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082-01",
+            "phase": "M7",
+            "title": "Specyfikacja emitera okresowego",
+            "scope": "Ustal jeden kompletny kontrakt logiczny okresu, offsetu, zasi?gu i fazy wzgl?dem akcji; bez kodu i tre?ci dla gracza.",
+            "acceptance": "Tabela faz z przyk?adami granic, regu?a topologii po rotacji, obra?enia wsp?lne z impulsami, atomowa odmowa, plan zmian stanu/replay/checkpoint i testy.",
+            "depends_on": [
+                "P082"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082-02",
+            "phase": "M7",
+            "title": "Warto?? i harmonogram emitera",
+            "scope": "Dodaj wy??cznie walidowan? warto?? PeriodicEmitter i niemutuj?cy predykat odpalenia w danej turze, wed?ug P082-01.",
+            "acceptance": "Odmowy okresu/offsetu/zasi?gu; granice cyklu i UINT32_MAX, niezale?ne kopie, jawne wektory faz; Debug/Release. Bez GameState i resolvera.",
+            "depends_on": [
+                "P082-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082-03",
+            "phase": "M7",
+            "title": "Zasi?g grafowy emitera",
+            "scope": "Dodaj wy??cznie czysty odczyt footprint emitera przez wzajemne kraw?dzie i limit odleg?o?ci, wed?ug P082-01.",
+            "acceptance": "Granice siatki i zasi?gu, cykle, rozga??zienia i jednostronne porty, zmiana topologii po rotacji, dok?adne zbiory p?l i brak mutacji; Debug/Release. Bez obra?e?.",
+            "depends_on": [
+                "P082-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082-04",
+            "phase": "M7",
+            "title": "Faza obra?e? emitera",
+            "scope": "Po??cz harmonogram i footprint w w?ski helper fazy dla jawnej listy emiter?w z zewn?trznym wsp??dzielonym limitem obra?e?.",
+            "acceptance": "Dodatni i ujemny przypadek fazy/zasi?gu, kilka emiter?w i r??ny porz?dek, wyczerpany limit, HP0, pe?na niezmienno?? pozosta?ych p?l i konfiguracji; Debug/Release. Bez pod??czenia resolvera.",
+            "depends_on": [
+                "P082-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082-05",
+            "phase": "M7",
+            "title": "Stan emitera i kanoniczny hash",
+            "scope": "Dodaj warto?ciow? kolekcj? emiter?w do GameState, pe?ne por?wnania i hash z jawn? wersj? oraz ochron? checkpointu przed utrat? obcego stanu.",
+            "acceptance": "Kopie i zmiana ka?dego pola wykrywane przez por?wnanie/hash, niezale?ne wektory, capture odrzuca nieodtwarzalny emiter, aktualne wersje replay/hash i stare wersje odrzucone. Debug/Release. Bez spawn?w i artworku.",
+            "depends_on": [
+                "P082-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P082-06",
+            "phase": "M7",
+            "title": "Integracja emitera z tur? i preview",
+            "scope": "Pod??cz faz? po ruchu/dostawie i impulsach do resolvera ze wsp?lnym limitem obra?e?; zachowaj dotychczasowy helper impuls?w.",
+            "acceptance": "Preview i commit identyczne po rotacji, nielegalna/terminalna komenda atomowa, kilka ?r?de? najwy?ej 1 HP, ?mier? przed sukcesem, koszt dok?adnie 1 i replay deterministyczny. Pe?ne Debug/Release. Nie dodawaj emiter?w do generatora ani UI.",
+            "depends_on": [
+                "P082-05"
             ],
             "gate": null
         },
@@ -2482,7 +2548,7 @@
             "scope": "Dodaj wyłącznie logiczny typ opóźnionego kondensatora.",
             "acceptance": "Jawne opóźnienie, rotacja między fazami, brak podwójnego wybuchu.",
             "depends_on": [
-                "P082"
+                "P082-06"
             ],
             "gate": null
         },
