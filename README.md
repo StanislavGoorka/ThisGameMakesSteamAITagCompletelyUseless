@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Emiter okresowy i opóźniony kondensator działają w resolverze i preview ze wspólnym limitem 1 HP na turę. Kondensator korzysta z aktualnej topologii i wybucha raz. Hash v6, replay v12; generator i UI jeszcze nie zawierają nowych zagrożeń. [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 9/10 bieżącej serii: P083-06.
+Emiter okresowy i opóźniony kondensator działają w resolverze i preview ze wspólnym limitem 1 HP na turę. Kondensator używa bieżącego grafu i wybucha raz. Hash v6, replay v12. Generator i UI pozostają bez tych zagrożeń. P084 rozbito na sześć małych zadań finału; rozszerzenie do sześciu sektorów nadal czeka w P084-01. [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 10/10 bieżącej serii: P084.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie

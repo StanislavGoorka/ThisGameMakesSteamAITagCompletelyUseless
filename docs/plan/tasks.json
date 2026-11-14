@@ -2621,11 +2621,77 @@
         {
             "id": "P084",
             "phase": "M7",
-            "title": "Końcowy sektor",
-            "scope": "Dodaj wariant ostatniego sektora z trzema dostawami bez osobnego bossa.",
-            "acceptance": "Win/lose i certyfikat ukończenia w limicie.",
+            "title": "Rozbij wariant końcowego sektora",
+            "scope": "Wyłącznie rozbij końcowy sektor na kontrakt, topologię, warunek sukcesu, wspólną granicę sektora, certyfikat i integrację runu/checkpointu. Bez implementacji.",
+            "acceptance": "Sześć małych dzieci z osobnymi dowodami i zależnościami; istniejące P084-01 zachowuje ID i wymaga ostatniej implementacji. Podział nie oznacza gotowego finału.",
             "depends_on": [
                 "P083-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-02",
+            "phase": "M7",
+            "title": "Kontrakt końcowego sektora",
+            "scope": "Ustal roboczym dokumentem wariant trzech dostaw, wybór ostatniego sektora i granice zgodności zapisu; bez implementacji.",
+            "acceptance": "Normalny sektor nadal wymaga dwóch dostaw, finał trzech; śmierć przed sukcesem, sukces w turze 48 przed overload. Wybór finału ma pozostać poprawny po przyszłym rozszerzeniu z 3 do 6 sektorów. Określ dane, wersjonowanie i stały korpus dowodów; bez bossa i nowych treści.",
+            "depends_on": [
+                "P083-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-03",
+            "phase": "M7",
+            "title": "Samodzielna topologia finału",
+            "scope": "Dodaj wyłącznie logiczny wariant topologii z trzecim odbiornikiem, bez podłączenia do runu.",
+            "acceptance": "Trzy różne odbiorniki, wzajemne krawędzie, deterministyczne seedy i niezależne kopie. Normalne wektory generatora bez zmiany; test granic i niewyświetlany korpus. Bez spawnu zagrożeń i artworku. Debug/Release.",
+            "depends_on": [
+                "P084-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-04",
+            "phase": "M7",
+            "title": "Jawny próg dostaw sektora",
+            "scope": "Dodaj ograniczony model wymogu dwóch lub trzech dostaw i uwzględnij go w wyniku sektora, porównaniach, hashu/replay oraz ochronie checkpointu; domyślne generowane sektory pozostają normalne.",
+            "acceptance": "Dwie dostawy nie kończą finału, trzecia plus wyjście kończy; niecelowe powered_nodes nie liczą się. Śmierć i granica 48/49, odmowy/preview, kopie i niezależne wektory nowego pola. Restore normalnego checkpointu pozostaje normalny, capture odrzuca obcy wymóg. Debug/Release.",
+            "depends_on": [
+                "P084-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-05",
+            "phase": "M7",
+            "title": "Wspólna budowa granicy sektora",
+            "scope": "Wydziel jeden builder początkowego GameState sektora, współdzielony przez start, przejście i restore, z obsługą jawnego wariantu. Zachowaj dotychczasowy wybór normalnego sektora u produkcyjnych callerów.",
+            "acceptance": "Pełna równoważność istniejących normalnych granic dla seedów, modułów, HP, rezerwy, długu i impulsu wejścia; jawny wariant finału ma trzy odbiorniki i właściwy próg. Brak podwójnego pobrania długu. Debug/Release. Jeśli przekracza mikro-zakres, wyłącznie dalszy podział.",
+            "depends_on": [
+                "P084-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-06",
+            "phase": "M7",
+            "title": "Certyfikat finału w limicie",
+            "scope": "Dodaj wąski developer witness/certyfikat samodzielnego wariantu finału dla stałego korpusu seedów; bez aktywowania finału w runie.",
+            "acceptance": "Wspólny resolver kończy wszystkie certyfikaty trzema dostawami i wejściem na wyjście w najwyżej 48 zaakceptowanych akcjach. Skrócony/fałszywy certyfikat odrzucony, pełna niezmienność wejść, powtarzalność i przypadek porażki. Nie jest to ogólny solver ani playtest. Debug/Release.",
+            "depends_on": [
+                "P084-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P084-07",
+            "phase": "M7",
+            "title": "Finał runu i zgodny checkpoint",
+            "scope": "Włącz wariant finału wyłącznie dla ostatniego sektora przez wspólny builder, razem z jawną wersją reguł checkpointu i aktualizacją literalnych wektorów.",
+            "acceptance": "Dokładnie jeden finał w obecnym runie trzech sektorów, zwykłe sektory zachowują dwie dostawy. Restore odtwarza identyczny finał i zasoby, stare niezgodne reguły odrzucone bez utraty poprawnego backupu. Pełny run, win/lose, preview, achievementy oraz integracje HWND/zapisu przechodzą Debug/Release. Użyj gotowych certyfikatów; bez nowej grafiki/UI/napisów.",
+            "depends_on": [
+                "P084-06"
             ],
             "gate": null
         },
@@ -2636,7 +2702,7 @@
             "scope": "Rozszerz konfiguracje runu z trzech do szesciu sektorow, uzywajac istniejacego generatora i wariantu finalnego; bez nowego artworku.",
             "acceptance": "Progresja sektorow 1-6, dokladnie jeden final, zachowanie checkpointow i achievementow; replay tej samej konfiguracji.",
             "depends_on": [
-                "P084"
+                "P084-07"
             ],
             "gate": null
         },
