@@ -2302,12 +2302,30 @@
         {
             "id": "P078-04",
             "phase": "M6",
-            "title": "Sygnał dostawy i mute w oknie",
-            "scope": "Podłącz zweryfikowane odtwarzanie do AudioOutput i jednego zdarzenia dostawy zatwierdzonej tury. Dodaj stan mute przez istniejący port, bez nowych tekstów i klawiszy.",
-            "acceptance": "Jedno zdarzenie daje jedno play, preview/odmowa/powtórka klawisza nie odtwarzają. Mute, brak pliku/urządzenia i błąd portu nie zmieniają gry ani trwałych zapisów. HWND i smoke procesu przechodzą.",
+            "title": "Podział integracji dostawy audio",
+            "scope": "Rozbij adapter odtwarzania z mute i publikację zdarzenia okna na osobne mikro-kroki. Przepnij konsumentów na ostatnie dziecko.",
+            "acceptance": "Dwa małe kontrakty, porządek topologiczny i spójne przekazanie; bez implementacji dzieci.",
             "depends_on": [
                 "P078-03"
             ],
+            "gate": null
+        },
+        {
+            "id": "P078-05",
+            "phase": "M6",
+            "title": "Port zatwierdzonego odtwarzania i mute",
+            "scope": "Podłącz XAudio2Playback do XAudio2Output, dodaj stan mute przez AudioOutput i wczytaj tylko zatwierdzony WAV w entrypoint. Bez mapowania zdarzeń.",
+            "acceptance": "Port odtwarza zatwierdzony bufor; mute i unknown nie submitują. Brak pliku, błędy urządzenia i odtwarzania są unavailable bez retry. Debug/Release i smoke procesu przechodzą.",
+            "depends_on": ["P078-04"],
+            "gate": null
+        },
+        {
+            "id": "P078-06",
+            "phase": "M6",
+            "title": "Dźwięk pojedynczej zatwierdzonej dostawy",
+            "scope": "Wywołaj AudioOutput raz dla PacketDelivered po publikacji zatwierdzonej tury RunWindow. Błędy portu izoluj od gry i zapisów.",
+            "acceptance": "HWND: dostawa daje jedno play, preview/odmowa/repeat/retry achievementu nie odtwarzają. Played/muted/unavailable/wyjątek zachowują te same pełne stany i pliki. Smoke procesu przechodzi.",
+            "depends_on": ["P078-05"],
             "gate": null
         },
         {
@@ -2317,7 +2335,7 @@
             "scope": "Dodaj zmianę przypisania jednej akcji i zapis ustawienia.",
             "acceptance": "Konflikt przypisań, restart, utrata focusu.",
             "depends_on": [
-                "P078-04"
+                "P078-06"
             ],
             "gate": null
         },

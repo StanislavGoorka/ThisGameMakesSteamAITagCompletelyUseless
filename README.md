@@ -514,3 +514,5 @@ P078-01: Dodano ścisły dekoder RIFF/WAVE PCM16 z pożyczonym widokiem i testam
 P078-02: Dodano właściciela WAV po sprawdzeniu przypiętego SHA-256, z testami kopii, move i błędów plików. [Raport](docs/workflow/history/P078-02.md)
 
 P078-03: Dodano RAII source voice i odtwarzanie oryginalnego WAV, z testami systemowego API i błędów. Podłączenie dostawy w P078-04. [Raport](docs/workflow/history/P078-03.md)
+
+P078-04: Rozbito integrację audio na P078-05 (port, mute i wczytanie) oraz P078-06 (zdarzenie zatwierdzonej dostawy w HWND). P079 wymaga ostatniego dziecka; bez implementacji dzieci. [Raport](docs/workflow/history/P078-04.md)
