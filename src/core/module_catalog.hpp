@@ -12,12 +12,14 @@ enum class ModuleId : std::uint8_t
     rotation_range = 1,
     terminal_rotation = 2,
     delivery_reserve = 3,
-    first_overdrive_debt = 4
+    first_overdrive_debt = 4,
+    packet_stride = 5
 };
 
 inline constexpr std::array module_catalog{
     ModuleId::rotation_range, ModuleId::terminal_rotation,
-    ModuleId::delivery_reserve, ModuleId::first_overdrive_debt};
+    ModuleId::delivery_reserve, ModuleId::first_overdrive_debt,
+    ModuleId::packet_stride};
 // Implementation does not imply admission to player rewards.
 inline constexpr std::array reward_module_catalog{ModuleId::rotation_range,
                                                   ModuleId::terminal_rotation};

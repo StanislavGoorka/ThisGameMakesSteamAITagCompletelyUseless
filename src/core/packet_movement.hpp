@@ -6,8 +6,8 @@
 namespace closed_circuit
 {
 
-// Moves the active packet one edge along the shortest route to its target in
-// the current topology and reports whether it moved. Ties follow
+// Moves the active packet one edge (up to two with packet_stride) toward its
+// target in the current topology and reports whether it moved. Ties follow
 // shortest_route. The route depends on ports only. Without a packet, without
 // a route or on the target, every field of the state stays untouched: the
 // packet waits and keeps its target. The step never charges a turn.
@@ -25,7 +25,9 @@ namespace closed_circuit
         return false;
     }
 
-    state.packet->position = route[1];
+    const std::size_t stride =
+        state.modules.contains(ModuleId::packet_stride) ? 2 : 1;
+    state.packet->position = route[std::min(stride, route.size() - 1)];
     return true;
 }
 

@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-06: core_packet_stride porównuje pełny stan dla tras0..3, zerwanego
+połączenia, braku pakietu i obu długości kroku. Preview/commit/odmowa,
+pojedyncza dostawa i tura oraz wprowadzenie kolejnego pakietu dopiero
+w następnej turze; para z delivery_reserve i round-trip modułów w kodeku.
+
 P084-01: pełny run sześciu sektorów, preview/zdarzenia, kolejka achievementów,
 nagrody przy pełnym loadoucie, rzeczywiste HWND i wznowienie w nowym procesie.
 Checkpoint corpus obejmuje 26000 pełnych granic i pierwszą turę po restore.

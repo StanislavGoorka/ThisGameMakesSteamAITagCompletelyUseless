@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P085-06: ID5 przesuwa pakiet do2 krawędzi jednej trasy BFS, z zatrzymaniem na celu i jedną fazą dostawy. Bieżące ID1..5, nagrody1/2; hashv8/replay18, checkpoint schema1/rules7.
+
 P085-16: ID4 omija wyłącznie przyrost długu pierwszego udanego overdrive.
 Każdy udany overdrive ustawia first_overdrive_used, również bez modułu;
 odmowa zachowuje pole. Bieżące hashv8/replay17 i checkpoint rules6.

@@ -1,9 +1,6 @@
-# Checkpoint granicy sektora — schema1, rules6
+# Checkpoint granicy sektora — schema1, rules7
 
-P085-16: bieżące run_rules=6, hashv8/replay17. Lokalny znacznik
-first_overdrive_used jest resetowany do false; capture odrzuca true, aby
-schema1 nie traciła pola. Każdy udany overdrive ustawia true. ID1..4
-są zaimplementowane, nagrody1/2. Wcześniejsze wersje są odrzucane.
+P085-06: bieżące run_rules=7, hashv8/replay18. Zaimplementowane ID1..5, nagrody nadal1/2. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych. Wcześniejsze wersje reguł są odrzucane bez nadpisania backupu.
 
 Historyczne P085-04: run_rules=4 dopuszczało ID1..3, nadal przy
 dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
@@ -30,7 +27,7 @@ Odtworzenie ustawia ten impuls bez ponownego wywołania `spawn_debt_pulse`.
 Zakresy: każdy seed uint64, sektor1..6, HP1..3, rezerwa0..3, dług uint32.
 Przy braku impulsu dług musi wynosić0..2 (nowy sektor ma wolne wejście).
 Przy impulsie reszta mieści się w0..UINT32_MAX−3; doliczenie wcześniejszego
-kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..4.
+kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..5.
 Nie dowodzimy historii zdobywania zasobów ani modułów.
 
 `restore_checkpoint` odrzuca niepoprawne zakresy, a następnie buduje niezależny
@@ -76,13 +73,13 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 6 |
+| 8 | 4 | run_rules_version | 7 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
 | 22 | 1 | reserve | 0..3 |
 | 23 | 4 | overload_debt | Reszta po spawnie, według zakresów powyżej |
-| 27 | 2 | modules | Znane ID1..4 rosnąco; 00 wyłącznie na końcu |
+| 27 | 2 | modules | Znane ID1..5 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
 | 30 | 2 | reserved | 00 00 |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
@@ -98,7 +95,7 @@ Obecne reguły3 rozszerzają run do sześciu sektorów: 1..5 są normalne,
 a wyłącznie 6 jest finałem. Nie akceptujemy reguł2, bo ich sektor3 był finałem.
 Wersje checkpointu i replay są odrębne; obecny hashv7/replay14 nie jest
 checksumą checkpointu. Obecny replay15 wiąże ID3, hashv7 pozostaje.
-Niezależny oracle: `tools/checkpoint/vectors.cjs 4`.
+Niezależny oracle: `tools/checkpoint/vectors.cjs 7`.
 
 ## Odrzucanie i dowody
 

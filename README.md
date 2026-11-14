@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 7/10 bieżącej serii: P085-16. ID4 first_overdrive_debt pomija przyrost długu pierwszego udanego overdrive; każdy udany overdrive oznacza użycie, rezerwa/tura nadal kosztują. Implementacja1..4, nagrody1/2, hashv8/replay17, checkpoint rules6. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 8/10 bieżącej serii: P085-06. ID5 packet_stride przesuwa pakiet do2 krawędzi jednej trasy BFS. Dostawa i koszt raz; następny pakiet dopiero kolejna tura. Implementacja1..5, nagrody1/2; hashv8/replay18, checkpoint rules7. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -57,7 +57,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 160/160 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 161/161 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika
