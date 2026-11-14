@@ -1,9 +1,9 @@
 # Następny mały krok
 
-Task: P081-03
+Task: P082
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P081-02.
-Oce? wy??cznie bramk? techniczn? MVP: zestaw dowody P081-01/02 z P080, zachowaj ograniczenia obserwacji/percepcji/P104. Bie??ce pe?ne wyniki 149/149 obu konfiguracji dotycz? aktualnego kodu; bez zb?dnej ponownej implementacji.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P081-03.
+Przeczytaj bie??cy P082 i regu?y zagro?e?. Zakres emitera obejmuje now? faz?, zasi?g, wsp?lny limit obra?e?, stan i replay; je?li przekracza jeden ma?y kontrakt, wykonaj wy??cznie podzia? na dzieci i przepnij P083 na ostatnie. Bez asset?w i prezentacji.
 
 Computer Use nie jest wymagane do developmentu według decyzji użytkownika z 2026-11-14. Obserwacja pulpitu i percepcyjna czytelność pozostają niewykonane do P104. Nie generuj assetów ani finalnych napisów, nie pobieraj pakietów.
 
