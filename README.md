@@ -53,7 +53,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 146/146 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 147/147 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 Ukończono planowanie P000, etap M1 (P001–P005), identyfikatory domeny `NodeId` i `EntityId` w P006, maskę portów z obrotem w P007, sąsiedztwo na siatce 7×7 w P008, komendę obrotu pojedynczego węzła w P009, najkrótszą trasę BFS w P010, deterministyczny generator SplitMix64 w P011, losowanie z przedziału bez obciążenia modulo w P012, wartościowy `GameState` w P013, walidację ruchu gracza w P014, akcję obrotu w zasięgu gracza w P015, akcję `wait` z integralnością gracza oraz naliczaniem tury w P016, krok pakietu po najkrótszej trasie w P017, krok dostawy pakietu stojącego na celu w P018-01, odbiorniki sektora z predykatem celu następnego pakietu w P018-02 oraz wejście sektora i osobny krok wprowadzenia pakietu na początku tury w P018-03. P019-01 dodało wartościową kolekcję impulsów i predykat zajęcia ich pola, P019-02 wybór kroku pościgu bez mutacji stanu, a P019-03 ruch impulsów w rosnącej kolejności ID. P020-01 dodało pojedynczy kontakt impulsu z limitem obrażeń, a P020-02 pełną fazę impulsów z natychmiastowym kontaktem. P021-01 dodało wartościowe komendy move/rotate/wait i niemutujący predykat legalności, a P021-02 połączyło kroki w wartościowy resolver tury. CMake udostępnia cel interfejsowy `game_core` z wymaganiem C++20 i dwadzieścia dziewięć testów CTest. Obie konfiguracje MSVC x64 sprawdzono lokalnie. [Raport P021-02](docs/workflow/history/P021-02.md)
@@ -76,7 +76,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P079-06**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P080**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
@@ -538,3 +538,5 @@ P079-03: NativeWindow mapuje wszystkie zatwierdzone litery obrotu i daje opcjona
 P079-04: RunWindow z portem ustawienia obsługuje F2 i wybór litery, zapisuje przed aktywacją, izoluje błąd i wyjątek store oraz anuluje po Escape/focus. Dodano pięć katalogowych AI PLACEHOLDER, bez finalnych tekstów i nowych assetów. [Raport](docs/workflow/history/P079-04.md)
 
 P079-05: Bootstrap wczytuje rotation-key.bin obok profilu i ustawia mapowanie przed UI; entrypoint posiada store. Missing daje R bez tworzenia pliku. Corrupt/locked daje R bez naprawy i bez odczytu staging; brak lokalizacji pozostawia domyślne sterowanie. [Raport](docs/workflow/history/P079-05.md)
+
+P079-06: Cztery nowe procesy z rzeczywistym HWND potwierdzają zapis T przez F2, odczyt i jedną turę T, odmowę rename oraz ponowny odczyt T mimo staging Y. Konflikt O i focus nie zmieniają przypisania. Bajty ustawienia oraz ośmiu nazw profilu/checkpointu są identyczne. Uzupełniono dokładne komendy i poprawiono kodowanie dwóch własnych raportów tej serii. [Raport](docs/workflow/history/P079-06.md)

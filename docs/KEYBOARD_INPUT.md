@@ -32,3 +32,9 @@ ActionSelection. Zachowuje take_command dla dotychczasowych konsumentów.
 WM_MOUSEMOVE używa fit_board, WM_MOUSELEAVE/resize usuwa hover, a focus loss
 i destrukcja także kandydata i tryb. R/O zapisuje wskazany cel w chwili wyboru;
 sam ruch kursora nie przepisuje komendy. Legalność pozostaje w resolverze.
+
+P079-01..06 dodaje ograniczoną zmianę jednej akcji: F2 wybiera literę
+obrotu A-Z poza O, dopiero po udanym zapisie osobnego rotation-key.bin.
+R przywraca domyślne przypisanie. Capture blokuje komendy gry; Escape
+i focus go anulują. Filtr fizycznego held chroni również samą zmianę
+mapowania. Szczegóły i dowody restartu: [kontrakt](ROTATION_BINDING.md).

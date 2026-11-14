@@ -71,3 +71,10 @@ czyta ją i zwraca aktywną wartość oraz ścieżkę. Missing jest zwykłym R,
 a corrupt/locked daje R i błąd, bez fallbacku do staging. Błąd lokalizacji
 wyłącza port konfiguracji i pozostawia grę z R. Developer entrypoint posiada
 store dłużej od RunWindow; ustawienie mapowania następuje przed startem UI.
+
+P079-06 potwierdza kontrakt w czterech nowych procesach testowych:
+zapis T przez F2, odczyt i rzeczywista tura T, odmowa rename z pozostawionym
+staging Y oraz kolejny odczyt T bez naprawy. Każdy ma prawdziwy HWND,
+bootstrap i lokalne porty profilu/checkpointu. Dokładne bajty ich main,
+backupów i staging pozostają niezmienione. To dowód restartu procesu,
+bez oceny czytelności pulpitu, utraty zasilania i wielu writerów.

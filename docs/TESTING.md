@@ -1,5 +1,14 @@
 # Testy i bramki jakości
 
+P079-06: windows_rotation_binding_restart uruchamia cztery nowe procesy
+na jednym prywatnym katalogu. Pierwszy ustawia T przez F2 bez tury, drugi
+wczytuje T i wykonuje jeden obrót mimo hold/repeat (R nie działa), trzeci
+odtwarza rzeczywistą odmowę rename, ostatni ignoruje pozostały staging Y
+i ponownie używa T. Konflikt O i focus nie zmieniają zapisu. Rodzic po
+każdym procesie porównuje dokładne 16 bajtów ustawienia oraz osiem nazw
+main/bak/tmp/bak.tmp profilu i checkpointu. Timeout kończy tylko własne
+procesy potomne. Nie dotyka ustawień użytkownika w LocalAppData.
+
 P079-05: windows_rotation_binding_startup sprawdza missing bez tworzenia,
 trzy odczyty T, wyłączną blokadę, korupcję przy poprawnym staging, błędną
 lokalizację i brak katalogu. Dokładne bajty ustawienia i sąsiednich plików
