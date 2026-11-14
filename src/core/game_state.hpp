@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/delayed_capacitor.hpp"
 #include "core/identifiers.hpp"
 #include "core/module_loadout.hpp"
 #include "core/periodic_emitter.hpp"
@@ -72,6 +73,7 @@ struct GameState
     // Shared once-per-sector allowance for fixed terminal rotations.
     bool terminal_rotation_used{false};
     std::vector<PeriodicEmitter> emitters{};
+    std::vector<DelayedCapacitor> capacitors{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

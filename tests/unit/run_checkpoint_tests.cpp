@@ -58,7 +58,8 @@ bool cases()
                 for (int repeat = 0; repeat < 3; ++repeat)
                 {
                     auto restored = restore_checkpoint(*cp);
-                    if (!restored || !test::same_run(*restored, before) ||
+                    if (!restored || !restored->sector.capacitors.empty() ||
+                        !test::same_run(*restored, before) ||
                         !test::same_run(boundary, before) ||
                         capture_checkpoint(*restored) != cp)
                         return false;
@@ -89,7 +90,7 @@ bool cases()
                         if (!rejected(bad))
                             return false;
                     }
-                for (int field = 0; field < 13; ++field)
+                for (int field = 0; field < 15; ++field)
                 {
                     auto bad = boundary;
                     if (field == 0)
@@ -122,6 +123,14 @@ bool cases()
                         bad.sector.emitters.push_back(
                             *PeriodicEmitter::from_values(
                                 *EntityId::from_value(0), node(0), 2, 0, 1));
+                    if (field >= 13)
+                    {
+                        auto capacitor = *DelayedCapacitor::from_values(
+                            *EntityId::from_value(0), node(0), 1, 1);
+                        if (field == 14)
+                            static_cast<void>(capacitor.advance_fuse());
+                        bad.sector.capacitors.push_back(capacitor);
+                    }
                     if (!rejected(bad))
                         return false;
                 }

@@ -483,3 +483,5 @@ P083-02: core_delayed_capacitor sprawdza wszystkie 2304 kombinacje delay/range, 
 P083-03: core_capacitor_footprint sprawdza literalne zbiory pól, cykl, rozgałęzienie, jednostronne porty, granicę 6/7 i rotację między tickami oraz 49×48×49 niezależnych dystansów pełnej siatki. Pending/spent mają identyczną geometrię. Istniejące core_emitter_footprint i core_emitter_turn chronią wyodrębniony wspólny BFS.
 
 P083-04: core_capacitor_phase obejmuje 42336 kombinacji pozycji/HP/limitu/delay/progress/range, pustą listę, sześć kolejności trzech kondensatorów i powtórzenia po spent. Rzeczywisty helper impulsów przed/po fazie współdzieli limit. Obrót między tickami zapobiega trafieniu i późniejsze połączenie nie odnawia wybuchu. Pełny GameState i konfiguracja poza remaining chronione.
+
+P083-05: core_capacitor_state izoluje zmianę każdego pola, również delay przy stałym remaining, sprawdza kopie, liczbę, porządek i literalne hashe armed/pending/spent. application_run_checkpoint odrzuca armed/spent na każdej badanej granicy sektora; restore ma pustą kolekcję. Pełne wektory i CLI zaktualizowano niezależnym byte oracle, stare wersje replay odrzucone.

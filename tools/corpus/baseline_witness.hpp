@@ -25,6 +25,7 @@ build_baseline_witness(RunSeed seed, const GameState &initial)
         initial.sector_exit != expected.sector_exit ||
         initial.pulses != expected.pulses ||
         initial.emitters != expected.emitters ||
+        initial.capacitors != expected.capacitors ||
         initial.reserve != expected.reserve ||
         initial.overload_debt != expected.overload_debt ||
         initial.modules != expected.modules ||

@@ -79,7 +79,7 @@ capture_checkpoint(const RunState &run)
         a.receiver_nodes != b.receiver_nodes ||
         a.sector_entry != b.sector_entry || a.sector_exit != b.sector_exit ||
         a.pulses != b.pulses || a.emitters != b.emitters ||
-        a.blocked_nodes != b.blocked_nodes ||
+        a.capacitors != b.capacitors || a.blocked_nodes != b.blocked_nodes ||
         a.rotatable_nodes != b.rotatable_nodes ||
         a.terminal_rotation_used != b.terminal_rotation_used ||
         a.player_integrity != b.player_integrity || a.reserve != b.reserve ||

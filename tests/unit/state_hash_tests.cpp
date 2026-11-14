@@ -24,7 +24,8 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    return left.emitters == right.emitters &&
+    return left.capacitors == right.capacitors &&
+           left.emitters == right.emitters &&
            left.terminal_rotation_used == right.terminal_rotation_used &&
            left.modules == right.modules && left.reserve == right.reserve &&
            left.overload_debt == right.overload_debt &&
@@ -220,14 +221,14 @@ int main()
     const GameState minimal{.player_position = node(0)};
     const auto full = full_state();
     // Independent byte oracle: tools/replay/hash_vectors.cjs.
-    if (checked_hash(minimal) != 10316237216983530265ULL)
+    if (checked_hash(minimal) != 7067582922506427138ULL)
     {
-        std::cerr << "Minimal state must match canonical v5 vector\n";
+        std::cerr << "Minimal state must match canonical v6 vector\n";
         return 1;
     }
-    if (checked_hash(full) != 17660749678947346601ULL)
+    if (checked_hash(full) != 12735759490976763122ULL)
     {
-        std::cerr << "Full state must match canonical v5 vector\n";
+        std::cerr << "Full state must match canonical v6 vector\n";
         return 1;
     }
     struct ResourceVector
@@ -237,10 +238,10 @@ int main()
         std::uint64_t hash;
     };
     const ResourceVector resources[]{
-        {0, 0, 3253514999475334043ULL},         {1, 0, 16008248145084207962ULL},
-        {2, 0, 10316237216983530265ULL},        {3, 0, 4624226288882852568ULL},
-        {255, 0, 13079927358495757604ULL},      {2, 1, 7873814878316740318ULL},
-        {2, UINT32_MAX, 4179235878325225997ULL}};
+        {0, 0, 1496820985310545472ULL},         {1, 0, 4282201953908486305ULL},
+        {2, 0, 7067582922506427138ULL},         {3, 0, 9852963891104367971ULL},
+        {255, 0, 4752066596767550559ULL},       {2, 1, 15787808444899191965ULL},
+        {2, UINT32_MAX, 2803426238842594422ULL}};
     for (const auto &vector : resources)
     {
         auto value = minimal;

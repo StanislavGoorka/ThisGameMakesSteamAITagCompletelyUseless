@@ -8,8 +8,8 @@
 namespace closed_circuit::developer
 {
 
-// Canonical encoding v5: fixed-width little-endian values, explicit optional
-// tags, and stored pulse/emitter order. FNV-1a is a regression hash, not a
+// Canonical encoding v6: fixed-width little-endian values, explicit optional
+// tags, and stored unit order. FNV-1a is a regression hash, not a
 // security hash.
 [[nodiscard]] inline std::uint64_t state_hash(const GameState &state) noexcept
 {
@@ -43,7 +43,7 @@ namespace closed_circuit::developer
         }
     };
 
-    little_endian(5, 4);
+    little_endian(6, 4);
     for (const auto ports : state.ports)
     {
         byte(ports.bits());
@@ -84,6 +84,15 @@ namespace closed_circuit::developer
         byte(emitter.period());
         byte(emitter.phase());
         byte(emitter.range());
+    }
+    little_endian(static_cast<std::uint64_t>(state.capacitors.size()), 8);
+    for (const auto &capacitor : state.capacitors)
+    {
+        little_endian(capacitor.id().value(), 4);
+        byte(capacitor.position().value());
+        byte(capacitor.delay());
+        byte(capacitor.range());
+        byte(capacitor.remaining());
     }
     return hash;
 }

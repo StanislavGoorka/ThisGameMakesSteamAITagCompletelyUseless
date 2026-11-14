@@ -1,8 +1,8 @@
-// Independent byte oracle for canonical hash v5. No C++ or resolver calls.
+// Independent byte oracle for canonical hash v6. No C++ or resolver calls.
 const minimal = () => ({ports: Array(49).fill(0), rot: Array(49).fill(0),
   blocked: Array(49).fill(0), player: 0, hp: 3, turns: 0, packet: [],
   powered: Array(49).fill(0), receivers: Array(49).fill(0), entry: [], exit: [],
-  pulses: [], reserve: 2, debt: 0, modules: [0, 0], used: 0, emitters: []});
+  pulses: [], reserve: 2, debt: 0, modules: [0, 0], used: 0, emitters: [], capacitors: []});
 function hash(s, version) {
   const bytes = [];
   const le = (n, width) => { n = BigInt(n); for (let i=0;i<width;i++,n>>=8n) bytes.push(Number(n&255n)); };
@@ -18,12 +18,16 @@ function hash(s, version) {
     le(s.emitters.length,8);
     for (const [id,...fields] of s.emitters) { le(id,4); bytes.push(...fields); }
   }
+  if (version >= 6) {
+    le(s.capacitors.length,8);
+    for (const [id,...fields] of s.capacitors) { le(id,4); bytes.push(...fields); }
+  }
   let h=14695981039346656037n;
   for (const b of bytes) h=BigInt.asUintN(64,(h^BigInt(b))*1099511628211n);
   return h.toString();
 }
 const vectors = [];
-const add = s => vectors.push([hash(s,4),hash(s,5)]);
+const add = s => vectors.push([hash(s,5),hash(s,6)]);
 add(minimal());
 for (const reserve of [0,1,3,255]) add({...minimal(),reserve});
 for (const debt of [1,4294967295]) add({...minimal(),debt});
@@ -51,7 +55,14 @@ snapshot(12,3,[],[1,8]); snapshot(12,4,[],[1,8],1); snapshot(12,5,[],[1,8],8);
 snapshot(9,1,[],[1],0,2,1); snapshot(6,2,[7,8],[1],0,1,2);
 snapshot(9,3,[],[1,8],0,1,3); snapshot(6,4,[],[1,8],0,0,4);
 const emitter = {...minimal(),emitters:[[0,0,2,0,1],[4294967295,48,48,47,48]]};
+add(emitter);
+const capacitor = {...minimal(),capacitors:[[0,0,1,1,1],[4294967295,48,48,48,48]]};
+const capacitorHashes = {armed:hash(capacitor,6)};
+capacitor.capacitors[0][4]=0;capacitor.capacitors[1][4]=47;
+capacitorHashes.pending=hash(capacitor,6);
+capacitor.capacitors[1][4]=0;
+capacitorHashes.spent=hash(capacitor,6);
 if (require.main === module) {
-  console.log(JSON.stringify({vectors,emitter:hash(emitter,5)},null,2));
+  console.log(JSON.stringify({vectors,emitter:hash(emitter,6),capacitor:capacitorHashes},null,2));
 }
-module.exports = {vectors, emitter:hash(emitter,5)};
+module.exports = {vectors, emitter:hash(emitter,6), capacitor:capacitorHashes};
