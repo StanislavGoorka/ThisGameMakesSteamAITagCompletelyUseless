@@ -2544,11 +2544,77 @@
         {
             "id": "P083",
             "phase": "M7",
-            "title": "Kondensator",
-            "scope": "Dodaj wyłącznie logiczny typ opóźnionego kondensatora.",
-            "acceptance": "Jawne opóźnienie, rotacja między fazami, brak podwójnego wybuchu.",
+            "title": "Rozbij opóźniony kondensator",
+            "scope": "Wyłącznie rozbij logiczny kondensator na kontrakt, wartość, footprint, fazę, stan i integrację tury. Bez implementacji.",
+            "acceptance": "Sześć małych dzieci z testami pozytywnymi i negatywnymi; P084 zależy od ostatniej implementacji. Plan nie oznacza gotowego zagrożenia.",
             "depends_on": [
                 "P082-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083-01",
+            "phase": "M7",
+            "title": "Kontrakt kondensatora",
+            "scope": "Ustal dokumentem roboczym opóźnienie, odliczanie, jednorazowy wybuch, grafowy zasięg i kolejność faz.",
+            "acceptance": "Jednoznaczne granice liczb i przykłady delay 1/2/48, rotacja przed detonacją, limit obrażeń i spent; bez kodu oraz treści dla gracza.",
+            "depends_on": [
+                "P082-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083-02",
+            "phase": "M7",
+            "title": "Wartość i licznik kondensatora",
+            "scope": "Dodaj wyłącznie wartościowy DelayedCapacitor z walidowaną fabryką i jednym krokiem odliczania.",
+            "acceptance": "Pełne liczby przed zawężeniem, delay/range 1–48, niezależne kopie, dokładnie jeden sygnał detonacji i brak underflow po spent; Debug/Release. Bez GameState.",
+            "depends_on": [
+                "P083-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083-03",
+            "phase": "M7",
+            "title": "Grafowy footprint kondensatora",
+            "scope": "Dodaj czysty odczyt footprint kondensatora, współdzieląc BFS grafowy z emiterem bez zmiany jego kontraktu.",
+            "acceptance": "Dokładne zbiory źródła i range, cykle, rozgałęzienia, jednostronne porty, granice i rotacja między fazami; brak mutacji i regresji emitera; Debug/Release. Bez obrażeń.",
+            "depends_on": [
+                "P083-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083-04",
+            "phase": "M7",
+            "title": "Faza kondensatorów",
+            "scope": "Dodaj helper fazy dla jawnej mutowalnej listy kondensatorów i zewnętrznego limitu obrażeń.",
+            "acceptance": "Każdy licznik tyka raz na wywołanie, wybuch tylko przy dojściu do zera, aktualna topologia, brak podwójnego wybuchu, kilka źródeł, HP0 i wykorzystany limit nadal kończą odliczanie; pełna niezmienność innych pól; Debug/Release. Bez resolvera.",
+            "depends_on": [
+                "P083-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083-05",
+            "phase": "M7",
+            "title": "Stan kondensatora i hash",
+            "scope": "Dodaj wartościową kolekcję do GameState, pełne porównania, nową wersję hasha/replay i odmowę checkpointu gubiącego kondensator.",
+            "acceptance": "Kopie i każde pole wraz z remaining/spent wykrywane, niezależne wektory, stare wersje odrzucone; capture odmawia obcego stanu, restore pozostawia pustą kolekcję; Debug/Release. Bez generatora i UI.",
+            "depends_on": [
+                "P083-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P083-06",
+            "phase": "M7",
+            "title": "Kondensator w turze i preview",
+            "scope": "Podłącz fazę kondensatorów po emiterach przed kosztem i wynikiem, ze wspólnym limitem.",
+            "acceptance": "Preview/commit po rotacji podczas odliczania i w chwili wybuchu, odmowy i terminalne komendy bez ticka, dokładnie jeden wybuch, najwyżej 1 HP ze wszystkimi zagrożeniami, śmierć przed sukcesem, koszt 1 i deterministyczny replay; pełne Debug/Release. Bez spawnów i prezentacji.",
+            "depends_on": [
+                "P083-05"
             ],
             "gate": null
         },
@@ -2559,7 +2625,7 @@
             "scope": "Dodaj wariant ostatniego sektora z trzema dostawami bez osobnego bossa.",
             "acceptance": "Win/lose i certyfikat ukończenia w limicie.",
             "depends_on": [
-                "P083"
+                "P083-06"
             ],
             "gate": null
         },
