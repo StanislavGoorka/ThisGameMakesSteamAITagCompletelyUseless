@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P084-08
+Task: P084-09
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-04. P084-08: tylko ograniczony wymóg dostaw 2/3, pole stanu, porównania, hashv7/replay13 i ochrona checkpointu/baseline witness. Nie zmieniaj jeszcze sector_outcome; produkcyjne granice normalne. Czytaj FINAL_SECTOR, game_state, state_hash/hash_vectors, run_checkpoint, baseline_witness i testy replay. Zależność P084-04 ukończona.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-08. P084-09: użyj delivery_requirement w sector_outcome, replay14 dla zmiany reguły. Testuj 2/3 dostawy, niecelowe powered, wyjście, HP, 48/49/MAX oraz resolver/preview/odmowy. Bez aktywowania finału w runie; checkpoint rules1. Czytaj FINAL_SECTOR, sector_outcome i testy. Zależność P084-08 ukończona.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 

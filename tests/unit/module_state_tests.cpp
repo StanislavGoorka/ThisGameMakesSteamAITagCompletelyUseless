@@ -10,11 +10,11 @@ int main()
     const auto zero = *NodeId::from_value(0);
     const GameState empty{.player_position = zero};
     const std::array<std::uint64_t, 4> hashes{
-        7067582922506427138ULL, 3805524327024790637ULL, 13591700113469700140ULL,
-        15334145919859070783ULL};
+        3815129539053621483ULL, 5964270279250976486ULL, 17963605326508001625ULL,
+        17886892763950742256ULL};
     const std::array<std::uint64_t, 4> used_hashes{
-        12748667111714656629ULL, 16571184211526112762ULL, 826040228968378015ULL,
-        9653061730650841292ULL};
+        7274195177537770062ULL, 2505204640766827907ULL, 2975918095189572900ULL,
+        14427835921559619365ULL};
     for (const bool used : {false, true})
         for (unsigned mask = 0; mask < 4; ++mask)
         {

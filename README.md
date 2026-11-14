@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Samodzielna topologia finału ma trzy odbiorniki. P084-04 rozbito na migrację danych P084-08 i predykat sukcesu P084-09. Produkcyjne granice pozostają normalne; hash v6/replay v12. [Kontrakt finału](docs/FINAL_SECTOR.md) [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 3/10 bieżącej serii: P084-04.
+Samodzielna topologia finału ma trzy odbiorniki. GameState posiada ograniczony próg 2/3; hash v7 i replay v13 chronią pełne dane, a checkpoint/witness odrzucają obcy próg. Wynik sektora nadal wymaga dwóch dostaw; jego zmiana jest następna. Produkcyjne granice pozostają normalne. [Kontrakt finału](docs/FINAL_SECTOR.md) [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 4/10 bieżącej serii: P084-08.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -88,7 +88,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P084-08**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P084-09**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).

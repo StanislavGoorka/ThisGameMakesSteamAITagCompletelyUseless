@@ -27,7 +27,7 @@ bool cases()
     auto copy = state;
     auto second = copy;
     if (!test::same_state(copy, state) || !test::same_state(second, state) ||
-        state_hash(state) != 9208550108395989201ULL)
+        state_hash(state) != 3352053234964682422ULL)
         return false;
     auto changed_delay = cap(0, 0, 2, 1);
     static_cast<void>(changed_delay.advance_fuse());
@@ -58,12 +58,12 @@ bool cases()
     copy = state;
     for (auto &c : copy.capacitors)
         static_cast<void>(c.advance_fuse());
-    if (state_hash(copy) != 3275430864342171663ULL || !different(copy, state))
+    if (state_hash(copy) != 7735081088346582200ULL || !different(copy, state))
         return false;
     for (unsigned i = 0; i < 47; ++i)
         for (auto &c : copy.capacitors)
             static_cast<void>(c.advance_fuse());
-    if (state_hash(copy) != 3275401177528209966ULL || !different(copy, state))
+    if (state_hash(copy) != 7692035208110636675ULL || !different(copy, state))
         return false;
     const auto spent_state = copy;
     for (auto &c : copy.capacitors)

@@ -63,6 +63,8 @@ GameState rich_board()
 
 bool same_state(const GameState &left, const GameState &right)
 {
+    if (left.delivery_requirement != right.delivery_requirement)
+        return false;
     return left.terminal_rotation_used == right.terminal_rotation_used &&
            left.modules == right.modules && left.reserve == right.reserve &&
            left.overload_debt == right.overload_debt &&

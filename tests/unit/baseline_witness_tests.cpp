@@ -42,7 +42,7 @@ int main()
         cut.pop_back();
         if (validate_solution(initial, cut))
             return 1;
-        for (int change = 0; change < 5; ++change)
+        for (int change = 0; change < 6; ++change)
         {
             auto unsupported = initial;
             if (change == 0)
@@ -56,6 +56,9 @@ int main()
             if (change == 4)
                 unsupported.pulses.push_back(
                     {*EntityId::from_value(0), *NodeId::from_value(0)});
+            if (change == 5)
+                unsupported.delivery_requirement =
+                    *DeliveryRequirement::from_value(3);
             const auto copy = unsupported;
             if (build_baseline_witness(RunSeed{seed}, unsupported) ||
                 !test::same_state(unsupported, copy))

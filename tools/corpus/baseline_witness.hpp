@@ -11,7 +11,8 @@ namespace closed_circuit::developer
 build_baseline_witness(RunSeed seed, const GameState &initial)
 {
     const auto expected = sector_fixture(seed);
-    if (!std::ranges::equal(initial.ports, expected.ports, {}, &PortMask::bits,
+    if (initial.delivery_requirement != expected.delivery_requirement ||
+        !std::ranges::equal(initial.ports, expected.ports, {}, &PortMask::bits,
                             &PortMask::bits) ||
         initial.rotatable_nodes != expected.rotatable_nodes ||
         initial.blocked_nodes != expected.blocked_nodes ||

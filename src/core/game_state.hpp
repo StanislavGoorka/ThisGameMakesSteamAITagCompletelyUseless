@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/delayed_capacitor.hpp"
+#include "core/delivery_requirement.hpp"
 #include "core/identifiers.hpp"
 #include "core/module_loadout.hpp"
 #include "core/periodic_emitter.hpp"
@@ -74,6 +75,7 @@ struct GameState
     bool terminal_rotation_used{false};
     std::vector<PeriodicEmitter> emitters{};
     std::vector<DelayedCapacitor> capacitors{};
+    DeliveryRequirement delivery_requirement{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

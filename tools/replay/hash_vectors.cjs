@@ -1,4 +1,4 @@
-// Independent byte oracle for canonical hash v6. No C++ or resolver calls.
+// Independent byte oracle for canonical hash v7. No C++ or resolver calls.
 const minimal = () => ({ports: Array(49).fill(0), rot: Array(49).fill(0),
   blocked: Array(49).fill(0), player: 0, hp: 3, turns: 0, packet: [],
   powered: Array(49).fill(0), receivers: Array(49).fill(0), entry: [], exit: [],
@@ -22,12 +22,15 @@ function hash(s, version) {
     le(s.capacitors.length,8);
     for (const [id,...fields] of s.capacitors) { le(id,4); bytes.push(...fields); }
   }
+  if (version >= 7) bytes.push(s.requirement ?? 2);
   let h=14695981039346656037n;
   for (const b of bytes) h=BigInt.asUintN(64,(h^BigInt(b))*1099511628211n);
   return h.toString();
 }
 const vectors = [];
-const add = s => vectors.push([hash(s,5),hash(s,6)]);
+const migration = {};
+const migrate = s => { const next=hash(s,7); migration[hash(s,6)]=next; return next; };
+const add = s => vectors.push([hash(s,6),migrate(s)]);
 add(minimal());
 for (const reserve of [0,1,3,255]) add({...minimal(),reserve});
 for (const debt of [1,4294967295]) add({...minimal(),debt});
@@ -57,20 +60,22 @@ snapshot(9,3,[],[1,8],0,1,3); snapshot(6,4,[],[1,8],0,0,4);
 const emitter = {...minimal(),emitters:[[0,0,2,0,1],[4294967295,48,48,47,48]]};
 add(emitter);
 const capacitor = {...minimal(),capacitors:[[0,0,1,1,1],[4294967295,48,48,48,48]]};
-const capacitorHashes = {armed:hash(capacitor,6)};
+const capacitorHashes = {armed:migrate(capacitor)};
 capacitor.capacitors[0][4]=0;capacitor.capacitors[1][4]=47;
-capacitorHashes.pending=hash(capacitor,6);
+capacitorHashes.pending=migrate(capacitor);
 capacitor.capacitors[1][4]=0;
-capacitorHashes.spent=hash(capacitor,6);
+capacitorHashes.spent=migrate(capacitor);
 // Explicit snapshots of the capacitor turn corpus, including a refused move.
 const capacitorTrace=[];
 for(const [bits,turns,remaining,reserve,debt] of [[10,0,2,2,0],[10,1,1,2,0],
   [10,1,1,2,0],[5,2,0,2,0],[10,3,0,2,0],[10,4,0,2,0],[10,5,0,1,1]]) {
   const s=minimal();s.ports[0]=2;s.ports[1]=bits;s.ports[2]=8;s.rot[1]=1;
   Object.assign(s,{turns,reserve,debt,capacitors:[[0,2,2,2,remaining]]});
-  capacitorTrace.push(hash(s,6));
+  capacitorTrace.push(migrate(s));
 }
+const requirements = [hash(minimal(),7), hash({...minimal(),requirement:3},7)];
+migrate(emitter);
 if (require.main === module) {
-  console.log(JSON.stringify({vectors,emitter:hash(emitter,6),capacitor:capacitorHashes,capacitorTrace},null,2));
+  console.log(JSON.stringify({vectors,emitter:hash(emitter,7),capacitor:capacitorHashes,capacitorTrace,requirements,migration},null,2));
 }
-module.exports = {vectors, emitter:hash(emitter,6), capacitor:capacitorHashes,capacitorTrace};
+module.exports = {vectors, emitter:hash(emitter,7), capacitor:capacitorHashes,capacitorTrace,requirements,migration};

@@ -24,7 +24,7 @@ bool cases()
     auto copy = state;
     auto second = copy;
     if (!test::same_state(copy, state) ||
-        state_hash(state) != 15318284086141414930ULL)
+        state_hash(state) != 9375870621156183835ULL)
         return false;
     for (const auto changed : {emitter(1, 0, 2, 0, 1), emitter(0, 1, 2, 0, 1),
                                emitter(0, 0, 3, 0, 1), emitter(0, 0, 2, 1, 1),
