@@ -30,8 +30,12 @@ function hash(s, version) {
 }
 const vectors = [];
 const migration = {};
+const behaviorMigration = {};
 const migrate = s => { const next=hash(s,8); migration[hash(s,7)]=next; return next; };
-const add = s => vectors.push([hash(s,7),migrate(s)]);
+const add = s => {
+  if(s.firstUsed) behaviorMigration[hash({...s,firstUsed:0},8)]=hash(s,8);
+  vectors.push([hash(s,7),migrate(s)]);
+};
 add(minimal());
 for (const reserve of [0,1,3,255]) add({...minimal(),reserve});
 for (const debt of [1,4294967295]) add({...minimal(),debt});
@@ -50,7 +54,7 @@ function fixture(mask) {
 }
 for (const mask of [6,9,3,12]) add(fixture(mask));
 const snapshot = (mask,turns,packet,powered,player=0,reserve=3,debt=0) => {
-  const s=fixture(mask); Object.assign(s,{turns,packet,hp:2,pulses:[],player,reserve,debt});
+  const s=fixture(mask); Object.assign(s,{turns,packet,hp:2,pulses:[],player,reserve,debt,firstUsed:debt>0?1:0});
   for (const p of powered) s.powered[p]=1;
   add(s);
 };
@@ -71,7 +75,8 @@ const capacitorTrace=[];
 for(const [bits,turns,remaining,reserve,debt] of [[10,0,2,2,0],[10,1,1,2,0],
   [10,1,1,2,0],[5,2,0,2,0],[10,3,0,2,0],[10,4,0,2,0],[10,5,0,1,1]]) {
   const s=minimal();s.ports[0]=2;s.ports[1]=bits;s.ports[2]=8;s.rot[1]=1;
-  Object.assign(s,{turns,reserve,debt,capacitors:[[0,2,2,2,remaining]]});
+  Object.assign(s,{turns,reserve,debt,firstUsed:debt>0?1:0,capacitors:[[0,2,2,2,remaining]]});
+  if(s.firstUsed) behaviorMigration[hash({...s,firstUsed:0},8)]=hash(s,8);
   capacitorTrace.push(migrate(s));
 }
 const requirements = [migrate(minimal()), migrate({...minimal(),requirement:3})];
@@ -80,4 +85,4 @@ migrate(emitter);
 if (require.main === module) {
   console.log(JSON.stringify({vectors,emitter:hash(emitter,8),capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration},null,2));
 }
-module.exports = {vectors, emitter:hash(emitter,8), capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration,hash,minimal};
+module.exports = {vectors, emitter:hash(emitter,8), capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration,behaviorMigration,hash,minimal};

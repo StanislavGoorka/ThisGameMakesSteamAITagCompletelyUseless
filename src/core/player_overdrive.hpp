@@ -12,8 +12,12 @@ namespace closed_circuit
 [[nodiscard]] constexpr bool overdrive_from_player(GameState &state,
                                                    NodeId target) noexcept
 {
+    const bool charge_debt =
+        !state.modules.contains(ModuleId::first_overdrive_debt) ||
+        state.first_overdrive_used;
     if (state.reserve == 0 ||
-        state.overload_debt == std::numeric_limits<std::uint32_t>::max())
+        (charge_debt &&
+         state.overload_debt == std::numeric_limits<std::uint32_t>::max()))
     {
         return false;
     }
@@ -24,7 +28,9 @@ namespace closed_circuit
     state.ports[target.value()] =
         state.ports[target.value()].rotate_clockwise();
     --state.reserve;
-    ++state.overload_debt;
+    if (charge_debt)
+        ++state.overload_debt;
+    state.first_overdrive_used = true;
     return true;
 }
 

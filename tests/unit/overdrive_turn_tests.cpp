@@ -100,6 +100,7 @@ int main()
         expected.powered_nodes[25] = true;
         expected.reserve = 3;
         expected.overload_debt = 8;
+        expected.first_overdrive_used = true;
         expected.turns_taken = TurnIndex{mode == 0 ? 1U : 48U};
         expected.pulses = {{*EntityId::from_value(9), node(25)}};
         if (mode == 2)
@@ -118,6 +119,7 @@ int main()
     auto expected = s;
     expected.reserve = 2;
     expected.overload_debt = 8;
+    expected.first_overdrive_used = true;
     expected.ports[25] = *PortMask::from_bits(9);
     expected.turns_taken = TurnIndex{1};
     if (!expect(s, command, true, expected, SectorOutcome::ongoing))

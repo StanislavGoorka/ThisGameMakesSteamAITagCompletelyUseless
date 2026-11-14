@@ -48,7 +48,7 @@ bool trace()
     constexpr std::array<std::uint64_t, 7> hashes{
         16731183529507575566ULL, 1432946592360407032ULL, 1432946592360407032ULL,
         9613065390202918647ULL,  8232306253263176585ULL, 7005916431570872852ULL,
-        12793076360877357759ULL};
+        12793075261365729548ULL};
     const std::array<Command, 6> commands{
         WaitCommand{},          MoveCommand{node(48)},
         RotateCommand{node(1)}, RotateCommand{node(1)},
@@ -71,6 +71,7 @@ bool trace()
             {
                 e.reserve = 1;
                 e.overload_debt = 1;
+                e.first_overdrive_used = true;
             }
             if (!matches(s, commands[i], e, i != 1, SectorOutcome::ongoing) ||
                 developer::state_hash(e) != hashes[i + 1])

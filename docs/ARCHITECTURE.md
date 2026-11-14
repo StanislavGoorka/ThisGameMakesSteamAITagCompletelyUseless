@@ -1,5 +1,9 @@
 # Architektura docelowa
 
+P085-16: ID4 omija wyłącznie przyrost długu pierwszego udanego overdrive.
+Każdy udany overdrive ustawia first_overdrive_used, również bez modułu;
+odmowa zachowuje pole. Bieżące hashv8/replay17 i checkpoint rules6.
+
 P085-15: wartościowy first_overdrive_used jest domyślnie false, resetowany
 na granicy i porównywany w capture oraz dokładnym witness. Hashv8 dopisuje
 jeden bajt po delivery_requirement; replay16 i checkpoint rules5 wiążą

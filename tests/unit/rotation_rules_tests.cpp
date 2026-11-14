@@ -86,6 +86,7 @@ int main()
                     {
                         expected.reserve = 1;
                         expected.overload_debt = 8;
+                        expected.first_overdrive_used = true;
                     }
                 }
                 const auto preview = preview_turn(state, command);

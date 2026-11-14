@@ -72,6 +72,7 @@ bool cases()
     expected_renewed.turns_taken = TurnIndex{3};
     expected_renewed.reserve = 1;
     expected_renewed.overload_debt = 1;
+    expected_renewed.first_overdrive_used = true;
     expected_renewed.terminal_rotation_used = true;
     if (!check_turn(renewed, OverdriveCommand{node(0)}, true, expected_renewed))
         return false;
@@ -140,6 +141,7 @@ bool cases()
                                 {
                                     expected.reserve = 1;
                                     expected.overload_debt = 1;
+                                    expected.first_overdrive_used = true;
                                 }
                             }
                             if (!check_turn(state, command, allowed, expected))
