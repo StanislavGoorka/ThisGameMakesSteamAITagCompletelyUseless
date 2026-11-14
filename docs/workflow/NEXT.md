@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P084-02
+Task: P084-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084. P084-02: tylko dokument kontraktu finału z trzema dostawami. Czytaj GAME_DESIGN, sector_topology.hpp, sector_outcome.hpp, run_state/start/transition.hpp, run_checkpoint.hpp i CHECKPOINT_FORMAT.md. Ustal reprezentację wariantu/próg, ostatni sektor niezależnie od przyszłej długości 6, normalne regresje, śmierć/sukces/48 oraz jawne wersjonowanie zapisu. Bez implementacji, nowych zagrożeń, assetów i napisów. Zależność P083-06 ukończona. P084 to podział, nie gotowy finał.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P084-02. P084-03: samodzielna topologia finału według FINAL_SECTOR.md; trzy odbiorniki, normalne wektory bez zmiany, wzajemne porty, deterministyczny korpus i kopie. Bez podłączenia do runu, zagrożeń i nowych treści. Zależność P084-02 ukończona.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 
