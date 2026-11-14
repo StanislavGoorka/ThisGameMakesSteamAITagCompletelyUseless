@@ -6,7 +6,7 @@ static_assert(static_cast<unsigned>(ModuleId::terminal_rotation) == 2);
 static_assert(ModuleLoadout::slot_limit == 2);
 // Independent test boundary; do not derive validity from the catalog under
 // test.
-constexpr unsigned implemented_count = 5;
+constexpr unsigned implemented_count = 6;
 constexpr bool canonical()
 {
     ModuleLoadout a, b;

@@ -134,7 +134,7 @@ bool corruption()
 }
 bool semantic_fields()
 {
-    constexpr unsigned implemented_count = 5;
+    constexpr unsigned implemented_count = 6;
     const auto valid_pair = [](unsigned a, unsigned b)
     {
         return (a == 0 && b == 0) ||

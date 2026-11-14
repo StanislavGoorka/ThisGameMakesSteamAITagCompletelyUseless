@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P085-07: ID6 pomija ruch impulsów w nieparzystej zaakceptowanej turze, po usunięciu wszystkich zastanych kontaktów. Bieżące ID1..6, nagrody1/2; hashv8/replay19, checkpoint schema1/rules8.
+
 P085-06: ID5 przesuwa pakiet do2 krawędzi jednej trasy BFS, z zatrzymaniem na celu i jedną fazą dostawy. Bieżące ID1..5, nagrody1/2; hashv8/replay18, checkpoint schema1/rules7.
 
 P085-16: ID4 omija wyłącznie przyrost długu pierwszego udanego overdrive.

@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-07: core_pulse_cadence sprawdza tury1/2/47/48 i uint32MAX+1 w helperze,
+zastany kontakt i wejście impulsu, sześć kolejności ID i wcześniej zużyty
+limit obrażeń. Pełne preview/commit, odmowy i terminalny stan bez faz;
+para z ID3 i round-trip kodeka. Brak modułu zachowuje ruch każdej tury.
+
 P085-06: core_packet_stride porównuje pełny stan dla tras0..3, zerwanego
 połączenia, braku pakietu i obu długości kroku. Preview/commit/odmowa,
 pojedyncza dostawa i tura oraz wprowadzenie kolejnego pakietu dopiero

@@ -25,6 +25,10 @@ inline void resolve_pulse_phase(GameState &state, bool &damage_applied)
     {
         static_cast<void>(resolve_pulse_contact(state, id, damage_applied));
     }
+    const auto next_turn =
+        std::uint64_t{static_cast<std::uint32_t>(state.turns_taken)} + 1;
+    if (state.modules.contains(ModuleId::pulse_cadence) && next_turn % 2 != 0)
+        return;
     for (const auto id : order)
     {
         if (const auto next = next_pulse_step(state, id))

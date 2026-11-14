@@ -1,7 +1,7 @@
 # Plan rozszerzenia modułów — P085
 
 Dokument roboczy, bez nazw ani opisów do wyświetlania w grze. P085 zamyka
-wyłącznie podział. Do P085-06 działają ID1..5; nagrody nadal1/2.
+wyłącznie podział. Do P085-07 działają ID1..6; nagrody nadal1/2.
 Dalsze dzieci czekają w kolejce.
 Docelowy katalog ma najwyżej 12 typów i nadal dwa kanoniczne sloty na run.
 Nie dodajemy waluty, leczenia, permanentnych bonusów ani nowych akcji/UI.
