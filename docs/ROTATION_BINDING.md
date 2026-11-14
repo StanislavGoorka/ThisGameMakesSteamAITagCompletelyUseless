@@ -65,3 +65,9 @@ stare przypisanie i pozwala wybrać ponownie. Udany save przełącza mapowanie
 bez tury; Escape i focus przywracają pomoc. Bez portu zachowanie pozostaje
 domyślne. Pięć osobnych placeholderów jest wymaganych przed utworzeniem UI;
 brak wpisu odmawia utworzenia, zamiast drukować identyfikator.
+
+P079-05: rotation_binding_startup rozwiązuje osobną nazwę obok profilu,
+czyta ją i zwraca aktywną wartość oraz ścieżkę. Missing jest zwykłym R,
+a corrupt/locked daje R i błąd, bez fallbacku do staging. Błąd lokalizacji
+wyłącza port konfiguracji i pozostawia grę z R. Developer entrypoint posiada
+store dłużej od RunWindow; ustawienie mapowania następuje przed startem UI.

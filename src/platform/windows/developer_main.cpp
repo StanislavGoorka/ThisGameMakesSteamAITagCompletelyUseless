@@ -5,6 +5,7 @@
 #include "platform/windows/local_achievement_sink.hpp"
 #include "platform/windows/local_checkpoint_store.hpp"
 #include "platform/windows/resume_window.hpp"
+#include "platform/windows/rotation_binding_startup.hpp"
 #include "platform/windows/xaudio2_output.hpp"
 using namespace closed_circuit;
 
@@ -37,6 +38,11 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         // works.
         const std::filesystem::path root{CLOSED_CIRCUIT_CONTENT_ROOT};
         const auto profile = windows::local_profile_location();
+        const auto rotation = windows::rotation_binding_startup(profile);
+        std::optional<windows::LocalRotationBindingStore> bindings;
+        if (!rotation.path.empty())
+            bindings.emplace(rotation.path);
+        created.window->set_rotation_binding(rotation.binding);
         windows::LocalAchievementSink durable{profile.path};
         AchievementNoticeSink notices{durable};
         // Without a resolved location nothing is read, saved or cleared.
@@ -52,7 +58,8 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int show)
         auto board = windows::create_resumed_window(
             *created.window, resume, RunSeed{0}, root, assets, *catalog,
             &notices, store ? &*store : nullptr,
-            std::make_unique<windows::XAudio2Output>(root));
+            std::make_unique<windows::XAudio2Output>(root),
+            bindings ? &*bindings : nullptr);
         if (!board.session)
             return 6;
         ShowWindow(created.window->handle(), show);

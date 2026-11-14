@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P079-05: windows_rotation_binding_startup sprawdza missing bez tworzenia,
+trzy odczyty T, wyłączną blokadę, korupcję przy poprawnym staging, błędną
+lokalizację i brak katalogu. Dokładne bajty ustawienia i sąsiednich plików
+są chronione. windows_window_process obejmuje produkcyjny bootstrap.
+
 P079-04: windows_rotation_binding_window przez rzeczywiste HWND sprawdza
 anulowanie preview, F2, konflikt O i Space, błąd i wyjątek portu, hold/repeat,
 jawny retry, dokładny zapis T, brak starego R, Escape i utratę focusu.

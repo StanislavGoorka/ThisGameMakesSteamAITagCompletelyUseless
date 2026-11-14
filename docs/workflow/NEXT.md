@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P079-05
+Task: P079-06
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-04.
-Zależności: P079-04; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079-05.
+Zależności: P079-05; muszą być completed.
 
-Rozwiąż rotation-key.bin obok profilu i podłącz bounded read, store i aktywne mapowanie do developer entrypoint. Brak ustawienia daje R; błąd nie naprawia pliku.
+Dodaj test nowych procesów korzystających z tego samego pliku ustawienia i rzeczywistego HWND. Pierwszy zmienia klawisz przez F2, kolejny wczytuje i wykonuje obrót.
 
-Kryteria: Bootstrap na prywatnym katalogu: missing, saved, corrupt, locked i brak lokalizacji. Brak zapisu przy starcie, bez zmiany profilu/checkpointu. Smoke procesu.
+Kryteria: Restart zachowuje nowe przypisanie i dokładne bajty; stary klawisz nie obraca. Konflikt, focus i odmowa zapisu nie zmieniają ustawienia, profilu ani checkpointu.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie
