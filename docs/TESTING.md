@@ -469,3 +469,5 @@ P081-01: windows_mvp_window wykonuje trzy sektory od ?wie?ego startu przez HWND 
 P081-02: windows_mvp_restart por?wnuje pliki granicy sektora 2 z niezale?nym przebiegiem HWND, a potem trzy nowe procesy zapisuj?, wznawiaj? i odczytuj? prywatny run. Ka?da kontynuowana tura por?wnuje stan i plansz? z core; odczyt nie zapisuje, won usuwa checkpoint, profil 27/backup 11 wyklucza achievement nieznanej historii.
 
 P082-02: core_periodic_emitter sprawdza walidacj? pe?nych liczb przed zaw??eniem, wszystkie harmonogramy period 2?48, literaln? tabel? faz i niezale?ny wynik uint64 przy UINT32_MAX. Warto?? jest samodzielna, bez zmian resolvera i GameState.
+
+P082-03: core_emitter_footprint sprawdza dok?adne grafowe zbiory p?l, cykle, rozga??zienia, jednostronne porty, rotacj? i brak zawijania 6/7. Pe?na siatka: 49 ?r?de? ? 48 promieni ? 49 niezale?nych dystans?w; ?r?d?o zawsze nale?y do zasi?gu. Bez obra?e? i pod??czenia resolvera.

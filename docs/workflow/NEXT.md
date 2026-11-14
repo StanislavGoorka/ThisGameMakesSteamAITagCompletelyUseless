@@ -1,9 +1,9 @@
 # Następny mały krok
 
-Task: P082-03
+Task: P082-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P082-02.
-Zaimplementuj wy??cznie czysty footprint emitera: 49 flag osi?galnych przez wzajemne porty do range, ?r?d?o w??czone. Sprawd? dok?adne zbiory, cykle, jednostronne porty, brzegi i obr?t; bez obra?e?, stanu gry i resolvera.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P082-03.
+Zaimplementuj wy??cznie helper resolve_emitter_phase(GameState&, span<const PeriodicEmitter>, bool& damage_applied), bez dodawania kolekcji do stanu i pod??czenia resolvera. Testuj aktywno??, footprint, kilka emiter?w/r??ne kolejno?ci, HP0 i wsp?lny limit; chro? pe?ny pozosta?y stan i konfiguracje.
 
 Computer Use nie jest wymagane do developmentu według decyzji użytkownika z 2026-11-14. Obserwacja pulpitu i percepcyjna czytelność pozostają niewykonane do P104. Nie generuj assetów ani finalnych napisów, nie pobieraj pakietów.
 

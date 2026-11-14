@@ -12,6 +12,8 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 ## Stan projektu
 
+P082-03: Dodano czysty zasi?g grafowy emitera. [Raport](docs/workflow/history/P082-03.md). Następne: P082-04.
+
 P082-02: Dodano walidowan? warto?? i harmonogram emitera. [Raport](docs/workflow/history/P082-02.md). Następne: P082-03.
 
 P082-01: Ustalono kontrakt logiczny emitera okresowego. [Raport](docs/workflow/history/P082-01.md). Następne: P082-02.
@@ -67,7 +69,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 150/150 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 151/151 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika
