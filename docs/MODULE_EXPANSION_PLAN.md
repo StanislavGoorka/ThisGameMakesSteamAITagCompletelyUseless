@@ -57,6 +57,12 @@ dalej podzielić z zachowaniem nadrzędnego ID i zależności konsumentów.
 
 ## Wspólne bramki
 
+P085-05 rozbito dalej: P085-15 dodaje wyłącznie domyślnie pusty znacznik,
+reset i ścisłą rekonstrukcję/hash; nie ustawia go jeszcze podczas akcji.
+P085-16 aktywuje ID4 i ustawianie znacznika po każdym udanym overdrive,
+również bez modułu. Rozdział oddziela zmianę kontraktu wartościowego od reguły
+kosztu. P085-06 zależy od P085-16. Zamknięty podział nie dostarcza ID4.
+
 - Dwa sloty, stabilne ID i porządek pozostają. Pula ofert nie zawiera duplikatu,
   posiadanego ani niedopuszczonego ID. Pełna pula nie jest pełnym loadoutem.
 - Brak modułu zachowuje dokładne stare zachowanie. Każda odmowa/preview chroni

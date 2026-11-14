@@ -2786,11 +2786,33 @@
         {
             "id": "P085-05",
             "phase": "M7",
-            "title": "Moduł first_overdrive_debt",
-            "scope": "Tylko ID4: pierwszy zaakceptowany overdrive sektora dodaje0 długu, kolejne +1. Bez ofert/UI.",
-            "acceptance": "Pierwszy/kolejny, debtMAX, rezerwa/tura nadal kosztują, odmowy i preview nie zużywają; reset granicy, capture/restore i niezależny hash nowego pola. Debug/Release.",
+            "title": "Rozbij pierwszy overdrive bez długu",
+            "scope": "Wyłącznie podziel nowy stan lokalny i jego ścisłą rekonstrukcję od aktywacji ID4; bez kodu.",
+            "acceptance": "Dwa dzieci z osobnym dowodem stanu/hash/resetu oraz reguły kosztu. P085-06 zależy od ostatniego dziecka; plan nie aktywuje ID4.",
             "depends_on": [
                 "P085-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-15",
+            "phase": "M7",
+            "title": "Stan użycia pierwszego overdrive",
+            "scope": "Tylko pole first_overdrive_used domyślnie false, reset, pełne porównania/capture/witness, hash i wersje. Bez ID4 i bez ustawiania znacznika podczas akcji.",
+            "acceptance": "Kopie i literalne hashe obu wartości, capture odrzuca true, restore/reset false na każdej granicy. Schema1 zachowana bez utraty danych; Debug/Release. Znacznik nie zmienia jeszcze kosztu ani akcji.",
+            "depends_on": [
+                "P085-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-16",
+            "phase": "M7",
+            "title": "Pierwszy overdrive bez długu",
+            "scope": "Tylko ID4: pierwszy zaakceptowany overdrive dodaje0 długu z modułem; każdy udany overdrive oznacza użycie. Kolejne +1, bez ofert/UI.",
+            "acceptance": "Pierwszy/kolejny, debtMAX, rezerwa/tura nadal kosztują; odmowy/preview nie zużywają źródła. Reset/restore i dwuslotowe interakcje, niezależne wektory oraz Debug/Release.",
+            "depends_on": [
+                "P085-15"
             ],
             "gate": null
         },
@@ -2801,7 +2823,7 @@
             "scope": "Tylko ID5: pakiet przechodzi do2 krawędzi na turę, jedna faza dostawy i jeden aktywny pakiet. Bez ofert/UI.",
             "acceptance": "Trasy0/1/2/3, brak trasy, cel po pierwszej/drugiej krawędzi, następny pakiet dopiero kolejna tura. Normalne regresje, preview/odmowy, jeden koszt i Debug/Release.",
             "depends_on": [
-                "P085-05"
+                "P085-16"
             ],
             "gate": null
         },
