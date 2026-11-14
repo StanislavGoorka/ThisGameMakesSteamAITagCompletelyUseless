@@ -2331,12 +2331,66 @@
         {
             "id": "P079",
             "phase": "M6",
-            "title": "Zmiana sterowania",
-            "scope": "Dodaj zmianę przypisania jednej akcji i zapis ustawienia.",
-            "acceptance": "Konflikt przypisań, restart, utrata focusu.",
+            "title": "Podział zmiany klawisza obrotu",
+            "scope": "Rozbij model i kodek, zapis, adapter wejścia, UI, bootstrap i dowód restartu zmiany jednej akcji. Ustal kontrakt bez implementacji dzieci.",
+            "acceptance": "Małe niezależnie oceniane dzieci; P080 zależy od dowodu restartu, bez zmiany formatu profilu i checkpointu.",
             "depends_on": [
                 "P078-06"
             ],
+            "gate": null
+        },
+        {
+            "id": "P079-01",
+            "phase": "M6",
+            "title": "Wartość i kodek klawisza obrotu",
+            "scope": "Dodaj niezależną wartość RotationBinding dla jednej litery A-Z z odmową O oraz ścisły pamięciowy kodek ustawienia według ROTATION_BINDING.",
+            "acceptance": "Wszystkie wartości bajtu, konflikt O, kanoniczny wektor, ucięcia, nadmiar i korupcja; brak IO i zmian gry.",
+            "depends_on": ["P079"],
+            "gate": null
+        },
+        {
+            "id": "P079-02",
+            "phase": "M6",
+            "title": "Osobny plik ustawienia obrotu",
+            "scope": "Dodaj port RotationBindingStore oraz bounded read i zapis przez staging/rename osobnego pliku Windows, bez nadpisania uszkodzonego lub niedostępnego main.",
+            "acceptance": "Rzeczywiste pliki: brak, save/read, duplikat, korupcja, blokada, błąd staging, retry. Profil i checkpoint pozostają identyczne.",
+            "depends_on": ["P079-01"],
+            "gate": null
+        },
+        {
+            "id": "P079-03",
+            "phase": "M6",
+            "title": "Zmienny obrót i przechwycenie naciśnięcia Win32",
+            "scope": "NativeWindow mapuje zatwierdzoną literę obrotu i udostępnia opcjonalny callback surowego pierwszego naciśnięcia do konfiguracji. Zachowaj filtr powtórek i focusu.",
+            "acceptance": "HWND: nowa litera działa, stara nie działa, O zachowuje overdrive; przechwycenie nie wydaje komendy, hold/repeat/focus i zmiana podczas hold nie powodują akcji.",
+            "depends_on": ["P079-02"],
+            "gate": null
+        },
+        {
+            "id": "P079-04",
+            "phase": "M6",
+            "title": "Wybór i trwałe zatwierdzenie klawisza w oknie",
+            "scope": "Podłącz F2, wybór litery i port ustawienia do RunWindow, z oznaczonymi tekstami katalogu. Zmieniaj aktywne mapowanie dopiero po udanym zapisie; Escape i focus anulują.",
+            "acceptance": "HWND: sukces, konflikt O, błąd/wyjątek store i retry, cancel/focus, brak tur podczas capture. Pełne stany, preview i pliki gry bez zmian.",
+            "depends_on": ["P079-03"],
+            "gate": null
+        },
+        {
+            "id": "P079-05",
+            "phase": "M6",
+            "title": "Wczytanie przypisania przy starcie aplikacji",
+            "scope": "Rozwiąż rotation-key.bin obok profilu i podłącz bounded read, store i aktywne mapowanie do developer entrypoint. Brak ustawienia daje R; błąd nie naprawia pliku.",
+            "acceptance": "Bootstrap na prywatnym katalogu: missing, saved, corrupt, locked i brak lokalizacji. Brak zapisu przy starcie, bez zmiany profilu/checkpointu. Smoke procesu.",
+            "depends_on": ["P079-04"],
+            "gate": null
+        },
+        {
+            "id": "P079-06",
+            "phase": "M6",
+            "title": "Dowód restartu zmienionego klawisza",
+            "scope": "Dodaj test nowych procesów korzystających z tego samego pliku ustawienia i rzeczywistego HWND. Pierwszy zmienia klawisz przez F2, kolejny wczytuje i wykonuje obrót.",
+            "acceptance": "Restart zachowuje nowe przypisanie i dokładne bajty; stary klawisz nie obraca. Konflikt, focus i odmowa zapisu nie zmieniają ustawienia, profilu ani checkpointu.",
+            "depends_on": ["P079-05"],
             "gate": null
         },
         {
@@ -2346,7 +2400,7 @@
             "scope": "Zweryfikuj jedną macierz DPI i rozpoznawanie stanów bez polegania na kolorze.",
             "acceptance": "Zapisz rzeczywiste wyniki; pojedynczy problem napraw osobnym krokiem.",
             "depends_on": [
-                "P079"
+                "P079-06"
             ],
             "gate": null
         },

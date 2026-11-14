@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P079
+Task: P079-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-06.
-Zależności: P078-06; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P079.
+Zależności: P079; muszą być completed.
 
-Dodaj zmianę przypisania jednej akcji i zapis ustawienia.
+Dodaj niezależną wartość RotationBinding dla jednej litery A-Z z odmową O oraz ścisły pamięciowy kodek ustawienia według ROTATION_BINDING.
 
-Kryteria: Konflikt przypisań, restart, utrata focusu.
+Kryteria: Wszystkie wartości bajtu, konflikt O, kanoniczny wektor, ucięcia, nadmiar i korupcja; brak IO i zmian gry.
 
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
 Czytaj kontrakty wskazane w raporcie poprzednika. Zbyt szerokie zadanie
