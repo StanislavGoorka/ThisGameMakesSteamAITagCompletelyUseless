@@ -10,11 +10,13 @@ namespace closed_circuit
 enum class ModuleId : std::uint8_t
 {
     rotation_range = 1,
-    terminal_rotation = 2
+    terminal_rotation = 2,
+    delivery_reserve = 3
 };
 
 inline constexpr std::array module_catalog{ModuleId::rotation_range,
-                                           ModuleId::terminal_rotation};
+                                           ModuleId::terminal_rotation,
+                                           ModuleId::delivery_reserve};
 // Implementation does not imply admission to player rewards.
 inline constexpr std::array reward_module_catalog{ModuleId::rotation_range,
                                                   ModuleId::terminal_rotation};

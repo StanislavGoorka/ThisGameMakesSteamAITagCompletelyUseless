@@ -1,5 +1,11 @@
 # Architektura docelowa
 
+P085-04: module_catalog odróżnia zaimplementowane ID1..3 od reward_module_catalog
+ID1/2. Wspólny decoder slotów i loadout odrzucają przyszłe ID; dwa sloty.
+Oferty są czystą funkcją root seedu, ukończonego sektora i loadoutu. ID3
+odnawia2 rezerwy po dostawie do limitu3. Checkpoint schema1/rules4, hashv7,
+replay15; bez nowych treści i prezentacji. [Kontrakt](MODULE_CATALOG_CONTRACT.md).
+
 Plan, nie opis zaimplementowanych modułów. Budujemy małą grę testowalną bez wyświetlania treści, nie silnik ogólnego zastosowania.
 
 P084-08: GameState posiada ograniczony DeliveryRequirement (2 lub 3, domyślnie 2).

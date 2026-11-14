@@ -7,7 +7,7 @@
 namespace closed_circuit
 {
 inline constexpr std::uint32_t checkpoint_schema_version = 1;
-inline constexpr std::uint32_t checkpoint_run_rules_version = 3;
+inline constexpr std::uint32_t checkpoint_run_rules_version = 4;
 using CheckpointBytes = std::array<std::uint8_t, 40>;
 
 namespace checkpoint_detail

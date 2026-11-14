@@ -1,5 +1,10 @@
+#include "../../tools/replay/state_hash.hpp"
+#include "../support/state_checks.hpp"
+#include "application/checkpoint_decode.hpp"
+#include "application/checkpoint_encode.hpp"
 #include "core/packet_delivery.hpp"
 #include "core/packet_movement.hpp"
+#include "core/turn_preview.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -229,6 +234,70 @@ bool delivery_ignores_player_and_blocking_units()
 
 int main()
 {
+    for (const bool installed : {false, true})
+        for (const bool paired : {false, true})
+            for (const unsigned reserve : {0U, 1U, 2U, 3U})
+            {
+                auto state = corridor_board(26, 26);
+                state.reserve = static_cast<std::uint8_t>(reserve);
+                if (installed &&
+                    !state.modules.add(
+                        closed_circuit::ModuleId::delivery_reserve))
+                    return 2;
+                if (paired && !state.modules.add(
+                                  closed_circuit::ModuleId::rotation_range))
+                    return 2;
+                const auto before = state;
+                auto expected = state;
+                expected.reserve = static_cast<std::uint8_t>(
+                    std::min(3U, reserve + (installed ? 2U : 1U)));
+                expected.packet.reset();
+                expected.powered_nodes[26] = true;
+                if (!deliver_packet(state) ||
+                    !closed_circuit::test::same_state(state, expected))
+                    return 3;
+                const auto delivered = state;
+                if (deliver_packet(state) ||
+                    !closed_circuit::test::same_state(state, delivered))
+                    return 4;
+                state.packet = Packet{node(26), node(26)};
+                const auto duplicate = state;
+                if (deliver_packet(state) ||
+                    !closed_circuit::test::same_state(state, duplicate))
+                    return 5;
+                auto turn_expected = expected;
+                turn_expected.turns_taken = TurnIndex{8};
+                const auto preview = closed_circuit::preview_turn(
+                    before, closed_circuit::WaitCommand{});
+                const auto commit = closed_circuit::resolve_turn(
+                    before, closed_circuit::WaitCommand{});
+                const auto refused = closed_circuit::resolve_turn(
+                    before, closed_circuit::MoveCommand{node(48)});
+                if (!preview.accepted || !commit.accepted || refused.accepted ||
+                    !closed_circuit::test::same_state(refused.state, before) ||
+                    !closed_circuit::test::same_state(preview.state,
+                                                      turn_expected) ||
+                    !closed_circuit::test::same_state(commit.state,
+                                                      turn_expected))
+                    return 6;
+                closed_circuit::RunCheckpoint cp{
+                    closed_circuit::RunSeed{42},
+                    *closed_circuit::SectorNumber::from_value(1),
+                    3,
+                    2,
+                    0,
+                    before.modules,
+                    false};
+                const auto bytes = closed_circuit::encode_checkpoint(cp);
+                if (!bytes || closed_circuit::decode_checkpoint(*bytes) != cp)
+                    return 7;
+                auto without = before;
+                without.modules = {};
+                if (installed &&
+                    closed_circuit::developer::state_hash(without) ==
+                        closed_circuit::developer::state_hash(before))
+                    return 8;
+            }
     for (const auto reserve : {0, 1, 2, 3})
     {
         auto state = corridor_board(26, 26);

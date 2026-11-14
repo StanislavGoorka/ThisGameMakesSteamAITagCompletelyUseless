@@ -4,6 +4,9 @@ using namespace closed_circuit;
 static_assert(static_cast<unsigned>(ModuleId::rotation_range) == 1);
 static_assert(static_cast<unsigned>(ModuleId::terminal_rotation) == 2);
 static_assert(ModuleLoadout::slot_limit == 2);
+// Independent test boundary; do not derive validity from the catalog under
+// test.
+constexpr unsigned implemented_count = 3;
 constexpr bool canonical()
 {
     ModuleLoadout a, b;
@@ -20,8 +23,9 @@ int main()
         for (unsigned second = 0; second <= 255; ++second)
         {
             const bool valid = (first == 0 && second == 0) ||
-                               ((first == 1 || first == 2) && second == 0) ||
-                               (first == 1 && second == 2);
+                               (first >= 1 && first <= implemented_count &&
+                                (second == 0 || (second > first &&
+                                                 second <= implemented_count)));
             const auto decoded =
                 decode_module_slots({static_cast<std::uint8_t>(first),
                                      static_cast<std::uint8_t>(second)});
@@ -44,7 +48,7 @@ int main()
     {
         auto loadout = empty;
         const auto id = static_cast<ModuleId>(raw);
-        const bool known = raw == 1 || raw == 2;
+        const bool known = raw >= 1 && raw <= implemented_count;
         if (loadout.add(id) != known || (known && !loadout.contains(id)) ||
             (!known && loadout != empty))
             return 1;

@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 3/10 bieżącej serii: P085-03. Deterministyczne oferty używają wspólnego kontekstu seed/sektor w wyborze i projekcji runu. Pula pozostaje ID1/2. Niezależny korpus indeksów0..12 potwierdza stabilność i osiągalność. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 4/10 bieżącej serii: P085-04. ID3 delivery_reserve odnawia2 rezerwy po rzeczywistej dostawie do limitu3. Katalog implementacji1..3, nagrody nadal1/2. Checkpoint schema1/rules4, hashv7, replay15. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie

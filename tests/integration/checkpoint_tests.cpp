@@ -134,6 +134,13 @@ bool corruption()
 }
 bool semantic_fields()
 {
+    constexpr unsigned implemented_count = 3;
+    const auto valid_pair = [](unsigned a, unsigned b)
+    {
+        return (a == 0 && b == 0) ||
+               (a >= 1 && a <= implemented_count &&
+                (b == 0 || (b > a && b <= implemented_count)));
+    };
     for (const auto &v : test::checkpoint_vectors)
         for (std::size_t offset = 0; offset < 32; ++offset)
             for (unsigned value = 0; value < 256; ++value)
@@ -161,9 +168,7 @@ bool semantic_fields()
                 }
                 if (offset == 27 || offset == 28)
                 {
-                    const unsigned pair = bytes[27] * 256u + bytes[28];
-                    valid =
-                        pair == 0 || pair == 256 || pair == 512 || pair == 258;
+                    valid = valid_pair(bytes[27], bytes[28]);
                 }
                 if (offset == 30 || offset == 31)
                     valid = value == 0;
@@ -174,7 +179,7 @@ bool semantic_fields()
                     (decoded && encode_checkpoint(*decoded) != bytes))
                     return false;
             }
-    // Exhaust every slot pair; reject all but the four canonical encodings.
+    // Exhaust every slot pair against an independent numeric boundary.
     for (unsigned a = 0; a < 256; ++a)
         for (unsigned b = 0; b < 256; ++b)
         {
@@ -182,8 +187,7 @@ bool semantic_fields()
             bytes[27] = static_cast<std::uint8_t>(a);
             bytes[28] = static_cast<std::uint8_t>(b);
             test::reseal(bytes);
-            const bool valid = (a == 0 && b == 0) || (a == 1 && b == 0) ||
-                               (a == 2 && b == 0) || (a == 1 && b == 2);
+            const bool valid = valid_pair(a, b);
             if (decode_checkpoint(bytes).has_value() != valid)
                 return false;
         }

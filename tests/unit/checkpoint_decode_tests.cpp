@@ -76,7 +76,7 @@ bool cases()
                 bad[28] = 1;
             }
             if (scenario == 14)
-                bad[27] = 3;
+                bad[27] = 255;
             if (scenario == 15)
             {
                 bad[23] = 3;

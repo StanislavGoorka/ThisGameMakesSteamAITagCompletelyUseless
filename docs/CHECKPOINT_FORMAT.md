@@ -1,4 +1,9 @@
-# Checkpoint granicy sektora — schema1, rules3
+# Checkpoint granicy sektora — schema1, rules4
+
+P085-04: bieżące run_rules=4 dopuszcza zaimplementowane ID1..3, nadal przy
+dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
+odrzucane bez zmiany backupu. Schema1 i układ40 bajtów pozostają. Poniższe
+opisy reguł3 dokumentują historyczną zmianę długości runu w P084-01.
 
 P084-01: bieżące run_rules=3 aktywuje finał tylko dla ostatniego z sześciu
 sektorów. Schema1 i układ 40 bajtów pozostają. Rules1/2 są odrzucane,
@@ -20,7 +25,7 @@ Odtworzenie ustawia ten impuls bez ponownego wywołania `spawn_debt_pulse`.
 Zakresy: każdy seed uint64, sektor1..6, HP1..3, rezerwa0..3, dług uint32.
 Przy braku impulsu dług musi wynosić0..2 (nowy sektor ma wolne wejście).
 Przy impulsie reszta mieści się w0..UINT32_MAX−3; doliczenie wcześniejszego
-kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1/2.
+kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..3.
 Nie dowodzimy historii zdobywania zasobów ani modułów.
 
 `restore_checkpoint` odrzuca niepoprawne zakresy, a następnie buduje niezależny
@@ -65,13 +70,13 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 3 |
+| 8 | 4 | run_rules_version | 4 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
 | 22 | 1 | reserve | 0..3 |
 | 23 | 4 | overload_debt | Reszta po spawnie, według zakresów powyżej |
-| 27 | 2 | modules | 00 00, 01 00, 02 00 albo 01 02; wyłącznie ten porządek |
+| 27 | 2 | modules | Znane ID1..3 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
 | 30 | 2 | reserved | 00 00 |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
@@ -86,7 +91,8 @@ odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
 Obecne reguły3 rozszerzają run do sześciu sektorów: 1..5 są normalne,
 a wyłącznie 6 jest finałem. Nie akceptujemy reguł2, bo ich sektor3 był finałem.
 Wersje checkpointu i replay są odrębne; obecny hashv7/replay14 nie jest
-checksumą checkpointu. Niezależny oracle: `tools/checkpoint/vectors.cjs 3`.
+checksumą checkpointu. Obecny replay15 wiąże ID3, hashv7 pozostaje.
+Niezależny oracle: `tools/checkpoint/vectors.cjs 4`.
 
 ## Odrzucanie i dowody
 
