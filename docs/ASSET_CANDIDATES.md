@@ -15,3 +15,8 @@ Stan na 2026-11-13. **1-Bit Pack 1.2 ma konkretną zgodę P056 i minimalny impor
 Finalne napisy UI, tutorialu, błędów, achievementów i sklepu; tytuł; ikona exe; font z prawem redystrybucji; grafiki Steam i ewentualny trailer. Nie zakładamy, że któryś pakiet pokrywa te potrzeby. Fontu systemowego nie kopiujemy do paczki bez prawa dystrybucji. Muzyka nie jest wymaganiem 1.0; rezygnacja z muzyki jest lepsza od niezweryfikowanego źródła.
 
 Przy braku pasującego artworku agent upraszcza wygląd do dostępnych, zatwierdzonych elementów. Nie dorabia brakujących portów, ramek, strzałek lub ikon w kodzie ani w SVG. Wybór zestawu nie wymaga pytania o gust; wymagana jest wyłącznie zgoda na pobranie po przygotowaniu konkretnego dossier.
+
+P076 (2026-11-14): [CoMiGo Bleeps, upload 4947244](assets/COMIGO_BLEEPS_4947244.md)
+ma dossier CC0 i deklarację non-AI; [konkretny wniosek](assets/REQUEST_COMIGO_BLEEPS_4947244.md)
+oczekuje na odpowiedź. Brak pobrania i importu. Kenney Interface Sounds
+nie ma wystarczającego odrębnego dowodu non-AI na stronie tej wersji.

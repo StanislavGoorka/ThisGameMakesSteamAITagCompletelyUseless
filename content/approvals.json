@@ -9,6 +9,15 @@
       "approved_at": "2026-11-13",
       "evidence": "2026-11-13: użytkownik odpowiedział na pełny zakres docs/assets/REQUEST_KENNEY_1BIT_1_2.md: „Tak, zgadzam się na ten zakres”. Odpowiedź request_user_input_async, questionItemId [request_user_input_async, call_b800f37cdcca4b8c801edd5b968957ea, 0].",
       "scope": "Jedno darmowe pobranie 1bitpack_kenney_1.2.zip do .local/asset-intake/kenney-1bit-1.2/, kontrola wersji, licencji i hashy oraz minimalny import niezmienionych PNG/not do assets/approved/kenney-1bit-1.2/ i publicznego lokalnego Git. Bez darowizny, zakupu, innych pakietów lub wersji, skryptów, preview, scen przykładowych, logo i pushu."
+    },
+    {
+      "id": "comigo-bleeps-4947244-2026-11-14",
+      "source_url": "https://comigo.itch.io/bleeps-n-bloops",
+      "source_version": "itch-upload-4947244-2026-11-14",
+      "status": "pending",
+      "approved_at": null,
+      "evidence": "2026-11-14: przygotowano konkretny wniosek docs/assets/REQUEST_COMIGO_BLEEPS_4947244.md. Użytkownik nie udzielił jeszcze zgody na ten pakiet. Polecenie 10 kroków nie jest zgodą na pobranie.",
+      "scope": "Jedno darmowe pobranie uploadu itch.io 4947244: Comigo's Bleeps n Bloops.zip (2.3 MB) do .local/asset-intake/comigo-bleeps-4947244/, kontrola licencji/formatu/hashów i odsłuch, import najwyżej jednego niezmienionego WAV bez głosu oraz koniecznych oryginalnych not do assets/approved/comigo-bleeps-4947244/, lokalny commit w publicznym repo i dołączenie do gry. Bez innych wersji/uploadów, płatności, darowizny, konta, muzyki, głosów, grafik, preview, skryptów i pushu."
     }
   ]
 }

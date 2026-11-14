@@ -500,3 +500,5 @@ P075-04: Dodano RAII silnika i mastering voice XAudio2 oraz testy fabryki i syst
 P075-05: Dodano atomową obsługę błędu krytycznego i jawne odtworzenie XAudio2; bez audio danych. [Raport](docs/workflow/history/P075-05.md)
 
 P075-03: Okno posiada port XAudio2; brak urządzenia pozostawia tury, preview i zapis sprawne. Debug/Release 136/136. [Raport](docs/workflow/history/P075-03.md)
+
+P076: Dossier audio i konkretny wniosek są gotowe; P076 blocked do rzeczywistej zgody. Niczego nie pobrano. [Raport](docs/workflow/history/P076.md)
