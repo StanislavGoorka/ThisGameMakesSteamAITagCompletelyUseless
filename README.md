@@ -506,3 +506,5 @@ P076: Dossier audio i konkretny wniosek są gotowe; P076 blocked do rzeczywistej
 P076: Zapisano zgodę na upload CoMiGo 4947244 i zamknięto P076; import jest odblokowany. [Raport](docs/workflow/history/P076.md)
 
 P077: Przyjęto niezmieniony PowerUp_01.wav z uploadu 4947244; hash i źródła w dossier importu. [Raport](docs/workflow/history/P077.md)
+
+P078: Rozbito dekoder WAV, zweryfikowane wczytanie, source voice i mapowanie zdarzeń; bez implementacji dzieci. [Raport](docs/workflow/history/P078.md)

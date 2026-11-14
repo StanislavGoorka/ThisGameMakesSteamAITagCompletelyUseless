@@ -58,3 +58,9 @@ RunWindow posiada opcjonalny port przez unique_ptr; entrypoint przekazuje
 XAudio2Output przez create_resumed_window. Port jest zwalniany przed COM.
 Bez mapowania zdarzeń (P078) i bez plików wszystkie znane sygnały zwracają
 unavailable, niezależnie od dostępności urządzenia. Unknown daje unknown.
+
+P078 jest podziałem na P078-01 (dekoder RIFF/WAVE PCM16), P078-02
+(właściciel pliku po weryfikacji hashy), P078-03 (RAII source voice)
+i P078-04 (port, zdarzenie dostawy i mute). Konsumenci wymagają P078-04.
+P077 przyjął jeden niezmieniony PowerUp_01.wav; zakaz tworzenia próbek
+w testach pozostaje. Testy dekodera modyfikują tylko metadane kopii pliku.

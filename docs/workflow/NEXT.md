@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P078
+Task: P078-01
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P077.
-Zależności: P077; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078.
+Zależności: P078; muszą być completed.
 
-Podepnij jeden zatwierdzony sygnał do dostawy.
+Dodaj niemutujący dekoder RIFF/WAVE PCM16 z pożyczonym widokiem próbek. Bez IO, odtwarzania i wytwarzania danych audio.
 
-Kryteria: Jedno zdarzenie daje jedno odtworzenie; mute i brak pliku obsłużone.
+Kryteria: Zatwierdzony WAV daje poprawny format i dokładny podzbiór bajtów. Odmowa uciętych chunków, długości, duplikatów i nieobsługiwanego formatu bez odczytu poza buforem. Testy zmieniają tylko metadane istniejącego nagrania.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
