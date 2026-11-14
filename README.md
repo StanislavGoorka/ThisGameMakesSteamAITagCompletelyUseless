@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a jedyny finał w sektorze 6 wymaga trzech. Checkpoint schema1/rules3 zachowuje zasoby i wariant, odrzucając rules1/2 z zachowaniem backupu. Debug i Release: 160/160; korpus 26 000 granic; finał: 257 seedów, maksymalnie 31 akcji. Hash v7/replay v14. P085 rozbito na 14 małych zadań; nadal działają dwa moduły. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 10/10 bieżącej serii: P085.
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 1/10 bieżącej serii: P085-01. Ustalono kontrakt katalogu, dwóch slotów, ofert i resetów ID1..12; nadal działają wyłącznie ID1/2. Brak zmian kodu. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
