@@ -2,8 +2,8 @@
 
 #include "core/debt_spawn.hpp"
 #include "core/run_turn.hpp"
+#include "core/sector_boundary.hpp"
 #include "core/sector_module_usage.hpp"
-#include "core/sector_topology.hpp"
 
 namespace closed_circuit
 {
@@ -18,13 +18,7 @@ namespace closed_circuit
     RunSeed sector_seed{0};
     for (unsigned i = 0; i < number.value(); ++i)
         sector_seed = RunSeed{rng.next_u64()};
-    const auto topology = generate_sector_topology(sector_seed);
-    auto next = *GameState::initial(topology.ports, topology.rotatable_nodes,
-                                    topology.entry);
-    next.sector_entry = topology.entry;
-    next.sector_exit = topology.exit;
-    for (const auto receiver : topology.receivers)
-        next.receiver_nodes[receiver.value()] = true;
+    auto next = *build_sector_state(sector_seed, SectorVariant::normal);
     next.player_integrity = run.sector.player_integrity;
     next.reserve = run.sector.reserve;
     next.overload_debt = run.sector.overload_debt;

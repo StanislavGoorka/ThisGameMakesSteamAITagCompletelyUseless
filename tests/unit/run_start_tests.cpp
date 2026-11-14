@@ -75,10 +75,47 @@ bool cases()
     }
     return true;
 }
+
+bool boundary_builder()
+{
+    for (std::uint64_t index = 0; index <= 256; ++index)
+    {
+        const RunSeed seed{index == 256 ? UINT64_MAX : index};
+        const auto topology = generate_sector_topology(seed);
+        auto expected = *GameState::initial(
+            topology.ports, topology.rotatable_nodes, topology.entry);
+        expected.sector_entry = topology.entry;
+        expected.sector_exit = topology.exit;
+        for (const auto receiver : topology.receivers)
+            expected.receiver_nodes[receiver.value()] = true;
+        const auto normal = build_sector_state(seed, SectorVariant::normal);
+        if (!normal || !test::same_state(*normal, expected) ||
+            build_sector_state(seed, static_cast<SectorVariant>(255)))
+            return false;
+        const bool top = topology.receivers[0] == node(4);
+        const auto third = node(top ? 34 : 46);
+        expected.ports[third.value()] = *PortMask::from_bits(top ? 5 : 10);
+        expected.rotatable_nodes[third.value()] = false;
+        expected.receiver_nodes[third.value()] = true;
+        expected.delivery_requirement = *DeliveryRequirement::from_value(3);
+        auto final = build_sector_state(seed, SectorVariant::final);
+        if (!final || !test::same_state(*final, expected) ||
+            sector_outcome(*final) != SectorOutcome::ongoing)
+            return false;
+        final->receiver_nodes.fill(false);
+        final->ports[0] = *PortMask::from_bits(0);
+        if (!test::same_state(
+                *normal, *build_sector_state(seed, SectorVariant::normal)) ||
+            !test::same_state(expected,
+                              *build_sector_state(seed, SectorVariant::final)))
+            return false;
+    }
+    return true;
+}
 } // namespace
 int main()
 {
-    if (!cases())
+    if (!boundary_builder() || !cases())
     {
         std::cerr << "Fresh run complete-state vector mismatch\n";
         return 1;

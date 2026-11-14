@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/run_state.hpp"
-#include "core/sector_topology.hpp"
+#include "core/sector_boundary.hpp"
 
 #include <utility>
 
@@ -12,13 +12,8 @@ namespace closed_circuit
 [[nodiscard]] inline RunState start_run(RunSeed seed)
 {
     SplitMix64 rng{seed};
-    const auto topology = generate_sector_topology(RunSeed{rng.next_u64()});
-    auto state = *GameState::initial(topology.ports, topology.rotatable_nodes,
-                                     topology.entry);
-    state.sector_entry = topology.entry;
-    state.sector_exit = topology.exit;
-    for (const auto receiver : topology.receivers)
-        state.receiver_nodes[receiver.value()] = true;
+    auto state =
+        *build_sector_state(RunSeed{rng.next_u64()}, SectorVariant::normal);
     return RunState{.seed = seed, .sector = std::move(state)};
 }
 } // namespace closed_circuit

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/run_state.hpp"
-#include "core/sector_topology.hpp"
+#include "core/sector_boundary.hpp"
 
 namespace closed_circuit
 {
@@ -38,20 +38,14 @@ restore_checkpoint(const RunCheckpoint &checkpoint)
     RunSeed sector_seed{0};
     for (unsigned i = 0; i < checkpoint.sector_number.value(); ++i)
         sector_seed = RunSeed{rng.next_u64()};
-    const auto topology = generate_sector_topology(sector_seed);
-    auto state = *GameState::initial(topology.ports, topology.rotatable_nodes,
-                                     topology.entry);
-    state.sector_entry = topology.entry;
-    state.sector_exit = topology.exit;
-    for (const auto receiver : topology.receivers)
-        state.receiver_nodes[receiver.value()] = true;
+    auto state = *build_sector_state(sector_seed, SectorVariant::normal);
     state.player_integrity = checkpoint.player_integrity;
     state.reserve = checkpoint.reserve;
     state.overload_debt = checkpoint.overload_debt;
     state.modules = checkpoint.modules;
     // This pulse was already paid for. Never charge debt again on resume.
     if (checkpoint.entry_debt_pulse)
-        state.pulses.push_back({*EntityId::from_value(0), topology.entry});
+        state.pulses.push_back({*EntityId::from_value(0), *state.sector_entry});
     return RunState{checkpoint.seed, checkpoint.sector_number, std::move(state),
                     false};
 }
