@@ -382,3 +382,9 @@ wskaźnik i 71792 bajty danych), wszystkie 71836 ucięć, błędne sygnatury
 i pola, stereo/rate 8000/192000, granice rate, fmt18, przestawienie chunków,
 duplikaty, odd padding, 256/257 chunków i 1 MiB/+8. Zmienia wyłącznie
 metadane kopii oryginału. Nic nie odtwarza i nie generuje danych audio.
+
+P078-02: windows_approved_wave porównuje pełne próbki oryginału po load,
+copy, move i przypisaniach. Trzykrotnie sprawdza realne pliki: brak, blokada
+wyłączna, błędny nagłówek/hash, zła długość i usunięcie, bez mutacji approved.
+Wcześniej wczytany właściciel zachowuje dane. Test rzeczywistego manifestu
+porównuje przypięte ID, ścieżkę, rozmiar i digest z rekordem rejestru.

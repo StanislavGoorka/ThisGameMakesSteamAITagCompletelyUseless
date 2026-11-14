@@ -1,4 +1,5 @@
 #include "../support/checkpoint_files.hpp"
+#include "platform/windows/approved_wave.hpp"
 #include "platform/windows/asset_manifest_parse.hpp"
 #include "platform/windows/asset_read.hpp"
 #include <iostream>
@@ -14,6 +15,12 @@ int wmain(int argc, wchar_t **argv)
     const std::string json(registry_bytes.begin(), registry_bytes.end());
     const auto manifest = windows::parse_asset_manifest(json);
     if (!manifest || manifest->size() != 4 || find_asset(*manifest, "unknown"))
+        return 1;
+    const auto &pinned = windows::delivery_audio_reference();
+    const auto *registered = find_asset(*manifest, pinned.id());
+    if (!registered || registered->path() != pinned.path() ||
+        registered->bytes() != pinned.bytes() ||
+        registered->sha256() != pinned.sha256())
         return 1;
     test::CheckpointDirectory isolated;
     const std::array ids{"kenney1bit12-monochrome", "kenney1bit12-license",

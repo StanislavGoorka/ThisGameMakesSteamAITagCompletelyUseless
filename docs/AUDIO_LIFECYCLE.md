@@ -77,3 +77,11 @@ Widok żyje tylko tak długo jak niezmieniony bufor wejściowy.
 [RIFF](https://learn.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-),
 [WAVEFORMATEX](https://learn.microsoft.com/en-us/windows/win32/api/mmreg/ns-mmreg-waveformatex).
 Obsługiwany podzbiór jest celowo węższy niż całe API XAudio2.
+
+P078-02: ApprovedDeliveryWave::load wymaga absolutnego trusted root,
+czyta tylko delivery_audio_reference (ID, ścieżka, 71836 bajtów, SHA-256
+z rejestru) przez read_asset_file i sprawdza dekoderem format. Brak lub
+błąd daje nullopt. Konstruktor z bajtów jest prywatny; nie ma fallbacku.
+Obiekt posiada vector bajtów, a view() oblicza pożyczony widok we własnym
+buforze. Kopie i move nie przenoszą zapisanych wskaźników między obiektami;
+przeniesiony pusty obiekt daje pusty widok. Bez tworzenia urządzeń/audio.

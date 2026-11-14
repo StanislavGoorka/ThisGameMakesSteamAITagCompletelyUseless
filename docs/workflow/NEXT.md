@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P078-02
+Task: P078-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-01.
-Zależności: P078-01; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-02.
+Zależności: P078-02; muszą być completed.
 
-Dodaj przypięte AssetReference i właściciela zatwierdzonego WAV, tworzonego wyłącznie przez read_asset_file i dekoder. Bez source voice i odtwarzania.
+Dodaj wąski RAII source voice posiadający zatwierdzony WAV i urządzenie. Fabryka API pozwala testować submit/start, błąd i jawne odtworzenie. Bez mapowania zdarzeń i zmian okna.
 
-Kryteria: Rzeczywisty plik ma dokładne bajty/format; brak, korupcja, blokada i zły root odrzucone. Kopie i przeniesienia właściciela nie pozostawiają wiszących widoków.
+Kryteria: Każde play przesyła raz oryginalny bufor. Błędy nie zostawiają zaległego odtwarzania; source voice niszczony przed mastering voice i danymi, także przy odtworzeniu i krytycznym callbacku. Próba realnego odtwarzania wyłącznie zatwierdzonego pliku.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
