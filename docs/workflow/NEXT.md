@@ -1,9 +1,9 @@
 # Następny mały krok
 
-Task: P082-02
+Task: P082-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P082-01.
-Zaimplementuj tylko walidowan? warto?? PeriodicEmitter i predykat fires na podstawie turns_taken. Testuj pe?ne zakresy wej?ciowe, jawne fazy, granice 2/48 i UINT32_MAX. Bez GameState, footprint i obra?e?.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P082-02.
+Zaimplementuj wy??cznie czysty footprint emitera: 49 flag osi?galnych przez wzajemne porty do range, ?r?d?o w??czone. Sprawd? dok?adne zbiory, cykle, jednostronne porty, brzegi i obr?t; bez obra?e?, stanu gry i resolvera.
 
 Computer Use nie jest wymagane do developmentu według decyzji użytkownika z 2026-11-14. Obserwacja pulpitu i percepcyjna czytelność pozostają niewykonane do P104. Nie generuj assetów ani finalnych napisów, nie pobieraj pakietów.
 
