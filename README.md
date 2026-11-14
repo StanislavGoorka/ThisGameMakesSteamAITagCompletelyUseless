@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Emiter okresowy działa w resolverze i preview; hash v5, replay v10. Kondensator ma wartościowy typ i jednorazowy licznik; footprint, faza i integracja pozostają w P083-03..06. [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 5/10 bieżącej serii: P083-02.
+Emiter okresowy działa w resolverze i preview; hash v5, replay v10. Kondensator ma jednorazowy licznik i grafowy footprint współdzielący BFS z emiterem; faza i integracja pozostają w P083-04..06. [Aktualne przekazanie](docs/workflow/NEXT.md). Krok 6/10 bieżącej serii: P083-03.
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie

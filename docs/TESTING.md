@@ -479,3 +479,5 @@ P082-05: core_emitter_state chroni każde pole, kolejność i kopie kolekcji ora
 P082-06: core_emitter_turn porównuje pełne preview/commit i stan źródłowy po odłączeniu i połączeniu obrotem, przy impulsach, dostawie zakończonej śmiercią, odmowach i trzech stanach terminalnych. Jawna sześcioturowa sekwencja chroni harmonogram, koszt 1 i deterministyczne hashe; istniejący replay/CLI chroni fixture bez emiterów. Sprawdzony zewnętrzny wykorzystany limit helpera impulsów.
 
 P083-02: core_delayed_capacitor sprawdza wszystkie 2304 kombinacje delay/range, po 96 ticków każda, granice pełnych uint64 przed zawężeniem, jeden sygnał i brak underflow, pola ID/pozycji oraz dwie niezależne kopie. constexpr i brak domyślnego konstruktora weryfikowane przy kompilacji.
+
+P083-03: core_capacitor_footprint sprawdza literalne zbiory pól, cykl, rozgałęzienie, jednostronne porty, granicę 6/7 i rotację między tickami oraz 49×48×49 niezależnych dystansów pełnej siatki. Pending/spent mają identyczną geometrię. Istniejące core_emitter_footprint i core_emitter_turn chronią wyodrębniony wspólny BFS.

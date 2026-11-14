@@ -1,8 +1,8 @@
 # Następny mały krok
 
-Task: P083-03
+Task: P083-04
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P083-02. P083-03: czytaj docs/DELAYED_CAPACITOR.md i emitter_footprint.hpp. Wyodrębnij wspólny czysty grafowy BFS i dodaj capacitor_footprint bez obrażeń/licznika/resolvera. Testuj dokładne zbiory, granice, cykle, rozgałęzienia, jednostronne porty i rotację, z pełną niezmiennością wejść i regresjami emitera. Zależność P083-02 ukończona.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, TESTING, README i raport P083-03. P083-04: czytaj docs/DELAYED_CAPACITOR.md. Dodaj wyłącznie resolve_capacitor_phase(GameState&, span<DelayedCapacitor>, bool&): każdy element tick raz, tylko 1→0 może trafić według aktualnego footprint, limit wspólny. Przy HP0 i zużytym limicie wszystkie fuse nadal tykają. Testuj pełny stan i konfiguracje, rotację, kilka kolejności, brak podwójnego wybuchu. Bez resolvera i kolekcji GameState. Zależność P083-03 ukończona.
 
 Dla kodu stosuj cpp-core-step, pełny build/CTest Debug i Release oraz clang-format src/tests/tools. Po mutacji kodu odczekaj ponad 1 s i touch przed buildem (rozdzielczość dysku). Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push. Dokumentację zapisuj bezpośrednio w UTF-8.
 
