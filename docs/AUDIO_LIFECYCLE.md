@@ -64,3 +64,16 @@ P078 jest podziałem na P078-01 (dekoder RIFF/WAVE PCM16), P078-02
 i P078-04 (port, zdarzenie dostawy i mute). Konsumenci wymagają P078-04.
 P077 przyjął jeden niezmieniony PowerUp_01.wav; zakaz tworzenia próbek
 w testach pozostaje. Testy dekodera modyfikują tylko metadane kopii pliku.
+
+P078-01: decode_pcm16_wave (application/pcm_wave.hpp) zwraca pożyczony
+widok PCM16 bez IO i alokacji. Wymaga RIFF/WAVE, dokładnej długości RIFF,
+jednego fmt (16 albo 18 z cbSize=0) i niepustego data z pełnymi ramkami.
+Mono/stereo, 8000–192000 Hz, block align i byte rate muszą być spójne.
+Limit wejścia 1 MiB, 256 chunków. Nieznane metadane są pomijane; padding
+WORD musi istnieć. Dane i fmt mogą wystąpić w dowolnej kolejności.
+Widok żyje tylko tak długo jak niezmieniony bufor wejściowy.
+
+Źródła sprawdzone 2026-11-14:
+[RIFF](https://learn.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-),
+[WAVEFORMATEX](https://learn.microsoft.com/en-us/windows/win32/api/mmreg/ns-mmreg-waveformatex).
+Obsługiwany podzbiór jest celowo węższy niż całe API XAudio2.

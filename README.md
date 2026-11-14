@@ -508,3 +508,5 @@ P076: Zapisano zgodę na upload CoMiGo 4947244 i zamknięto P076; import jest od
 P077: Przyjęto niezmieniony PowerUp_01.wav z uploadu 4947244; hash i źródła w dossier importu. [Raport](docs/workflow/history/P077.md)
 
 P078: Rozbito dekoder WAV, zweryfikowane wczytanie, source voice i mapowanie zdarzeń; bez implementacji dzieci. [Raport](docs/workflow/history/P078.md)
+
+P078-01: Dodano ścisły dekoder RIFF/WAVE PCM16 z pożyczonym widokiem i testami błędnych metadanych. [Raport](docs/workflow/history/P078-01.md)

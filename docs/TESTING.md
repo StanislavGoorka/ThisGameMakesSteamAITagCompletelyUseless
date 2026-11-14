@@ -376,3 +376,9 @@ P077: windows_asset_manifest_integration obejmuje również czwarty wpis,
 comigo4947244-powerup01; pełne oryginalne bajty, CRC po uszkodzeniu i brak
 pliku sprawdzane na kopiach. Oryginalnego WAV nie modyfikuje się w testach.
 Test-AssetPackage.ps1 zalicza 7 przypadków (w tym korupcja i odmowa zgody).
+
+P078-01: application_pcm_wave sprawdza prawdziwy zatwierdzony WAV (dokładny
+wskaźnik i 71792 bajty danych), wszystkie 71836 ucięć, błędne sygnatury
+i pola, stereo/rate 8000/192000, granice rate, fmt18, przestawienie chunków,
+duplikaty, odd padding, 256/257 chunków i 1 MiB/+8. Zmienia wyłącznie
+metadane kopii oryginału. Nic nie odtwarza i nie generuje danych audio.

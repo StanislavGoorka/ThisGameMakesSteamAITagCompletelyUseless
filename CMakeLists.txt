@@ -25,6 +25,15 @@ endif()
 
 include(CTest)
 
+if(BUILD_TESTING)
+    add_executable(application_pcm_wave_tests tests/unit/pcm_wave_tests.cpp)
+    target_link_libraries(application_pcm_wave_tests PRIVATE game_core)
+    if(MSVC)
+        target_compile_options(application_pcm_wave_tests PRIVATE /W4 /permissive-)
+    endif()
+    add_test(NAME application_pcm_wave COMMAND application_pcm_wave_tests "${CMAKE_CURRENT_SOURCE_DIR}")
+endif()
+
 if(BUILD_TESTING AND WIN32)
     add_executable(windows_xaudio2_device_tests tests/integration/xaudio2_device_tests.cpp)
     target_link_libraries(windows_xaudio2_device_tests PRIVATE game_core xaudio2 ole32)

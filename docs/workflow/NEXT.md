@@ -1,13 +1,13 @@
 # Następny mały krok
 
-Task: P078-01
+Task: P078-02
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078.
-Zależności: P078; muszą być completed.
+Czytaj AGENTS, next-step, WORKFLOW, STATE i raport P078-01.
+Zależności: P078-01; muszą być completed.
 
-Dodaj niemutujący dekoder RIFF/WAVE PCM16 z pożyczonym widokiem próbek. Bez IO, odtwarzania i wytwarzania danych audio.
+Dodaj przypięte AssetReference i właściciela zatwierdzonego WAV, tworzonego wyłącznie przez read_asset_file i dekoder. Bez source voice i odtwarzania.
 
-Kryteria: Zatwierdzony WAV daje poprawny format i dokładny podzbiór bajtów. Odmowa uciętych chunków, długości, duplikatów i nieobsługiwanego formatu bez odczytu poza buforem. Testy zmieniają tylko metadane istniejącego nagrania.
+Kryteria: Rzeczywisty plik ma dokładne bajty/format; brak, korupcja, blokada i zły root odrzucone. Kopie i przeniesienia właściciela nie pozostawiają wiszących widoków.
 
 Czytaj dokumenty kontraktu wskazane w raporcie poprzednika.
 Dla C++: cpp-core-step, ARCHITECTURE, GAME_DESIGN, TESTING i README.
