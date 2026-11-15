@@ -57,7 +57,7 @@ int main()
     // Planned IDs without a predicate are refused and leave the file intact.
     const auto stored = test::read_bytes(path);
     for (unsigned raw = 0; raw <= 13; ++raw)
-        if ((raw == 0 || raw >= 7) &&
+        if ((raw == 0 || raw >= 8) &&
             (first.unlock(static_cast<AchievementId>(raw)) !=
                  AchievementSinkResult::invalid ||
              test::read_bytes(path) != stored))

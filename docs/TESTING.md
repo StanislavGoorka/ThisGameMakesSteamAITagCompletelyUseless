@@ -1,5 +1,12 @@
 # Testy i bramki jakości
 
+P088-05: application_mvp_achievement (won_preinstalled_range) — RunEnded dla
+ID1..3 × won/death/overload × sektorów × obu pochodzeń: bit6 wyłącznie przy
+zwycięstwie w ostatnim sektorze z ID2, bit completed_run niezależny od
+konfiguracji; dispatch z retry tylko dla ID7. windows_start_config_run: w
+pełnych runach przez pliki ID2 zdobywa 0x40, ID1/ID3 nie, a pozostałe bity
+są równe ID1.
+
 P088-04: application_mvp_achievement (swift_sector) — SectorCompleted daje 0x22
 dla tur1..16 i 2 dla 17..48 w każdym sektorze i dla obu pochodzeń historii,
 inne zdarzenia nigdy bitu5; rzeczywista tura: ukończenie na turze16 tak, na

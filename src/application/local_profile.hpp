@@ -29,7 +29,8 @@ enum class AchievementId : std::uint8_t
 inline constexpr std::array achievement_catalog{
     AchievementId::first_delivery,        AchievementId::first_sector,
     AchievementId::run_without_overdrive, AchievementId::reconfigured_delivery,
-    AchievementId::completed_run,         AchievementId::swift_sector};
+    AchievementId::completed_run,         AchievementId::swift_sector,
+    AchievementId::won_preinstalled_range};
 
 [[nodiscard]] constexpr std::uint16_t implemented_achievement_bits() noexcept
 {
