@@ -3194,10 +3194,131 @@
             "id": "P088",
             "phase": "M7",
             "title": "Rozbij achievementy 1.0",
-            "scope": "Wyłącznie zaplanuj dzieci dla siedmiu dodatkowych predykatów do 12.",
-            "acceptance": "Każdy ma test +/−, reset i stabilne ID; tekst i ikona pozyskiwane osobno.",
+            "scope": "Wyłącznie zaplanuj dzieci dla siedmiu dodatkowych predykatów ID6..12 według ACHIEVEMENT_EXPANSION_PLAN: format profilu, katalog ID, dane zdarzenia, po jednym dziecku na predykat i integracja. Bez implementacji.",
+            "acceptance": "ACHIEVEMENT_EXPANSION_PLAN opisuje siedem predykatów ze stabilnymi ID, testami +/− i pamięcią/resetem, wersję profilu i katalog przed predykatami; tekst i ikona pozyskiwane osobno, bez nowych assetów; P089 wymaga ostatniej integracji.",
             "depends_on": [
                 "P087-10"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-01",
+            "phase": "M7",
+            "title": "Profil z dwunastoma bitami",
+            "scope": "Tylko profil schema2 o tym samym układzie 24 bajtów: achievement_bits 0..11, odczyt schema1 (bity 0..4) i schema2, zapis zawsze schema2. Bez nowych ID, predykatów i UI.",
+            "acceptance": "Wektory v1 dekodują się jak dotąd; v2 round-trip dla 0x0fff; v1 z bitem5 i v2 z bitami12..15 odrzucone; checksum; save z poprawnym poprzednim v1 publikuje go do .bak bez zmian i zapisuje v2. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-02",
+            "phase": "M7",
+            "title": "Katalog achievementów",
+            "scope": "Tylko AchievementId 6..12 i katalog zaimplementowanych ID (1..5) zamiast stałych 1..5/0x1f w unlock, masce kandydatów i dispatcherze. Bez predykatów.",
+            "acceptance": "Zachowanie ID1..5 bez zmian; ID0, 6..12 i 13 odrzucone przez unlock i sink; maska kandydatów z bitem5 nieprawidłowa; profil v2 z bitem6 poprawny, ale nieodblokowany dla ID6. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-03",
+            "phase": "M7",
+            "title": "Kontekst zakończenia runu",
+            "scope": "Tylko pola start_config i difficulty w RunEnded wypełniane przez resolve_run_turn_events. Bez predykatów i zmian symulacji, checkpointu, hasha i replay.",
+            "acceptance": "ID1..3 × maski0/1/7: won/death/overload niosą wartości runu; pozostałe zdarzenia bez zmian; deduplikacja porównuje cały payload; run po restore niesie wartości z checkpointu. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-04",
+            "phase": "M7",
+            "title": "Achievement swift_sector",
+            "scope": "Tylko ID6 swift_sector w katalogu i evaluatorze: SectorCompleted z key.turn ≤ 16.",
+            "acceptance": "Tura16 kwalifikuje, tura17 nie; brak ukończenia nie; każdy sektor; restored_checkpoint kwalifikuje; dispatch z retry do sinka. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-05",
+            "phase": "M7",
+            "title": "Achievement won_preinstalled_range",
+            "scope": "Tylko ID7: RunEnded(won) w ostatnim sektorze dla runu ID2.",
+            "acceptance": "Zwycięstwo ID2 tak; ID1/ID3 i przegrana ID2 nie; restore kwalifikuje; pozostałe ID bez zmian. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-06",
+            "phase": "M7",
+            "title": "Achievement won_charged_debt",
+            "scope": "Tylko ID8: RunEnded(won) w ostatnim sektorze dla runu ID3.",
+            "acceptance": "Zwycięstwo ID3 tak; ID1/ID2 i przegrana ID3 nie; restore kwalifikuje. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-07",
+            "phase": "M7",
+            "title": "Achievement won_short_turn_limit",
+            "scope": "Tylko ID9: RunEnded(won) z aktywnym bitem1.",
+            "acceptance": "Maski1/3/5/7 tak; 0/2/4/6 i przegrana z bitem1 nie; restore kwalifikuje. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-08",
+            "phase": "M7",
+            "title": "Achievement won_lean_delivery",
+            "scope": "Tylko ID10: RunEnded(won) z aktywnym bitem2.",
+            "acceptance": "Maski2/3/6/7 tak; pozostałe i przegrana z bitem2 nie; restore kwalifikuje. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-07"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-09",
+            "phase": "M7",
+            "title": "Achievement won_heavy_overdrive_debt",
+            "scope": "Tylko ID11: RunEnded(won) z aktywnym bitem4.",
+            "acceptance": "Maski4/5/6/7 tak; pozostałe i przegrana z bitem4 nie; restore kwalifikuje. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-08"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-10",
+            "phase": "M7",
+            "title": "Achievement won_all_modifiers",
+            "scope": "Tylko ID12: RunEnded(won) z maską7.",
+            "acceptance": "Maska7 tak; 3/5/6 i przegrana z maską7 nie; restore kwalifikuje. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-09"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-11",
+            "phase": "M7",
+            "title": "Integracja achievementów 1.0",
+            "scope": "Tylko dowód: pełne runy przez RunAchievements i LocalAchievementSink do pliku profilu, migracja v1→v2 i restart procesu. Bez tekstów, ikon i assetów.",
+            "acceptance": "ID6..12 zdobyte dla właściwych konfiguracji i masek, a nie dla innych; migracja v1→v2 w sesji okna; restart procesu zachowuje bity; powtórka idempotentna. Debug/Release; bez obserwacji pulpitu (P104).",
+            "depends_on": [
+                "P088-10"
             ],
             "gate": null
         },
@@ -3208,7 +3329,7 @@
             "scope": "Zmierz jedną hipotezę dominującej strategii; zmień najwyżej jeden parametr.",
             "acceptance": "Stały korpus, porównanie przed/po, bez twierdzenia o opinii graczy.",
             "depends_on": [
-                "P088"
+                "P088-11"
             ],
             "gate": null
         },
