@@ -8,13 +8,16 @@ struct RotationRules
 {
     int maximum_distance{1};
     bool allows_fixed_terminal{false};
+    // Only overdrive reads this; overdrive_range extends it by one.
+    int overdrive_distance{1};
 };
 
 // One deterministic port for implemented rotation rule changes.
 [[nodiscard]] constexpr RotationRules
 rotation_rules(const ModuleLoadout &modules) noexcept
 {
-    return {modules.contains(ModuleId::rotation_range) ? 2 : 1,
-            modules.contains(ModuleId::terminal_rotation)};
+    const int distance = modules.contains(ModuleId::rotation_range) ? 2 : 1;
+    return {distance, modules.contains(ModuleId::terminal_rotation),
+            distance + (modules.contains(ModuleId::overdrive_range) ? 1 : 0)};
 }
 } // namespace closed_circuit

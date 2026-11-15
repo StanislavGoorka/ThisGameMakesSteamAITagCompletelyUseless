@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-11: core_overdrive_range sprawdza 5 zestawów × 49 × 49 par
+źródło/cel z niezależną metryką: overdrive 2 z ID10 i 3 z ID1+ID10, rotate
+bez zmiany. Brak rezerwy i MAX długu odmawiają bez kosztu; ID4 przy MAX
+daje darmowy pierwszy overdrive na dystansie2. Terminal ID2 zużywa zgodę raz.
+
 P085-10: core_debt_relief porównuje 1920 kombinacji długu0/1/2/MAX-1/MAX,
 rezerwy, rodzaju dostawy, wait/overdrive i partnerów ID3/ID4/ID5 z niezależną
 wyrocznią kolejności walidacja-koszt-dostawa. Stride daje jedną ulgę;

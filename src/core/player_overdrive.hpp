@@ -7,7 +7,8 @@
 namespace closed_circuit
 {
 
-// Action only, with the same range as a normal rotation. All rejection checks
+// Action only, with the range of a normal rotation plus overdrive_range's
+// extra step. All rejection checks
 // precede the first mutation. The second rotation cannot invalidate its target.
 [[nodiscard]] constexpr bool overdrive_from_player(GameState &state,
                                                    NodeId target) noexcept
@@ -21,7 +22,7 @@ namespace closed_circuit
     {
         return false;
     }
-    if (!rotate_from_player(state, target))
+    if (!rotate_from_player(state, target, true))
     {
         return false;
     }

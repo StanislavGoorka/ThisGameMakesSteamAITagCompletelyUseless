@@ -11,9 +11,10 @@ namespace closed_circuit
 
 // Range depends on grid positions, not connected ports or blocking units.
 // Applies only the action; the turn resolver accounts for turn costs.
-// A rejected rotation leaves every field of the state untouched.
-[[nodiscard]] constexpr bool rotate_from_player(GameState &state,
-                                                NodeId target) noexcept
+// A rejected rotation leaves every field of the state untouched. Only the
+// overdrive action asks for its own range.
+[[nodiscard]] constexpr bool rotate_from_player(GameState &state, NodeId target,
+                                                bool overdrive = false) noexcept
 {
     constexpr int grid_size = 7;
     static_assert(grid_size * grid_size == GameState::node_count);
@@ -25,7 +26,8 @@ namespace closed_circuit
         absolute(source / grid_size - destination / grid_size) +
         absolute(source % grid_size - destination % grid_size);
     const auto rules = rotation_rules(state.modules);
-    if (distance > rules.maximum_distance)
+    if (distance >
+        (overdrive ? rules.overdrive_distance : rules.maximum_distance))
     {
         return false;
     }
