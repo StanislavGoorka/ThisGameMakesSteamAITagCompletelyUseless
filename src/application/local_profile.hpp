@@ -15,6 +15,12 @@ enum class AchievementId : std::uint8_t
     completed_run = 5
 };
 
+// Format range of achievement_bits since profile schema 2 (bits 0..11).
+// Which IDs may be unlocked is decided separately.
+inline constexpr std::uint16_t profile_achievement_bits = 0x0fff;
+// Schema 1 stored only bits 0..4.
+inline constexpr std::uint16_t profile_legacy_achievement_bits = 0x001f;
+
 struct LocalProfile
 {
     std::uint16_t achievement_bits = 0;
@@ -30,7 +36,7 @@ struct LocalProfile
 [[nodiscard]] constexpr bool
 is_profile_valid(const LocalProfile &profile) noexcept
 {
-    return profile.achievement_bits <= 0x1f && profile.variant_bits <= 3 &&
-           profile.master_volume <= 100;
+    return (profile.achievement_bits & ~profile_achievement_bits) == 0 &&
+           profile.variant_bits <= 3 && profile.master_volume <= 100;
 }
 } // namespace closed_circuit

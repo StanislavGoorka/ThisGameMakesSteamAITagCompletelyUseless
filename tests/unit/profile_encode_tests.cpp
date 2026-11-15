@@ -13,14 +13,17 @@ int main()
             profile != test::profile_values[i])
             return 1;
     }
+    if (encode_profile(test::profile_wide_value) != test::profile_wide_vector)
+        return 1;
     for (unsigned raw = 0; raw <= 65535; ++raw)
     {
         LocalProfile profile;
         profile.achievement_bits = static_cast<std::uint16_t>(raw);
         const auto before = profile;
         const auto bytes = encode_profile(profile);
-        if (bytes.has_value() != (raw <= 31) || profile != before ||
-            (bytes && ((*bytes)[8] != raw || (*bytes)[9] != 0)))
+        if (bytes.has_value() != (raw <= 0x0fff) || profile != before ||
+            (bytes && ((*bytes)[8] != (raw & 255) || (*bytes)[9] != raw >> 8 ||
+                       (*bytes)[4] != 2)))
             return 1;
     }
     for (unsigned raw = 0; raw <= 255; ++raw)

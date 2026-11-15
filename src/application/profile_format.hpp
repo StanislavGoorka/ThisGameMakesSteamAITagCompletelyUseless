@@ -6,7 +6,10 @@
 
 namespace closed_circuit
 {
-inline constexpr std::uint32_t profile_schema_version = 1;
+// Schema 2 widens achievement_bits to bits 0..11. Schema 1 files (bits 0..4)
+// are still read; every write uses schema 2.
+inline constexpr std::uint32_t profile_schema_version = 2;
+inline constexpr std::uint32_t profile_legacy_schema_version = 1;
 using ProfileBytes = std::array<std::uint8_t, 24>;
 
 namespace profile_detail

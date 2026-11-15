@@ -31,6 +31,28 @@ int main()
             return 1;
     }
 
+    // A schema 1 main is validated, its values move to the backup and the
+    // new main is schema 2; every later write is schema 2 as well.
+    test::write_bytes(main, test::profile_v1_vectors[1]);
+    std::filesystem::remove(backup);
+    if (!windows::save_profile_file(main, test::profile_values[2]) ||
+        !matches(main, 2) || !matches(backup, 1))
+        return 1;
+    if (!windows::save_profile_file(main, test::profile_wide_value) ||
+        test::read_bytes(main) !=
+            std::vector<std::uint8_t>(test::profile_wide_vector.begin(),
+                                      test::profile_wide_vector.end()) ||
+        !matches(backup, 2))
+        return 1;
+    // Schema 1 cannot hold bit 5: such a main is refused and left untouched.
+    test::write_bytes(main, test::profile_wide_v1_vector);
+    if (windows::save_profile_file(main, test::profile_values[0]) ||
+        test::read_bytes(main) !=
+            std::vector<std::uint8_t>(test::profile_wide_v1_vector.begin(),
+                                      test::profile_wide_v1_vector.end()) ||
+        !matches(backup, 2) || std::filesystem::exists(staging))
+        return 1;
+
     // Each publication path can be blocked; release and retry must work.
     for (const auto &locked_path : {main, staging, backup, backup_staging})
     {

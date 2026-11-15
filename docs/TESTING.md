@@ -1,5 +1,13 @@
 # Testy i bramki jakości
 
+P088-01: application_profile_model/encode/decode/unlock i windows_profile_save:
+niezależne wektory v2 (cztery wartości i 0x0fff) oraz dotychczasowe v1; każda
+zmiana pojedynczego bajtu z odnowioną sumą jest przyjmowana wyłącznie w ramach
+schematu (v1 bity 0..4, v2 0..11, wersja 1 lub 2), poprawny v2 koduje się do
+siebie; enkoder zawsze v2. Zapis z mainem v1 publikuje jego wartości do .bak
+(jako v2) i zapisuje v2; main v1 z bitem5..11 blokuje zapis bez zmian. Profil
+z bitami 5..11 jest poprawny, ale unlock nadal przyjmuje tylko ID1..5.
+
 P087-10: windows_difficulty_run dla masek1/2/4/7 z ID1 oraz masek4/7 z ID3
 (i maski0 z ID1/ID3 jako odniesienia), seedy0..5/42/MAX — każda kombinacja
 8/8 — przechodzi pełny run od start_run(seed, config, maska), zapisując

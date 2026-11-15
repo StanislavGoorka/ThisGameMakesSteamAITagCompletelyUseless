@@ -22,6 +22,53 @@ void renew_checksum(ProfileBytes &bytes)
     }
 }
 
+// Size, extra data and every single-byte change of one valid fixture. With a
+// renewed checksum a change is accepted only within the fixture's schema:
+// schema 1 holds achievement bits 0..4, schema 2 bits 0..11.
+bool check_fixture(const ProfileBytes &fixture, const LocalProfile &expected)
+{
+    if (decode_profile(fixture) != expected)
+        return false;
+    for (std::size_t size = 0; size < 24; ++size)
+        if (decode_profile(std::span{fixture}.first(size)))
+            return false;
+    for (unsigned extra = 1; extra <= 64; ++extra)
+    {
+        std::vector<std::uint8_t> bytes(fixture.begin(), fixture.end());
+        bytes.resize(24 + extra);
+        if (decode_profile(bytes))
+            return false;
+    }
+    for (unsigned offset = 0; offset < 24; ++offset)
+        for (unsigned raw = 0; raw <= 255; ++raw)
+        {
+            auto bytes = fixture;
+            bytes[offset] = static_cast<std::uint8_t>(raw);
+            if (decode_profile(bytes).has_value() != (bytes == fixture))
+                return false;
+            if (offset >= 16)
+                continue;
+            renew_checksum(bytes);
+            const unsigned bits = bytes[8] | (bytes[9] << 8);
+            const unsigned limit = bytes[4] == 1 ? 0x1fu : 0x0fffu;
+            const bool known =
+                offset == 4 ? raw == 1 || raw == 2 : raw == fixture[offset];
+            const bool valid = offset == 8 || offset == 9 ? bits <= limit
+                               : offset == 4  ? known && bits <= limit
+                               : offset == 10 ? raw <= 3
+                               : offset == 11 ? raw <= 100
+                               : offset == 12 ? raw <= 1
+                                              : known;
+            const auto result = decode_profile(bytes);
+            if (result.has_value() != valid)
+                return false;
+            // A valid schema 2 record re-encodes to itself.
+            if (result && bytes[4] == 2 && encode_profile(*result) != bytes)
+                return false;
+        }
+    return true;
+}
+
 int main()
 {
     for (unsigned a = 0; a <= 31; ++a)
@@ -37,41 +84,28 @@ int main()
                     if (!bytes || decode_profile(*bytes) != profile)
                         return 1;
                 }
+    // Every format bit, independent of the other fields.
+    for (unsigned a = 0; a <= 0x0fff; ++a)
+    {
+        const LocalProfile profile{static_cast<std::uint16_t>(a), 1, 50, false};
+        const auto bytes = encode_profile(profile);
+        if (!bytes || decode_profile(*bytes) != profile)
+            return 1;
+    }
+    if (decode_profile(test::profile_wide_vector) != test::profile_wide_value ||
+        decode_profile(test::profile_wide_v1_vector))
+        return 1;
     for (std::size_t i = 0; i < test::profile_vectors.size(); ++i)
     {
-        const auto &fixture = test::profile_vectors[i];
-        if (decode_profile(fixture) != test::profile_values[i])
+        if (!check_fixture(test::profile_vectors[i], test::profile_values[i]) ||
+            !check_fixture(test::profile_v1_vectors[i],
+                           test::profile_values[i]))
             return 1;
-        for (std::size_t size = 0; size < 24; ++size)
-            if (decode_profile(std::span{fixture}.first(size)))
-                return 1;
-        for (unsigned extra = 1; extra <= 64; ++extra)
-        {
-            std::vector<std::uint8_t> bytes(fixture.begin(), fixture.end());
-            bytes.resize(24 + extra);
-            if (decode_profile(bytes))
-                return 1;
-        }
-        for (unsigned offset = 0; offset < 24; ++offset)
-            for (unsigned raw = 0; raw <= 255; ++raw)
-            {
-                auto bytes = fixture;
-                bytes[offset] = static_cast<std::uint8_t>(raw);
-                if (decode_profile(bytes).has_value() != (bytes == fixture))
-                    return 1;
-                if (offset >= 16)
-                    continue;
-                renew_checksum(bytes);
-                const bool valid = offset == 8    ? raw <= 31
-                                   : offset == 10 ? raw <= 3
-                                   : offset == 11 ? raw <= 100
-                                   : offset == 12 ? raw <= 1
-                                                  : raw == fixture[offset];
-                const auto result = decode_profile(bytes);
-                if (result.has_value() != valid ||
-                    (result && encode_profile(*result) != bytes))
-                    return 1;
-            }
+        // Reading schema 1 yields the value; writing it yields schema 2.
+        if (encode_profile(test::profile_values[i]) != test::profile_vectors[i])
+            return 1;
     }
+    if (!check_fixture(test::profile_wide_vector, test::profile_wide_value))
+        return 1;
     return 0;
 }

@@ -24,9 +24,11 @@ decode_profile(std::span<const std::uint8_t> bytes) noexcept
 {
     if (bytes.size() != ProfileBytes{}.size())
         return std::nullopt;
+    const auto version = profile_detail::get_le(bytes, 4, 4);
     if (bytes[0] != 0x43 || bytes[1] != 0x43 || bytes[2] != 0x50 ||
         bytes[3] != 0x52 ||
-        profile_detail::get_le(bytes, 4, 4) != profile_schema_version ||
+        (version != profile_schema_version &&
+         version != profile_legacy_schema_version) ||
         profile_detail::get_le(bytes, 16, 8) !=
             profile_detail::checksum(bytes.first(16)) ||
         bytes[12] > 1 || bytes[13] != 0 || bytes[14] != 0 || bytes[15] != 0)
@@ -34,7 +36,9 @@ decode_profile(std::span<const std::uint8_t> bytes) noexcept
     const LocalProfile profile{
         static_cast<std::uint16_t>(profile_detail::get_le(bytes, 8, 2)),
         bytes[10], bytes[11], bytes[12] == 1};
-    if (!is_profile_valid(profile))
+    if (!is_profile_valid(profile) ||
+        (version == profile_legacy_schema_version &&
+         (profile.achievement_bits & ~profile_legacy_achievement_bits) != 0))
         return std::nullopt;
     return profile;
 }

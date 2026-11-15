@@ -1,4 +1,15 @@
-# Profil lokalny v1
+# Profil lokalny v2
+
+P088-01: schema2 o tym samym układzie 24 bajtów rozszerza achievement_bits do
+bitów 0..11 (maska formatu 0x0fff, bity 12..15 odrzucane). Odczyt przyjmuje
+schema1 (wyłącznie bity 0..4) i schema2; zapis zawsze tworzy schema2. Plik v1
+z bitem 5..15 jest odrzucany jak każde uszkodzenie. Migracja następuje przy
+pierwszym zapisie: poprawny main v1 jest walidowany, jego wartości trafiają do
+backupu (zakodowane ponownie jako schema2), a nowy main jest schema2. Bez
+automatycznej naprawy i bez zapisu przy samym odczycie. Maska formatu nie
+decyduje, które ID można odblokować: unlock nadal przyjmuje tylko ID1..5,
+a katalog zaimplementowanych ID wprowadza P088-02
+([plan](ACHIEVEMENT_EXPANSION_PLAN.md)).
 
 P040-01: model i kontrakt; P040-02/03 wdrażają pamięciowy encoder i decoder.
 P040-04/05 wdrażają odczyt oraz zapis Windows z backupem.
@@ -32,8 +43,8 @@ wielobajtowe są unsigned little-endian; brak terminatora i danych po rekordzie.
 | Offset | Bajty | Wartość |
 | --- | --- | --- |
 | 0 | 4 | magic `43 43 50 52` (CCPR) |
-| 4 | 4 | schema_version=1 |
-| 8 | 2 | achievement_bits, wyłącznie bity 0..4 |
+| 4 | 4 | schema_version=2 (odczyt także 1) |
+| 8 | 2 | achievement_bits: schema2 bity 0..11, schema1 wyłącznie 0..4 |
 | 10 | 1 | variant_bits, wyłącznie bity 0..1 |
 | 11 | 1 | master_volume 0..100 |
 | 12 | 1 | muted 0 lub 1 |
