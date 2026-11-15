@@ -54,6 +54,15 @@ DeliveryScope scope(const RunState &run, unsigned attempt = 1,
     return {run.seed, {attempt}, {branch}, run.sector_number};
 }
 
+// Since P085-19 the live offers admit ID3..12; these runs must carry one.
+bool has_admitted(const ModuleLoadout &modules)
+{
+    for (const auto slot : modules.slots())
+        if (slot && static_cast<unsigned>(*slot) >= 3)
+            return true;
+    return false;
+}
+
 template <typename Evaluator>
 bool publish(EventDispatcher &dispatcher, const DeliveryScope &context,
              const std::vector<DomainEvent> &events, Evaluator &evaluator,
@@ -212,8 +221,8 @@ bool complete(RunSeed seed, const std::filesystem::path &directory)
             run = next.state;
         }
     }
-    if (run_phase(run) != RunPhase::won || evaluator.calls != total_events ||
-        sink.new_unlocks != 5 ||
+    if (run_phase(run) != RunPhase::won || !has_admitted(run.sector.modules) ||
+        evaluator.calls != total_events || sink.new_unlocks != 5 ||
         windows::read_profile_file(profile).profile !=
             LocalProfile{31, 3, 29, true})
         return false;
@@ -424,8 +433,9 @@ bool complete_mvp(const std::filesystem::path &directory)
         if (number < sector_count && !transition(run))
             return false;
     }
-    if (run_phase(run) != RunPhase::won || evaluator.candidates != 31 ||
-        evaluator.calls != total_events || sink.new_unlocks != 5 ||
+    if (run_phase(run) != RunPhase::won || !has_admitted(run.sector.modules) ||
+        evaluator.candidates != 31 || evaluator.calls != total_events ||
+        sink.new_unlocks != 5 ||
         windows::read_profile_file(profile).profile !=
             LocalProfile{31, 3, 29, true} ||
         windows::read_profile_file(profile.native() + L".bak").profile !=

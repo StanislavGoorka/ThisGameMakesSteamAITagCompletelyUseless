@@ -2,7 +2,7 @@
 
 Dokument roboczy, bez nazw ani opisów do wyświetlania w grze. P085 zamyka
 wyłącznie podział. Od P085-19 działają i są dopuszczone do nagród ID1..12.
-Dalsze dzieci czekają w kolejce.
+Łańcuch zamyka P085-20 (dowód integracyjny); następny jest P086.
 Docelowy katalog ma najwyżej 12 typów i nadal dwa kanoniczne sloty na run.
 Nie dodajemy waluty, leczenia, permanentnych bonusów ani nowych akcji/UI.
 
@@ -79,5 +79,9 @@ kosztu. P085-06 zależy od P085-16. Zamknięty podział nie dostarcza ID4.
   modułem w dwóch slotach. Końcowa integracja sprawdza seed/offers, pełny run,
   checkpoint/backup, achievementy, HWND i publiczną odmowę placeholderów.
 - P086 zależy od P085-20, a łańcuch obejmuje wszystkie wymagane dzieci.
+- P085-20: osiem root seedów kończy run z wyborem z oferty i co najmniej
+  jednym ID3..12; certyfikaty sektorów są bez modułów, więc test wybiera
+  wpis oferty, przy którym nadal kończą run. Seed1 z ID5 nie kończył finału
+  tymi certyfikatami: to granica dowodu, nie pomiar trudności ani balansu.
   Sam P085 nie oznacza gotowego katalogu12. Balans i przyjemność pozostają
   hipotezami do osobnych pomiarów; nie wykonano playtestu.

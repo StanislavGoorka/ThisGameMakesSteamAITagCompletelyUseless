@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 9/10 bieżącej serii: P085-19. ID3..12 dopuszczone do ofert: reward_module_catalog obejmuje cały katalog ID1..12, a deterministyczna oferta dwóch nieposiadanych ID zależy od root seedu i ukończonego sektora. Checkpoint schema1/rules15 (starsze reguły odrzucane), hashv8/replay25 bez zmian, bo replay obejmuje jeden sektor bez nagród. Testy jednostkowe ofert/wyboru/nagrody/tekstu mają literalne oczekiwania z rozszerzonego niezależnego oracle tools/corpus/module_offer_vectors.cjs offers. Dispatcher pełnego runu wybiera z oferty przez test::witness_choice. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 10/10 bieżącej serii: P085-20. Dowód integracyjny dopuszczonych modułów: osiem root seedów kończy pełny run z wyborem z oferty i co najmniej jednym ID3..12 (łącznie ID3/4/6/7/9/10); każda granica przechodzi przez rzeczywisty zapis/odczyt pliku z kontrolą backupu, a restore odtwarza te same stany i oferty. HWND pokazuje oznaczone etykiety reward-* i instaluje wybrany nowy moduł; dispatcher z achievementami wymaga nowego modułu w loadoucie. Bez zmian produkcyjnych. Seria10 ukończona: 7 kroków kodowych/testowych modułów i integracji, 1 krok etykiet, 1 testowy, 1 podział. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -57,7 +57,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 169/169 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 170/170 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika

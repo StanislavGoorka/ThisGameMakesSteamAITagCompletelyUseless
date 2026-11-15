@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-20: windows_module_run kończy osiem runów z co najmniej jednym ID3..12,
+zapisując i odczytując każdą granicę przez adapter plików z kontrolą .bak;
+restore odtwarza stany i oferty. HWND pokazuje oznaczone etykiety nowych
+modułów i instaluje wybór; dispatcher z achievementami wymaga ID>=3.
+
 P085-19: core_module_offer porównuje korpus ofert puli ID1..12 (6 loadoutów ×
 257 seedów × sektory1..6) z literalnym digestem niezależnego oracle,
 sprawdza osiągalność każdego ID i ofertę po restore. Wybór i nagroda
