@@ -1100,6 +1100,17 @@ if(BUILD_TESTING AND WIN32)
 endif()
 
 if(BUILD_TESTING)
+    # Developer balance tool (BALANCE_EXPERIMENT_PLAN); never packaged.
+    add_executable(developer_strategy tools/strategy/main.cpp)
+    target_link_libraries(developer_strategy PRIVATE game_core)
+    target_include_directories(developer_strategy PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/tools")
+    if(MSVC)
+        target_compile_options(developer_strategy PRIVATE /W4 /permissive-)
+    endif()
+    add_test(NAME developer_strategy_cli COMMAND "${CMAKE_COMMAND}" "-DSTRATEGY_EXE=$<TARGET_FILE:developer_strategy>" -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/integration/strategy_cli_tests.cmake")
+endif()
+
+if(BUILD_TESTING)
     add_executable(application_event_delivery_tests tests/unit/event_delivery_tests.cpp)
     target_link_libraries(application_event_delivery_tests PRIVATE game_core)
     if(MSVC)

@@ -30,6 +30,9 @@ tura ukończenia.
 | P089-02 | Pomiar bazowy na pełnym korpusie, zapis w tym dokumencie | Dokładna komenda Release, liczby H1 i metryki pomocnicze; werdykt H1 według progu powyżej |
 | P089-03 | Decyzja: przy potwierdzonej H1 zmiana jednego parametru generatora lub reguł (wybór uzasadniony danymi) z pomiarem po na tym samym korpusie i regresjami (hash/replay/korpusy certyfikatów); przy odrzuconej H1 brak zmiany i zapis | Porównanie przed/po w tabeli; pełny Debug/Release; brak nowej waluty, mechanik, tekstów i assetów |
 
+Stan: P089-01 — narzędzie developer_strategy (`SEED...` lub `--corpus`) z
+testem developer_strategy_cli. Następny jest P089-02 (pomiar bazowy).
+
 P090 zależy od P089-03. Kandydaci parametru (do wyboru w P089-03 tylko przy
 potwierdzonej H1): orientacja początkowa węzłów tak, by trasa pakietu na
 wejściu nie była otwarta, albo liczba początkowych impulsów. Zmiana reguł

@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P089-01: developer_strategy_cli — literalny ślad bota wait-then-walk dla
+seedów 0/1/2/296/MAX (296 kończy sektor 1 w turze 24), kod 0 oznacza brak
+odrzuconych komend, powtórzenie identyczne, błędne argumenty bez stdout.
+Bez progu balansu.
+
 P088-11: windows_achievement_profile_run, scenariusz restart — potomek
 (`--run`, nieznana historia) kończy run ID3/maska7 na pliku schema1 0x15;
 nowe procesy (`--read`) czytają 0x15 | maska w schema2 (ID3 tylko z migracji),
