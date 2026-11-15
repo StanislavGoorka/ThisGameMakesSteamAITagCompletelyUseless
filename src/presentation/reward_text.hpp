@@ -1,6 +1,7 @@
 #pragma once
 #include "application/reward_selection.hpp"
 #include "application/text_line.hpp"
+#include "presentation/module_text.hpp"
 
 namespace closed_circuit::presentation
 {
@@ -19,11 +20,10 @@ reward_lines(const ModuleOffer &offer, std::optional<ModuleId> candidate)
         if (!offer[i])
             continue;
         const auto id = *offer[i];
-        if (id != ModuleId::rotation_range && id != ModuleId::terminal_rotation)
+        const auto text = module_text_id(id);
+        if (!text)
             return std::nullopt;
-        lines.push_back({id == ModuleId::rotation_range ? "reward-range"
-                                                        : "reward-terminal",
-                         i + 1});
+        lines.push_back({*text, i + 1});
         if (candidate == id)
             selected = i + 1;
     }

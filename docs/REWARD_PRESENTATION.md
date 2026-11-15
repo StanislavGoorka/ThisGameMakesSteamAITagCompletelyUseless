@@ -37,3 +37,8 @@ DPI 96/144/192 sprawdza wspólny renderer wielowierszowy w windows_text_renderer
 Obserwacja wzrokowa nie zastępuje tych testów i nie została tu wykonana.
 
 P072-04 integruje lewo/prawo, jednokrotne Enter, odmowę bez wskazania i przejście pełnego zestawu. Każdy wybór jest publikowany razem z następnym stanem widoku. Obie granice sektorów i końcowy wynik sprawdzono przez HWND z pełnymi porównaniami core. Zapis checkpointu nadal należy do P074.
+
+P085-17: wiersze modułów pochodzą z jednej projekcji `presentation::module_text_id`
+dla ID1..12; każdy ma własny oznaczony wpis `reward-*` w texts.json. Nieznany
+lub brakujący wpis nadal daje odmowę bez fallbacku. Pula ofert pozostaje1/2
+do P085-19; robocze etykiety nie są finalną treścią i nie wchodzą do public.

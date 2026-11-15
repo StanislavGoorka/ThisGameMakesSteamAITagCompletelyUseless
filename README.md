@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 6/10 bieżącej serii: P085-14. P085-14 podzielono na cztery dzieci: P085-17 robocze etykiety [AI PLACEHOLDER] i katalogowa projekcja ID1..12, P085-18 oferty z kontekstu runu w testach integracyjnych, P085-19 dopuszczenie ID3..12 do nagród z wersjami, P085-20 dowód integracyjny run/checkpoint/achievementy/HWND/public. P086 zależy od P085-20. Katalog1..12 zaimplementowany, nagrody nadal1/2; hashv8/replay25, checkpoint schema1/rules14. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 7/10 bieżącej serii: P085-17. Robocze etykiety modułów: jedna projekcja presentation::module_text_id mapuje ID1..12 na unikalne wpisy reward-*, a reward_lines z niej korzysta. Dziesięć nowych wpisów texts.json ma dokładny prefiks [AI PLACEHOLDER] i status ai_placeholder. Pula nagród nadal1/2; reguły i wersje bez zmian (hashv8/replay25, checkpoint rules14). [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -57,7 +57,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 168/168 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 169/169 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika

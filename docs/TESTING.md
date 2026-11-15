@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-17: presentation_module_text na rzeczywistym rejestrze developer
+sprawdza wszystkie256 wartości ModuleId: unikalny oznaczony tekst dokładnie
+dla ID1..12, 66 par ofert, brak rekordu bez fallbacku i odmowę public.
+Test-PublicContent 9/9; pula ofert nadal1/2.
+
 P085-13: core_packet_priority sprawdza 6144 kombinacji podzbiorów
 odbiorników/zasileń z ID12 i partnerami ID3/ID5, wprowadzenie z wejścia
 i zachowanie celu aktywnego pakietu. Niezależna symulacja linii z ID5

@@ -68,6 +68,66 @@
       "source_asset_id": null
     },
     {
+      "id": "reward-delivery-reserve",
+      "value": "[AI PLACEHOLDER] Deliveries restore two reserve:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-first-overdrive",
+      "value": "[AI PLACEHOLDER] Debt-free first overdrive per sector:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-packet-stride",
+      "value": "[AI PLACEHOLDER] Packets move up to two links:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-pulse-cadence",
+      "value": "[AI PLACEHOLDER] Pulses move on even turns only:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-pulse-barrier",
+      "value": "[AI PLACEHOLDER] Pulses wait at powered receivers:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-entry-insulation",
+      "value": "[AI PLACEHOLDER] First-turn entry pulse shield:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-debt-relief",
+      "value": "[AI PLACEHOLDER] Deliveries clear one debt:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-overdrive-range",
+      "value": "[AI PLACEHOLDER] Extended overdrive range:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-reverse-rotation",
+      "value": "[AI PLACEHOLDER] Counter-clockwise rotation:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "reward-packet-priority",
+      "value": "[AI PLACEHOLDER] Packets aim at the highest receiver:",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "reward-instruction",
       "value": "[AI PLACEHOLDER] Left/Right selects a module. Enter confirms.",
       "status": "ai_placeholder",
