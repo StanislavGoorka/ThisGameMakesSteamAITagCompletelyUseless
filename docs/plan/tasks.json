@@ -3312,13 +3312,35 @@
             "gate": null
         },
         {
+            "id": "P088-12",
+            "phase": "M7",
+            "title": "Achievementy 1.0 w pliku profilu",
+            "scope": "Tylko dowód headless Windows: pełne runy certyfikatami przez RunAchievements i LocalAchievementSink do rzeczywistego pliku profilu dla konfiguracji ID1/ID2/ID3 i masek 0 oraz 7, plus powtórka tego samego runu nowym właścicielem. Bez okna, migracji, restartu procesu, nowej logiki, tekstów i assetów.",
+            "acceptance": "Bity pliku po runie: ID7 tylko ID2, ID8 tylko ID3, ID9..12 tylko maska7, ID1/2/5 zawsze, ID6 zgodnie z najwcześniejszym SectorCompleted (≤16); powtórka nie zmienia bajtów pliku ani .bak; mutacja predykatu łapana. Debug/Release, clang-format.",
+            "depends_on": [
+                "P088-10"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P088-13",
+            "phase": "M7",
+            "title": "Migracja profilu v1 w sesji okna",
+            "scope": "Tylko dowód: rzeczywiste HWND RunWindow z LocalAchievementSink na pliku zapisanym bajtami schema1 (bity 0..4); dostawa w oknie zapisuje schema2 bez utraty starych bitów, a poprzedni v1 trafia do .bak. Bez restartu procesu, nowej logiki, tekstów i assetów.",
+            "acceptance": "Po pierwszym odblokowaniu plik ma wersję2 i bity v1 ∪ nowe; .bak równy oryginalnym bajtom v1; ponowne odblokowanie nie zmienia plików; uszkodzony v1 nie jest nadpisywany. Debug/Release; bez obserwacji pulpitu (P104).",
+            "depends_on": [
+                "P088-12"
+            ],
+            "gate": null
+        },
+        {
             "id": "P088-11",
             "phase": "M7",
             "title": "Integracja achievementów 1.0",
-            "scope": "Tylko dowód: pełne runy przez RunAchievements i LocalAchievementSink do pliku profilu, migracja v1→v2 i restart procesu. Bez tekstów, ikon i assetów.",
-            "acceptance": "ID6..12 zdobyte dla właściwych konfiguracji i masek, a nie dla innych; migracja v1→v2 w sesji okna; restart procesu zachowuje bity; powtórka idempotentna. Debug/Release; bez obserwacji pulpitu (P104).",
+            "scope": "Tylko dowód domykający: run z maską7 i ID3 (oraz kontrolny ID1 maska0) w procesie potomnym zapisuje profil, nowy proces czyta te same bity i powtórka runu jest idempotentna. Bez nowej logiki, tekstów, ikon i assetów; części pliku i migracji w P088-12/13.",
+            "acceptance": "Po restarcie procesu plik ma dokładnie bity zapisane przed restartem (ID8 i ID9..12 obecne, ID7 nie), a kontrolny bez ID7..12; drugi proces powtarzający run nie zmienia bajtów; profil schema1 z P088-13 przeżywa restart jako v2. Debug/Release; bez obserwacji pulpitu (P104).",
             "depends_on": [
-                "P088-10"
+                "P088-13"
             ],
             "gate": null
         },

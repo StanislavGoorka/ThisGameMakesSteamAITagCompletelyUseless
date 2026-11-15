@@ -14,7 +14,9 @@ niesie start_config i difficulty. P088-04: ID6 swift_sector. P088-05/06: ID7
 won_preinstalled_range i ID8 won_charged_debt. P088-07/08/09: ID9
 won_short_turn_limit, ID10 won_lean_delivery i ID11 won_heavy_overdrive_debt.
 P088-10: ID12 won_all_modifiers — katalog obejmuje wszystkie ID1..12.
-Następny jest P088-11 (dowód integracyjny).
+Dowód integracyjny P088-11 podzielono (2026-11-15) na P088-12 (runy do pliku),
+P088-13 (migracja v1 w oknie) i zawężony P088-11 (restart procesu).
+Następny jest P088-12.
 
 ## Predykaty
 
@@ -83,7 +85,9 @@ kandydat nie trafił do profilu, który go nie przyjmie.
 | P088-08 | ID10 won_lean_delivery | Maski2/3/6/7 tak; pozostałe i przegrana nie |
 | P088-09 | ID11 won_heavy_overdrive_debt | Maski4/5/6/7 tak; pozostałe i przegrana nie |
 | P088-10 | ID12 won_all_modifiers | Maska7 tak; 3/5/6 i przegrana z maską7 nie |
-| P088-11 | Dowód integracyjny | Pełne runy przez RunAchievements i LocalAchievementSink w pliku profilu: ID6..12 zdobyte dla właściwych konfiguracji/masek i nie dla innych; migracja v1→v2 w sesji okna; restart procesu zachowuje bity; powtórka idempotentna |
+| P088-12 | Dowód: pełne runy do pliku profilu (headless) | ID1/ID2/ID3 × maski0/7 przez RunAchievements i LocalAchievementSink: ID7 tylko ID2, ID8 tylko ID3, ID9..12 tylko maska7; powtórka nowym właścicielem nie zmienia bajtów pliku ani .bak |
+| P088-13 | Dowód: migracja v1→v2 w sesji okna | Plik bajtów schema1 w RunWindow z LocalAchievementSink: po dostawie wersja2 z bitami v1 ∪ nowe, .bak = oryginał v1; ponowienie bez zmian; uszkodzony v1 nienadpisany |
+| P088-11 | Dowód domykający: restart procesu | Proces potomny kończy run ID3 z maską7 (i kontrolny ID1 maska0); nowy proces czyta te same bity, powtórka idempotentna; v1 z P088-13 przeżywa restart jako v2 |
 
 Każde dziecko obejmuje wyłącznie swoją zmianę. Jeśli implementacja przekracza
 mikro-zakres, osobnym krokiem wolno ją dalej podzielić z zachowaniem
@@ -95,5 +99,6 @@ nadrzędnego ID i zależności konsumentów.
   hasha ani replay. Odrzucone komendy i preview nie trafiają do evaluatora.
 - Każdy krok kodowy: Debug i Release, test +/−, clang-format src/tests/tools.
   Bez tekstów, ikon, assetów i pobrań.
-- P089 zależy od P088-11, a łańcuch obejmuje wszystkie dzieci. Sam P088 nie
+- P089 zależy od P088-11, a łańcuch obejmuje wszystkie dzieci (P088-11
+  zależy od P088-13, ten od P088-12, ten od P088-10). Sam P088 nie
   dostarcza żadnego achievementu.
