@@ -3400,13 +3400,68 @@
             "gate": null
         },
         {
+            "id": "P090-01",
+            "phase": "M8",
+            "title": "Audyt napisów sesji, HUD i błędów",
+            "scope": "Tylko sekcja CONTENT_GAPS: każdy wpis texts.json z prefiksami session-, start-config-, difficulty-, hud-, checkpoint-, rotation-binding- i developer-window-title z miejscem użycia (plik, ekran lub stan sesji: start, wybór konfiguracji i modyfikatorów, run, wynik, wznowienie, błędy zapisu), stanem i wymaganym pochodzeniem oraz ekrany i stany bez żadnego napisu. Bez kodu, tekstów dla gracza, propozycji brzmienia, pobrań i zmian rejestrów.",
+            "acceptance": "Każdy wpis tych prefiksów i każdy komunikat błędu checkpointu/klawisza ujęty; zgodność z kodem sprawdzona wyszukiwaniem ID; walidator i diff --check.",
+            "depends_on": [
+                "P090"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P090-02",
+            "phase": "M8",
+            "title": "Audyt napisów nagród i modułów",
+            "scope": "Tylko sekcja CONTENT_GAPS: wpisy reward- z miejscem użycia i stanem oraz pokrycie etykiet wszystkich modułów katalogu (moduł bez etykiety = brak). Bez kodu, tekstów dla gracza, propozycji brzmienia, pobrań i zmian rejestrów.",
+            "acceptance": "Każdy moduł katalogu i każdy wpis reward- ujęty; walidator i diff --check.",
+            "depends_on": [
+                "P090-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P090-03",
+            "phase": "M8",
+            "title": "Audyt achievementów",
+            "scope": "Tylko sekcja CONTENT_GAPS: dla każdego z dwunastu ID komunikat w grze, nazwa i opis Steam, ikona zablokowana i odblokowana (stan, miejsce, pochodzenie) oraz komunikat niedostępnego zapisu. Bez kodu, tekstów dla gracza, propozycji brzmienia, pobrań i zmian rejestrów.",
+            "acceptance": "Dwanaście ID × pięć pozycji plus komunikat magazynu; zgodność z katalogiem zaimplementowanych ID; walidator i diff --check.",
+            "depends_on": [
+                "P090-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P090-04",
+            "phase": "M8",
+            "title": "Audyt grafiki, audio, fontu i tutorialu",
+            "scope": "Tylko sekcja CONTENT_GAPS: pokrycie każdego rysowanego elementu sceny zatwierdzonymi kaflami, zdarzenia audio, font, ikona EXE i okna, splash, tutorial (brak = zapisany brak) i lokalizacja. Bez kodu, tekstów dla gracza, propozycji brzmienia, pobrań i zmian rejestrów.",
+            "acceptance": "Każdy element sceny i zdarzenie audio ujęte z odwołaniem do kodu i assets.json; walidator i diff --check.",
+            "depends_on": [
+                "P090-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P090-05",
+            "phase": "M8",
+            "title": "Audyt not, credits i sklepu; podsumowanie",
+            "scope": "Tylko sekcje CONTENT_GAPS: noty licencyjne zatwierdzonych pakietów, ekran credits, materiały sklepu i społeczności Steam (tytuł, opisy, capsule, zrzuty, trailer, ikony klienta) oraz podsumowanie liczby braków według kategorii. Bez kodu, tekstów dla gracza, propozycji brzmienia, pobrań i zmian rejestrów.",
+            "acceptance": "Wszystkie kategorie P090 domknięte w podsumowaniu; wejście dla P091; walidator i diff --check.",
+            "depends_on": [
+                "P090-04"
+            ],
+            "gate": null
+        },
+        {
             "id": "P091",
             "phase": "M8",
             "title": "Źródło finalnych tekstów",
             "scope": "Zweryfikuj i poproś o zgodę na jeden legalny korpus ludzkich tekstów, bez pobierania.",
             "acceptance": "Dowód autora, non-AI, licencja, zakres; gdy brak źródła pozostaw blokadę.",
             "depends_on": [
-                "P090"
+                "P090-05"
             ],
             "gate": "Sprawdź wymagane zgody, dowody pochodzenia lub dostęp zewnętrzny; brak warunku = blocked."
         },
