@@ -23,6 +23,7 @@ namespace closed_circuit
     next.reserve = run.sector.reserve;
     next.overload_debt = run.sector.overload_debt;
     next.modules = run.sector.modules;
+    next.difficulty = run.sector.difficulty;
     reset_sector_module_usage(next);
     static_cast<void>(spawn_debt_pulse(next));
     result.state = RunState{.seed = run.seed,

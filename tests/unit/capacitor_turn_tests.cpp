@@ -46,9 +46,10 @@ bool trace()
 {
     // Independent byte snapshots: tools/replay/hash_vectors.cjs.
     constexpr std::array<std::uint64_t, 7> hashes{
-        16731183529507575566ULL, 1432946592360407032ULL, 1432946592360407032ULL,
-        9613065390202918647ULL,  8232306253263176585ULL, 7005916431570872852ULL,
-        12793075261365729548ULL};
+        3864398672937786353ULL,  16175879701998237795ULL,
+        16175879701998237795ULL, 6388936452983494942ULL,
+        9980121365215646104ULL,  1165736276133461215ULL,
+        14374591989062936971ULL};
     const std::array<Command, 6> commands{
         WaitCommand{},          MoveCommand{node(48)},
         RotateCommand{node(1)}, RotateCommand{node(1)},

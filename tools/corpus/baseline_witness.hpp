@@ -12,7 +12,8 @@ namespace witness_detail
 build_exact_perimeter_witness(const GameState &initial,
                               const GameState &expected)
 {
-    if (initial.first_overdrive_used != expected.first_overdrive_used ||
+    if (initial.difficulty != expected.difficulty ||
+        initial.first_overdrive_used != expected.first_overdrive_used ||
         initial.delivery_requirement != expected.delivery_requirement ||
         !std::ranges::equal(initial.ports, expected.ports, {}, &PortMask::bits,
                             &PortMask::bits) ||

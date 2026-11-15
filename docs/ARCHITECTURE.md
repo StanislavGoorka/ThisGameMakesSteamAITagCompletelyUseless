@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P087-01: core/difficulty_modifiers.hpp — DifficultyModifiers to maska uint8 bitów DifficultyModifier (1 short_turn_limit, 2 lean_delivery, 4 heavy_overdrive_debt) z katalogiem zaimplementowanych bitów, na razie pustym; fabryka from_value przyjmuje wyłącznie bity z katalogu, domyślna maska0 = gra bez zmian. Pole GameState::difficulty (resolver, podgląd i sector_outcome czytają GameState), ustawiane raz przez start_run(seed, config, modifiers) i dziedziczone w advance_run jak loadout; start_run(seed, config) deleguje do maski0, a seed sektorów nie zależy od maski. Decyzja wersji: kanoniczny state_hash v9 dopisuje bajt maski na końcu, więc wszystkie hashe i replay26 mają nowe wektory z niezależnego oracle tools/replay/hash_vectors.cjs (migracja v8→v9); zachowanie resolvera bez zmian. capture_checkpoint porównuje pole, więc do P087-02 odmawia niepustej maski zamiast ją zgubić. Checkpoint schema1/rules16 bez zmian.
+
 P085-19: reward_module_catalog obejmuje cały katalog ID1..12; deterministyczna oferta dwóch nieposiadanych ID zależy od root seedu i ukończonego sektora. Checkpoint schema1/rules15, hashv8/replay25 bez zmian (replay nie obejmuje nagród).
 
 P085-13: ID12 odwraca kolejność next_packet_target: następny pakiet celuje w najwyższy niezasilony odbiornik; aktywny pakiet zachowuje cel, bo tylko wprowadzenie pyta o kolejny. Bieżące ID1..12, nagrody1/2; hashv8/replay25, checkpoint schema1/rules14.

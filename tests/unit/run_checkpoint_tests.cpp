@@ -2,6 +2,7 @@
 #include "application/run_checkpoint.hpp"
 #include "core/run_start.hpp"
 #include "core/run_transition.hpp"
+#include <bit>
 #include <iostream>
 using namespace closed_circuit;
 namespace
@@ -95,7 +96,7 @@ bool cases()
                         if (!rejected(bad))
                             return false;
                     }
-                for (int field = 0; field < 17; ++field)
+                for (int field = 0; field < 18; ++field)
                 {
                     auto bad = boundary;
                     if (field == 0)
@@ -131,6 +132,10 @@ bool cases()
                     // An ID outside the catalog is refused instead of lost.
                     if (field == 16)
                         bad.start_config = static_cast<StartConfigId>(4);
+                    // Until the checkpoint stores modifiers, any is refused.
+                    if (field == 17)
+                        bad.sector.difficulty =
+                            std::bit_cast<DifficultyModifiers>(std::uint8_t{1});
                     if (field == 15)
                         bad.sector.delivery_requirement =
                             *DeliveryRequirement::from_value(required == 3 ? 2

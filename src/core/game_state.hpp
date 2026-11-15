@@ -2,6 +2,7 @@
 
 #include "core/delayed_capacitor.hpp"
 #include "core/delivery_requirement.hpp"
+#include "core/difficulty_modifiers.hpp"
 #include "core/identifiers.hpp"
 #include "core/module_loadout.hpp"
 #include "core/periodic_emitter.hpp"
@@ -78,6 +79,8 @@ struct GameState
     DeliveryRequirement delivery_requirement{};
     // Set by every successful overdrive; reset only at the sector boundary.
     bool first_overdrive_used{false};
+    // Chosen once by start_run and inherited by every sector of the run.
+    DifficultyModifiers difficulty{};
 
     [[nodiscard]] constexpr bool player_alive() const noexcept
     {

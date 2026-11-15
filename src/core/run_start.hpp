@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/difficulty_modifiers.hpp"
 #include "core/run_sector_variant.hpp"
 #include "core/run_state.hpp"
 #include "core/start_config.hpp"
@@ -11,9 +12,10 @@ namespace closed_circuit
 {
 // A fresh run has no inherited rewards or per-sector usage. Sector N will use
 // the Nth local SplitMix64 draw; this creates only sector 1. The sector seed
-// never depends on the configuration. An unimplemented ID creates no run.
-[[nodiscard]] inline std::optional<RunState> start_run(RunSeed seed,
-                                                       StartConfigId config)
+// never depends on the configuration or the modifiers. An unimplemented ID
+// creates no run; modifiers are already a validated set.
+[[nodiscard]] inline std::optional<RunState>
+start_run(RunSeed seed, StartConfigId config, DifficultyModifiers modifiers)
 {
     if (!is_known_start_config(config))
         return std::nullopt;
@@ -35,10 +37,17 @@ namespace closed_circuit
         state.reserve = GameState::reserve_limit;
         state.overload_debt = 2;
     }
+    state.difficulty = modifiers;
     return RunState{.seed = seed,
                     .sector_number = number,
                     .sector = std::move(state),
                     .start_config = config};
+}
+
+[[nodiscard]] inline std::optional<RunState> start_run(RunSeed seed,
+                                                       StartConfigId config)
+{
+    return start_run(seed, config, DifficultyModifiers{});
 }
 
 [[nodiscard]] inline RunState start_run(RunSeed seed)

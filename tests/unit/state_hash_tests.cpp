@@ -1,6 +1,7 @@
 #include "replay/state_hash.hpp"
 
 #include <algorithm>
+#include <bit>
 #include <cstdint>
 #include <iostream>
 #include <string_view>
@@ -24,7 +25,8 @@ constexpr EntityId entity(std::uint32_t value)
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    if (left.first_overdrive_used != right.first_overdrive_used ||
+    if (left.difficulty != right.difficulty ||
+        left.first_overdrive_used != right.first_overdrive_used ||
         left.delivery_requirement != right.delivery_requirement)
         return false;
     return left.capacitors == right.capacitors &&
@@ -233,22 +235,41 @@ int main()
     final.delivery_requirement = *DeliveryRequirement::from_value(3);
     auto copy = final;
     copy.delivery_requirement = DeliveryRequirement{};
-    if (checked_hash(minimal) != 5173095973100270318ULL ||
-        checked_hash(final) != 5174052548216624663ULL ||
+    if (checked_hash(minimal) != 16838545364352129037ULL ||
+        checked_hash(final) != 16214380100972075362ULL ||
         same_state(minimal, final) || !same_state(minimal, copy) ||
         final.delivery_requirement.value() != 3)
         return 1;
     const auto full = full_state();
     // Independent byte oracle: tools/replay/hash_vectors.cjs.
-    if (checked_hash(minimal) != 5173095973100270318ULL)
+    if (checked_hash(minimal) != 16838545364352129037ULL)
     {
-        std::cerr << "Minimal state must match canonical v7 vector\n";
+        std::cerr << "Minimal state must match canonical v9 vector\n";
         return 1;
     }
-    if (checked_hash(full) != 18147842807136425162ULL)
+    if (checked_hash(full) != 10519888212738830837ULL)
     {
-        std::cerr << "Full state must match canonical v7 vector\n";
+        std::cerr << "Full state must match canonical v9 vector\n";
         return 1;
+    }
+    // v9 appends the difficulty bits (oracle difficultyHashes). Bits beyond
+    // the empty catalog are forged here only to pin the encoding.
+    const std::uint8_t difficulty_bits[]{0, 1, 2, 4, 7};
+    const std::uint64_t difficulty_hashes[]{
+        16838545364352129037ULL, 16838544264840500826ULL,
+        16838543165328872615ULL, 16838540966305616193ULL,
+        16838537667770731560ULL};
+    for (std::size_t index = 0; index < std::size(difficulty_bits); ++index)
+    {
+        auto value = minimal;
+        value.difficulty =
+            std::bit_cast<DifficultyModifiers>(difficulty_bits[index]);
+        if (checked_hash(value) != difficulty_hashes[index] ||
+            same_state(value, minimal) != (index == 0))
+        {
+            std::cerr << "Difficulty bits must match canonical v9 vectors\n";
+            return 1;
+        }
     }
     struct ResourceVector
     {
@@ -257,10 +278,10 @@ int main()
         std::uint64_t hash;
     };
     const ResourceVector resources[]{
-        {0, 0, 9911112253329031004ULL},         {1, 0, 12282033543676120037ULL},
-        {2, 0, 5173095973100270318ULL},         {3, 0, 7544017263447359351ULL},
-        {255, 0, 8697682439761145115ULL},       {2, 1, 6956901319069329693ULL},
-        {2, UINT32_MAX, 4161644210207945858ULL}};
+        {0, 0, 12816567173904856823ULL},        {1, 0, 4355853705513609772ULL},
+        {2, 0, 16838545364352129037ULL},        {3, 0, 8377831895960881986ULL},
+        {255, 0, 12143158322739304254ULL},      {2, 1, 11970963020484825304ULL},
+        {2, UINT32_MAX, 3622088739797735561ULL}};
     for (const auto &vector : resources)
     {
         auto value = minimal;

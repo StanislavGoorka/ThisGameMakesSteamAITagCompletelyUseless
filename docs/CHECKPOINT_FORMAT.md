@@ -100,7 +100,7 @@ odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
 Reguły3 rozszerzyły run do sześciu sektorów: 1..5 są normalne,
 a wyłącznie 6 jest finałem. Bieżące reguły16 zachowują tę topologię,
 wiążąc również obecny katalog i reguły modułów. Wersje checkpointu
-i replay są odrębne; obecny hashv8/replay25 nie jest checksumą checkpointu.
+i replay są odrębne; obecny hashv9/replay26 (P087-01) nie jest checksumą checkpointu.
 Niezależny oracle: `tools/checkpoint/vectors.cjs 16` (dla reguł<16 bajt30 = 0).
 
 ## Odrzucanie i dowody

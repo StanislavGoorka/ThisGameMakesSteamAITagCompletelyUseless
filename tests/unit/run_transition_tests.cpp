@@ -1,6 +1,7 @@
 #include "../support/run_checks.hpp"
 #include "core/run_start.hpp"
 #include "core/run_transition.hpp"
+#include <bit>
 #include <iostream>
 using namespace closed_circuit;
 namespace
@@ -151,9 +152,23 @@ bool cases()
     auto carried = completed(0, 1);
     carried.start_config = static_cast<StartConfigId>(2);
     const auto moved = advance_run(carried);
-    return moved.accepted &&
-           moved.state.start_config == static_cast<StartConfigId>(2) &&
-           moved.state.sector_number.value() == 2;
+    if (!moved.accepted ||
+        moved.state.start_config != static_cast<StartConfigId>(2) ||
+        moved.state.sector_number.value() != 2 ||
+        moved.state.sector.difficulty != DifficultyModifiers{})
+        return false;
+    // Modifiers are inherited like the loadout; forged bits pin the copy.
+    for (const std::uint8_t bits :
+         {std::uint8_t{1}, std::uint8_t{2}, std::uint8_t{4}, std::uint8_t{7}})
+    {
+        auto modified = completed(0, 1);
+        modified.sector.difficulty = std::bit_cast<DifficultyModifiers>(bits);
+        const auto next_sector = advance_run(modified);
+        if (!next_sector.accepted ||
+            next_sector.state.sector.difficulty.bits() != bits)
+            return false;
+    }
+    return true;
 }
 } // namespace
 int main()

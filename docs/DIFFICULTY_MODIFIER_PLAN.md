@@ -7,6 +7,10 @@ nie dodaje waluty, akcji, modułów, przeciwników, leczenia ani permanentnych
 bonusów i nie zależy od profilu ani poprzednich runów. Wszystkie są dostępne od
 początku; odblokowania nie są częścią P087.
 
+Stan: P087-01 dodało DifficultyModifiers (pusty katalog), GameState::difficulty,
+start_run(seed, config, modifiers) i dziedziczenie w przejściu; state_hash v9,
+replay26. capture odmawia niepustej maski do P087-02.
+
 ## Modyfikatory
 
 Tokeny to stabilne wewnętrzne identyfikatory, nie teksty gry. Modyfikatory

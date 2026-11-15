@@ -45,7 +45,8 @@ GameState board()
 
 bool same_state(const GameState &left, const GameState &right)
 {
-    if (left.first_overdrive_used != right.first_overdrive_used ||
+    if (left.difficulty != right.difficulty ||
+        left.first_overdrive_used != right.first_overdrive_used ||
         left.delivery_requirement != right.delivery_requirement)
         return false;
     return left.terminal_rotation_used == right.terminal_rotation_used &&

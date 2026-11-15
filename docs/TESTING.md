@@ -1,5 +1,7 @@
 # Testy i bramki jakości
 
+P087-01: core_difficulty_modifiers — fabryka przyjmuje tylko maskę0 (−300..300, 1/2/4/8/0xFF, INT64_MIN, UINT64_MAX odrzucone), domyślna maska nie zawiera żadnego bitu; dla 257 seedów i ID1..3 start_run(seed, config, maska0) równy start_run(seed, config), a podrobiony bit4 jest zapisany i nie zmienia sektora. core_run_transition: bity1/2/4/7 przechodzą do następnego sektora. application_run_checkpoint: capture odrzuca niepustą maskę (pole17). developer_state_hash: wektory v9 z hash_vectors.cjs, w tym bajty maski0/1/2/4/7; replay26 w developer_replay_runner/developer_replay_cli, wersje25 i27 odrzucane.
+
 P086-09: windows_start_config_run dla ID1..3 i seedów0..5/42/MAX (te, które
 certyfikaty nadal kończą: 8/7/8) przechodzi pełny run od start_run(seed,
 config), zapisując i odczytując każdą granicę przez adapter plików z kontrolą

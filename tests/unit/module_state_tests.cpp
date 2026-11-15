@@ -11,11 +11,11 @@ int main()
 {
     const auto zero = *NodeId::from_value(0);
     const GameState empty{.player_position = zero};
-    // Independent v8 literals from hash_vectors.cjs: only the new bit differs.
+    // Independent v9 literals from hash_vectors.cjs: only the new bit differs.
     auto used_overdrive = empty;
     used_overdrive.first_overdrive_used = true;
-    if (state_hash(empty) != 5173095973100270318ULL ||
-        state_hash(used_overdrive) != 5173097072611898529ULL ||
+    if (state_hash(empty) != 16838545364352129037ULL ||
+        state_hash(used_overdrive) != 16837588789235774692ULL ||
         test::same_state(empty, used_overdrive))
         return 2;
     const auto copy = used_overdrive;
@@ -44,11 +44,11 @@ int main()
             return 7;
     }
     const std::array<std::uint64_t, 4> hashes{
-        5173095973100270318ULL, 15076083063427166573ULL, 6536152380509928592ULL,
-        931437974484716655ULL};
+        16838545364352129037ULL, 16639222251547046120ULL, 489816118552626287ULL,
+        17769000597192185166ULL};
     const std::array<std::uint64_t, 4> used_hashes{
-        1907211077153216437ULL, 18341967959374220454ULL, 3277920085493709471ULL,
-        4189670269500935776ULL};
+        16491020652982756496ULL, 16986746962916418661ULL,
+        5135613514223683146ULL, 13123203201521128307ULL};
     for (const bool used : {false, true})
         for (unsigned mask = 0; mask < 4; ++mask)
         {

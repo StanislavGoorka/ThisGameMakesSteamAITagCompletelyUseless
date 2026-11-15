@@ -13,7 +13,7 @@
 namespace closed_circuit::developer
 {
 
-inline constexpr std::uint32_t replay_version = 25;
+inline constexpr std::uint32_t replay_version = 26;
 
 struct ReplayStep
 {

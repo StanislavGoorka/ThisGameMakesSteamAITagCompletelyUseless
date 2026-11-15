@@ -6,7 +6,8 @@ namespace closed_circuit::test
 {
 [[nodiscard]] inline bool same_state(const GameState &a, const GameState &b)
 {
-    if (a.first_overdrive_used != b.first_overdrive_used ||
+    if (a.difficulty != b.difficulty ||
+        a.first_overdrive_used != b.first_overdrive_used ||
         a.delivery_requirement != b.delivery_requirement)
         return false;
     return a.capacitors == b.capacitors && a.emitters == b.emitters &&

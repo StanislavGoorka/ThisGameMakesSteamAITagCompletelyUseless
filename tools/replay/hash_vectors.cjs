@@ -1,4 +1,4 @@
-// Independent byte oracle for canonical hash v8. No C++ or resolver calls.
+// Independent byte oracle for canonical hash v9. No C++ or resolver calls.
 const minimal = () => ({ports: Array(49).fill(0), rot: Array(49).fill(0),
   blocked: Array(49).fill(0), player: 0, hp: 3, turns: 0, packet: [],
   powered: Array(49).fill(0), receivers: Array(49).fill(0), entry: [], exit: [],
@@ -24,6 +24,7 @@ function hash(s, version) {
   }
   if (version >= 7) bytes.push(s.requirement ?? 2);
   if (version >= 8) bytes.push(s.firstUsed ?? 0);
+  if (version >= 9) bytes.push(s.difficulty ?? 0);
   let h=14695981039346656037n;
   for (const b of bytes) h=BigInt.asUintN(64,(h^BigInt(b))*1099511628211n);
   return h.toString();
@@ -31,10 +32,10 @@ function hash(s, version) {
 const vectors = [];
 const migration = {};
 const behaviorMigration = {};
-const migrate = s => { const next=hash(s,8); migration[hash(s,7)]=next; return next; };
+const migrate = s => { const next=hash(s,9); migration[hash(s,8)]=next; return next; };
 const add = s => {
-  if(s.firstUsed) behaviorMigration[hash({...s,firstUsed:0},8)]=hash(s,8);
-  vectors.push([hash(s,7),migrate(s)]);
+  if(s.firstUsed) behaviorMigration[hash({...s,firstUsed:0},9)]=hash(s,9);
+  vectors.push([hash(s,8),migrate(s)]);
 };
 add(minimal());
 for (const reserve of [0,1,3,255]) add({...minimal(),reserve});
@@ -76,13 +77,15 @@ for(const [bits,turns,remaining,reserve,debt] of [[10,0,2,2,0],[10,1,1,2,0],
   [10,1,1,2,0],[5,2,0,2,0],[10,3,0,2,0],[10,4,0,2,0],[10,5,0,1,1]]) {
   const s=minimal();s.ports[0]=2;s.ports[1]=bits;s.ports[2]=8;s.rot[1]=1;
   Object.assign(s,{turns,reserve,debt,firstUsed:debt>0?1:0,capacitors:[[0,2,2,2,remaining]]});
-  if(s.firstUsed) behaviorMigration[hash({...s,firstUsed:0},8)]=hash(s,8);
+  if(s.firstUsed) behaviorMigration[hash({...s,firstUsed:0},9)]=hash(s,9);
   capacitorTrace.push(migrate(s));
 }
 const requirements = [migrate(minimal()), migrate({...minimal(),requirement:3})];
-const firstOverdriveHashes = [hash(minimal(),8), hash({...minimal(),firstUsed:1},8)];
+const firstOverdriveHashes = [hash(minimal(),9), hash({...minimal(),firstUsed:1},9)];
+// v9 appends the difficulty bits; only the trailing byte differs.
+const difficultyHashes = [0,1,2,4,7].map(difficulty => hash({...minimal(),difficulty},9));
 migrate(emitter);
 if (require.main === module) {
-  console.log(JSON.stringify({vectors,emitter:hash(emitter,8),capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration},null,2));
+  console.log(JSON.stringify({vectors,emitter:hash(emitter,9),capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,difficultyHashes,migration},null,2));
 }
-module.exports = {vectors, emitter:hash(emitter,8), capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,migration,behaviorMigration,hash,minimal};
+module.exports = {vectors, emitter:hash(emitter,9), capacitor:capacitorHashes,capacitorTrace,requirements,firstOverdriveHashes,difficultyHashes,migration,behaviorMigration,hash,minimal};
