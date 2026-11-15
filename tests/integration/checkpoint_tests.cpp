@@ -170,10 +170,10 @@ bool semantic_fields()
                 {
                     valid = valid_pair(bytes[27], bytes[28]);
                 }
-                // run_rules16: byte 30 is the start configuration (only ID1
-                // implemented), byte 31 stays reserved.
+                // run_rules16: byte 30 is the start configuration (ID1 and
+                // ID2 implemented), byte 31 stays reserved.
                 if (offset == 30)
-                    valid = value == 1;
+                    valid = value == 1 || value == 2;
                 if (offset == 31)
                     valid = value == 0;
                 test::reseal(bytes);

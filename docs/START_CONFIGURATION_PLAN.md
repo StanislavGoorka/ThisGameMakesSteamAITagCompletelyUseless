@@ -11,7 +11,8 @@ Wszystkie trzy są dostępne od początku; odblokowania nie są częścią P086.
 Stan: P086-01 dodało StartConfigId, katalog {ID1}, RunState::start_config
 i start_run(seed, config). P086-02 zapisuje ID w bajcie30 checkpointu
 (run_rules16); ID spoza katalogu jest odrzucane. P086-03: restart w
-SessionFlow zachowuje konfigurację runu.
+SessionFlow zachowuje konfigurację runu. P086-04: ID2 preinstalled_range
+działa (rezerwa0, moduł ID1) i jest w katalogu; ID3 nadal zarezerwowane.
 
 ## Konfiguracje
 

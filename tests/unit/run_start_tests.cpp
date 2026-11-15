@@ -1,5 +1,8 @@
 #include "../support/run_checks.hpp"
+#include "core/run_reward.hpp"
 #include "core/run_start.hpp"
+#include "core/run_turn.hpp"
+#include <cstdlib>
 #include <iostream>
 using namespace closed_circuit;
 namespace
@@ -117,21 +120,22 @@ bool boundary_builder()
 }
 bool start_configs()
 {
-    // Only ID1 is implemented; 2 and 3 stay reserved until their own steps.
+    // ID1 and ID2 are implemented; 3 stays reserved until its own step.
+    const auto known = [](unsigned raw) { return raw == 1 || raw == 2; };
     for (unsigned raw = 0; raw <= UINT8_MAX; ++raw)
     {
         const auto parsed = start_config_from_value(raw);
-        if (parsed.has_value() != (raw == 1) ||
-            (parsed && *parsed != StartConfigId::baseline) ||
+        if (parsed.has_value() != known(raw) ||
+            (parsed && static_cast<unsigned>(*parsed) != raw) ||
             is_known_start_config(static_cast<StartConfigId>(raw)) !=
-                (raw == 1) ||
+                known(raw) ||
             start_run(RunSeed{raw}, static_cast<StartConfigId>(raw))
-                    .has_value() != (raw == 1))
+                    .has_value() != known(raw))
             return false;
     }
     if (start_config_from_value(-1) || start_config_from_value(256) ||
         start_config_from_value(INT64_MIN) ||
-        start_config_from_value(UINT64_MAX) || start_config_catalog.size() != 1)
+        start_config_from_value(UINT64_MAX) || start_config_catalog.size() != 2)
         return false;
     for (std::uint64_t index = 0; index <= 256; ++index)
     {
@@ -144,6 +148,43 @@ bool start_configs()
             chosen->sector.player_integrity != 3 ||
             chosen->sector.reserve != 2 || chosen->sector.overload_debt != 0 ||
             chosen->sector.modules.size() != 0)
+            return false;
+        // ID2 differs from ID1 only by reserve0 and module ID1 in a slot.
+        const auto range = start_run(seed, StartConfigId::preinstalled_range);
+        auto expected = implicit;
+        expected.start_config = StartConfigId::preinstalled_range;
+        expected.sector.reserve = 0;
+        expected.sector.modules = {};
+        static_cast<void>(
+            expected.sector.modules.add(ModuleId::rotation_range));
+        if (!range || !test::same_run(*range, expected) ||
+            range->sector.modules.size() != 1 ||
+            !range->sector.modules.contains(ModuleId::rotation_range) ||
+            test::same_run(*range, implicit))
+            return false;
+        // Range2 applies from the first turn; ID1 still refuses that target.
+        const int entry = implicit.sector.player_position.value();
+        std::optional<NodeId> far;
+        for (int n = 0; n < 49 && !far; ++n)
+            if (implicit.sector.rotatable_nodes[n] &&
+                std::abs(n / 7 - entry / 7) + std::abs(n % 7 - entry % 7) == 2)
+                far = node(n);
+        if (!far || !resolve_run_turn(*range, RotateCommand{*far}).accepted ||
+            resolve_run_turn(implicit, RotateCommand{*far}).accepted)
+            return false;
+        // One slot is taken: the first offer never repeats ID1 and one reward
+        // fills the loadout, so later sectors offer nothing.
+        auto done = *range;
+        done.sector.player_position = *done.sector.sector_exit;
+        done.sector.powered_nodes = done.sector.receiver_nodes;
+        const auto offer = module_offer(done.sector.modules, seed, 1);
+        if (run_phase(done) != RunPhase::choosing_reward || !offer[0] ||
+            offer[0] == ModuleId::rotation_range ||
+            offer[1] == ModuleId::rotation_range ||
+            !choose_run_module(done, *offer[0]) ||
+            done.sector.modules.size() != ModuleLoadout::slot_limit ||
+            run_phase(done) != RunPhase::ready_for_next ||
+            module_offer(done.sector.modules, seed, 2)[0])
             return false;
     }
     return true;

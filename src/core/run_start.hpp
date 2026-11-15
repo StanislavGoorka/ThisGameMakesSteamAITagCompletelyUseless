@@ -22,6 +22,12 @@ namespace closed_circuit
     auto state = *build_sector_state(RunSeed{rng.next_u64()},
                                      sector_variant_for(number));
     // baseline keeps the GameState defaults: HP3, reserve2, debt0, no module.
+    if (config == StartConfigId::preinstalled_range)
+    {
+        // Range from turn one costs the reserve and one of the two slots.
+        state.reserve = 0;
+        static_cast<void>(state.modules.add(ModuleId::rotation_range));
+    }
     return RunState{.seed = seed,
                     .sector_number = number,
                     .sector = std::move(state),

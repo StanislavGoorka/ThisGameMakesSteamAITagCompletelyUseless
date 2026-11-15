@@ -46,7 +46,7 @@ bool cases()
             if (field == 7)
                 invalid.start_config = static_cast<StartConfigId>(0);
             if (field == 8)
-                invalid.start_config = static_cast<StartConfigId>(2);
+                invalid.start_config = static_cast<StartConfigId>(3);
             const auto snapshot = invalid;
             for (int repeat = 0; repeat < 2; ++repeat)
                 if (encode_checkpoint(invalid) || invalid != snapshot ||

@@ -3,7 +3,8 @@
 function vectors(rules) {
   const cases = [
     [0n,1,3,2,0,0,0,0,1], [18446744073709551615n,6,1,0,3,1,2,1,1],
-    [0x0123456789abcdefn,2,2,3,2,2,0,0,1], [1n,6,3,1,4294967292,1,0,1,1]
+    [0x0123456789abcdefn,2,2,3,2,2,0,0,1], [1n,6,3,1,4294967292,1,0,1,1],
+    [42n,1,3,0,0,1,0,0,2]
   ];
   return cases.map(([seed,number,hp,reserve,debt,a,b,pulse,config]) => {
     const bytes=[67,67,67,80];

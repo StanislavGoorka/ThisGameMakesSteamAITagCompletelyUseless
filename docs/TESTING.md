@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P086-04: core_run_start dla 257 seedów: ID2 równe ID1 poza rezerwą0
+i modułem ID1; rotate na dystansie2 w pierwszej turze tylko z ID2; oferta
+po sektorze1 bez ID1, jedna nagroda zapełnia loadout i dalsza oferta jest
+pusta. Piąty literalny wektor checkpointu (bajt30=2), capture/restore
+i restart zachowują ID2; ID0/3/4/255 odrzucane.
+
 P086-03: application_session_flow dla seedów0/1/MAX: restart po resume
 (capture/restore) i wyniku równy start_run(seed, start_config); zarezerwowane
 ID2 odmawia na ekranie startu i wyniku bez zmiany runu i ekranu.

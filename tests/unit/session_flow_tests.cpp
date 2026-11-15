@@ -69,11 +69,26 @@ int main()
             !test::same_run(restored,
                             *start_run(seed, StartConfigId::baseline)))
             return 5;
+        // ID2 survives capture/restore and a restart after the result.
+        const auto range = *start_run(seed, StartConfigId::preinstalled_range);
+        const auto range_checkpoint = capture_checkpoint(range);
+        if (!range_checkpoint ||
+            range_checkpoint->start_config != StartConfigId::preinstalled_range)
+            return 7;
+        auto range_restored = *restore_checkpoint(*range_checkpoint);
+        if (!test::same_run(range_restored, range))
+            return 8;
+        range_restored.sector.reserve = 3;
+        range_restored.sector.turns_taken = TurnIndex{48};
+        if (resumed.screen(range_restored) != SessionScreen::result ||
+            !resumed.confirm(range_restored) ||
+            !test::same_run(range_restored, range))
+            return 9;
         // An ID outside the catalog refuses on the start and result screens.
         for (const bool started : {false, true})
         {
             auto unknown = fresh;
-            unknown.start_config = static_cast<StartConfigId>(2);
+            unknown.start_config = static_cast<StartConfigId>(3);
             unknown.sector.player_integrity = 0;
             unknown.sector.reserve = 1;
             const auto snapshot = unknown;

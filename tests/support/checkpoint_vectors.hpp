@@ -48,6 +48,12 @@ inline constexpr auto checkpoint_vectors = []
              UINT32_MAX - 3, range, true, StartConfigId::baseline},
             {67, 67, 67, 80, 1,   0,  0,   0,  16,  0,   0,   0,   1,   0,
              0,  0,  0,  0,  0,   0,  6,   3,  1,   252, 255, 255, 255, 1,
-             0,  1,  1,  0,  178, 96, 160, 63, 189, 139, 28,  86}}};
+             0,  1,  1,  0,  178, 96, 160, 63, 189, 139, 28,  86}},
+        CheckpointVector{{RunSeed{42}, *SectorNumber::from_value(1), 3, 0, 0,
+                          range, false, StartConfigId::preinstalled_range},
+                         {67, 67, 67,  80, 1,   0,   0,   0,   16,  0,
+                          0,  0,  42,  0,  0,   0,   0,   0,   0,   0,
+                          1,  3,  0,   0,  0,   0,   0,   1,   0,   0,
+                          2,  0,  142, 75, 103, 107, 213, 131, 137, 116}}};
 }();
 } // namespace closed_circuit::test

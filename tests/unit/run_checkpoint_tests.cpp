@@ -128,9 +128,9 @@ bool cases()
                         bad.sector.emitters.push_back(
                             *PeriodicEmitter::from_values(
                                 *EntityId::from_value(0), node(0), 2, 0, 1));
-                    // Not persisted before P086-02: refuse instead of losing.
+                    // An ID outside the catalog is refused instead of lost.
                     if (field == 16)
-                        bad.start_config = static_cast<StartConfigId>(2);
+                        bad.start_config = static_cast<StartConfigId>(3);
                     if (field == 15)
                         bad.sector.delivery_requirement =
                             *DeliveryRequirement::from_value(required == 3 ? 2
