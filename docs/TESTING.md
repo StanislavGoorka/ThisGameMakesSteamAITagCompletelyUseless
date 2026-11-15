@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P085-09: core_entry_insulation porównuje 576 kombinacji modułu, partnera
+cadence/barrier, wejścia, tury0/1, pozycji gracza i impulsu z niezależną
+wyrocznią linii. Helper kontaktu nie zajmuje limitu; emiter i kondensator
+nadal zadają1HP. Granice advance_run i restore z opłaconym impulsem: wait
+chroni tylko HP, ruch z wejścia i druga tura bez ochrony, dług bez zwrotu.
+
 P085-08: core_pulse_barrier sprawdza cztery pary receiver/powered,
 brak modułu, blokadę bez objazdu przy dwóch równych trasach, sześć kolejności
 ID i zwolnienie pola przed późniejszym impulsem. Zastany kontakt i limit1HP,

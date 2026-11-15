@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 10/10 bieżącej serii: P085-08. ID7 powered_pulse_barrier blokuje wybrany krok impulsu na receiver+powered bez objazdu. Pakiet i gracz przechodzą; kontakty i kolejność pozostają. Katalog1..7, nagrody1/2; hashv8/replay20, checkpoint schema1/rules9. Seria10 ukończona:8 kroków kodowych i2 dokumentacyjne. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 1/10 bieżącej serii: P085-09. ID8 entry_insulation: przy turns_taken==0 kontakt impulsu z graczem stojącym po akcji na wejściu usuwa impuls bez HP i bez zajęcia wspólnego limitu. Dług nie wraca; emiter/kondensator nadal zadają1HP, opuszczenie wejścia i druga tura bez ochrony. Katalog1..8, nagrody1/2; hashv8/replay21, checkpoint schema1/rules10. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -57,7 +57,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 163/163 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 164/164 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika
