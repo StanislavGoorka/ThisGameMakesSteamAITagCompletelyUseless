@@ -232,8 +232,68 @@ Zgodność sprawdzono odczytem `atlas_tiles.hpp`, `unit_projection.hpp`,
 
 ## Noty licencyjne, credits i materiały sklepu
 
-Do uzupełnienia w P090-05.
+P090-05. Noty zatwierdzonych pakietów (assets.json, approvals.json):
+
+| Pakiet / zgoda | Nota w repo | Wymóg atrybucji | Stan |
+| --- | --- | --- | --- |
+| Kenney 1-Bit Pack 1.2 (`kenney-1bit-1.2-2026-11-13`) | `kenney1bit12-license` → `assets/approved/kenney-1bit-1.2/License.txt` | CC0-1.0; wzmianka o autorze prośbą, „not mandatory” | approved |
+| Comigo's Bleeps n Bloops, upload itch.io 4947244 (`comigo-bleeps-4947244-2026-11-14`) | brak pliku noty: archiwum nie zawiera not (assets.json `license_evidence`) | CC0-1.0 ze strony autora; brak wymogu | approved bez noty |
+
+Kod: repo nie zawiera bibliotek stron trzecich ani ich licencji
+(`git ls-files`, CMake bez FetchContent/find_package). Gra linkuje biblioteki
+systemowe Windows; redystrybucja runtime MSVC należy do allowlisty paczki
+(P101), nie do tego audytu.
+
+| Pozycja | Obecne zachowanie | Stan | Uwagi |
+| --- | --- | --- | --- |
+| Ekran credits / not | nie istnieje | brak | P093 wyświetla wiernie skopiowane zatwierdzone noty; CC0 nie wymaga atrybucji, więc zakres credits zależy od decyzji właściciela |
+| Napis otaczający noty (nagłówek ekranu, nawigacja) | nie istnieje | brak | ludzki tekst UI ze źródła P091 |
+
+Materiały sklepu i społeczności Steam. Żaden nie istnieje w repo ani
+rejestrach (stan `brak`). Wymagane pochodzenie: ludzki tekst lub grafika
+z dossier, zgodą i wpisem `approved`; zakaz AI capsule, trailera i tłumaczeń
+(P107). Dokładne wymiary i obowiązkowość każdej pozycji należy sprawdzić
+w aktualnej dokumentacji Steamworks przy P107; ten audyt ich nie zakłada.
+
+| Pozycja | Stan | Uwagi |
+| --- | --- | --- |
+| Finalny tytuł produktu | brak | nazwa robocza istnieje tylko jako placeholder `developer-window-title`; STEAM_RELEASE zabrania jej kopiowania |
+| Krótki opis i długi opis („About”) | brak | ludzki tekst; zgodność z faktycznym produktem |
+| Capsule sklepu (header, small, main, vertical) | brak | ludzka grafika |
+| Zasoby biblioteki (capsule, hero, logo, header) | brak | ludzka grafika |
+| Zrzuty ekranu | brak | rzeczywiste zrzuty finalnego builda bez placeholderów; widoczny tekst musi być finalny |
+| Trailer | brak | opcjonalny; obraz, audio i napisy o ludzkim pochodzeniu |
+| Ikona klienta i ikona społeczności | brak | powiązane z ikoną EXE (P090-04) |
+| Lista obsługiwanych języków | brak | wynika z finalnych tekstów; obecnie brak lokalizacji (P090-04) |
+| Wymagania systemowe | brak | tylko zmierzone (P105) |
+| Content Survey | brak | wypełniany zgodnie z faktami (P106) |
 
 ## Podsumowanie
 
-Do uzupełnienia w P090-05.
+P090-05. Stan po audycie P090-01..05 (liczba pozycji; `brak` obejmuje także
+pozycje opcjonalne zależne od projektu UI, opisane w sekcjach):
+
+| Kategoria | approved | placeholder | brak |
+| --- | --- | --- | --- |
+| Napisy sesji, HUD i błędów | 0 | 22 | 8 |
+| Napisy nagród i modułów | 0 | 16 | 3 |
+| Achievementy | 0 | 2 | 59 (11 komunikatów, 12 nazw, 12 opisów, 24 ikony) |
+| Grafika sceny | 1 atlas (14 kafli, 29 wariantów z obrotem) | 0 | 6 |
+| Audio | 1 klip | 0 | 1 grupa sygnałów i muzyka (opcjonalne) |
+| Font, tutorial, lokalizacja | 0 (font systemowy poza paczką) | 0 | 2 (tutorial, lokalizacja) |
+| Noty i credits | 1 nota (Kenney) | 0 | 2 |
+| Sklep i społeczność Steam | 0 | 0 | 10 |
+
+Wszystkie 40 wpisów texts.json mają stan `placeholder`; żaden napis widoczny
+w grze nie jest zatwierdzony. Grafika sceny i jedyny dźwięk mają kompletny
+łańcuch dowodowy. Wydanie publiczne pozostaje zablokowane co najmniej przez:
+40 napisów, finalny tytuł, nazwy i opisy achievementów, ikony achievementów,
+ikonę EXE/klienta i materiały sklepu.
+
+Wejście dla P091: korpus tekstów musi pokryć 40 kluczy texts.json, finalny
+tytuł, 24 nazwy i opisy achievementów, ewentualne napisy braków UI
+(P090-01/02/03), credits oraz opisy sklepu. Część pozycji opisuje specyficzne
+reguły tej gry (efekty modułów, warunki achievementów), więc P091 musi
+ocenić, czy ogólny korpus etykiet UI w ogóle może je pokryć, czy potrzebny
+jest ludzki autor z udokumentowanym pochodzeniem. Ten audyt nie rozstrzyga
+źródła i nie zawiera propozycji brzmienia.
