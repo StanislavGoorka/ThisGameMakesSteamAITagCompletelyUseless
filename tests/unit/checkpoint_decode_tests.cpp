@@ -65,11 +65,11 @@ bool cases()
                 bad[30] = 5;
             if (scenario == 19)
                 bad[30] = 255;
-            // Byte 31 holds modifier bits: only bit1 is implemented.
+            // Byte 31 holds modifier bits: only bits 1 and 2 are implemented.
             if (scenario == 10)
-                bad[31] = 3;
+                bad[31] = 5;
             if (scenario == 20)
-                bad[31] = 2;
+                bad[31] = 6;
             if (scenario == 21)
                 bad[31] = 4;
             if (scenario == 22)

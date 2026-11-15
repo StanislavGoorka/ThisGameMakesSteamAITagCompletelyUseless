@@ -10,7 +10,8 @@ namespace closed_circuit
 // packet, off the target or on a target that is already powered, every field
 // of the state stays untouched, so each target is powered at most once and a
 // repeated step delivers nothing. A delivery restores one reserve (two with
-// delivery_reserve) up to the limit; delivery_debt_relief also clears one
+// delivery_reserve), one less with lean_delivery, up to the limit;
+// delivery_debt_relief also clears one
 // point of existing debt, after any overdrive cost of the same turn. The step
 // never charges a turn.
 [[nodiscard]] constexpr bool deliver_packet(GameState &state) noexcept
@@ -29,7 +30,9 @@ namespace closed_circuit
     if (state.reserve < GameState::reserve_limit)
     {
         const auto restored =
-            state.modules.contains(ModuleId::delivery_reserve) ? 2 : 1;
+            (state.modules.contains(ModuleId::delivery_reserve) ? 2 : 1) -
+            (state.difficulty.contains(DifficultyModifier::lean_delivery) ? 1
+                                                                          : 0);
         state.reserve = static_cast<std::uint8_t>(
             std::min<int>(GameState::reserve_limit, state.reserve + restored));
     }

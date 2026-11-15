@@ -80,6 +80,20 @@ inline constexpr auto checkpoint_vectors = []
                          {67, 67, 67, 80,  1,  0,   0,   0,   17,  0,
                           0,  0,  9,  0,   0,  0,   0,   0,   0,   0,
                           3,  2,  1,  1,   0,  0,   0,   0,   0,   0,
-                          1,  1,  80, 175, 74, 127, 139, 143, 209, 113}}};
+                          1,  1,  80, 175, 74, 127, 139, 143, 209, 113}},
+        // Since P087-05 byte 31 may carry the lean_delivery bit.
+        CheckpointVector{{RunSeed{11},
+                          *SectorNumber::from_value(2),
+                          3,
+                          3,
+                          0,
+                          {},
+                          false,
+                          StartConfigId::charged_debt,
+                          *DifficultyModifiers::from_value(2)},
+                         {67, 67, 67,  80,  1,  0,  0,   0,  17, 0,
+                          0,  0,  11,  0,   0,  0,  0,   0,  0,  0,
+                          2,  3,  3,   0,   0,  0,  0,   0,  0,  0,
+                          3,  2,  238, 103, 84, 57, 219, 28, 78, 234}}};
 }();
 } // namespace closed_circuit::test

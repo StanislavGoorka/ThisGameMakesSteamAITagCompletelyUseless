@@ -19,12 +19,12 @@ bool check(bool condition, const char *message)
     return condition;
 }
 
-// Only bit1 short_turn_limit is implemented: masks 0 and 1 are valid.
+// Bits 1 short_turn_limit and 2 lean_delivery are implemented: masks 0..3.
 bool factory()
 {
     const DifficultyModifiers empty{};
-    if (!check(empty.bits() == 0 && implemented_difficulty_bits() == 1 &&
-                   difficulty_modifier_catalog.size() == 1,
+    if (!check(empty.bits() == 0 && implemented_difficulty_bits() == 3 &&
+                   difficulty_modifier_catalog.size() == 2,
                "Default modifiers must be the empty mask"))
         return false;
     const auto short_limit = DifficultyModifiers::from_value(1);
@@ -37,6 +37,16 @@ bool factory()
                 *short_limit != empty,
             "Bit1 must parse as short_turn_limit only"))
         return false;
+    const auto lean = DifficultyModifiers::from_value(2);
+    const auto both = DifficultyModifiers::from_value(3);
+    if (!check(lean && lean->contains(DifficultyModifier::lean_delivery) &&
+                   !lean->contains(DifficultyModifier::short_turn_limit) &&
+                   both &&
+                   both->contains(DifficultyModifier::short_turn_limit) &&
+                   both->contains(DifficultyModifier::lean_delivery) &&
+                   !both->contains(DifficultyModifier::heavy_overdrive_debt),
+               "Bits 1 and 2 must combine independently"))
+        return false;
     for (const auto modifier : {DifficultyModifier::short_turn_limit,
                                 DifficultyModifier::lean_delivery,
                                 DifficultyModifier::heavy_overdrive_debt})
@@ -46,11 +56,11 @@ bool factory()
     for (int value = -300; value <= 300; ++value)
     {
         const auto parsed = DifficultyModifiers::from_value(value);
-        if (!check(parsed.has_value() == (value == 0 || value == 1),
-                   "Only masks 0 and 1 are implemented"))
+        if (!check(parsed.has_value() == (value >= 0 && value <= 3),
+                   "Only masks 0..3 are implemented"))
             return false;
     }
-    for (const auto value : {2, 3, 4, 8, 0xFF})
+    for (const auto value : {4, 5, 7, 8, 0xFF})
         if (!check(!DifficultyModifiers::from_value(value),
                    "Planned bits stay unknown until implemented"))
             return false;

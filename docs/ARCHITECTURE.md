@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P087-05: bit2 lean_delivery w katalogu. deliver_packet przywraca o1 rezerwę mniej (0 bez modułu, 1 z delivery_reserve), z limitem3; zasilenie i delivery_debt_relief bez zmian. Checkpoint rules17 przyjmuje bajt31 0..3 bez nowej wersji reguł (maska2 była dotąd odrzucana).
+
 P087-04: bit1 short_turn_limit w katalogu modyfikatorów. sector_turn_limit(state) zwraca 48 albo 32 przy bicie (także w finale) i jest jedynym źródłem limitu dla sector_outcome, więc resolver, podgląd, certyfikaty i faza runu korzystają z tej samej reguły. Checkpoint rules17 przyjmuje bajt31 ∈ {0,1}; bez nowej wersji reguł, bo maska1 była wcześniej odrzucana. hashv9/replay26 bez zmian (replay startuje z maską0).
 
 P087-02: checkpoint run_rules17 zapisuje GameState::difficulty w bajcie31 (RunCheckpoint::difficulty); walidacja dopuszcza wyłącznie zaimplementowane bity, restore ustawia maskę z zapisu, capture ją przekazuje. Schema1/40 bajtów bez wolnych bajtów; hashv9/replay26 bez zmian.
