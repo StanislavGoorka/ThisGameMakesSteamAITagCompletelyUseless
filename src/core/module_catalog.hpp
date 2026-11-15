@@ -19,7 +19,8 @@ enum class ModuleId : std::uint8_t
     entry_insulation = 8,
     delivery_debt_relief = 9,
     overdrive_range = 10,
-    reverse_rotation = 11
+    reverse_rotation = 11,
+    packet_priority = 12
 };
 
 inline constexpr std::array module_catalog{
@@ -28,7 +29,7 @@ inline constexpr std::array module_catalog{
     ModuleId::packet_stride,         ModuleId::pulse_cadence,
     ModuleId::powered_pulse_barrier, ModuleId::entry_insulation,
     ModuleId::delivery_debt_relief,  ModuleId::overdrive_range,
-    ModuleId::reverse_rotation};
+    ModuleId::reverse_rotation,      ModuleId::packet_priority};
 // Implementation does not imply admission to player rewards.
 inline constexpr std::array reward_module_catalog{ModuleId::rotation_range,
                                                   ModuleId::terminal_rotation};

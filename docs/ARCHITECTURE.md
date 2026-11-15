@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P085-13: ID12 odwraca kolejność next_packet_target: następny pakiet celuje w najwyższy niezasilony odbiornik; aktywny pakiet zachowuje cel, bo tylko wprowadzenie pyta o kolejny. Bieżące ID1..12, nagrody1/2; hashv8/replay25, checkpoint schema1/rules14.
+
 P085-12: ID11 ustawia quarter_turns=3 w RotationRules: zwykły rotate obraca przeciwnie do wskazówek, overdrive nadal dwa ćwierćobroty; zgoda terminala zużywana raz. Bieżące ID1..11, nagrody1/2; hashv8/replay24, checkpoint schema1/rules13.
 
 P085-11: ID10 dodaje1 do zasięgu Manhattan wyłącznie overdrive (2 sam, 3 z ID1) przez overdrive_distance we wspólnym RotationRules; zwykły rotate bez zmiany. Bieżące ID1..10, nagrody1/2; hashv8/replay23, checkpoint schema1/rules12.

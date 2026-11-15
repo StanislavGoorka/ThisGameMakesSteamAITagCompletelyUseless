@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-13: core_packet_priority sprawdza 6144 kombinacji podzbiorów
+odbiorników/zasileń z ID12 i partnerami ID3/ID5, wprowadzenie z wejścia
+i zachowanie celu aktywnego pakietu. Niezależna symulacja linii z ID5
+kontroluje kolejność celów i jedną dostawę na turę; restore normal/finał.
+
 P085-12: core_reverse_rotation porównuje wszystkie16 masek z niezależnymi
 wzorami CW/CCW/180 dla ID11 z partnerami ID1/ID2/ID10 i dystansem0..3. Cykl4,
 koszt tury, terminal ID2 zużyty raz i nieodnawiany zwykłym obrotem;
