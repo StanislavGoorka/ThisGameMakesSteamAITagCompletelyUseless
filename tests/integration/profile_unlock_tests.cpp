@@ -23,7 +23,7 @@ bool cases()
     auto expected = LocalProfile{0, 3, 17, true};
     if (!windows::save_profile_file(main, expected))
         return false;
-    for (unsigned raw = 1; raw <= 7; ++raw)
+    for (unsigned raw = 1; raw <= 8; ++raw)
     {
         const auto previous = expected;
         const auto id = static_cast<AchievementId>(raw);
@@ -97,7 +97,7 @@ bool cases()
                                      AchievementId::first_sector) !=
             Result::read_error)
         return false;
-    for (const unsigned raw : {0, 8, 255})
+    for (const unsigned raw : {0, 9, 255})
     {
         const auto absent = directory.path / L"absent";
         if (windows::unlock_profile_file(absent,

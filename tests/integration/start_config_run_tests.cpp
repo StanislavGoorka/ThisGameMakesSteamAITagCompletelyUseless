@@ -197,12 +197,14 @@ int wmain(int argc, wchar_t **argv)
     }
     // Same commands, same predicates: where ID1 and another configuration
     // both finish a seed, they earn the same achievements, except that only
-    // ID2 earns won_preinstalled_range (0x40).
+    // ID2 earns won_preinstalled_range (0x40) and only ID3 won_charged_debt
+    // (0x80).
     for (const auto &[seed, by_config] : masks)
         for (const auto &[config, earned] : by_config)
             if (((earned & 0x40) != 0) != (config == 2) ||
+                ((earned & 0x80) != 0) != (config == 3) ||
                 (by_config.contains(1) &&
-                 (earned & ~0x40u) != (by_config.at(1) & ~0x40u)))
+                 (earned & ~0xc0u) != (by_config.at(1) & ~0xc0u)))
             {
                 std::cerr << "Achievement mask differs: seed " << seed
                           << " config " << config << '\n';

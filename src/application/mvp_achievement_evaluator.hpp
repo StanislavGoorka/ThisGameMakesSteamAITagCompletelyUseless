@@ -47,13 +47,15 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
             if (end->reason == RunEndReason::won &&
                 event.key.sector.value() == sector_count)
             {
-                // won_preinstalled_range: the run started from ID2.
-                const std::uint16_t range =
+                // won_preinstalled_range / won_charged_debt: the run started
+                // from ID2 / ID3.
+                const std::uint16_t config =
                     end->start_config == StartConfigId::preinstalled_range
                         ? 0x40
-                        : 0;
+                    : end->start_config == StartConfigId::charged_debt ? 0x80
+                                                                       : 0;
                 return static_cast<std::uint16_t>(
-                    (without_overdrive_ ? 20 : 16) | range);
+                    (without_overdrive_ ? 20 : 16) | config);
             }
         // swift_sector: completion within the first 16 turns of any sector.
         if (std::holds_alternative<SectorCompleted>(event.payload))

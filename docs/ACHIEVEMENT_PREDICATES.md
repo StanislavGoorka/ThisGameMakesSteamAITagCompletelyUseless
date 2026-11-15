@@ -15,6 +15,7 @@ jest resetowany przez nowy run ani restore.
 | 5 completed_run | RunEnded(won) po trzecim sektorze | SectorCompleted sektora pośredniego, death lub overload | Bez trackera; restore sektora 2/3 nie wyklucza późniejszego zwycięstwa |
 | 6 swift_sector (P088-04) | SectorCompleted z key.turn ≤ 16 w dowolnym sektorze, także finale | Ukończenie na turze17; tura ≤ 16 bez ukończenia; death/overload | Bez trackera; fresh_run i restored_checkpoint kwalifikują; [plan 1.0](ACHIEVEMENT_EXPANSION_PLAN.md) |
 | 7 won_preinstalled_range (P088-05) | RunEnded(won) w ostatnim sektorze z start_config ID2 | Zwycięstwo ID1/ID3; przegrana ID2 | Bez trackera; konfiguracja z payloadu RunEnded, więc restore kwalifikuje |
+| 8 won_charged_debt (P088-06) | RunEnded(won) w ostatnim sektorze z start_config ID3 | Zwycięstwo ID1/ID2; przegrana ID3 | Bez trackera; jak ID7 |
 
 ## Dowód rekonfiguracji
 

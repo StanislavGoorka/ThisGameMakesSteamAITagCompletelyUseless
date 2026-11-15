@@ -16,9 +16,9 @@ static_assert(static_cast<unsigned>(AchievementId::won_lean_delivery) == 10);
 static_assert(static_cast<unsigned>(AchievementId::won_heavy_overdrive_debt) ==
               11);
 static_assert(static_cast<unsigned>(AchievementId::won_all_modifiers) == 12);
-// Implemented so far: the MVP IDs, swift_sector and won_preinstalled_range.
-static_assert(achievement_catalog.size() == 7 &&
-              implemented_achievement_bits() == 0x7f);
+// Implemented so far: the MVP IDs, swift_sector and both configuration wins.
+static_assert(achievement_catalog.size() == 8 &&
+              implemented_achievement_bits() == 0xff);
 static_assert(ProfileBytes{}.size() == 24 && profile_schema_version == 2 &&
               profile_legacy_schema_version == 1);
 static_assert(is_profile_valid(LocalProfile{0x0fff, 3, 100, true}));

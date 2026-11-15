@@ -314,7 +314,7 @@ bool won_preinstalled_range()
                     if (((result & 0x40) != 0) !=
                             (won &&
                              config == StartConfigId::preinstalled_range) ||
-                        ((result & 0x10) != 0) != won || (result & ~0x54u) != 0)
+                        ((result & 0x10) != 0) != won || (result & ~0xd4u) != 0)
                         return false;
                 }
     // Dispatch retries only the failed ID7 and persists bit 6 once.
@@ -344,11 +344,57 @@ bool won_preinstalled_range()
     return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
            sink.calls == calls;
 }
+bool won_charged_debt()
+{
+    // Only a final win of an ID3 run, with either history origin.
+    for (const auto origin :
+         {RunHistoryOrigin::fresh_run, RunHistoryOrigin::restored_checkpoint})
+        for (const auto config : start_config_catalog)
+            for (const auto reason : {RunEndReason::won, RunEndReason::death,
+                                      RunEndReason::overload})
+                for (int sector = 1; sector <= sector_count; ++sector)
+                {
+                    MvpAchievementEvaluator evaluator(origin);
+                    const unsigned result = evaluator.evaluate(
+                        event(RunEnded{reason, config}, 1, 2, sector));
+                    const bool won =
+                        reason == RunEndReason::won && sector == sector_count;
+                    if (((result & 0x80) != 0) !=
+                        (won && config == StartConfigId::charged_debt))
+                        return false;
+                }
+    // Dispatch retries only the failed ID8 and persists bit 7 once.
+    MvpAchievementEvaluator evaluator;
+    test::RecordingSink sink;
+    sink.fail_id = AchievementId::won_charged_debt;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(sector_count)};
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    const auto won =
+        event(RunEnded{RunEndReason::won, StartConfigId::charged_debt}, 1, 2,
+              sector_count);
+    if (dispatcher.dispatch(
+            scope, event(ActionCommitted{WaitCommand{}}, 1, 0, sector_count)) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope,
+                            event(SectorCompleted{}, 1, 1, sector_count)) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope, won) != DispatchResult::retry ||
+        sink.profile.achievement_bits != 0x32)
+        return false;
+    sink.fail_id.reset();
+    if (dispatcher.dispatch(scope, won) != DispatchResult::delivered ||
+        sink.profile.achievement_bits != 0xb2)
+        return false;
+    const auto calls = sink.calls;
+    return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
+           sink.calls == calls;
+}
 int main()
 {
     return delivery() && sector_completion() && without_overdrive() &&
                    reconfiguration() && completed_run() && swift_sector() &&
-                   won_preinstalled_range()
+                   won_preinstalled_range() && won_charged_debt()
                ? 0
                : 1;
 }

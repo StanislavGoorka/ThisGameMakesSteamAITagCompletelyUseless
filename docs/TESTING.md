@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-06: application_mvp_achievement (won_charged_debt) — bit7 wyłącznie przy
+zwycięstwie w ostatnim sektorze z ID3, dla obu pochodzeń; dispatch z retry
+tylko dla ID8 (0x32 → 0xb2). windows_start_config_run: w pełnych runach ID3
+zdobywa 0x80, ID2 0x40, ID1 żadnego, reszta równa ID1; windows_difficulty_run
+bez zmian (ID3 porównywane z maską0 tej samej konfiguracji).
+
 P088-05: application_mvp_achievement (won_preinstalled_range) — RunEnded dla
 ID1..3 × won/death/overload × sektorów × obu pochodzeń: bit6 wyłącznie przy
 zwycięstwie w ostatnim sektorze z ID2, bit completed_run niezależny od
