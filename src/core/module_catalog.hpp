@@ -30,9 +30,9 @@ inline constexpr std::array module_catalog{
     ModuleId::powered_pulse_barrier, ModuleId::entry_insulation,
     ModuleId::delivery_debt_relief,  ModuleId::overdrive_range,
     ModuleId::reverse_rotation,      ModuleId::packet_priority};
-// Implementation does not imply admission to player rewards.
-inline constexpr std::array reward_module_catalog{ModuleId::rotation_range,
-                                                  ModuleId::terminal_rotation};
+// Every implemented module is admitted to rewards since P085-19. Admission
+// stays a separate ordered list so that a future module can be held back.
+inline constexpr std::array reward_module_catalog = module_catalog;
 
 [[nodiscard]] constexpr bool is_known_module(ModuleId id) noexcept
 {

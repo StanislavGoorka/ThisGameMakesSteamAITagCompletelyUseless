@@ -21,10 +21,34 @@ function indices(count, seed, sector) {
   if (b >= a) ++b;
   return [a, b].sort((x,y) => x-y);
 }
-let digest = 14695981039346656037n;
-for (let count=0; count<=12; ++count)
-  for (let seed=0n; seed<257n; ++seed)
-    for (let sector=1; sector<=6; ++sector)
-      for (const index of indices(count,seed,sector))
-        digest = ((digest ^ BigInt(index)) * 1099511628211n) & mask;
-console.log(digest.toString());
+// Module IDs from the admitted pool 1..12 (P085-19); 0 marks an empty slot.
+function offer(owned, seed, sector) {
+  if (owned.length >= 2) return [0, 0];
+  const pool = [];
+  for (let id = 1; id <= 12; ++id) if (!owned.includes(id)) pool.push(id);
+  return indices(pool.length, seed, sector).map(i => i === 255 ? 0 : pool[i]);
+}
+const loadouts = [[], [1], [2], [1, 2], [7], [12]];
+if (process.argv[2] === 'offers') {
+  let digest = 14695981039346656037n;
+  for (const owned of loadouts)
+    for (let seed=0n; seed<257n; ++seed)
+      for (let sector=1; sector<=6; ++sector)
+        for (const id of offer(owned, seed, sector))
+          digest = ((digest ^ BigInt(id)) * 1099511628211n) & mask;
+  const table = {};
+  for (const seed of [0n, (1n << 64n) - 1n])
+    for (const owned of loadouts.slice(0, 3))
+      for (let sector=1; sector<=6; ++sector)
+        table[`${seed}/${owned.join('+') || '-'}/${sector}`] = offer(owned, seed, sector);
+  console.log(digest.toString());
+  console.log(JSON.stringify(table));
+} else {
+  let digest = 14695981039346656037n;
+  for (let count=0; count<=12; ++count)
+    for (let seed=0n; seed<257n; ++seed)
+      for (let sector=1; sector<=6; ++sector)
+        for (const index of indices(count,seed,sector))
+          digest = ((digest ^ BigInt(index)) * 1099511628211n) & mask;
+  console.log(digest.toString());
+}

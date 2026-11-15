@@ -2,6 +2,13 @@
 #include "core/module_choice.hpp"
 #include <iostream>
 using namespace closed_circuit;
+namespace
+{
+// Literal default-context offers (seed 0, sector 1) for owned {}, {1}, {2}
+// and {1,2} from tools/corpus/module_offer_vectors.cjs offers.
+constexpr std::array<std::array<unsigned, 2>, 4> offers{
+    {{1, 3}, {11, 12}, {11, 12}, {0, 0}}};
+} // namespace
 int main()
 {
     const auto zero = *NodeId::from_value(0);
@@ -30,18 +37,21 @@ int main()
                     static_cast<void>(
                         state.modules.add(ModuleId::terminal_rotation));
                 const auto before = state;
-                const bool allowed =
-                    (raw == 1 && !(mask & 1)) || (raw == 2 && !(mask & 2));
+                const bool allowed = raw != 0 && (raw == offers[mask][0] ||
+                                                  raw == offers[mask][1]);
                 auto expected = before;
-                // Expected slot data is specified independently, including
-                // sorting.
+                // Expected slots: owned IDs plus the allowed one, ascending.
+                std::array<unsigned, 3> ids{};
+                std::size_t count = 0;
+                for (unsigned id = 1; id <= 12; ++id)
+                    if ((id == 1 && (mask & 1)) || (id == 2 && (mask & 2)) ||
+                        (allowed && id == raw))
+                        ids[count++] = id;
                 ModuleLoadout slots;
-                const bool has_range = (mask & 1) || (allowed && raw == 1);
-                const bool has_terminal = (mask & 2) || (allowed && raw == 2);
-                if (has_range)
-                    static_cast<void>(slots.add(ModuleId::rotation_range));
-                if (has_terminal)
-                    static_cast<void>(slots.add(ModuleId::terminal_rotation));
+                for (std::size_t i = 0; i < count; ++i)
+                    if (!slots.add(static_cast<ModuleId>(ids[i])) ||
+                        *slots.slots()[i] != static_cast<ModuleId>(ids[i]))
+                        return 2;
                 expected.modules = slots;
                 const auto id = static_cast<ModuleId>(raw);
                 if (choose_module(state, id) != allowed ||

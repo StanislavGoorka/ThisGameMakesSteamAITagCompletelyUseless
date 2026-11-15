@@ -4,6 +4,11 @@
 using namespace closed_circuit;
 namespace
 {
+// Literal offers for seed UINT64_MAX after sectors 1..5 with owned {}, {1}
+// and {2}, from tools/corpus/module_offer_vectors.cjs offers.
+constexpr unsigned offers[3][5][2]{{{2, 4}, {3, 9}, {6, 12}, {5, 6}, {6, 12}},
+                                   {{4, 9}, {7, 10}, {4, 6}, {7, 12}, {4, 7}},
+                                   {{4, 9}, {7, 10}, {4, 6}, {7, 12}, {4, 7}}};
 bool cases()
 {
     const auto zero = *NodeId::from_value(0), last = *NodeId::from_value(48);
@@ -11,7 +16,8 @@ bool cases()
         for (int outcome = 0; outcome < 4; ++outcome)
             for (unsigned modules = 0; modules < 4; ++modules)
                 for (const bool claimed : {false, true})
-                    for (const int choice : {0, 1, 2, 3, 255})
+                    for (const int choice :
+                         {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 255})
                     {
                         RunState run{
                             .seed = RunSeed{UINT64_MAX},
@@ -43,10 +49,14 @@ bool cases()
                         if (outcome == 3)
                             run.sector.turns_taken = TurnIndex{49};
                         const auto before = run;
+                        const bool offered =
+                            modules < 3 && number < sector_count &&
+                            (choice == static_cast<int>(
+                                           offers[modules][number - 1][0]) ||
+                             choice == static_cast<int>(
+                                           offers[modules][number - 1][1]));
                         const bool accepted =
-                            outcome == 1 && number < sector_count && !claimed &&
-                            ((choice == 1 && !(modules & 1)) ||
-                             (choice == 2 && !(modules & 2)));
+                            outcome == 1 && !claimed && offered;
                         auto expected = before;
                         const auto id = static_cast<ModuleId>(choice);
                         if (accepted)
@@ -63,9 +73,7 @@ bool cases()
                         {
                             if (run_phase(run) != RunPhase::ready_for_next)
                                 return false;
-                            for (const auto next :
-                                 {ModuleId::rotation_range,
-                                  ModuleId::terminal_rotation})
+                            for (const auto next : module_catalog)
                                 if (choose_run_module(run, next) ||
                                     !test::same_run(run, expected))
                                     return false;

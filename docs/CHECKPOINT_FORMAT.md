@@ -1,6 +1,6 @@
-# Checkpoint granicy sektora — schema1, rules14
+# Checkpoint granicy sektora — schema1, rules15
 
-P085-13: bieżące run_rules=14, hashv8/replay25. Zaimplementowane ID1..12, nagrody nadal1/2. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych. Wcześniejsze wersje reguł są odrzucane bez nadpisania backupu.
+P085-19: bieżące run_rules=15, hashv8/replay25. ID1..12 zaimplementowane i dopuszczone do nagród; oferta zależy od root seedu i ukończonego sektora, więc checkpoint starszych reguł mógłby dać inne oferty i jest odrzucany bez nadpisania backupu. Replay obejmuje jeden sektor bez nagród i zachowuje wersję25. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych.
 
 Historyczne P085-04: run_rules=4 dopuszczało ID1..3, nadal przy
 dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
@@ -8,7 +8,7 @@ odrzucane bez zmiany backupu. Schema1 i układ40 bajtów pozostają. Poniższe
 opisy reguł3 dokumentują historyczną zmianę długości runu w P084-01.
 
 Historyczne P084-01 wprowadziło run_rules=3 z finałem tylko w ostatnim
-z sześciu sektorów. Bieżące reguły14 zachowują tę długość i schema1;
+z sześciu sektorów. Bieżące reguły15 zachowują tę długość i schema1;
 wszystkie wcześniejsze reguły są odrzucane nawet z poprawną checksumą,
 bez migracji i bez nadpisania backupu.
 
@@ -74,7 +74,7 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 14 |
+| 8 | 4 | run_rules_version | 15 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
@@ -93,10 +93,10 @@ seed, wszystkie pola i bajty zarezerwowane. Historyczne reguły1 odtwarzały
 wyłącznie normalne sektory. Reguły2 odtwarzają trzeci sektor z trzema
 odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
 Reguły3 rozszerzyły run do sześciu sektorów: 1..5 są normalne,
-a wyłącznie 6 jest finałem. Bieżące reguły14 zachowują tę topologię,
+a wyłącznie 6 jest finałem. Bieżące reguły15 zachowują tę topologię,
 wiążąc również obecny katalog i reguły modułów. Wersje checkpointu
 i replay są odrębne; obecny hashv8/replay25 nie jest checksumą checkpointu.
-Niezależny oracle: `tools/checkpoint/vectors.cjs 14`.
+Niezależny oracle: `tools/checkpoint/vectors.cjs 15`.
 
 ## Odrzucanie i dowody
 
@@ -121,4 +121,4 @@ checkpoint, źródło none/main/backup, surowy main_error oraz optional backup_e
 (pusty = nie próbowano). Błąd backupu daje brak checkpointu z obiema diagnozami;
 ERROR_INVALID_DATA oznacza uszkodzenie, dwa NOT_FOUND oznaczają brak,
 pozostałe kody oznaczają IO. Nie ma naprawy, nadpisania lub promocji temp.
-Schema1/run_rules14; odczyt backupu nie zmienia żadnego pliku.
+Schema1/run_rules15; odczyt backupu nie zmienia żadnego pliku.

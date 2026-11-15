@@ -4,7 +4,6 @@
 #include "../support/run_witness.hpp"
 #include "application/event_dispatcher.hpp"
 #include "application/mvp_achievement_evaluator.hpp"
-#include "application/reward_selection.hpp"
 #include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
 #include "core/run_start.hpp"
@@ -201,9 +200,12 @@ bool complete(RunSeed seed, const std::filesystem::path &directory)
             second_trace = trace;
         if (number < sector_count)
         {
-            const auto offer = reward_offer(run);
-            if (offer[0] && !choose_run_module(run, *offer[0]))
-                return false;
+            if (run_phase(run) == RunPhase::choosing_reward)
+            {
+                const auto choice = test::witness_choice(run);
+                if (!choice || !choose_run_module(run, *choice))
+                    return false;
+            }
             const auto next = advance_run(run);
             if (!next.accepted)
                 return false;
@@ -285,9 +287,12 @@ class ObservedMvpEvaluator final : public AchievementEvaluator
 
 bool transition(RunState &run)
 {
-    const auto offer = reward_offer(run);
-    if (offer[0] && !choose_run_module(run, *offer[0]))
-        return false;
+    if (run_phase(run) == RunPhase::choosing_reward)
+    {
+        const auto choice = test::witness_choice(run);
+        if (!choice || !choose_run_module(run, *choice))
+            return false;
+    }
     const auto next = advance_run(run);
     if (!next.accepted)
         return false;

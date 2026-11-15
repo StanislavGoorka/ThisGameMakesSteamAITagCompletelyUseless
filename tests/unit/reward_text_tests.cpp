@@ -1,17 +1,20 @@
 ﻿#include "presentation/reward_text.hpp"
+#include <string>
+#include <vector>
 using namespace closed_circuit;
 
 int main()
 {
-    const std::array records{
-        TextRecord{"reward-range", "[AI PLACEHOLDER] Rotation range:",
-                   TextStatus::ai_placeholder, std::nullopt},
-        TextRecord{"reward-terminal", "[AI PLACEHOLDER] Terminal rotation:",
-                   TextStatus::ai_placeholder, std::nullopt},
+    std::vector<TextRecord> records{
         TextRecord{"reward-instruction", "[AI PLACEHOLDER] Left/Right, Enter.",
                    TextStatus::ai_placeholder, std::nullopt},
         TextRecord{"reward-selected", "[AI PLACEHOLDER] Selected:",
                    TextStatus::ai_placeholder, std::nullopt}};
+    // Synthetic fixture labels for every admitted module row.
+    for (const auto id : reward_module_catalog)
+        records.push_back({std::string{*presentation::module_text_id(id)},
+                           "[AI PLACEHOLDER] Module:",
+                           TextStatus::ai_placeholder, std::nullopt});
     const auto catalog =
         *TextCatalog::from_records(records, {}, TextAudience::developer);
     const auto empty =
@@ -36,7 +39,8 @@ int main()
                 if (!value || !value->starts_with("[AI PLACEHOLDER]") ||
                     format_text_line(empty, line))
                     return 2;
-                if (line.id == "reward-range" || line.id == "reward-terminal")
+                if (line.id != "reward-instruction" &&
+                    line.id != "reward-selected")
                 {
                     if (line.number != ++row)
                         return 3;

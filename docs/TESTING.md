@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-19: core_module_offer porównuje korpus ofert puli ID1..12 (6 loadoutów ×
+257 seedów × sektory1..6) z literalnym digestem niezależnego oracle,
+sprawdza osiągalność każdego ID i ofertę po restore. Wybór i nagroda
+mają literalne oferty oracle; dispatcher wybiera przez witness_choice.
+
 P085-18: core_run_integration, windows_reward_window i windows_event_dispatcher
 wybierają nagrody przez reward_offer(run) dla bieżącego seedu i sektora,
 bez stałych ID1/2; odmowy poza oknem nagrody obejmują cały katalog.

@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P085-19: reward_module_catalog obejmuje cały katalog ID1..12; deterministyczna oferta dwóch nieposiadanych ID zależy od root seedu i ukończonego sektora. Checkpoint schema1/rules15, hashv8/replay25 bez zmian (replay nie obejmuje nagród).
+
 P085-13: ID12 odwraca kolejność next_packet_target: następny pakiet celuje w najwyższy niezasilony odbiornik; aktywny pakiet zachowuje cel, bo tylko wprowadzenie pyta o kolejny. Bieżące ID1..12, nagrody1/2; hashv8/replay25, checkpoint schema1/rules14.
 
 P085-12: ID11 ustawia quarter_turns=3 w RotationRules: zwykły rotate obraca przeciwnie do wskazówek, overdrive nadal dwa ćwierćobroty; zgoda terminala zużywana raz. Bieżące ID1..11, nagrody1/2; hashv8/replay24, checkpoint schema1/rules13.

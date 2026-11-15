@@ -85,5 +85,6 @@ Każda reguła: pełne porównanie stanu, próba dodatnia i ujemna z tabeli plan
 preview/commit/odmowa, kopie, drugi moduł w slocie, reset/restore, Debug i
 Release. Wersje mają literalne wektory niezależne od kodu C++.
 
-Po tych dowodach P085-17 doda katalogowe placeholdery, P085-19 oferty.
+Po tych dowodach P085-17 dodało katalogowe placeholdery, a P085-19 dopuściło
+ID1..12 do ofert (checkpoint rules15; replay25 bez nagród bez zmian).
 Obserwacja pulpitu, ocena czytelności i ludzki playtest pozostają w P104.
