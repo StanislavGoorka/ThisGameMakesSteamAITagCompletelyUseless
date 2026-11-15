@@ -17,7 +17,8 @@ działa (rezerwa0, moduł ID1) i jest w katalogu. P086-05: ID3 charged_debt
 model wyboru w SessionFlow (cykl, bramka ekranu, confirm czyści wybór).
 P086-07: robocze etykiety [AI PLACEHOLDER] start-config-* na ekranie
 startu/wyniku; publiczny build ich odmawia. P086-08: strzałki lewo/prawo
-wybierają konfigurację w rzeczywistym HWND.
+wybierają konfigurację w rzeczywistym HWND. P086-09: dowód integracyjny
+(windows_start_config_run) zamyka łańcuch; następny jest P087.
 
 ## Konfiguracje
 
@@ -78,3 +79,7 @@ nadrzędnego ID i zależności konsumentów.
   buildem; stosować asset-intake. Bez nowych assetów, ikon i pobrań.
 - P087 zależy od P086-09, a łańcuch obejmuje wszystkie dzieci. Sam P086 nie
   dostarcza żadnej nowej konfiguracji.
+- P086-09: certyfikaty sektorów są bez modułów i bez dodatkowego impulsu,
+  więc liczą się seedy, które nimi nadal kończą run: ID1 i ID3 wszystkie osiem
+  (0..5, 42, MAX), ID2 siedem (seed0 nie). To granica dowodu, nie pomiar
+  trudności. Maski achievementów są równe ID1 dla wspólnych seedów.

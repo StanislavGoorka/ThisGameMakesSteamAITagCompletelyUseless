@@ -1,5 +1,13 @@
 # Testy i bramki jakości
 
+P086-09: windows_start_config_run dla ID1..3 i seedów0..5/42/MAX (te, które
+certyfikaty nadal kończą: 8/7/8) przechodzi pełny run od start_run(seed,
+config), zapisując i odczytując każdą granicę przez adapter plików z kontrolą
+.bak; restore z konfiguracją i oferty równe żywemu runowi. Achievementy
+(MvpAchievementEvaluator na zdarzeniach tur) zawierają first_delivery,
+first_sector i completed_run i są równe ID1. HWND: strzałki cyklują etykiety
+z literalnych ID rejestru, Enter startuje ID3.
+
 P086-08: windows_session_window w rzeczywistym HWND: na starcie VK_RIGHT
 pokazuje etykietę ID2, VK_LEFT wraca do ID1 bez zmiany runu; na każdym
 ekranie wyniku VK_LEFT wybiera ID3, a Enter startuje start_run(seed, ID3).
