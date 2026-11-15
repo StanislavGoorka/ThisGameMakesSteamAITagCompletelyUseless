@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P085-12: ID11 ustawia quarter_turns=3 w RotationRules: zwykły rotate obraca przeciwnie do wskazówek, overdrive nadal dwa ćwierćobroty; zgoda terminala zużywana raz. Bieżące ID1..11, nagrody1/2; hashv8/replay24, checkpoint schema1/rules13.
+
 P085-11: ID10 dodaje1 do zasięgu Manhattan wyłącznie overdrive (2 sam, 3 z ID1) przez overdrive_distance we wspólnym RotationRules; zwykły rotate bez zmiany. Bieżące ID1..10, nagrody1/2; hashv8/replay23, checkpoint schema1/rules12.
 
 P085-10: ID9 przy rzeczywistej dostawie odejmuje min(1, dług) po koszcie overdrive tej samej tury; rezerwa bez zmian reguły. Bieżące ID1..9, nagrody1/2; hashv8/replay22, checkpoint schema1/rules11.

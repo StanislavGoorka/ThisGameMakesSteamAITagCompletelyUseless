@@ -32,16 +32,19 @@ namespace closed_circuit
         return false;
     }
 
-    if (state.rotatable_nodes[target.value()])
-        return rotate_node(state.ports, state.rotatable_nodes, target);
-
-    if (!rules.allows_fixed_terminal || state.terminal_rotation_used ||
-        !std::has_single_bit(state.ports[target.value()].bits()))
+    const bool rotatable = state.rotatable_nodes[target.value()];
+    if (!rotatable &&
+        (!rules.allows_fixed_terminal || state.terminal_rotation_used ||
+         !std::has_single_bit(state.ports[target.value()].bits())))
         return false;
 
-    state.ports[target.value()] =
-        state.ports[target.value()].rotate_clockwise();
-    state.terminal_rotation_used = true;
+    // The overdrive's own second quarter turn follows in its action.
+    auto &ports = state.ports[target.value()];
+    for (int turn = 0; turn < (overdrive ? 1 : rules.quarter_turns); ++turn)
+        ports = ports.rotate_clockwise();
+    // A fixed terminal uses the shared allowance once per accepted rotation.
+    if (!rotatable)
+        state.terminal_rotation_used = true;
     return true;
 }
 

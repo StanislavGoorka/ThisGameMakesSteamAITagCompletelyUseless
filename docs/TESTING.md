@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-12: core_reverse_rotation porównuje wszystkie16 masek z niezależnymi
+wzorami CW/CCW/180 dla ID11 z partnerami ID1/ID2/ID10 i dystansem0..3. Cykl4,
+koszt tury, terminal ID2 zużyty raz i nieodnawiany zwykłym obrotem;
+kierunek otwiera trasę pakietu tylko przy ID11.
+
 P085-11: core_overdrive_range sprawdza 5 zestawów × 49 × 49 par
 źródło/cel z niezależną metryką: overdrive 2 z ID10 i 3 z ID1+ID10, rotate
 bez zmiany. Brak rezerwy i MAX długu odmawiają bez kosztu; ID4 przy MAX

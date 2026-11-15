@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 3/10 bieżącej serii: P085-11. ID10 overdrive_range: overdrive ma zasięg Manhattan 2 samodzielnie i 3 z rotation_range; zwykły rotate bez zmiany. Wspólny rotate_from_player przyjmuje jawny tryb overdrive, a RotationRules ma overdrive_distance. Katalog1..10, nagrody1/2; hashv8/replay23, checkpoint schema1/rules12. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 4/10 bieżącej serii: P085-12. ID11 reverse_rotation: zwykły rotate wykonuje trzy ćwierćobroty zgodne z zegarem, czyli obraca przeciwnie do wskazówek; overdrive nadal obraca o180 stopni. Zgoda nieruchomego terminala z ID2 zużywana dokładnie raz. Katalog1..11, nagrody1/2; hashv8/replay24, checkpoint schema1/rules13. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -57,7 +57,7 @@ błędu oraz jawne odtworzenie ([kontrakt](docs/AUDIO_LIFECYCLE.md)). Okno posia
 urządzenie przez port; zatwierdzony WAV z P077 sygnalizuje pojedynczą dostawę
 zatwierdzonej tury. Port ma mute dla kolejnych sygnałów. Brak pliku lub
 urządzenia oraz błąd audio nie blokują gry i zapisów. Bez syntezy.
-Ostatnia pełna pula: Debug i Release po 166/166 CTest. Brak testów VM,
+Ostatnia pełna pula: Debug i Release po 167/167 CTest. Brak testów VM,
 fizycznego resetu GPU i obserwacji pulpitu w tej serii.
 
 P080 ukończono jako techniczną bramkę testową zgodnie z decyzją użytkownika

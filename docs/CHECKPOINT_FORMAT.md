@@ -1,6 +1,6 @@
-# Checkpoint granicy sektora — schema1, rules12
+# Checkpoint granicy sektora — schema1, rules13
 
-P085-11: bieżące run_rules=12, hashv8/replay23. Zaimplementowane ID1..10, nagrody nadal1/2. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych. Wcześniejsze wersje reguł są odrzucane bez nadpisania backupu.
+P085-12: bieżące run_rules=13, hashv8/replay24. Zaimplementowane ID1..11, nagrody nadal1/2. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych. Wcześniejsze wersje reguł są odrzucane bez nadpisania backupu.
 
 Historyczne P085-04: run_rules=4 dopuszczało ID1..3, nadal przy
 dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
@@ -8,7 +8,7 @@ odrzucane bez zmiany backupu. Schema1 i układ40 bajtów pozostają. Poniższe
 opisy reguł3 dokumentują historyczną zmianę długości runu w P084-01.
 
 Historyczne P084-01 wprowadziło run_rules=3 z finałem tylko w ostatnim
-z sześciu sektorów. Bieżące reguły12 zachowują tę długość i schema1;
+z sześciu sektorów. Bieżące reguły13 zachowują tę długość i schema1;
 wszystkie wcześniejsze reguły są odrzucane nawet z poprawną checksumą,
 bez migracji i bez nadpisania backupu.
 
@@ -28,7 +28,7 @@ Odtworzenie ustawia ten impuls bez ponownego wywołania `spawn_debt_pulse`.
 Zakresy: każdy seed uint64, sektor1..6, HP1..3, rezerwa0..3, dług uint32.
 Przy braku impulsu dług musi wynosić0..2 (nowy sektor ma wolne wejście).
 Przy impulsie reszta mieści się w0..UINT32_MAX−3; doliczenie wcześniejszego
-kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..10.
+kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..11.
 Nie dowodzimy historii zdobywania zasobów ani modułów.
 
 `restore_checkpoint` odrzuca niepoprawne zakresy, a następnie buduje niezależny
@@ -74,13 +74,13 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 12 |
+| 8 | 4 | run_rules_version | 13 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
 | 22 | 1 | reserve | 0..3 |
 | 23 | 4 | overload_debt | Reszta po spawnie, według zakresów powyżej |
-| 27 | 2 | modules | Znane ID1..10 rosnąco; 00 wyłącznie na końcu |
+| 27 | 2 | modules | Znane ID1..11 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
 | 30 | 2 | reserved | 00 00 |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
@@ -93,10 +93,10 @@ seed, wszystkie pola i bajty zarezerwowane. Historyczne reguły1 odtwarzały
 wyłącznie normalne sektory. Reguły2 odtwarzają trzeci sektor z trzema
 odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
 Reguły3 rozszerzyły run do sześciu sektorów: 1..5 są normalne,
-a wyłącznie 6 jest finałem. Bieżące reguły12 zachowują tę topologię,
+a wyłącznie 6 jest finałem. Bieżące reguły13 zachowują tę topologię,
 wiążąc również obecny katalog i reguły modułów. Wersje checkpointu
-i replay są odrębne; obecny hashv8/replay23 nie jest checksumą checkpointu.
-Niezależny oracle: `tools/checkpoint/vectors.cjs 12`.
+i replay są odrębne; obecny hashv8/replay24 nie jest checksumą checkpointu.
+Niezależny oracle: `tools/checkpoint/vectors.cjs 13`.
 
 ## Odrzucanie i dowody
 
@@ -121,4 +121,4 @@ checkpoint, źródło none/main/backup, surowy main_error oraz optional backup_e
 (pusty = nie próbowano). Błąd backupu daje brak checkpointu z obiema diagnozami;
 ERROR_INVALID_DATA oznacza uszkodzenie, dwa NOT_FOUND oznaczają brak,
 pozostałe kody oznaczają IO. Nie ma naprawy, nadpisania lub promocji temp.
-Schema1/run_rules12; odczyt backupu nie zmienia żadnego pliku.
+Schema1/run_rules13; odczyt backupu nie zmienia żadnego pliku.
