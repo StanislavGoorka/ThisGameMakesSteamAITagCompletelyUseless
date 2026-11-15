@@ -19,6 +19,7 @@ jest resetowany przez nowy run ani restore.
 | 9 won_short_turn_limit (P088-07) | RunEnded(won) w ostatnim sektorze z aktywnym bitem1 (maski1/3/5/7) | Zwycięstwo z maską bez bitu1; przegrana z bitem1 | Bez trackera; maska z payloadu RunEnded, restore kwalifikuje |
 | 10 won_lean_delivery (P088-08) | RunEnded(won) w ostatnim sektorze z aktywnym bitem2 (maski2/3/6/7) | Zwycięstwo z maską bez bitu2; przegrana z bitem2 | Bez trackera; jak ID9 |
 | 11 won_heavy_overdrive_debt (P088-09) | RunEnded(won) w ostatnim sektorze z aktywnym bitem4 (maski4/5/6/7) | Zwycięstwo z maską bez bitu4; przegrana z bitem4 | Bez trackera; jak ID9 |
+| 12 won_all_modifiers (P088-10) | RunEnded(won) w ostatnim sektorze z maską7 (wszystkie zaimplementowane bity) | Zwycięstwo z maską3/5/6; przegrana z maską7 | Bez trackera; jak ID9 |
 
 ## Dowód rekonfiguracji
 

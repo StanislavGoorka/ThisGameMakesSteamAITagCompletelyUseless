@@ -37,7 +37,8 @@ inline constexpr std::array achievement_catalog{
     AchievementId::won_charged_debt,
     AchievementId::won_short_turn_limit,
     AchievementId::won_lean_delivery,
-    AchievementId::won_heavy_overdrive_debt};
+    AchievementId::won_heavy_overdrive_debt,
+    AchievementId::won_all_modifiers};
 
 [[nodiscard]] constexpr std::uint16_t implemented_achievement_bits() noexcept
 {

@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-10: application_mvp_achievement (won_all_modifiers) — ID1..3 ×
+maski0..7 × powody × sektory × pochodzenia: bit11 wyłącznie przy zwycięstwie
+w ostatnim sektorze z maską7; dispatch z błędem tylko ID12 → 0x732, retry
+0xf32. Katalog = format profilu (0xfff). windows_difficulty_run: 0x800
+wyłącznie dla maski7, pozostałe bity (bez 0xf00) równe masce0.
+
 P088-09: application_mvp_achievement (won_heavy_overdrive_debt) — ID1..3 ×
 maski0..7 × powody × sektory × pochodzenia: bit10 wyłącznie przy zwycięstwie
 w ostatnim sektorze z bitem4, bit9 nadal tylko z bitem2; dispatch z retry

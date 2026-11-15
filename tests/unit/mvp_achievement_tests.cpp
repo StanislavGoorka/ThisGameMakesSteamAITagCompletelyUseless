@@ -561,13 +561,70 @@ bool won_heavy_overdrive_debt()
     return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
            sink.calls == calls;
 }
+bool won_all_modifiers()
+{
+    // Only a final win of a run with all three modifier bits (mask 7), in any
+    // configuration, with either history origin.
+    for (const auto origin :
+         {RunHistoryOrigin::fresh_run, RunHistoryOrigin::restored_checkpoint})
+        for (const auto config : start_config_catalog)
+            for (unsigned bits = 0; bits <= 7; ++bits)
+                for (const auto reason :
+                     {RunEndReason::won, RunEndReason::death,
+                      RunEndReason::overload})
+                    for (int sector = 1; sector <= sector_count; ++sector)
+                    {
+                        const auto modifiers =
+                            DifficultyModifiers::from_value(bits);
+                        if (!modifiers)
+                            return false;
+                        MvpAchievementEvaluator evaluator(origin);
+                        const unsigned result = evaluator.evaluate(
+                            event(RunEnded{reason, config, *modifiers}, 1, 2,
+                                  sector));
+                        const bool won = reason == RunEndReason::won &&
+                                         sector == sector_count;
+                        if (((result & 0x800) != 0) != (won && bits == 7) ||
+                            ((result & 0x400) != 0) != (won && (bits & 4) != 0))
+                            return false;
+                    }
+    // Dispatch retries only the failed ID12 after ID9..11 are stored.
+    const auto all = DifficultyModifiers::from_value(7);
+    if (!all)
+        return false;
+    MvpAchievementEvaluator evaluator;
+    test::RecordingSink sink;
+    sink.fail_id = AchievementId::won_all_modifiers;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(sector_count)};
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    const auto won =
+        event(RunEnded{RunEndReason::won, StartConfigId::baseline, *all}, 1, 2,
+              sector_count);
+    if (dispatcher.dispatch(
+            scope, event(ActionCommitted{WaitCommand{}}, 1, 0, sector_count)) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope,
+                            event(SectorCompleted{}, 1, 1, sector_count)) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope, won) != DispatchResult::retry ||
+        sink.profile.achievement_bits != 0x732)
+        return false;
+    sink.fail_id.reset();
+    if (dispatcher.dispatch(scope, won) != DispatchResult::delivered ||
+        sink.profile.achievement_bits != 0xf32)
+        return false;
+    const auto calls = sink.calls;
+    return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
+           sink.calls == calls;
+}
 int main()
 {
     return delivery() && sector_completion() && without_overdrive() &&
                    reconfiguration() && completed_run() && swift_sector() &&
                    won_preinstalled_range() && won_charged_debt() &&
                    won_short_turn_limit() && won_lean_delivery() &&
-                   won_heavy_overdrive_debt()
+                   won_heavy_overdrive_debt() && won_all_modifiers()
                ? 0
                : 1;
 }

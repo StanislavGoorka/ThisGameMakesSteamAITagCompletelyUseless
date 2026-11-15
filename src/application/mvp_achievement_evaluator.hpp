@@ -71,9 +71,14 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
                         DifficultyModifier::heavy_overdrive_debt)
                         ? 0x400
                         : 0;
+                // won_all_modifiers: the run kept every implemented bit.
+                const std::uint16_t all =
+                    end->difficulty.bits() == implemented_difficulty_bits()
+                        ? 0x800
+                        : 0;
                 return static_cast<std::uint16_t>(
                     (without_overdrive_ ? 20 : 16) | config | short_turns |
-                    lean | heavy);
+                    lean | heavy | all);
             }
         // swift_sector: completion within the first 16 turns of any sector.
         if (std::holds_alternative<SectorCompleted>(event.payload))

@@ -81,20 +81,9 @@ bool exception_and_invalid_mask()
                                   AchievementId::first_sector,
                                   AchievementId::first_sector})
         return false;
-    // A candidate for any planned but unimplemented ID is invalid as a whole.
-    for (unsigned id = 12; id <= 12; ++id)
-    {
-        test::CountingEvaluator planned;
-        planned.candidates = static_cast<std::uint16_t>(1u | (1u << (id - 1)));
-        test::RecordingSink none;
-        EventDispatcher refusing(scope(), planned, none);
-        if (refusing.dispatch(scope(), event(1)) !=
-                DispatchResult::invalid_candidates ||
-            !none.calls.empty())
-            return false;
-    }
+    // Every planned ID is implemented; a bit above ID12 is invalid as a whole.
     test::CountingEvaluator invalid;
-    invalid.candidates = 2048;
+    invalid.candidates = 4096;
     test::RecordingSink untouched;
     EventDispatcher broken(scope(), invalid, untouched);
     if (broken.dispatch(scope(), event(1)) !=
