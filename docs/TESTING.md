@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P085-10: core_debt_relief porównuje 1920 kombinacji długu0/1/2/MAX-1/MAX,
+rezerwy, rodzaju dostawy, wait/overdrive i partnerów ID3/ID4/ID5 z niezależną
+wyrocznią kolejności walidacja-koszt-dostawa. Stride daje jedną ulgę;
+48 restore z encode/decode/capture zachowuje działanie ID9 po wznowieniu.
+
 P085-09: core_entry_insulation porównuje 576 kombinacji modułu, partnera
 cadence/barrier, wejścia, tury0/1, pozycji gracza i impulsu z niezależną
 wyrocznią linii. Helper kontaktu nie zajmuje limitu; emiter i kondensator

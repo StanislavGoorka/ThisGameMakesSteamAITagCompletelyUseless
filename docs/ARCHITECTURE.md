@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P085-10: ID9 przy rzeczywistej dostawie odejmuje min(1, dług) po koszcie overdrive tej samej tury; rezerwa bez zmian reguły. Bieżące ID1..9, nagrody1/2; hashv8/replay22, checkpoint schema1/rules11.
+
 P085-09: ID8 w pierwszej zaakceptowanej turze usuwa kontakt impulsu z graczem stojącym po akcji na wejściu bez HP i bez zajęcia wspólnego limitu; emiter/kondensator nadal ranią, dług bez zwrotu. Bieżące ID1..8, nagrody1/2; hashv8/replay21, checkpoint schema1/rules10.
 
 P085-08: ID7 blokuje wybrany krok impulsu na zasilony odbiornik bez szukania objazdu. Zastany kontakt, gracz i pakiet zachowują swoje reguły. Bieżące ID1..7, nagrody1/2; hashv8/replay20, checkpoint schema1/rules9.
