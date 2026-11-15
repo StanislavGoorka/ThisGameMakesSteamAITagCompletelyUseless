@@ -13,7 +13,9 @@ enum class ProfileUnlockResult
 
 [[nodiscard]] constexpr bool is_achievement_id_valid(AchievementId id) noexcept
 {
-    return static_cast<unsigned>(id) >= 1 && static_cast<unsigned>(id) <= 5;
+    const auto raw = static_cast<unsigned>(id);
+    return raw >= 1 && raw <= 12 &&
+           (implemented_achievement_bits() & (1u << (raw - 1))) != 0;
 }
 
 [[nodiscard]] constexpr bool

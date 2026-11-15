@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-02: application_profile_model sprawdza stałe AchievementId 6..12 i katalog
+zaimplementowanych ID (pięć, maska 0x1f); application_event_delivery: maska
+kandydatów z bitem5 lub 0x0fff nieprawidłowa; application_event_dispatcher:
+kandydat dowolnego ID6..12 daje invalid_candidates bez wywołania sinka;
+windows_achievement_sink: ID0 i 6..13 → invalid bez zmiany pliku profilu.
+
 P088-01: application_profile_model/encode/decode/unlock i windows_profile_save:
 niezależne wektory v2 (cztery wartości i 0x0fff) oraz dotychczasowe v1; każda
 zmiana pojedynczego bajtu z odnowioną sumą jest przyjmowana wyłącznie w ramach

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 
 namespace closed_circuit
@@ -12,8 +13,32 @@ enum class AchievementId : std::uint8_t
     first_sector = 2,
     run_without_overdrive = 3,
     reconfigured_delivery = 4,
-    completed_run = 5
+    completed_run = 5,
+    // ACHIEVEMENT_EXPANSION_PLAN IDs; unknown until listed in the catalog.
+    swift_sector = 6,
+    won_preinstalled_range = 7,
+    won_charged_debt = 8,
+    won_short_turn_limit = 9,
+    won_lean_delivery = 10,
+    won_heavy_overdrive_debt = 11,
+    won_all_modifiers = 12
 };
+
+// Only achievements with an implemented predicate, in ascending order. An ID
+// outside it is refused by unlock, sinks and candidate masks.
+inline constexpr std::array achievement_catalog{
+    AchievementId::first_delivery, AchievementId::first_sector,
+    AchievementId::run_without_overdrive, AchievementId::reconfigured_delivery,
+    AchievementId::completed_run};
+
+[[nodiscard]] constexpr std::uint16_t implemented_achievement_bits() noexcept
+{
+    std::uint16_t bits = 0;
+    for (const auto id : achievement_catalog)
+        bits = static_cast<std::uint16_t>(
+            bits | (1u << (static_cast<unsigned>(id) - 1)));
+    return bits;
+}
 
 // Format range of achievement_bits since profile schema 2 (bits 0..11).
 // Which IDs may be unlocked is decided separately.

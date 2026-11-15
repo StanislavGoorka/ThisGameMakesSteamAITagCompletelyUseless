@@ -7,6 +7,18 @@ static_assert(static_cast<unsigned>(AchievementId::first_sector) == 2);
 static_assert(static_cast<unsigned>(AchievementId::run_without_overdrive) == 3);
 static_assert(static_cast<unsigned>(AchievementId::reconfigured_delivery) == 4);
 static_assert(static_cast<unsigned>(AchievementId::completed_run) == 5);
+static_assert(static_cast<unsigned>(AchievementId::swift_sector) == 6);
+static_assert(static_cast<unsigned>(AchievementId::won_preinstalled_range) ==
+              7);
+static_assert(static_cast<unsigned>(AchievementId::won_charged_debt) == 8);
+static_assert(static_cast<unsigned>(AchievementId::won_short_turn_limit) == 9);
+static_assert(static_cast<unsigned>(AchievementId::won_lean_delivery) == 10);
+static_assert(static_cast<unsigned>(AchievementId::won_heavy_overdrive_debt) ==
+              11);
+static_assert(static_cast<unsigned>(AchievementId::won_all_modifiers) == 12);
+// Until their predicates exist, only the MVP IDs are implemented.
+static_assert(achievement_catalog.size() == 5 &&
+              implemented_achievement_bits() == 0x1f);
 static_assert(ProfileBytes{}.size() == 24 && profile_schema_version == 2 &&
               profile_legacy_schema_version == 1);
 static_assert(is_profile_valid(LocalProfile{0x0fff, 3, 100, true}));

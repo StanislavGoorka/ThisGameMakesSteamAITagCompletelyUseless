@@ -8,8 +8,9 @@ predykatów ID6..12. Tekst i ikona każdego achievementu są pozyskiwane osobno
 (P090–P093, polityka treści); żadne dziecko P088 nie dodaje tekstów, ikon ani
 assetów, a brak ich nie blokuje predykatów.
 
-Stan: P088 — podział. P088-01: profil schema2 (bity 0..11, odczyt v1/v2, zapis v2). Następny jest
-P088-02 (katalog ID).
+Stan: P088 — podział. P088-01: profil schema2 (bity 0..11, odczyt v1/v2, zapis v2).
+P088-02: stałe ID6..12 i katalog zaimplementowanych ID. Następny jest P088-03
+(kontekst RunEnded).
 
 ## Predykaty
 

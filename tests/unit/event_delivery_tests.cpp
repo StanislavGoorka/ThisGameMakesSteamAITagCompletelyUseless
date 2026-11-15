@@ -3,6 +3,10 @@
 using namespace closed_circuit;
 static_assert(!std::is_convertible_v<RunAttemptToken, RunBranchToken>);
 static_assert(std::has_virtual_destructor_v<AchievementEvaluator>);
+// Candidate masks follow the implemented catalog, not the profile format.
+static_assert(!is_candidate_mask_valid(0x20) &&
+              !is_candidate_mask_valid(0x0fff) &&
+              is_candidate_mask_valid(0x1f));
 
 class FakeEvaluator final : public AchievementEvaluator
 {

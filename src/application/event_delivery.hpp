@@ -1,6 +1,7 @@
 #pragma once
 
 #include "application/domain_event.hpp"
+#include "application/local_profile.hpp"
 
 namespace closed_circuit
 {
@@ -32,7 +33,7 @@ is_delivery_scope_valid(const DeliveryScope &scope) noexcept
 [[nodiscard]] constexpr bool
 is_candidate_mask_valid(std::uint16_t mask) noexcept
 {
-    return mask <= 0x1f;
+    return (mask & ~implemented_achievement_bits()) == 0;
 }
 
 enum class DispatchResult

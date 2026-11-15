@@ -54,6 +54,14 @@ int main()
             AchievementSinkResult::invalid ||
         windows::read_profile_file(path).profile != LocalProfile{3})
         return 1;
+    // Planned IDs without a predicate are refused and leave the file intact.
+    const auto stored = test::read_bytes(path);
+    for (unsigned raw = 0; raw <= 13; ++raw)
+        if ((raw == 0 || raw >= 6) &&
+            (first.unlock(static_cast<AchievementId>(raw)) !=
+                 AchievementSinkResult::invalid ||
+             test::read_bytes(path) != stored))
+            return 1;
     {
         windows::FileHandle lock(CreateFileW(path.c_str(), GENERIC_READ, 0,
                                              nullptr, OPEN_EXISTING,

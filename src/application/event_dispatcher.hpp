@@ -111,12 +111,13 @@ class EventDispatcher
     {
         if (!entry.valid)
             return DispatchResult::invalid_candidates;
-        for (unsigned id = 1; id <= 5; ++id)
+        for (const auto id : achievement_catalog)
         {
-            const auto bit = static_cast<std::uint16_t>(1u << (id - 1));
+            const auto bit = static_cast<std::uint16_t>(
+                1u << (static_cast<unsigned>(id) - 1));
             if ((entry.pending & bit) == 0)
                 continue;
-            const auto result = sink_.unlock(static_cast<AchievementId>(id));
+            const auto result = sink_.unlock(id);
             if (result != AchievementSinkResult::unlocked &&
                 result != AchievementSinkResult::already_unlocked)
                 return DispatchResult::retry;

@@ -26,7 +26,9 @@ Nie dodaje to odtwarzania audio ani UI.
 Stałe wewnętrzne AchievementId 1..5: first_delivery, first_sector,
 run_without_overdrive, reconfigured_delivery, completed_run, zgodnie z
 [architekturą](ARCHITECTURE.md). Bit ID−1 oznacza zdobycie; znana maska 0x001f.
-Nie są to etykiety ani predykaty dla gracza. P045 definiuje warunki, P046–P050
+Nie są to etykiety ani predykaty dla gracza. P088-02 dodaje stałe ID6..12
+(ACHIEVEMENT_EXPANSION_PLAN) i katalog zaimplementowanych ID: unlock, sink,
+maska kandydatów i dispatcher przyjmują wyłącznie ID z katalogu (obecnie 1..5). P045 definiuje warunki, P046–P050
 wdrażają evaluator zdarzeń, a P042
 wdraża idempotentne odblokowanie. P042-01 dodaje czyste `unlock_achievement`
 oraz `is_achievement_unlocked`. Znane ID 1..5 i poprawny profil są wymagane;
