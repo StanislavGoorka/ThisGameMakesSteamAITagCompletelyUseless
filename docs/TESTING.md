@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-08: application_mvp_achievement (won_lean_delivery) — ID1..3 × maski0..7
+× powody × sektory × pochodzenia: bit9 wyłącznie przy zwycięstwie w ostatnim
+sektorze z bitem2, bit8 nadal tylko z bitem1; dispatch z retry tylko dla ID10
+(0x32 → 0x232). windows_difficulty_run: w pełnych runach maski2 i 7 zdobywają
+0x200, maski1 i 7 0x100, pozostałe bity równe masce0.
+
 P088-07: application_mvp_achievement (won_short_turn_limit) — maski0..7 ×
 powody × sektory × pochodzenia: bit8 wyłącznie przy zwycięstwie w ostatnim
 sektorze z bitem1; dispatch z retry tylko dla ID9 (0x32 → 0x132).

@@ -60,8 +60,14 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
                         DifficultyModifier::short_turn_limit)
                         ? 0x100
                         : 0;
+                // won_lean_delivery: the run kept modifier bit 2.
+                const std::uint16_t lean =
+                    end->difficulty.contains(DifficultyModifier::lean_delivery)
+                        ? 0x200
+                        : 0;
                 return static_cast<std::uint16_t>(
-                    (without_overdrive_ ? 20 : 16) | config | short_turns);
+                    (without_overdrive_ ? 20 : 16) | config | short_turns |
+                    lean);
             }
         // swift_sector: completion within the first 16 turns of any sector.
         if (std::holds_alternative<SectorCompleted>(event.payload))

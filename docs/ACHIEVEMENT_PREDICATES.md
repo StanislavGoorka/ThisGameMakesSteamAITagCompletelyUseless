@@ -17,6 +17,7 @@ jest resetowany przez nowy run ani restore.
 | 7 won_preinstalled_range (P088-05) | RunEnded(won) w ostatnim sektorze z start_config ID2 | Zwycięstwo ID1/ID3; przegrana ID2 | Bez trackera; konfiguracja z payloadu RunEnded, więc restore kwalifikuje |
 | 8 won_charged_debt (P088-06) | RunEnded(won) w ostatnim sektorze z start_config ID3 | Zwycięstwo ID1/ID2; przegrana ID3 | Bez trackera; jak ID7 |
 | 9 won_short_turn_limit (P088-07) | RunEnded(won) w ostatnim sektorze z aktywnym bitem1 (maski1/3/5/7) | Zwycięstwo z maską bez bitu1; przegrana z bitem1 | Bez trackera; maska z payloadu RunEnded, restore kwalifikuje |
+| 10 won_lean_delivery (P088-08) | RunEnded(won) w ostatnim sektorze z aktywnym bitem2 (maski2/3/6/7) | Zwycięstwo z maską bez bitu2; przegrana z bitem2 | Bez trackera; jak ID9 |
 
 ## Dowód rekonfiguracji
 

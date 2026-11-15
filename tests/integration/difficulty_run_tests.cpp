@@ -240,10 +240,12 @@ int wmain(int argc, wchar_t **argv)
     for (const auto &[seed, by_config] : earned_by)
         for (const auto &[config, by_mask] : by_config)
             for (const auto &[mask, earned] : by_mask)
-                // Only masks with bit 1 add won_short_turn_limit (0x100).
+                // Only masks with bit 1 add won_short_turn_limit (0x100) and
+                // only masks with bit 2 add won_lean_delivery (0x200).
                 if (((earned & 0x100) != 0) != ((mask & 1) != 0) ||
+                    ((earned & 0x200) != 0) != ((mask & 2) != 0) ||
                     (by_mask.contains(0) &&
-                     (earned & ~0x100u) != by_mask.at(0)))
+                     (earned & ~0x300u) != by_mask.at(0)))
                 {
                     std::cerr << "Achievement mask differs: seed " << seed
                               << " config " << config << " mask " << mask

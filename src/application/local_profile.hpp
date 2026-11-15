@@ -31,7 +31,7 @@ inline constexpr std::array achievement_catalog{
     AchievementId::run_without_overdrive,  AchievementId::reconfigured_delivery,
     AchievementId::completed_run,          AchievementId::swift_sector,
     AchievementId::won_preinstalled_range, AchievementId::won_charged_debt,
-    AchievementId::won_short_turn_limit};
+    AchievementId::won_short_turn_limit,   AchievementId::won_lean_delivery};
 
 [[nodiscard]] constexpr std::uint16_t implemented_achievement_bits() noexcept
 {

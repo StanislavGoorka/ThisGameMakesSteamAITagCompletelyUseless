@@ -4,9 +4,9 @@ using namespace closed_circuit;
 static_assert(!std::is_convertible_v<RunAttemptToken, RunBranchToken>);
 static_assert(std::has_virtual_destructor_v<AchievementEvaluator>);
 // Candidate masks follow the implemented catalog, not the profile format.
-static_assert(!is_candidate_mask_valid(0x200) &&
+static_assert(!is_candidate_mask_valid(0x400) &&
               !is_candidate_mask_valid(0x0fff) &&
-              is_candidate_mask_valid(0x1ff));
+              is_candidate_mask_valid(0x3ff));
 
 class FakeEvaluator final : public AchievementEvaluator
 {
@@ -27,7 +27,7 @@ int main()
 {
     for (unsigned raw = 0; raw <= UINT16_MAX; ++raw)
         if (is_candidate_mask_valid(static_cast<std::uint16_t>(raw)) !=
-            (raw <= 511))
+            (raw <= 1023))
             return 1;
     const DeliveryScope scope{
         RunSeed{0}, {1}, {2}, *SectorNumber::from_value(1)};
