@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-11: windows_achievement_profile_run, scenariusz restart — potomek
+(`--run`, nieznana historia) kończy run ID3/maska7 na pliku schema1 0x15;
+nowe procesy (`--read`) czytają 0x15 | maska w schema2 (ID3 tylko z migracji),
+fałszywa maska odrzucona, powtórka w trzecim procesie bez zmian bajtów;
+kontrolny ID1/maska0 bez 0xfc0.
+
 P088-13: windows_achievement_window, scenariusz migration — plik schema1
 {0x16, 2, 37, muted} pod LocalAchievementSink w RunWindow: dostawa zapisuje
 schema2 0x17, .bak = wartości v1 w schema2, druga tura bez zapisu; schema1 z

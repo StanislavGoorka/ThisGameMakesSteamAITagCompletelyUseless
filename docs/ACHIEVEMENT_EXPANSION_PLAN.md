@@ -18,7 +18,8 @@ Dowód integracyjny P088-11 podzielono (2026-11-15) na P088-12 (runy do pliku),
 P088-13 (migracja v1 w oknie) i zawężony P088-11 (restart procesu).
 P088-12: windows_achievement_profile_run — 46 pełnych runów do pliku profilu.
 P088-13: migracja v1→v2 w sesji okna (windows_achievement_window).
-Następny jest P088-11 (restart procesu).
+P088-11: restart procesu w windows_achievement_profile_run — łańcuch P088
+zamknięty. Następny w kolejce jest P089.
 
 ## Predykaty
 
