@@ -2963,10 +2963,109 @@
             "id": "P086",
             "phase": "M7",
             "title": "Rozbij konfiguracje startu",
-            "scope": "Wyłącznie zaplanuj oddzielne dzieci dla dwóch dodatkowych konfiguracji.",
-            "acceptance": "Każda równorzędna, bez permanentnych bonusów; zależności domknięte.",
+            "scope": "Wyłącznie zaplanuj oddzielne dzieci dla dwóch dodatkowych konfiguracji według START_CONFIGURATION_PLAN: identyfikator, trwałość, restart, po jednym dziecku na konfigurację, wybór, prezentacja i integracja. Bez implementacji.",
+            "acceptance": "START_CONFIGURATION_PLAN opisuje ID1..3, koszty bez dominacji, testy +/− i kolejność trwałości przed konfiguracjami. Każda równorzędna, bez permanentnych bonusów; dzieci mają domknięte zależności; P087 wymaga ostatniej integracji.",
             "depends_on": [
                 "P085-20"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-01",
+            "phase": "M7",
+            "title": "Identyfikator konfiguracji startu",
+            "scope": "Tylko silny typ StartConfigId, katalog zaimplementowanych ID (wyłącznie ID1 baseline), pole RunState::start_config i start_run(seed, config); start_run(seed) deleguje do ID1. Bez checkpointu, UI i nowych konfiguracji.",
+            "acceptance": "ID1 daje identyczny stan jak dotąd dla korpusu seedów; 0, 2, 3 i MAX odrzucone; porównania runu uwzględniają pole. Debug/Release, clang-format.",
+            "depends_on": [
+                "P086"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-02",
+            "phase": "M7",
+            "title": "Konfiguracja startu w checkpoincie",
+            "scope": "Tylko zapis ID konfiguracji w dotąd zarezerwowanym bajcie checkpointu i jawna nowa wersja run_rules z niezależnymi wektorami. Bez nowych konfiguracji i UI.",
+            "acceptance": "Round-trip ID1; nieznane/niezaimplementowane ID i niezerowy ostatni bajt odrzucone; stare reguły odrzucane bez nadpisania backupu; schema1/40 bajtów zachowane. Debug/Release.",
+            "depends_on": [
+                "P086-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-03",
+            "phase": "M7",
+            "title": "Restart z tą samą konfiguracją",
+            "scope": "Tylko SessionFlow::confirm startuje run z run.start_config zamiast domyślnego. Bez wyboru, UI i nowych konfiguracji.",
+            "acceptance": "Restart po wyniku i po resume zachowuje ID; aktywny run i oczekiwanie na nagrodę nadal odmawiają; ID1 bez zmian. Test +/−, Debug/Release.",
+            "depends_on": [
+                "P086-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-04",
+            "phase": "M7",
+            "title": "Konfiguracja preinstalled_range",
+            "scope": "Tylko ID2: start z rezerwą0 i modułem ID1 w loadoucie; dopuszczenie do katalogu konfiguracji. Bez UI, tekstów i zmian reguł modułów.",
+            "acceptance": "Zasięg2 od pierwszej tury, pierwsza oferta bez ID1 i najwyżej jedna nagroda w runie; ID1 bez zmian; checkpoint i restart zachowują ID2. Test +/−, Debug/Release.",
+            "depends_on": [
+                "P086-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-05",
+            "phase": "M7",
+            "title": "Konfiguracja charged_debt",
+            "scope": "Tylko ID3: start z rezerwą3 i długiem3; dopuszczenie do katalogu konfiguracji. Bez UI, tekstów i zmian reguły długu.",
+            "acceptance": "Wejście sektora2 tworzy jeden impuls długu i resztę0; zablokowany spawn zachowuje dług; ID1/2 bez zmian; checkpoint i restart zachowują ID3. Test +/−, Debug/Release.",
+            "depends_on": [
+                "P086-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-06",
+            "phase": "M7",
+            "title": "Wybór konfiguracji w modelu sesji",
+            "scope": "Tylko application: wybór spośród zaimplementowanych ID na ekranie startu i wyniku, domyślnie ID1, confirm startuje wybrane ID. Bez tekstów, renderingu i klawiszy.",
+            "acceptance": "Cykl w kanonicznym porządku w obie strony; w trakcie runu i przy nagrodzie odmowa bez zmiany; confirm używa wyboru, restart bez zmiany wyboru zachowuje ID. Test +/−, Debug/Release.",
+            "depends_on": [
+                "P086-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-07",
+            "phase": "M7",
+            "title": "Robocze etykiety konfiguracji na ekranie startu",
+            "scope": "Jedna projekcja StartConfigId->ID tekstu i trzy wpisy texts.json z dokładnym prefiksem [AI PLACEHOLDER]; ekran startu rysuje etykietę wybranej konfiguracji. Bez klawiszy, assetów i finalnych napisów.",
+            "acceptance": "Każde zaimplementowane ID ma wpis; brak wpisu lub zły prefiks wykrywa test; renderer offscreen pokazuje etykietę wyboru; Test-PublicContent odmawia placeholderów. Debug/Release.",
+            "depends_on": [
+                "P086-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-08",
+            "phase": "M7",
+            "title": "Klawisze wyboru konfiguracji w oknie",
+            "scope": "Tylko mapowanie istniejących klawiszy nawigacji na wybór konfiguracji w rzeczywistym HWND na ekranie startu i wyniku. Bez nowych tekstów i reguł.",
+            "acceptance": "Klawisze zmieniają wybór tylko na ekranie startu/wyniku, Enter startuje wybrane ID, repeat nie restartuje, w runie klawisze zachowują dotychczasowe znaczenie. Debug/Release.",
+            "depends_on": [
+                "P086-07"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P086-09",
+            "phase": "M7",
+            "title": "Integracja konfiguracji startu",
+            "scope": "Tylko dowód: pełne runy dla każdej konfiguracji przez checkpoint/backup, restart, achievementy i rzeczywiste HWND oraz odmowa public dla nowych placeholderów. Bez nowych reguł, tekstów i assetów.",
+            "acceptance": "Dla ID1..3 kilka root seedów kończy run; restore każdej granicy daje identyczne stany i oferty; achievementy działają jak dla ID1; HWND pokazuje oznaczone etykiety; Test-PublicContent odmawia. Debug/Release; bez obserwacji pulpitu (P104).",
+            "depends_on": [
+                "P086-08"
             ],
             "gate": null
         },
@@ -2977,7 +3076,7 @@
             "scope": "Wyłącznie zaplanuj dzieci dla trzech modyfikatorów trudności.",
             "acceptance": "Jeden modyfikator na zadanie, testy i brak wymagania nowych assetów bez zgody.",
             "depends_on": [
-                "P086"
+                "P086-09"
             ],
             "gate": null
         },

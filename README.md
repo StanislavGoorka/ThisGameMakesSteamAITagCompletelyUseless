@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 10/10 bieżącej serii: P085-20. Dowód integracyjny dopuszczonych modułów: osiem root seedów kończy pełny run z wyborem z oferty i co najmniej jednym ID3..12 (łącznie ID3/4/6/7/9/10); każda granica przechodzi przez rzeczywisty zapis/odczyt pliku z kontrolą backupu, a restore odtwarza te same stany i oferty. HWND pokazuje oznaczone etykiety reward-* i instaluje wybrany nowy moduł; dispatcher z achievementami wymaga nowego modułu w loadoucie. Bez zmian produkcyjnych. Seria10 ukończona: 7 kroków kodowych/testowych modułów i integracji, 1 krok etykiet, 1 testowy, 1 podział. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. ID1..12 modułów działają i są dopuszczone do nagród ([dowód P085-20](docs/workflow/history/P085-20.md)). Krok 1/10 bieżącej serii: P086 — wyłącznie podział dwóch dodatkowych, równorzędnych konfiguracji startu na dziewięć dzieci (identyfikator, checkpoint, restart, ID2, ID3, wybór, robocze etykiety, klawisze, integracja); bez kodu. [Plan konfiguracji](docs/START_CONFIGURATION_PLAN.md) · [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -88,7 +88,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P085-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P086-01**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
