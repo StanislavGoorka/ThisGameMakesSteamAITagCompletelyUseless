@@ -14,7 +14,8 @@ ją przenoszą, a niezaimplementowane bity są odrzucane. P087-03: restart w
 SessionFlow zachowuje maskę runu razem z konfiguracją. P087-04: bit1
 short_turn_limit działa (sector_turn_limit 48/32); certyfikaty finału mają
 maks.31 tur, więc zapas w finale to jedna tura — granica dowodu, nie balans.
-P087-05: bit2 lean_delivery działa w deliver_packet.
+P087-05: bit2 lean_delivery działa w deliver_packet. P087-06: bit4
+heavy_overdrive_debt działa; core ma komplet trzech modyfikatorów (maski0..7).
 
 ## Modyfikatory
 

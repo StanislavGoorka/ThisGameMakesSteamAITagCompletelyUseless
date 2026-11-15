@@ -50,7 +50,7 @@ bool cases()
                 invalid.start_config = static_cast<StartConfigId>(4);
             if (field == 9)
                 invalid.difficulty =
-                    std::bit_cast<DifficultyModifiers>(std::uint8_t{4});
+                    std::bit_cast<DifficultyModifiers>(std::uint8_t{8});
             const auto snapshot = invalid;
             for (int repeat = 0; repeat < 2; ++repeat)
                 if (encode_checkpoint(invalid) || invalid != snapshot ||

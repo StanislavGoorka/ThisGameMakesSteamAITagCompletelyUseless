@@ -1,5 +1,7 @@
 # Architektura docelowa
 
+P087-06: bit4 heavy_overdrive_debt w katalogu; katalog modyfikatorów jest kompletny (maski0..7). overdrive_from_player liczy koszt długu 0 (zwolnienie first_overdrive_debt), 1 albo 2 przy bicie i odmawia bez mutacji, gdy dług przekroczyłby UINT32_MAX; is_command_legal, resolver i podgląd korzystają z tej samej funkcji. Próg3 i spawn długu bez zmian, więc checkpoint bez impulsu nadal ma dług0..2.
+
 P087-05: bit2 lean_delivery w katalogu. deliver_packet przywraca o1 rezerwę mniej (0 bez modułu, 1 z delivery_reserve), z limitem3; zasilenie i delivery_debt_relief bez zmian. Checkpoint rules17 przyjmuje bajt31 0..3 bez nowej wersji reguł (maska2 była dotąd odrzucana).
 
 P087-04: bit1 short_turn_limit w katalogu modyfikatorów. sector_turn_limit(state) zwraca 48 albo 32 przy bicie (także w finale) i jest jedynym źródłem limitu dla sector_outcome, więc resolver, podgląd, certyfikaty i faza runu korzystają z tej samej reguły. Checkpoint rules17 przyjmuje bajt31 ∈ {0,1}; bez nowej wersji reguł, bo maska1 była wcześniej odrzucana. hashv9/replay26 bez zmian (replay startuje z maską0).

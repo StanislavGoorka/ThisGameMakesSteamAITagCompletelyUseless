@@ -94,6 +94,20 @@ inline constexpr auto checkpoint_vectors = []
                          {67, 67, 67,  80,  1,  0,  0,   0,  17, 0,
                           0,  0,  11,  0,   0,  0,  0,   0,  0,  0,
                           2,  3,  3,   0,   0,  0,  0,   0,  0,  0,
-                          3,  2,  238, 103, 84, 57, 219, 28, 78, 234}}};
+                          3,  2,  238, 103, 84, 57, 219, 28, 78, 234}},
+        // Since P087-06 byte 31 may carry all three bits; a paid pulse.
+        CheckpointVector{{RunSeed{13},
+                          *SectorNumber::from_value(2),
+                          3,
+                          2,
+                          1,
+                          {},
+                          true,
+                          StartConfigId::charged_debt,
+                          *DifficultyModifiers::from_value(7)},
+                         {67, 67, 67,  80,  1,   0,   0,  0,   17, 0,
+                          0,  0,  13,  0,   0,   0,   0,  0,   0,  0,
+                          2,  3,  2,   1,   0,   0,   0,  0,   0,  1,
+                          3,  7,  138, 232, 216, 120, 77, 199, 54, 86}}};
 }();
 } // namespace closed_circuit::test

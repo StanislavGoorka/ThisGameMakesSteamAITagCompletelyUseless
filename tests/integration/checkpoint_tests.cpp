@@ -171,11 +171,11 @@ bool semantic_fields()
                     valid = valid_pair(bytes[27], bytes[28]);
                 }
                 // run_rules17: byte 30 is the start configuration (ID1..3
-                // implemented), byte 31 the modifier bits (bits 1 and 2).
+                // implemented), byte 31 the modifier bits (bits 1, 2 and 4).
                 if (offset == 30)
                     valid = value >= 1 && value <= 3;
                 if (offset == 31)
-                    valid = value <= 3;
+                    valid = value <= 7;
                 test::reseal(bytes);
                 const auto before = bytes;
                 const auto decoded = decode_checkpoint(bytes);
