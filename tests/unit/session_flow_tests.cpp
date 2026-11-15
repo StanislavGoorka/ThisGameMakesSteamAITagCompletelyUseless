@@ -83,6 +83,77 @@ int selection(RunSeed seed)
         return 28;
     return 0;
 }
+
+DifficultyModifiers mask(int bits)
+{
+    // An unknown mask falls back to none, so comparisons fail plainly.
+    return DifficultyModifiers::from_value(bits).value_or(
+        DifficultyModifiers{});
+}
+
+// Modifier selection: ascending cycle of masks, gating, confirm, independence.
+int modifier_selection(RunSeed seed)
+{
+    const auto fresh = start_run(seed);
+    auto run = fresh;
+    SessionFlow flow;
+    if (flow.selected_modifiers(run) != DifficultyModifiers{})
+        return 40;
+    for (const int expected : {1, 2, 3, 4, 5, 6, 7, 0})
+        if (!flow.select_next_modifiers(run) ||
+            flow.selected_modifiers(run) != mask(expected) ||
+            flow.selected(run) != StartConfigId::baseline ||
+            !test::same_run(run, fresh))
+            return 41;
+    for (const int expected : {7, 6, 5, 4, 3, 2, 1, 0})
+        if (!flow.select_previous_modifiers(run) ||
+            flow.selected_modifiers(run) != mask(expected))
+            return 42;
+    // Configuration and modifiers are chosen independently.
+    for (int step = 0; step < 5; ++step)
+        if (!flow.select_next_modifiers(run))
+            return 43;
+    if (!flow.select_next(run) ||
+        flow.selected(run) != StartConfigId::preinstalled_range ||
+        flow.selected_modifiers(run) != mask(5))
+        return 43;
+    // Confirm starts both choices and consumes them.
+    const auto expected =
+        *start_run(seed, StartConfigId::preinstalled_range, mask(5));
+    if (!flow.confirm(run) || !test::same_run(run, expected) ||
+        flow.selected_modifiers(run) != mask(5) ||
+        flow.selected(run) != StartConfigId::preinstalled_range)
+        return 44;
+    // During a run and while a reward waits, selection is refused.
+    const auto playing = run;
+    if (flow.select_next_modifiers(run) ||
+        flow.select_previous_modifiers(run) ||
+        flow.selected_modifiers(run) != mask(5) ||
+        !test::same_run(run, playing))
+        return 45;
+    auto reward = run;
+    reward.sector.player_position = *reward.sector.sector_exit;
+    reward.sector.powered_nodes = reward.sector.receiver_nodes;
+    if (run_phase(reward) != RunPhase::choosing_reward ||
+        flow.select_next_modifiers(reward) ||
+        flow.selected_modifiers(reward) != mask(5))
+        return 46;
+    // A plain restart keeps mask5; a new choice switches only the mask.
+    run.sector.player_integrity = 0;
+    if (!flow.confirm(run) || !test::same_run(run, expected))
+        return 47;
+    run.sector.player_integrity = 0;
+    if (!flow.select_next_modifiers(run) || !flow.confirm(run) ||
+        !test::same_run(
+            run, *start_run(seed, StartConfigId::preinstalled_range, mask(6))))
+        return 48;
+    // A consumed choice never overrides another run's modifiers.
+    auto other = fresh;
+    other.sector.player_integrity = 0;
+    if (!flow.confirm(other) || !test::same_run(other, fresh))
+        return 49;
+    return 0;
+}
 } // namespace
 
 int main()
@@ -218,7 +289,11 @@ int main()
         }
     }
     for (auto seed : {RunSeed{0}, RunSeed{1}, RunSeed{UINT64_MAX}})
+    {
         if (const auto code = selection(seed))
             return code;
+        if (const auto code = modifier_selection(seed))
+            return code;
+    }
     return 0;
 }

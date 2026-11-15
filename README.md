@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. ID1..12 modułów działają i są dopuszczone do nagród ([dowód P085-20](docs/workflow/history/P085-20.md)). Trzy równorzędne konfiguracje startu (ID1 baseline, ID2 preinstalled_range, ID3 charged_debt) działają z zapisem, restartem i wyborem w HWND ([dowód P086-09](docs/workflow/history/P086-09.md)). Krok 7/10 bieżącej serii: P087-06 — modyfikator heavy_overdrive_debt: naliczany overdrive kosztuje 2 długu (zwolnienie first_overdrive_debt zachowane, odmowa przy przepełnieniu); core ma komplet trzech modyfikatorów, maski 0..7 w checkpoincie. Debug/Release 176/176. [Plan konfiguracji](docs/START_CONFIGURATION_PLAN.md) · [Plan trudności](docs/DIFFICULTY_MODIFIER_PLAN.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. ID1..12 modułów działają i są dopuszczone do nagród ([dowód P085-20](docs/workflow/history/P085-20.md)). Trzy równorzędne konfiguracje startu (ID1 baseline, ID2 preinstalled_range, ID3 charged_debt) działają z zapisem, restartem i wyborem w HWND ([dowód P086-09](docs/workflow/history/P086-09.md)). Krok 8/10 bieżącej serii: P087-07 — wybór maski modyfikatorów trudności w modelu sesji (cykl 0..7 na ekranie startu/wyniku, niezależny od konfiguracji; confirm startuje oba wybory). Debug/Release 176/176. [Plan konfiguracji](docs/START_CONFIGURATION_PLAN.md) · [Plan trudności](docs/DIFFICULTY_MODIFIER_PLAN.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -88,7 +88,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P087-07**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P087-08**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).

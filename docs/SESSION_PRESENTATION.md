@@ -10,6 +10,10 @@ Od P086-03 także z tą samą konfiguracją startu (RunState::start_config,
 również po resume z checkpointu); ID spoza katalogu odmawia bez zmiany.
 Od P087-03 restart zawsze zachowuje też maskę modyfikatorów runu
 (GameState::difficulty), niezależnie od wybranej konfiguracji.
+P087-07: osobny wybór maski modyfikatorów — selected_modifiers(run) zwraca
+wybór albo maskę runu, select_next_modifiers/select_previous_modifiers
+cyklicznie po maskach0..7 rosnąco wyłącznie na ekranie startu/wyniku; confirm
+startuje wybraną konfigurację z wybraną maską i czyści oba wybory.
 P086-06: SessionFlow przechowuje wybór; select_next/select_previous cyklicznie
 po katalogu wyłącznie na ekranie startu/wyniku, selected(run) bez wyboru zwraca
 konfigurację runu, a confirm startuje wybór i go czyści.
