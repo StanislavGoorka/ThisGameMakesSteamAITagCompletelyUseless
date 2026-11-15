@@ -16,7 +16,8 @@ won_short_turn_limit, ID10 won_lean_delivery i ID11 won_heavy_overdrive_debt.
 P088-10: ID12 won_all_modifiers — katalog obejmuje wszystkie ID1..12.
 Dowód integracyjny P088-11 podzielono (2026-11-15) na P088-12 (runy do pliku),
 P088-13 (migracja v1 w oknie) i zawężony P088-11 (restart procesu).
-Następny jest P088-12.
+P088-12: windows_achievement_profile_run — 46 pełnych runów do pliku profilu.
+Następny jest P088-13.
 
 ## Predykaty
 

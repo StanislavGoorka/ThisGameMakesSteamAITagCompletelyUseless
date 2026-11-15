@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-12: windows_achievement_profile_run — ID1/ID2/ID3 × maski0/7, seedy
+kończone przez certyfikaty (46 runów): RunAchievements + LocalAchievementSink
+zapisują do pliku dokładnie maskę niezależnego evaluatora; 0x40 tylko ID2,
+0x80 tylko ID3, 0xf00 tylko maska7, reszta jak ID1 maska0; powtórka nowym
+właścicielem nie zmienia bajtów pliku ani .bak.
+
 P088-10: application_mvp_achievement (won_all_modifiers) — ID1..3 ×
 maski0..7 × powody × sektory × pochodzenia: bit11 wyłącznie przy zwycięstwie
 w ostatnim sektorze z maską7; dispatch z błędem tylko ID12 → 0x732, retry
