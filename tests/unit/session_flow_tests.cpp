@@ -1,4 +1,5 @@
 #include "../support/run_checks.hpp"
+#include "application/run_checkpoint.hpp"
 #include "application/session_flow.hpp"
 #include "core/run_turn.hpp"
 #include <limits>
@@ -56,6 +57,32 @@ int main()
                     next.state.sector.turns_taken != TurnIndex{1})
                     return 4;
             }
+        }
+        // Resume: the restored run carries the checkpoint configuration and
+        // a restart after the result uses it, not a fresh default.
+        auto restored = *restore_checkpoint(*capture_checkpoint(fresh));
+        restored.sector.player_integrity = 0;
+        SessionFlow resumed{true};
+        if (restored.start_config != StartConfigId::baseline ||
+            resumed.screen(restored) != SessionScreen::result ||
+            !resumed.confirm(restored) ||
+            !test::same_run(restored,
+                            *start_run(seed, StartConfigId::baseline)))
+            return 5;
+        // An ID outside the catalog refuses on the start and result screens.
+        for (const bool started : {false, true})
+        {
+            auto unknown = fresh;
+            unknown.start_config = static_cast<StartConfigId>(2);
+            unknown.sector.player_integrity = 0;
+            unknown.sector.reserve = 1;
+            const auto snapshot = unknown;
+            SessionFlow refused{started};
+            const auto screen = refused.screen(unknown);
+            if (screen == SessionScreen::run || refused.confirm(unknown) ||
+                !test::same_run(unknown, snapshot) ||
+                refused.screen(unknown) != screen)
+                return 6;
         }
     }
     return 0;

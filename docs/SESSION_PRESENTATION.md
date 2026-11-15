@@ -6,6 +6,8 @@ Podział nie oznacza implementacji dzieci ani wyboru nagrody.
 Model application wylicza ekran start/run/wynik. Wynik dotyczy wyłącznie
 RunPhase::won lub lost; sukces sektora pośredniego nadal czeka na istniejącą
 nagrodę i P072. Rozpoczęcie i restart używają start_run z tym samym root seedem.
+Od P086-03 także z tą samą konfiguracją startu (RunState::start_config,
+również po resume z checkpointu); ID spoza katalogu odmawia bez zmiany.
 Aktywny run i oczekiwanie na nagrodę odmawiają restartu. Model nie posiada
 profilu, ścieżek ani usług IO, więc nie zeruje ustawień ani achievementów.
 

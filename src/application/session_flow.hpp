@@ -30,8 +30,11 @@ class SessionFlow
     {
         if (screen(run) == SessionScreen::run)
             return false;
-        auto fresh = start_run(run.seed);
-        run = std::move(fresh);
+        // Restart keeps the run's configuration; an unknown ID changes nothing.
+        auto fresh = start_run(run.seed, run.start_config);
+        if (!fresh)
+            return false;
+        run = std::move(*fresh);
         started_ = true;
         return true;
     }

@@ -1,5 +1,9 @@
 # Testy i bramki jakości
 
+P086-03: application_session_flow dla seedów0/1/MAX: restart po resume
+(capture/restore) i wyniku równy start_run(seed, start_config); zarezerwowane
+ID2 odmawia na ekranie startu i wyniku bez zmiany runu i ekranu.
+
 P086-02: literalne wektory checkpointu run_rules16 z tools/checkpoint/vectors.cjs 16
 (bajt30 = ID1). Dekoder odrzuca bajt30 = 0/2/3/255 i niezerowy bajt31,
 enkoder odmawia ID0/2; wyczerpujący korpus bajtów akceptuje bajt30 wyłącznie

@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. ID1..12 modułów działają i są dopuszczone do nagród ([dowód P085-20](docs/workflow/history/P085-20.md)). Krok 3/10 bieżącej serii: P086-02 — checkpoint run_rules16 zapisuje StartConfigId w bajcie30 (bajt31 zarezerwowany), restore ustawia konfigurację z zapisu, a ID spoza katalogu i reguły15 są odrzucane bez nadpisania backupu. Debug/Release 170/170. [Plan konfiguracji](docs/START_CONFIGURATION_PLAN.md) · [Checkpoint](docs/CHECKPOINT_FORMAT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. ID1..12 modułów działają i są dopuszczone do nagród ([dowód P085-20](docs/workflow/history/P085-20.md)). Krok 4/10 bieżącej serii: P086-03 — restart w SessionFlow startuje run z tą samą konfiguracją (także po resume z checkpointu run_rules16), a ID spoza katalogu odmawia bez zmiany. Debug/Release 170/170. [Plan konfiguracji](docs/START_CONFIGURATION_PLAN.md) · [Checkpoint](docs/CHECKPOINT_FORMAT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie
@@ -88,7 +88,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P086-03**. [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P086-04**. [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).
