@@ -33,9 +33,9 @@ class SessionFlow
     {
         if (screen(run) == SessionScreen::run)
             return false;
-        // Restart keeps the run's configuration unless another was selected;
-        // an unknown ID changes nothing.
-        auto fresh = start_run(run.seed, selected(run));
+        // Restart keeps the run's configuration unless another was selected,
+        // and always its difficulty modifiers; an unknown ID changes nothing.
+        auto fresh = start_run(run.seed, selected(run), run.sector.difficulty);
         if (!fresh)
             return false;
         run = std::move(*fresh);

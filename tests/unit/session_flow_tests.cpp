@@ -2,6 +2,7 @@
 #include "application/run_checkpoint.hpp"
 #include "application/session_flow.hpp"
 #include "core/run_turn.hpp"
+#include <bit>
 #include <limits>
 using namespace closed_circuit;
 
@@ -193,6 +194,27 @@ int main()
                 !test::same_run(unknown, snapshot) ||
                 refused.screen(unknown) != screen)
                 return 6;
+        }
+        // A restart keeps the run's modifiers with its configuration. Bits
+        // are forged because no modifier is implemented yet.
+        for (const std::uint8_t bits :
+             {std::uint8_t{1}, std::uint8_t{4}, std::uint8_t{7}})
+        {
+            const auto modifiers = std::bit_cast<DifficultyModifiers>(bits);
+            const auto expected =
+                *start_run(seed, StartConfigId::charged_debt, modifiers);
+            auto ended = expected;
+            ended.sector.player_integrity = 0;
+            ended.sector.overload_debt = 0;
+            ended.sector.turns_taken = TurnIndex{9};
+            SessionFlow again{true};
+            if (!again.confirm(ended) || !test::same_run(ended, expected) ||
+                ended.sector.difficulty.bits() != bits)
+                return 13;
+            // The restarted, modified run is active and refuses another.
+            const auto active = ended;
+            if (again.confirm(ended) || !test::same_run(ended, active))
+                return 14;
         }
     }
     for (auto seed : {RunSeed{0}, RunSeed{1}, RunSeed{UINT64_MAX}})

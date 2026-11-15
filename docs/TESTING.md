@@ -1,5 +1,7 @@
 # Testy i bramki jakości
 
+P087-03: application_session_flow (seedy0/1/MAX): restart po wyniku runu ID3 z podrobionymi maskami1/4/7 daje start_run(seed, ID3, maska) z tą samą maską, a zrestartowany run jest aktywny i odmawia kolejnego confirm; resume z checkpointu (maska0) nadal restartuje dokładnie start_run(seed, ID1).
+
 P087-02: literalne wektory run_rules17 z tools/checkpoint/vectors.cjs 17 (bajt8 = 17, bajt31 = 0). application_checkpoint_decode odrzuca bajt31 = 1/2/4/8/255 po ponownym zamknięciu checksumy; application_checkpoint_encode odmawia podrobionej maski bez mutacji wejścia; application_checkpoint_integration (wyczerpujący korpus bajtów0..31) dopuszcza w bajcie31 tylko 0; application_checkpoint_recover odrzuca reguły1..16 bez nadpisania backupu; capture odrzuca niezaimplementowany bit.
 
 P087-01: core_difficulty_modifiers — fabryka przyjmuje tylko maskę0 (−300..300, 1/2/4/8/0xFF, INT64_MIN, UINT64_MAX odrzucone), domyślna maska nie zawiera żadnego bitu; dla 257 seedów i ID1..3 start_run(seed, config, maska0) równy start_run(seed, config), a podrobiony bit4 jest zapisany i nie zmienia sektora. core_run_transition: bity1/2/4/7 przechodzą do następnego sektora. application_run_checkpoint: capture odrzuca niepustą maskę (pole17). developer_state_hash: wektory v9 z hash_vectors.cjs, w tym bajty maski0/1/2/4/7; replay26 w developer_replay_runner/developer_replay_cli, wersje25 i27 odrzucane.
