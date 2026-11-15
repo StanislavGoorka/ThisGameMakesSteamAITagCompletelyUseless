@@ -88,7 +88,7 @@ P025 potwierdza wspólny obieg w jednym niewyświetlanym eksperymencie z trzema 
 
 P026 zamknięto wyłącznie jako podział planu na pięć dzieci: dane rezerwy/długu i pełny hash, regenerację dostawy, atomowy helper, integrację komendy z turą oraz CLI. P026-01 jest zaimplementowane: reserve 2, limit 3, debt 0; pełny hash v2. P026-02 regeneruje rezerwę po dostawie, replay 4. P026-03 dodaje helper overdrive, a P026-04 integruje OverdriveCommand z turą i podglądem. P026-05 udostępnia token overdrive:NodeId w CLI. [Raport P026-01](docs/workflow/history/P026-01.md)
 
-Następne zadanie to **P089-02** (pomiar bazowy). P089 podzielono na narzędzie strategii wait-then-walk, pomiar bazowy i decyzję ([plan eksperymentu](docs/BALANCE_EXPERIMENT_PLAN.md)); P089-01 dodało `developer_strategy` ([raport](docs/workflow/history/P089-01.md)). [Przekazanie pracy](docs/workflow/NEXT.md)
+Następne zadanie to **P089-03** (decyzja balansu). Pomiar bazowy P089-02: wait-then-walk kończy sektor 1 w 2/1000 runów, H1 odrzucona ([raport](docs/workflow/history/P089-02.md)). P089 podzielono na narzędzie strategii wait-then-walk, pomiar bazowy i decyzję ([plan eksperymentu](docs/BALANCE_EXPERIMENT_PLAN.md)); P089-01 dodało `developer_strategy` ([raport](docs/workflow/history/P089-01.md)). [Przekazanie pracy](docs/workflow/NEXT.md)
 
 P056 otrzymało rzeczywistą zgodę na
 [jedno darmowe pobranie Kenney 1-Bit Pack 1.2](docs/assets/REQUEST_KENNEY_1BIT_1_2.md).

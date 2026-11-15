@@ -1,7 +1,7 @@
 # Następny mały krok
 
-Task: P089-02
+Task: P089-03
 
-Czytaj AGENTS, next-step, WORKFLOW, STATE, BALANCE_EXPERIMENT_PLAN oraz raport P089-01. P089-02: wyłącznie pomiar bazowy, bez zmian kodu gry i narzędzia. Zbuduj Release (cmake --build --preset windows-release --parallel 8), uruchom `.\build\windows-msvc\Release\developer_strategy.exe --corpus`, sprawdź kod 0 (żadnej odrzuconej komendy) i powtarzalność drugiego uruchomienia. W BALANCE_EXPERIMENT_PLAN dopisz sekcję „Pomiar bazowy (P089-02)”: dokładna komenda, data, liczba ukończonych sektorów 1 / 1000 i odsetek, wygrane pełne runy, rozkład końców (won/death/overload) i średnia tura ukończenia sektora 1 (z wierszy wyjścia, policzone skryptem PowerShell bez zmian narzędzia), a następnie werdykt H1 względem progu 25% ustalonego przed pomiarem. Bez interpretacji jako opinii graczy. Jeśli H1 odrzucona, zapisz to wprost — P089-03 wtedy dokumentuje brak zmiany parametru.
+Czytaj AGENTS, next-step, WORKFLOW, STATE, DECISIONS, BALANCE_EXPERIMENT_PLAN (sekcja „Pomiar bazowy (P089-02)”) oraz raport P089-02. P089-03: H1 została odrzucona (wait-then-walk kończy sektor 1 w 2/1000 = 0,2% < 25%), więc zgodnie z planem nie zmieniaj żadnego parametru. Zadanie: dopisz w DECISIONS wiersz/akapit z dowodem (komenda, liczby, próg ustalony przed pomiarem), konsekwencją (brak zmiany balansu; regresja zapewniona przez developer_strategy_cli) i ID P089-03; w BALANCE_EXPERIMENT_PLAN sekcja „Decyzja (P089-03)” z tabelą przed/po, gdzie „po” = „przed” (brak zmiany), oraz zaznacz zamknięcie P089. Bez kodu gry, tekstów i assetów. Następnie kolejka przechodzi do P090 (audyt brakujących treści).
 
-Walidator, diff --check, raport z komendami i wynikami, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push.
+Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push.

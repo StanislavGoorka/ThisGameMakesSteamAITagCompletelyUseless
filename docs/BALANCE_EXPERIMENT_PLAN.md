@@ -31,9 +31,38 @@ tura ukończenia.
 | P089-03 | Decyzja: przy potwierdzonej H1 zmiana jednego parametru generatora lub reguł (wybór uzasadniony danymi) z pomiarem po na tym samym korpusie i regresjami (hash/replay/korpusy certyfikatów); przy odrzuconej H1 brak zmiany i zapis | Porównanie przed/po w tabeli; pełny Debug/Release; brak nowej waluty, mechanik, tekstów i assetów |
 
 Stan: P089-01 — narzędzie developer_strategy (`SEED...` lub `--corpus`) z
-testem developer_strategy_cli. Następny jest P089-02 (pomiar bazowy).
+testem developer_strategy_cli. P089-02 — pomiar bazowy: H1 odrzucona (niżej).
+Następny jest P089-03 (decyzja).
 
 P090 zależy od P089-03. Kandydaci parametru (do wyboru w P089-03 tylko przy
 potwierdzonej H1): orientacja początkowa węzłów tak, by trasa pakietu na
 wejściu nie była otwarta, albo liczba początkowych impulsów. Zmiana reguł
 wymaga jawnej decyzji o wersji replay/hash.
+
+## Pomiar bazowy (P089-02)
+
+Data: 2026-11-15. Build Release z worktree (commit bce0db3), bez zmian kodu.
+
+```powershell
+cmake --build --preset windows-release --parallel 8
+.\build\windows-msvc\Release\developer_strategy.exe --corpus
+```
+
+Dwa uruchomienia: kod 0 (żadna komenda bota nie została odrzucona),
+identyczne wyjście, 1003 wiersze, `summary 1000 2 0`. Statystyki policzono
+skryptem PowerShell z wierszy wyjścia.
+
+| Metryka | Wynik |
+| --- | --- |
+| Ukończony sektor 1 (H1) | 2 / 1000 (0,2%) — seedy 296 i 645 |
+| Średnia tura ukończenia sektora 1 | 24 (obie próby) |
+| Najdalej osiągnięty sektor | 2 (żaden run nie ukończył sektora 2) |
+| Wygrane pełne runy | 0 / 1000 |
+| Koniec runu | overload 1000, death 0, won 0, rejected 0 |
+
+Werdykt: **H1 odrzucona** (0,2% < 25%). Samo czekanie prawie nigdy nie daje
+dwóch dostaw: w 998 seedach trasa pakietu do odbiorników nie otwiera się bez
+przebudowy obiegu, więc sektor kończy się przeciążeniem po 48 turach. Brak
+śmierci oznacza, że w sektorze 1 czekający gracz nie traci integralności do
+zera w limicie tur; nie jest to ocena trudności zagrożeń ani opinia graczy.
+Następny krok P089-03 dokumentuje decyzję bez zmiany parametru.
