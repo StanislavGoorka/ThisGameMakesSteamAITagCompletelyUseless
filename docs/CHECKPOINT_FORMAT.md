@@ -91,7 +91,7 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | 27 | 2 | modules | Znane ID1..12 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
 | 30 | 1 | start_config | Znane StartConfigId 01..03 |
-| 31 | 1 | difficulty | Bity zaimplementowanych modyfikatorów (obecnie wyłącznie 00) |
+| 31 | 1 | difficulty | Bity zaimplementowanych modyfikatorów (od P087-04: 00 lub 01 short_turn_limit) |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
 
 FNV-1a64: start14695981039346656037; dla każdego bajtu XOR, potem mnożenie

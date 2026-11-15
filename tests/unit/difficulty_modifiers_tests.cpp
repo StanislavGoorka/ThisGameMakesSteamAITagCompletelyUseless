@@ -19,13 +19,23 @@ bool check(bool condition, const char *message)
     return condition;
 }
 
-// The catalog is empty, so the only implemented set is the empty mask.
+// Only bit1 short_turn_limit is implemented: masks 0 and 1 are valid.
 bool factory()
 {
     const DifficultyModifiers empty{};
-    if (!check(empty.bits() == 0 && implemented_difficulty_bits() == 0 &&
-                   difficulty_modifier_catalog.empty(),
+    if (!check(empty.bits() == 0 && implemented_difficulty_bits() == 1 &&
+                   difficulty_modifier_catalog.size() == 1,
                "Default modifiers must be the empty mask"))
+        return false;
+    const auto short_limit = DifficultyModifiers::from_value(1);
+    if (!check(
+            short_limit && short_limit->bits() == 1 &&
+                short_limit->contains(DifficultyModifier::short_turn_limit) &&
+                !short_limit->contains(DifficultyModifier::lean_delivery) &&
+                !short_limit->contains(
+                    DifficultyModifier::heavy_overdrive_debt) &&
+                *short_limit != empty,
+            "Bit1 must parse as short_turn_limit only"))
         return false;
     for (const auto modifier : {DifficultyModifier::short_turn_limit,
                                 DifficultyModifier::lean_delivery,
@@ -36,11 +46,11 @@ bool factory()
     for (int value = -300; value <= 300; ++value)
     {
         const auto parsed = DifficultyModifiers::from_value(value);
-        if (!check(parsed.has_value() == (value == 0),
-                   "Only the empty mask is implemented"))
+        if (!check(parsed.has_value() == (value == 0 || value == 1),
+                   "Only masks 0 and 1 are implemented"))
             return false;
     }
-    for (const auto value : {1, 2, 4, 8, 0xFF})
+    for (const auto value : {2, 3, 4, 8, 0xFF})
         if (!check(!DifficultyModifiers::from_value(value),
                    "Planned bits stay unknown until implemented"))
             return false;

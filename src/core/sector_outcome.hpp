@@ -15,9 +15,19 @@ enum class SectorOutcome
     overload
 };
 
+// Accepted turns per sector: 48, or 32 with short_turn_limit, in every sector
+// including the final one.
+[[nodiscard]] constexpr TurnIndex
+sector_turn_limit(const GameState &state) noexcept
+{
+    return TurnIndex{
+        state.difficulty.contains(DifficultyModifier::short_turn_limit) ? 32U
+                                                                        : 48U};
+}
+
 // Reads the settled state only: pending deliveries and contacts are not phases
-// of this query. Death precedes completion; completion on turn 48 precedes
-// overload, but a state beyond the limit can never complete late.
+// of this query. Death precedes completion; completion on the limit turn
+// precedes overload, but a state beyond the limit can never complete late.
 [[nodiscard]] constexpr SectorOutcome
 sector_outcome(const GameState &state) noexcept
 {
@@ -26,7 +36,7 @@ sector_outcome(const GameState &state) noexcept
         return SectorOutcome::death;
     }
 
-    constexpr auto turn_limit = TurnIndex{48};
+    const auto turn_limit = sector_turn_limit(state);
     if (state.turns_taken <= turn_limit && state.sector_exit &&
         state.player_position == *state.sector_exit)
     {

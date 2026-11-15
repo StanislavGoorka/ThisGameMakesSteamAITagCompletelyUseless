@@ -163,6 +163,8 @@ bool cases()
     {
         auto modified = completed(0, 1);
         modified.sector.difficulty = std::bit_cast<DifficultyModifiers>(bits);
+        // Within the short limit, so bit1 cannot turn completion into overload.
+        modified.sector.turns_taken = TurnIndex{20};
         const auto next_sector = advance_run(modified);
         if (!next_sector.accepted ||
             next_sector.state.sector.difficulty.bits() != bits)

@@ -135,7 +135,7 @@ bool cases()
                     // Unimplemented modifier bits are refused, never lost.
                     if (field == 17)
                         bad.sector.difficulty =
-                            std::bit_cast<DifficultyModifiers>(std::uint8_t{1});
+                            std::bit_cast<DifficultyModifiers>(std::uint8_t{2});
                     if (field == 15)
                         bad.sector.delivery_requirement =
                             *DeliveryRequirement::from_value(required == 3 ? 2

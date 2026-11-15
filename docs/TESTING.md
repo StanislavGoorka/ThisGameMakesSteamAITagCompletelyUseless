@@ -1,5 +1,7 @@
 # Testy i bramki jakości
 
+P087-04: core_short_turn_limit — sector_turn_limit 48/32; granice tur0/31/32/33/47/48/49/MAX na wyjściu, poza nim i po śmierci z bitem i bez; ukończenie na ostatniej turze wygrywa, czekanie przeciąża, odmowa nie zużywa tury, podgląd równy wynikowi, tura32 przeciąża tylko z bitem. Certyfikaty z bitem: 1001 normalnych (maks.22 tury) i 258 finałowych (maks.31) nadal kończą sektor. Trwałość: ID1..3 × seedy0/1/MAX — bajt31=1 round-trip, restore i restart po resume zachowują limit32. Nowy wektor checkpointu (seed9, sektor3, maska1) z vectors.cjs; korpus integracyjny dopuszcza bajt31 ≤ 1; dekoder odrzuca 2/3/4/8/255; fabryka przyjmuje tylko 0 i 1.
+
 P087-03: application_session_flow (seedy0/1/MAX): restart po wyniku runu ID3 z podrobionymi maskami1/4/7 daje start_run(seed, ID3, maska) z tą samą maską, a zrestartowany run jest aktywny i odmawia kolejnego confirm; resume z checkpointu (maska0) nadal restartuje dokładnie start_run(seed, ID1).
 
 P087-02: literalne wektory run_rules17 z tools/checkpoint/vectors.cjs 17 (bajt8 = 17, bajt31 = 0). application_checkpoint_decode odrzuca bajt31 = 1/2/4/8/255 po ponownym zamknięciu checksumy; application_checkpoint_encode odmawia podrobionej maski bez mutacji wejścia; application_checkpoint_integration (wyczerpujący korpus bajtów0..31) dopuszcza w bajcie31 tylko 0; application_checkpoint_recover odrzuca reguły1..16 bez nadpisania backupu; capture odrzuca niezaimplementowany bit.

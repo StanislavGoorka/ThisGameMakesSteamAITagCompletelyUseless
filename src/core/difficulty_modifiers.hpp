@@ -19,8 +19,8 @@ enum class DifficultyModifier : std::uint8_t
 };
 
 // Only implemented modifiers; a planned bit stays unknown until added here.
-inline constexpr std::array<DifficultyModifier, 0>
-    difficulty_modifier_catalog{};
+inline constexpr std::array difficulty_modifier_catalog{
+    DifficultyModifier::short_turn_limit};
 
 [[nodiscard]] constexpr std::uint8_t implemented_difficulty_bits() noexcept
 {

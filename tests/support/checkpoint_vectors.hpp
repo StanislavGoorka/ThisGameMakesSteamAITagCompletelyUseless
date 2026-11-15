@@ -66,6 +66,20 @@ inline constexpr auto checkpoint_vectors = []
                          {67, 67, 67,  80, 1,   0,  0,   0,  17, 0,
                           0,  0,  7,   0,  0,   0,  0,   0,  0,  0,
                           1,  3,  3,   2,  0,   0,  0,   0,  0,  0,
-                          3,  0,  205, 34, 244, 74, 137, 35, 78, 75}}};
+                          3,  0,  205, 34, 244, 74, 137, 35, 78, 75}},
+        // Since P087-04 byte 31 may carry the short_turn_limit bit.
+        CheckpointVector{{RunSeed{9},
+                          *SectorNumber::from_value(3),
+                          2,
+                          1,
+                          1,
+                          {},
+                          false,
+                          StartConfigId::baseline,
+                          *DifficultyModifiers::from_value(1)},
+                         {67, 67, 67, 80,  1,  0,   0,   0,   17,  0,
+                          0,  0,  9,  0,   0,  0,   0,   0,   0,   0,
+                          3,  2,  1,  1,   0,  0,   0,   0,   0,   0,
+                          1,  1,  80, 175, 74, 127, 139, 143, 209, 113}}};
 }();
 } // namespace closed_circuit::test
