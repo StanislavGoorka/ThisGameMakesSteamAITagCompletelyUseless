@@ -1,5 +1,14 @@
 # Testy i bramki jakości
 
+P088-04: application_mvp_achievement (swift_sector) — SectorCompleted daje 0x22
+dla tur1..16 i 2 dla 17..48 w każdym sektorze i dla obu pochodzeń historii,
+inne zdarzenia nigdy bitu5; rzeczywista tura: ukończenie na turze16 tak, na
+17 nie, tura16 bez ukończenia nie; dispatch z retry tylko dla ID6. Testy
+pełnych runów (windows_event_dispatcher, windows_mvp_window, windows_mvp_restart)
+liczą oczekiwany bit swift niezależnie ze zdarzeń lub stanu referencyjnego
+(tests/support/swift_events.hpp, MvpWindow::swift); testy na turze1 oczekują
+bitu5 jawnie.
+
 P088-03: application_run_turn_events dla ID1..3 × masek0/1/7 w ostatnim
 sektorze (tura31 przy bicie1, inaczej47): wygrana, przeciążenie i śmierć niosą
 RunEnded z konfiguracją i maską runu, pozostałe zdarzenia bez zmian; domyślny

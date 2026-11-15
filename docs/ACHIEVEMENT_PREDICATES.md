@@ -13,6 +13,7 @@ jest resetowany przez nowy run ani restore.
 | 3 run_without_overdrive | RunEnded(won) po obserwacji całego runu od początku sektora 1 bez ActionCommitted(OverdriveCommand) | Jeden zaakceptowany overdrive, death, overload lub nieznana historia | Flaga użycia żyje przez trzy sektory. Nowy evaluator z jawnym pochodzeniem fresh_run zaczyna czysty; restored_checkpoint zaczyna z nieznaną historią, również dla sektora 1. Nowa próba tworzy nowy evaluator |
 | 4 reconfigured_delivery | Dostawa do celu pakietu, którego wybrana trasa BFS została wcześniej zmieniona zaakceptowanym rotate/overdrive w tym sektorze; otwarcie trasy z braku również kwalifikuje | Obrót innej gałęzi, symetrycznej maski, zamknięcie bez nowej trasy, sam ruch pakietu lub dostawa do innego celu | Zbiór celów ma 49 bitów; dowód trwa do dostawy do danego celu. Dostawa usuwa bit, zmiana sektora i nowy evaluator zerują zbiór. Restore nie dziedziczy dowodów sprzed granicy |
 | 5 completed_run | RunEnded(won) po trzecim sektorze | SectorCompleted sektora pośredniego, death lub overload | Bez trackera; restore sektora 2/3 nie wyklucza późniejszego zwycięstwa |
+| 6 swift_sector (P088-04) | SectorCompleted z key.turn ≤ 16 w dowolnym sektorze, także finale | Ukończenie na turze17; tura ≤ 16 bez ukończenia; death/overload | Bez trackera; fresh_run i restored_checkpoint kwalifikują; [plan 1.0](ACHIEVEMENT_EXPANSION_PLAN.md) |
 
 ## Dowód rekonfiguracji
 

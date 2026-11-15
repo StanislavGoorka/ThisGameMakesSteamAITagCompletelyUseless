@@ -27,9 +27,9 @@ enum class AchievementId : std::uint8_t
 // Only achievements with an implemented predicate, in ascending order. An ID
 // outside it is refused by unlock, sinks and candidate masks.
 inline constexpr std::array achievement_catalog{
-    AchievementId::first_delivery, AchievementId::first_sector,
+    AchievementId::first_delivery,        AchievementId::first_sector,
     AchievementId::run_without_overdrive, AchievementId::reconfigured_delivery,
-    AchievementId::completed_run};
+    AchievementId::completed_run,         AchievementId::swift_sector};
 
 [[nodiscard]] constexpr std::uint16_t implemented_achievement_bits() noexcept
 {

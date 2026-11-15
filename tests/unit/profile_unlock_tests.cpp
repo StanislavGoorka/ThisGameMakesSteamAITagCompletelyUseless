@@ -17,8 +17,9 @@ int main()
                         static_cast<std::uint16_t>(mask | high);
                     const auto before = profile;
                     const auto id = static_cast<AchievementId>(raw);
-                    const bool known = raw >= 1 && raw <= 5;
-                    const bool owned = known && (mask & (1u << (raw - 1))) != 0;
+                    const bool known = raw >= 1 && raw <= 6;
+                    const bool owned =
+                        known && ((mask | high) & (1u << (raw - 1))) != 0;
                     if (is_achievement_unlocked(profile, id) != owned ||
                         profile != before)
                         return 1;

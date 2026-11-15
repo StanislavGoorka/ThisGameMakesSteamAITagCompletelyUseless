@@ -106,7 +106,7 @@ bool sector_completion(const std::filesystem::path &path)
     run.sector.sector_exit = node(1);
     const auto result = resolve_run_turn_events(run, MoveCommand{node(1)});
     return result.turn.phase == RunPhase::choosing_reward &&
-           persist(path, result.events, 3);
+           persist(path, result.events, 0x23); // Turn 1 is also swift.
 }
 std::vector<DomainEvent> run_events(int used_sector)
 {
@@ -135,10 +135,10 @@ bool without_overdrive(const std::filesystem::path &directory)
 {
     for (int used = 0; used <= sector_count; ++used)
         if (!persist(directory / (L"overdrive" + std::to_wstring(used)),
-                     run_events(used), used == 0 ? 23 : 19,
+                     run_events(used), used == 0 ? 0x37 : 0x33,
                      RunHistoryOrigin::fresh_run))
             return false;
-    return persist(directory / L"unknown", run_events(0), 19);
+    return persist(directory / L"unknown", run_events(0), 0x33);
 }
 bool reconfiguration(const std::filesystem::path &path)
 {
@@ -159,7 +159,7 @@ bool completed_run(const std::filesystem::path &path)
     run.sector.sector_exit = node(1);
     const auto result = resolve_run_turn_events(run, MoveCommand{node(1)});
     return result.turn.phase == RunPhase::won && result.events.size() == 4 &&
-           persist(path, result.events, 19);
+           persist(path, result.events, 0x33);
 }
 int main()
 {

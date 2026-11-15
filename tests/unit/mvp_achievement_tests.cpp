@@ -211,21 +211,94 @@ bool completed_run()
             if (dispatcher.dispatch(scope, e) != DispatchResult::delivered)
                 return false;
     const auto won = event(RunEnded{RunEndReason::won}, 1, 2, sector_count);
+    // Turn-one completions are also swift (0x20).
     if (dispatcher.dispatch(scope, won) != DispatchResult::retry ||
-        sink.profile.achievement_bits != 6)
+        sink.profile.achievement_bits != 0x26)
         return false;
     sink.fail_id.reset();
     if (dispatcher.dispatch(scope, won) != DispatchResult::delivered ||
-        sink.profile.achievement_bits != 22)
+        sink.profile.achievement_bits != 0x36)
         return false;
     const auto calls = sink.calls;
     return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
            sink.calls == calls;
 }
+bool swift_sector()
+{
+    // Only SectorCompleted counts, within 16 turns, in every sector and with
+    // either history origin; no other event and no later turn qualifies.
+    for (const auto origin :
+         {RunHistoryOrigin::fresh_run, RunHistoryOrigin::restored_checkpoint})
+        for (int sector = 1; sector <= sector_count; ++sector)
+            for (unsigned turn = 1; turn <= 48; ++turn)
+            {
+                MvpAchievementEvaluator evaluator(origin);
+                if (evaluator.evaluate(
+                        event(SectorCompleted{}, turn, 1, sector)) !=
+                    (turn <= 16 ? 0x22u : 2u))
+                    return false;
+                for (const DomainEventPayload &payload :
+                     {DomainEventPayload{ActionCommitted{WaitCommand{}}},
+                      DomainEventPayload{
+                          PacketDelivered{*NodeId::from_value(1)}},
+                      DomainEventPayload{RunEnded{RunEndReason::won}},
+                      DomainEventPayload{RunEnded{RunEndReason::death}}})
+                    if ((evaluator.evaluate(event(payload, turn, 2, sector)) &
+                         0x20) != 0)
+                        return false;
+            }
+    // A real turn: completion on turn 16 qualifies, on turn 17 it does not,
+    // and an unfinished turn 16 never does.
+    const auto node = [](int n) { return *NodeId::from_value(n); };
+    for (unsigned before : {15u, 16u})
+        for (bool finish : {true, false})
+        {
+            RunState run{.seed = RunSeed{1},
+                         .sector_number = *SectorNumber::from_value(1),
+                         .sector = GameState{.player_position = node(0)}};
+            run.sector.ports[0] = *PortMask::from_bits(2);
+            run.sector.ports[1] = *PortMask::from_bits(8);
+            run.sector.packet = Packet{node(0), node(1)};
+            run.sector.receiver_nodes[1] = run.sector.receiver_nodes[7] = true;
+            run.sector.powered_nodes[7] = true;
+            run.sector.sector_exit = node(1);
+            run.sector.turns_taken = TurnIndex{before};
+            const Command command =
+                finish ? Command{MoveCommand{node(1)}} : Command{WaitCommand{}};
+            const auto result = resolve_run_turn_events(run, command);
+            MvpAchievementEvaluator evaluator;
+            unsigned candidates = 0;
+            for (const auto &e : result.events)
+                candidates |= evaluator.evaluate(e);
+            if (!result.turn.accepted ||
+                ((candidates & 0x20) != 0) != (finish && before == 15))
+                return false;
+        }
+    // Dispatch retries only the failed ID and persists bit 5 once.
+    MvpAchievementEvaluator evaluator;
+    test::RecordingSink sink;
+    sink.fail_id = AchievementId::swift_sector;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(1)};
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    const auto completed = event(SectorCompleted{}, 1, 1);
+    if (dispatcher.dispatch(scope, event(ActionCommitted{WaitCommand{}})) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope, completed) != DispatchResult::retry ||
+        sink.profile.achievement_bits != 2)
+        return false;
+    sink.fail_id.reset();
+    if (dispatcher.dispatch(scope, completed) != DispatchResult::delivered ||
+        sink.profile.achievement_bits != 0x22)
+        return false;
+    const auto calls = sink.calls;
+    return dispatcher.dispatch(scope, completed) == DispatchResult::delivered &&
+           sink.calls == calls;
+}
 int main()
 {
     return delivery() && sector_completion() && without_overdrive() &&
-                   reconfiguration() && completed_run()
+                   reconfiguration() && completed_run() && swift_sector()
                ? 0
                : 1;
 }

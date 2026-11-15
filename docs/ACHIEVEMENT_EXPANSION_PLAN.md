@@ -10,7 +10,8 @@ assetów, a brak ich nie blokuje predykatów.
 
 Stan: P088 — podział. P088-01: profil schema2 (bity 0..11, odczyt v1/v2, zapis v2).
 P088-02: stałe ID6..12 i katalog zaimplementowanych ID. P088-03: RunEnded
-niesie start_config i difficulty. Następny jest P088-04 (swift_sector).
+niesie start_config i difficulty. P088-04: ID6 swift_sector działa. Następny
+jest P088-05 (won_preinstalled_range).
 
 ## Predykaty
 

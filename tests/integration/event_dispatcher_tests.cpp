@@ -2,6 +2,7 @@
 #include "../support/checkpoint_files.hpp"
 #include "../support/run_checks.hpp"
 #include "../support/run_witness.hpp"
+#include "../support/swift_events.hpp"
 #include "application/event_dispatcher.hpp"
 #include "application/mvp_achievement_evaluator.hpp"
 #include "application/run_turn_events.hpp"
@@ -48,6 +49,15 @@ struct Step
     RunState state;
     std::vector<DomainEvent> events;
 };
+// Swift bit due for any of the given sector traces.
+template <typename Traces> std::uint16_t swift_in(const Traces &traces)
+{
+    for (const auto &trace : traces)
+        for (const auto &step : trace)
+            if (test::swift_bit(step.events) != 0)
+                return 0x20;
+    return 0;
+}
 DeliveryScope scope(const RunState &run, unsigned attempt = 1,
                     unsigned branch = 1)
 {
@@ -377,15 +387,24 @@ bool mvp_worker(const std::filesystem::path &directory)
             if (i + 1 < suffix.size() && !transition(run))
                 return false;
         }
-        const auto expected_mask = initial->achievement_bits == 31 ? 31 : 27;
-        const auto expected_backup = expected_mask == 31 ? 15 : 11;
+        // The full run earns 1..5 (and ID6 when swift), the restored suffix
+        // all but run_without_overdrive. The last write adds completed_run.
+        const auto suffix_mask =
+            static_cast<std::uint16_t>(27 | swift_in(suffix));
+        const auto expected_mask = initial->achievement_bits != 0
+                                       ? initial->achievement_bits
+                                       : suffix_mask;
+        const auto expected_backup = expected_mask & ~16;
         const auto main = encode_profile(LocalProfile{
             static_cast<std::uint16_t>(expected_mask), 3, 29, true});
         const auto backup = encode_profile(LocalProfile{
             static_cast<std::uint16_t>(expected_backup), 3, 29, true});
         if (!main || !backup || !test::same_run(run, reference) ||
-            evaluator.calls != events || evaluator.candidates != 27 ||
-            sink.new_unlocks != (initial->achievement_bits == 0 ? 4u : 0u) ||
+            (expected_mask & suffix_mask) != suffix_mask ||
+            evaluator.calls != events || evaluator.candidates != suffix_mask ||
+            sink.new_unlocks != (initial->achievement_bits == 0
+                                     ? test::unlock_count(suffix_mask)
+                                     : 0u) ||
             test::read_bytes(profile) !=
                 std::vector<std::uint8_t>(main->begin(), main->end()) ||
             test::read_bytes(profile.native() + L".bak") !=
@@ -411,6 +430,7 @@ bool complete_mvp(const std::filesystem::path &directory)
     ObservedSink sink(profile);
     EventDispatcher dispatcher(context, evaluator, sink);
     std::array<std::vector<Step>, sector_count - 1> suffix;
+    std::vector<Step> first_trace;
     std::optional<RunState> boundary;
     unsigned total_events = 0;
     for (unsigned number = 1; number <= sector_count; ++number)
@@ -430,16 +450,22 @@ bool complete_mvp(const std::filesystem::path &directory)
             total_events += static_cast<unsigned>(step.events.size());
         if (number >= 2)
             suffix[number - 2] = trace;
+        else
+            first_trace = trace;
         if (number < sector_count && !transition(run))
             return false;
     }
+    const auto suffix_mask = static_cast<std::uint16_t>(27 | swift_in(suffix));
+    const auto full_mask = static_cast<std::uint16_t>(
+        31 | swift_in(std::array{first_trace}) | (suffix_mask & 0x20));
     if (run_phase(run) != RunPhase::won || !has_admitted(run.sector.modules) ||
-        evaluator.candidates != 31 || evaluator.calls != total_events ||
-        sink.new_unlocks != 5 ||
+        evaluator.candidates != full_mask || evaluator.calls != total_events ||
+        sink.new_unlocks != test::unlock_count(full_mask) ||
         windows::read_profile_file(profile).profile !=
-            LocalProfile{31, 3, 29, true} ||
+            LocalProfile{full_mask, 3, 29, true} ||
         windows::read_profile_file(profile.native() + L".bak").profile !=
-            LocalProfile{15, 3, 29, true})
+            LocalProfile{static_cast<std::uint16_t>(full_mask & ~16), 3, 29,
+                         true})
         return false;
     const auto original_files = image(profile);
     const auto read = windows::read_checkpoint_file(checkpoint_path);
@@ -479,11 +505,14 @@ bool complete_mvp(const std::filesystem::path &directory)
             return false;
     }
     if (!test::same_run(*replay, run) || unknown.calls != suffix_events ||
-        unknown.candidates != 27 || restored_sink.new_unlocks != 4 ||
+        unknown.candidates != suffix_mask ||
+        restored_sink.new_unlocks != test::unlock_count(suffix_mask) ||
         windows::read_profile_file(restored_profile).profile !=
-            LocalProfile{27, 3, 29, true} ||
+            LocalProfile{suffix_mask, 3, 29, true} ||
         windows::read_profile_file(restored_profile.native() + L".bak")
-                .profile != LocalProfile{11, 3, 29, true} ||
+                .profile !=
+            LocalProfile{static_cast<std::uint16_t>(suffix_mask & ~16), 3, 29,
+                         true} ||
         image(profile) != original_files)
         return false;
     const auto restored_files = image(restored_profile);
@@ -512,7 +541,8 @@ bool complete_mvp(const std::filesystem::path &directory)
             image(profile) != original_files)
             return false;
     return another_branch.calls == suffix_events &&
-           another_branch.candidates == 27 && restored_sink.new_unlocks == 4 &&
+           another_branch.candidates == suffix_mask &&
+           restored_sink.new_unlocks == test::unlock_count(suffix_mask) &&
            image(restored_profile) == restored_files &&
            image(profile) == original_files;
 }

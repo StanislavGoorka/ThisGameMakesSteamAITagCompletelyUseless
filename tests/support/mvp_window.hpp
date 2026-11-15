@@ -151,6 +151,10 @@ class MvpWindow
                 return false;
         if (sector_outcome(run.sector) != SectorOutcome::completed)
             return mvp_fail("sector completion");
+        // Expected swift_sector (ID6) from the reference run, not the
+        // evaluator: this sector completed within 16 turns.
+        if (static_cast<std::uint32_t>(run.sector.turns_taken) <= 16)
+            swift = 0x20;
         return run_phase(run) == RunPhase::won
                    ? !std::filesystem::exists(directory / L"checkpoint.bin") &&
                          !std::filesystem::exists(directory /
@@ -187,5 +191,6 @@ class MvpWindow
     windows::CheckpointResume resume;
     std::unique_ptr<windows::NativeWindow> window;
     std::unique_ptr<windows::RunWindow> session;
+    std::uint16_t swift = 0;
 };
 } // namespace closed_circuit::test

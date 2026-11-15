@@ -20,7 +20,7 @@ bool scenario(const std::filesystem::path &root)
         if (sector < sector_count && !launch.advance(run))
             return false;
     }
-    const LocalProfile expected{31};
+    const LocalProfile expected{static_cast<std::uint16_t>(31 | launch.swift)};
     if (run_phase(run) != RunPhase::won ||
         launch.session->screen() != SessionScreen::result ||
         windows::read_profile_file(owned.path / L"profile.bin").profile !=

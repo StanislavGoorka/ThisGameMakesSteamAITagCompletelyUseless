@@ -55,8 +55,9 @@ int main()
             return 4;
         sink.throw_after_id.reset();
         if (!delivery.flush() || delivery.pending() ||
+            // Turn-one completions also earn swift_sector (0x20).
             sink.profile.achievement_bits !=
-                (origin == RunHistoryOrigin::fresh_run ? 31 : 27))
+                (origin == RunHistoryOrigin::fresh_run ? 0x3f : 0x3b))
             return 5;
         // ID4 proves the delivery was not reevaluated after consuming its
         // reconfiguration evidence on the failed first attempt.

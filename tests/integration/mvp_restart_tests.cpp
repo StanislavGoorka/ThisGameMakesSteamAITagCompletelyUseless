@@ -26,26 +26,50 @@ bool finish(const std::filesystem::path &root, const std::filesystem::path &dir)
     const auto expected = checkpoint.checkpoint
                               ? restore_checkpoint(*checkpoint.checkpoint)
                               : std::nullopt;
+    // Sector 1 was earned by the first process; its profile is on disk.
+    const auto earlier = windows::read_profile_file(dir / L"profile.bin");
     test::MvpWindow window(root, dir);
-    if (!expected || window.resume.status != ResumeStatus::resumed ||
+    if (!expected || !earlier.profile ||
+        window.resume.status != ResumeStatus::resumed ||
         !window.matches(*expected) || test::mvp_files(dir) != saved ||
         expected->sector_number.value() != 2 ||
         expected->sector.turns_taken != TurnIndex{0})
         return test::mvp_fail("worker resume boundary");
     auto run = *expected;
-    if (!window.quiet(run) || !window.solve(run) ||
-        test::mvp_files(dir) != saved || window.notices.pending())
+    if (!window.quiet(run) || !window.solve(run) || window.notices.pending())
         return test::mvp_fail("worker continuation");
+    // Finishing sector 2 adds nothing but a newly earned swift_sector; the
+    // checkpoint stays as saved.
+    auto continued = test::mvp_files(dir);
+    const auto profile = windows::read_profile_file(dir / L"profile.bin");
+    const bool swift_new =
+        window.swift != 0 && (earlier.profile->achievement_bits & 0x20) == 0;
+    if (swift_new)
+    {
+        if (!profile.profile || profile.profile->achievement_bits !=
+                                    (earlier.profile->achievement_bits | 0x20))
+            return test::mvp_fail("worker swift");
+        for (const auto *name : {L"profile.bin", L"profile.bin.bak"})
+            continued[name] = saved.at(name);
+    }
+    if (continued != saved)
+        return test::mvp_fail("worker continuation files");
     for (int number = 3; number <= sector_count; ++number)
         if (!window.advance(run) || !window.solve(run) ||
             run.sector_number.value() != number)
             return test::mvp_fail("worker suffix");
+    // Restored history: all MVP IDs but run_without_overdrive, plus swift
+    // when any sector of either process completed within 16 turns. The last
+    // write adds completed_run.
+    const auto mask = static_cast<std::uint16_t>(
+        27 | earlier.profile->achievement_bits | window.swift);
     return run_phase(run) == RunPhase::won &&
            window.session->screen() == SessionScreen::result &&
+           (earlier.profile->achievement_bits & ~0x2b) == 0 &&
            windows::read_profile_file(dir / L"profile.bin").profile ==
-               LocalProfile{27} &&
+               LocalProfile{mask} &&
            windows::read_profile_file(dir / L"profile.bin.bak").profile ==
-               LocalProfile{11};
+               LocalProfile{static_cast<std::uint16_t>(mask & ~16)};
 }
 bool read_only(const std::filesystem::path &root,
                const std::filesystem::path &dir)
@@ -54,8 +78,10 @@ bool read_only(const std::filesystem::path &root,
     test::MvpWindow window(root, dir);
     return window.resume.status == ResumeStatus::none &&
            window.session->screen() == SessionScreen::start &&
-           windows::read_profile_file(dir / L"profile.bin").profile ==
-               LocalProfile{27} &&
+           (windows::read_profile_file(dir / L"profile.bin")
+                .profile.value_or(LocalProfile{0, 4})
+                .achievement_bits |
+            0x20) == 0x3b &&
            test::mvp_files(dir) == before;
 }
 bool launch(std::wstring_view mode, const std::filesystem::path &root,

@@ -47,8 +47,9 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
             if (end->reason == RunEndReason::won &&
                 event.key.sector.value() == sector_count)
                 return without_overdrive_ ? 20 : 16;
+        // swift_sector: completion within the first 16 turns of any sector.
         if (std::holds_alternative<SectorCompleted>(event.payload))
-            return 2;
+            return event.key.turn <= swift_sector_turns ? 0x22 : 2;
         if (const auto *delivery = std::get_if<PacketDelivered>(&event.payload))
         {
             const bool changed = reconfigured_[delivery->target.value()];
@@ -59,6 +60,7 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
     }
 
   private:
+    static constexpr TurnIndex swift_sector_turns{16};
     bool without_overdrive_;
     bool first_event_ = true;
     std::optional<SectorNumber> tracked_sector_;
