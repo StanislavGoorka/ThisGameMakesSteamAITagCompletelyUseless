@@ -17,7 +17,8 @@ P088-10: ID12 won_all_modifiers — katalog obejmuje wszystkie ID1..12.
 Dowód integracyjny P088-11 podzielono (2026-11-15) na P088-12 (runy do pliku),
 P088-13 (migracja v1 w oknie) i zawężony P088-11 (restart procesu).
 P088-12: windows_achievement_profile_run — 46 pełnych runów do pliku profilu.
-Następny jest P088-13.
+P088-13: migracja v1→v2 w sesji okna (windows_achievement_window).
+Następny jest P088-11 (restart procesu).
 
 ## Predykaty
 
@@ -87,7 +88,7 @@ kandydat nie trafił do profilu, który go nie przyjmie.
 | P088-09 | ID11 won_heavy_overdrive_debt | Maski4/5/6/7 tak; pozostałe i przegrana nie |
 | P088-10 | ID12 won_all_modifiers | Maska7 tak; 3/5/6 i przegrana z maską7 nie |
 | P088-12 | Dowód: pełne runy do pliku profilu (headless) | ID1/ID2/ID3 × maski0/7 przez RunAchievements i LocalAchievementSink: ID7 tylko ID2, ID8 tylko ID3, ID9..12 tylko maska7; powtórka nowym właścicielem nie zmienia bajtów pliku ani .bak |
-| P088-13 | Dowód: migracja v1→v2 w sesji okna | Plik bajtów schema1 w RunWindow z LocalAchievementSink: po dostawie wersja2 z bitami v1 ∪ nowe, .bak = oryginał v1; ponowienie bez zmian; uszkodzony v1 nienadpisany |
+| P088-13 | Dowód: migracja v1→v2 w sesji okna | Plik bajtów schema1 w RunWindow z LocalAchievementSink: po dostawie wersja2 z bitami v1 ∪ nowe, .bak = wartości v1 w schema2; ponowienie bez zmian; uszkodzony v1 nienadpisany |
 | P088-11 | Dowód domykający: restart procesu | Proces potomny kończy run ID3 z maską7 (i kontrolny ID1 maska0); nowy proces czyta te same bity, powtórka idempotentna; v1 z P088-13 przeżywa restart jako v2 |
 
 Każde dziecko obejmuje wyłącznie swoją zmianę. Jeśli implementacja przekracza

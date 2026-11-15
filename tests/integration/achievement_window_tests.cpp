@@ -1,4 +1,5 @@
 #include "../support/checkpoint_files.hpp"
+#include "../support/profile_vectors.hpp"
 #include "../support/run_checks.hpp"
 #include "developer_text.hpp"
 #include "platform/windows/local_achievement_sink.hpp"
@@ -201,6 +202,89 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
     window.window.reset();
     return true;
 }
+// Independent FNV-1a64 vectors from the PROFILE_FORMAT byte table: a schema 1
+// profile owning ID2, ID3 and ID5 but not first_delivery, the same values as
+// schema 2, and schema 2 after first_delivery.
+constexpr ProfileBytes legacy_profile{
+    0x43, 0x43, 0x50, 0x52, 0x01, 0x00, 0x00, 0x00, 0x16, 0x00, 0x02, 0x25,
+    0x01, 0x00, 0x00, 0x00, 0x0a, 0xb2, 0x1a, 0x8b, 0xc9, 0x94, 0x68, 0x9c};
+constexpr ProfileBytes legacy_as_v2{
+    0x43, 0x43, 0x50, 0x52, 0x02, 0x00, 0x00, 0x00, 0x16, 0x00, 0x02, 0x25,
+    0x01, 0x00, 0x00, 0x00, 0xb9, 0xac, 0x72, 0x7b, 0xec, 0x44, 0xe0, 0xb9};
+constexpr ProfileBytes migrated_profile{
+    0x43, 0x43, 0x50, 0x52, 0x02, 0x00, 0x00, 0x00, 0x17, 0x00, 0x02, 0x25,
+    0x01, 0x00, 0x00, 0x00, 0x94, 0x78, 0x57, 0x55, 0xdc, 0x3a, 0x0c, 0xae};
+std::vector<std::uint8_t> bytes(const ProfileBytes &record)
+{
+    return {record.begin(), record.end()};
+}
+
+// A schema 1 file under the window's durable sink: the first committed
+// delivery writes schema 2 with the old bits kept and the old values in the
+// backup; a schema 1 file holding bit 5 is refused, kept and retried.
+bool migration(const std::filesystem::path &root, const TextCatalog &catalog,
+               const std::filesystem::path &path, bool corrupt)
+{
+    const auto &legacy =
+        corrupt ? test::profile_wide_v1_vector : legacy_profile;
+    test::write_bytes(path, legacy);
+    auto backup = path;
+    backup += L".bak";
+    auto window =
+        windows::NativeWindow::create(catalog, "developer-window-title");
+    if (!window.window)
+        return fail("migration window");
+    auto run = start_run(RunSeed{1});
+    run.sector.receiver_nodes[48] = true;
+    run.sector.packet =
+        Packet{*NodeId::from_value(48), *NodeId::from_value(48)};
+    windows::LocalAchievementSink durable{path};
+    AchievementNoticeSink notices{durable};
+    const AssetManifest assets{presentation::atlas_reference()};
+    auto made = windows::RunWindow::create(*window.window, run, root, assets,
+                                           {}, &catalog, false, &notices);
+    if (!made.session)
+        return fail("migration session");
+    auto &session = *made.session;
+    const auto hwnd = window.window->handle();
+    const auto tap = [&](WPARAM key)
+    {
+        SendMessageW(hwnd, WM_KEYDOWN, key, 0);
+        SendMessageW(hwnd, WM_KEYUP, key, 0);
+    };
+    SendMessageW(hwnd, WM_SETFOCUS, 0, 0);
+    for (int turn = 0; turn < 2; ++turn)
+    {
+        const auto expected = resolve_run_turn(run, WaitCommand{});
+        tap(VK_SPACE);
+        if (!expected.accepted ||
+            !test::same_run(session.state(), expected.state) ||
+            FAILED(session.error()))
+            return fail("migration turn");
+        run = expected.state;
+        if (corrupt)
+        {
+            if (!session.achievements_pending() || notices.pending() ||
+                test::read_bytes(path) != bytes(legacy) ||
+                std::filesystem::exists(backup))
+                return fail("corrupt legacy profile");
+            continue;
+        }
+        // The second turn finds first_delivery owned and writes nothing.
+        if (session.achievements_pending() ||
+            static_cast<bool>(notices.pending()) != (turn == 0) ||
+            test::read_bytes(path) != bytes(migrated_profile) ||
+            test::read_bytes(backup) != bytes(legacy_as_v2) ||
+            windows::read_profile_file(path).profile !=
+                LocalProfile{0x17, 2, 37, true})
+            return fail("migrated profile");
+        notices.dismiss();
+    }
+    SendMessageW(hwnd, WM_CLOSE, 0, 0);
+    made.session.reset();
+    window.window.reset();
+    return true;
+}
 int wmain(int argc, wchar_t **argv)
 {
     if (argc != 2 || FAILED(CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED)))
@@ -210,7 +294,9 @@ int wmain(int argc, wchar_t **argv)
     test::CheckpointDirectory owned;
     const bool passed =
         scenario(argv[1], catalog, owned.path / L"new.bin", false) &&
-        scenario(argv[1], catalog, owned.path / L"owned.bin", true);
+        scenario(argv[1], catalog, owned.path / L"owned.bin", true) &&
+        migration(argv[1], catalog, owned.path / L"legacy.bin", false) &&
+        migration(argv[1], catalog, owned.path / L"wide.bin", true);
     CoUninitialize();
     return passed ? 0 : 2;
 }

@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P088-13: windows_achievement_window, scenariusz migration — plik schema1
+{0x16, 2, 37, muted} pod LocalAchievementSink w RunWindow: dostawa zapisuje
+schema2 0x17, .bak = wartości v1 w schema2, druga tura bez zapisu; schema1 z
+bitami 5..11 nienadpisany, achievementy oczekują, .bak nie powstaje.
+
 P088-12: windows_achievement_profile_run — ID1/ID2/ID3 × maski0/7, seedy
 kończone przez certyfikaty (46 runów): RunAchievements + LocalAchievementSink
 zapisują do pliku dokładnie maskę niezależnego evaluatora; 0x40 tylko ID2,

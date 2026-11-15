@@ -3326,8 +3326,8 @@
             "id": "P088-13",
             "phase": "M7",
             "title": "Migracja profilu v1 w sesji okna",
-            "scope": "Tylko dowód: rzeczywiste HWND RunWindow z LocalAchievementSink na pliku zapisanym bajtami schema1 (bity 0..4); dostawa w oknie zapisuje schema2 bez utraty starych bitów, a poprzedni v1 trafia do .bak. Bez restartu procesu, nowej logiki, tekstów i assetów.",
-            "acceptance": "Po pierwszym odblokowaniu plik ma wersję2 i bity v1 ∪ nowe; .bak równy oryginalnym bajtom v1; ponowne odblokowanie nie zmienia plików; uszkodzony v1 nie jest nadpisywany. Debug/Release; bez obserwacji pulpitu (P104).",
+            "scope": "Tylko dowód: rzeczywiste HWND RunWindow z LocalAchievementSink na pliku zapisanym bajtami schema1 (bity 0..4); dostawa w oknie zapisuje schema2 bez utraty starych bitów, a wartości poprzedniego v1 trafiają do .bak zakodowane jako schema2 (PROFILE_FORMAT). Bez restartu procesu, nowej logiki, tekstów i assetów.",
+            "acceptance": "Po pierwszym odblokowaniu plik ma wersję2 i bity v1 ∪ nowe; .bak to wartości v1 w bajtach schema2; ponowne odblokowanie nie zmienia plików; uszkodzony v1 nie jest nadpisywany. Debug/Release; bez obserwacji pulpitu (P104).",
             "depends_on": [
                 "P088-12"
             ],
