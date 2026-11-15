@@ -31,13 +31,14 @@ decode_checkpoint(std::span<const std::uint8_t> bytes) noexcept
             checkpoint_run_rules_version ||
         checkpoint_detail::get_le(bytes, 32, 8) !=
             checkpoint_detail::checksum(bytes.first(32)) ||
-        bytes[29] > 1 || bytes[30] != 0 || bytes[31] != 0)
+        bytes[29] > 1 || bytes[31] != 0)
         return std::nullopt;
     const auto number = SectorNumber::from_value(bytes[20]);
     if (!number)
         return std::nullopt;
     const auto modules = decode_module_slots({bytes[27], bytes[28]});
-    if (!modules)
+    const auto start_config = start_config_from_value(bytes[30]);
+    if (!modules || !start_config)
         return std::nullopt;
     RunCheckpoint checkpoint{
         static_cast<RunSeed>(checkpoint_detail::get_le(bytes, 12, 8)),
@@ -46,7 +47,8 @@ decode_checkpoint(std::span<const std::uint8_t> bytes) noexcept
         bytes[22],
         static_cast<std::uint32_t>(checkpoint_detail::get_le(bytes, 23, 4)),
         *modules,
-        bytes[29] == 1};
+        bytes[29] == 1,
+        *start_config};
     if (!is_checkpoint_valid(checkpoint))
         return std::nullopt;
     return checkpoint;

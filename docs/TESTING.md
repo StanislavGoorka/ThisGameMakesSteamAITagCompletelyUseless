@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P086-02: literalne wektory checkpointu run_rules16 z tools/checkpoint/vectors.cjs 16
+(bajt30 = ID1). Dekoder odrzuca bajt30 = 0/2/3/255 i niezerowy bajt31,
+enkoder odmawia ID0/2; wyczerpujący korpus bajtów akceptuje bajt30 wyłącznie
+= 1. Reguły1..15 z poprawną checksumą odrzucane bez nadpisania backupu.
+
 P086-01: core_run_start sprawdza wszystkie256 wartości StartConfigId
 (fabryka, katalog i start_run akceptują wyłącznie ID1), wartości spoza uint8
 oraz 257 seedów: start_run(seed, ID1) równy start_run(seed) z HP3/rezerwą2/

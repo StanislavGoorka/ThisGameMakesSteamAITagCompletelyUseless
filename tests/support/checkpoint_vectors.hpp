@@ -19,28 +19,35 @@ inline constexpr auto checkpoint_vectors = []
     static_cast<void>(both.add(ModuleId::rotation_range));
     static_cast<void>(both.add(ModuleId::terminal_rotation));
     return std::array{
-        CheckpointVector{
-            {RunSeed{0}, *SectorNumber::from_value(1), 3, 2, 0, {}, false},
-            {67, 67, 67, 80, 1,  0,  0,   0, 15, 0,  0,   0, 0, 0,
-             0,  0,  0,  0,  0,  0,  1,   3, 2,  0,  0,   0, 0, 0,
-             0,  0,  0,  0,  24, 15, 170, 8, 92, 85, 147, 12}},
+        CheckpointVector{{RunSeed{0},
+                          *SectorNumber::from_value(1),
+                          3,
+                          2,
+                          0,
+                          {},
+                          false,
+                          StartConfigId::baseline},
+                         {67, 67, 67,  80,  1,   0,   0,   0,  16, 0,
+                          0,  0,  0,   0,   0,   0,   0,   0,  0,  0,
+                          1,  3,  2,   0,   0,   0,   0,   0,  0,  0,
+                          1,  0,  234, 134, 221, 218, 204, 43, 7,  90}},
         CheckpointVector{
             {RunSeed{UINT64_MAX}, *SectorNumber::from_value(sector_count), 1, 0,
-             3, both, true},
-            {67,  67,  67,  80,  1,   0,   0,   0,  15,  0,   0,   0, 255, 255,
-             255, 255, 255, 255, 255, 255, 6,   1,  0,   3,   0,   0, 0,   1,
-             2,   1,   0,   0,   184, 116, 102, 76, 253, 205, 121, 66}},
+             3, both, true, StartConfigId::baseline},
+            {67,  67,  67,  80,  1,   0,   0,  0, 16,  0,  0,   0,  255, 255,
+             255, 255, 255, 255, 255, 255, 6,  1, 0,   3,  0,   0,  0,   1,
+             2,   1,   1,   0,   90,  77,  62, 4, 209, 57, 170, 181}},
         CheckpointVector{
             {RunSeed{0x0123456789abcdefull}, *SectorNumber::from_value(2), 2, 3,
-             2, terminal, false},
-            {67,  67,  67,  80, 1,  0,   0,  0,  15,  0,   0,   0,  239, 205,
-             171, 137, 103, 69, 35, 1,   2,  2,  3,   2,   0,   0,  0,   2,
-             0,   0,   0,   0,  57, 211, 79, 96, 229, 112, 193, 215}},
-        CheckpointVector{{RunSeed{1}, *SectorNumber::from_value(sector_count),
-                          3, 1, UINT32_MAX - 3, range, true},
-                         {67, 67, 67,  80,  1,   0,   0,   0,   15, 0,
-                          0,  0,  1,   0,   0,   0,   0,   0,   0,  0,
-                          6,  3,  1,   252, 255, 255, 255, 1,   0,  1,
-                          0,  0,  212, 125, 43,  140, 237, 119, 77, 234}}};
+             2, terminal, false, StartConfigId::baseline},
+            {67,  67,  67,  80, 1,   0,   0,   0,  16,  0,   0,  0,  239, 205,
+             171, 137, 103, 69, 35,  1,   2,   2,  3,   2,   0,  0,  0,   2,
+             0,   0,   1,   0,  203, 223, 100, 67, 181, 164, 94, 160}},
+        CheckpointVector{
+            {RunSeed{1}, *SectorNumber::from_value(sector_count), 3, 1,
+             UINT32_MAX - 3, range, true, StartConfigId::baseline},
+            {67, 67, 67, 80, 1,   0,  0,   0,  16,  0,   0,   0,   1,   0,
+             0,  0,  0,  0,  0,   0,  6,   3,  1,   252, 255, 255, 255, 1,
+             0,  1,  1,  0,  178, 96, 160, 63, 189, 139, 28,  86}}};
 }();
 } // namespace closed_circuit::test

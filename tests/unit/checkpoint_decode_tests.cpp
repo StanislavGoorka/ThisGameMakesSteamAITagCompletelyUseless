@@ -35,7 +35,7 @@ bool cases()
         extra.push_back(0);
         if (!rejected(extra))
             return false;
-        for (int scenario = 0; scenario < 17; ++scenario)
+        for (int scenario = 0; scenario < 20; ++scenario)
         {
             auto bad = v.bytes;
             if (scenario == 0)
@@ -56,8 +56,15 @@ bool cases()
                 bad[22] = 4;
             if (scenario == 8)
                 bad[29] = 2;
+            // Byte 30 is the start configuration: only catalog IDs decode.
             if (scenario == 9)
-                bad[30] = 1;
+                bad[30] = 0;
+            if (scenario == 17)
+                bad[30] = 2;
+            if (scenario == 18)
+                bad[30] = 3;
+            if (scenario == 19)
+                bad[30] = 255;
             if (scenario == 10)
                 bad[31] = 1;
             if (scenario == 11)

@@ -9,7 +9,8 @@ początkowe istniejących pól runu i nie zależy od profilu ani poprzednich run
 Wszystkie trzy są dostępne od początku; odblokowania nie są częścią P086.
 
 Stan: P086-01 dodało StartConfigId, katalog {ID1}, RunState::start_config
-i start_run(seed, config). Capture checkpointu odmawia ID≠1 do P086-02.
+i start_run(seed, config). P086-02 zapisuje ID w bajcie30 checkpointu
+(run_rules16); ID spoza katalogu jest odrzucane.
 
 ## Konfiguracje
 

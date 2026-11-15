@@ -1,6 +1,8 @@
-# Checkpoint granicy sektora — schema1, rules15
+# Checkpoint granicy sektora — schema1, rules16
 
-P085-19: bieżące run_rules=15, hashv8/replay25. ID1..12 zaimplementowane i dopuszczone do nagród; oferta zależy od root seedu i ukończonego sektora, więc checkpoint starszych reguł mógłby dać inne oferty i jest odrzucany bez nadpisania backupu. Replay obejmuje jeden sektor bez nagród i zachowuje wersję25. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych.
+P086-02: bieżące run_rules=16. Bajt30 zapisuje StartConfigId (dziś wyłącznie ID1 baseline), bajt31 pozostaje zarezerwowany 00. restore ustawia RunState::start_config z zapisu, a capture porównuje je z runem. Reguły15 i starsze są odrzucane bez nadpisania backupu, bo nie zapisywały konfiguracji. Schema1/40 bajtów i hashv8/replay25 bez zmian (replay nie obejmuje metadanych runu).
+
+Historyczne P085-19: run_rules=15, hashv8/replay25. ID1..12 zaimplementowane i dopuszczone do nagród; oferta zależy od root seedu i ukończonego sektora, więc checkpoint starszych reguł mógłby dać inne oferty i jest odrzucany bez nadpisania backupu. Replay obejmuje jeden sektor bez nagród i zachowuje wersję25. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych.
 
 Historyczne P085-04: run_rules=4 dopuszczało ID1..3, nadal przy
 dwóch kanonicznych slotach; ID3 pozostaje poza pulą nagród. Reguły1..3 są
@@ -8,7 +10,7 @@ odrzucane bez zmiany backupu. Schema1 i układ40 bajtów pozostają. Poniższe
 opisy reguł3 dokumentują historyczną zmianę długości runu w P084-01.
 
 Historyczne P084-01 wprowadziło run_rules=3 z finałem tylko w ostatnim
-z sześciu sektorów. Bieżące reguły15 zachowują tę długość i schema1;
+z sześciu sektorów. Bieżące reguły16 zachowują tę długość i schema1;
 wszystkie wcześniejsze reguły są odrzucane nawet z poprawną checksumą,
 bez migracji i bez nadpisania backupu.
 
@@ -21,7 +23,7 @@ achievementów, ustawień ani stanu okna. To dane wewnętrzne, bez tekstów dla 
 ## Kontrakt wartościowy
 
 `RunCheckpoint` zawiera `seed`, `sector_number`, `player_integrity`, `reserve`,
-`overload_debt`, `modules` i `entry_debt_pulse`. Dług jest resztą **po** jednej
+`overload_debt`, `modules`, `entry_debt_pulse` i `start_config`. Dług jest resztą **po** jednej
 próbie spawnu na granicy. Flaga przechowuje istnienie opłaconego impulsu.
 Odtworzenie ustawia ten impuls bez ponownego wywołania `spawn_debt_pulse`.
 
@@ -29,6 +31,7 @@ Zakresy: każdy seed uint64, sektor1..6, HP1..3, rezerwa0..3, dług uint32.
 Przy braku impulsu dług musi wynosić0..2 (nowy sektor ma wolne wejście).
 Przy impulsie reszta mieści się w0..UINT32_MAX−3; doliczenie wcześniejszego
 kosztu3 nie może przepełniać. Moduły to dowolny legalny zestaw z katalogu1..12.
+start_config musi należeć do katalogu zaimplementowanych konfiguracji.
 Nie dowodzimy historii zdobywania zasobów ani modułów.
 
 `restore_checkpoint` odrzuca niepoprawne zakresy, a następnie buduje niezależny
@@ -56,6 +59,7 @@ nie będzie ponownie przechwytywać stanu po ruchu.
 | terminal_rotation_used | false |
 | first_overdrive_used | false; true jest odrzucane przez capture |
 | reward_claimed | false |
+| start_config | Bezpośrednio z checkpointu (bajt30) |
 | RunPhase, SectorOutcome | Wyliczane, nigdy serializowane; playing / ongoing |
 
 Tabela obejmuje wszystkie obecne pola GameState i RunState. Bez utrwalonego RNG
@@ -74,7 +78,7 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | --- | --- | --- | --- |
 | 0 | 4 | Magic | 43 43 43 50 (hex, ASCII CCCP) |
 | 4 | 4 | schema_version | 1 |
-| 8 | 4 | run_rules_version | 15 |
+| 8 | 4 | run_rules_version | 16 |
 | 12 | 8 | root seed | Pełny uint64 |
 | 20 | 1 | sector_number | 1..6 |
 | 21 | 1 | player_integrity | 1..3 |
@@ -82,7 +86,8 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | 23 | 4 | overload_debt | Reszta po spawnie, według zakresów powyżej |
 | 27 | 2 | modules | Znane ID1..12 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
-| 30 | 2 | reserved | 00 00 |
+| 30 | 1 | start_config | Znane StartConfigId; obecnie wyłącznie 01 |
+| 31 | 1 | reserved | 00 |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
 
 FNV-1a64: start14695981039346656037; dla każdego bajtu XOR, potem mnożenie
@@ -93,10 +98,10 @@ seed, wszystkie pola i bajty zarezerwowane. Historyczne reguły1 odtwarzały
 wyłącznie normalne sektory. Reguły2 odtwarzają trzeci sektor z trzema
 odbiornikami i progiem3, zachowując zwykły generator dla sektorów1/2.
 Reguły3 rozszerzyły run do sześciu sektorów: 1..5 są normalne,
-a wyłącznie 6 jest finałem. Bieżące reguły15 zachowują tę topologię,
+a wyłącznie 6 jest finałem. Bieżące reguły16 zachowują tę topologię,
 wiążąc również obecny katalog i reguły modułów. Wersje checkpointu
 i replay są odrębne; obecny hashv8/replay25 nie jest checksumą checkpointu.
-Niezależny oracle: `tools/checkpoint/vectors.cjs 15`.
+Niezależny oracle: `tools/checkpoint/vectors.cjs 16` (dla reguł<16 bajt30 = 0).
 
 ## Odrzucanie i dowody
 
@@ -121,4 +126,4 @@ checkpoint, źródło none/main/backup, surowy main_error oraz optional backup_e
 (pusty = nie próbowano). Błąd backupu daje brak checkpointu z obiema diagnozami;
 ERROR_INVALID_DATA oznacza uszkodzenie, dwa NOT_FOUND oznaczają brak,
 pozostałe kody oznaczają IO. Nie ma naprawy, nadpisania lub promocji temp.
-Schema1/run_rules15; odczyt backupu nie zmienia żadnego pliku.
+Schema1/run_rules16; odczyt backupu nie zmienia żadnego pliku.

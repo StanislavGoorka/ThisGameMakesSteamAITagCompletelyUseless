@@ -14,6 +14,8 @@ struct RunCheckpoint
     std::uint32_t overload_debt;
     ModuleLoadout modules;
     bool entry_debt_pulse;
+    // Byte 30 since run_rules16; restore never falls back to the default.
+    StartConfigId start_config{StartConfigId::baseline};
 
     constexpr bool operator==(const RunCheckpoint &) const noexcept = default;
 };
@@ -21,7 +23,8 @@ struct RunCheckpoint
 [[nodiscard]] constexpr bool
 is_checkpoint_valid(const RunCheckpoint &checkpoint) noexcept
 {
-    return checkpoint.player_integrity >= 1 &&
+    return is_known_start_config(checkpoint.start_config) &&
+           checkpoint.player_integrity >= 1 &&
            checkpoint.player_integrity <= GameState::initial_player_integrity &&
            checkpoint.reserve <= GameState::reserve_limit &&
            (checkpoint.entry_debt_pulse
@@ -47,8 +50,11 @@ restore_checkpoint(const RunCheckpoint &checkpoint)
     // This pulse was already paid for. Never charge debt again on resume.
     if (checkpoint.entry_debt_pulse)
         state.pulses.push_back({*EntityId::from_value(0), *state.sector_entry});
-    return RunState{checkpoint.seed, checkpoint.sector_number, std::move(state),
-                    false};
+    return RunState{.seed = checkpoint.seed,
+                    .sector_number = checkpoint.sector_number,
+                    .sector = std::move(state),
+                    .reward_claimed = false,
+                    .start_config = checkpoint.start_config};
 }
 
 [[nodiscard]] inline std::optional<RunCheckpoint>
@@ -60,7 +66,8 @@ capture_checkpoint(const RunState &run)
                              run.sector.reserve,
                              run.sector.overload_debt,
                              run.sector.modules,
-                             !run.sector.pulses.empty()};
+                             !run.sector.pulses.empty(),
+                             run.start_config};
     const auto restored = restore_checkpoint(checkpoint);
     if (!restored)
         return std::nullopt;

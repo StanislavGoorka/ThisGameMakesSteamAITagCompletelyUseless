@@ -20,7 +20,7 @@ bool cases()
             if (encode_checkpoint(v.checkpoint) != v.bytes)
                 return false;
         }
-        for (int field = 0; field < 7; ++field)
+        for (int field = 0; field < 9; ++field)
         {
             auto invalid = before;
             if (field == 0)
@@ -43,6 +43,10 @@ bool cases()
                 invalid.overload_debt = UINT32_MAX - 2;
                 invalid.entry_debt_pulse = true;
             }
+            if (field == 7)
+                invalid.start_config = static_cast<StartConfigId>(0);
+            if (field == 8)
+                invalid.start_config = static_cast<StartConfigId>(2);
             const auto snapshot = invalid;
             for (int repeat = 0; repeat < 2; ++repeat)
                 if (encode_checkpoint(invalid) || invalid != snapshot ||
