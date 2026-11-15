@@ -1,5 +1,7 @@
 # Testy i bramki jakości
 
+P087-08: presentation_difficulty_text na rzeczywistym rejestrze developer — dokładnie bity1/2/4 mają tekst, każdy z prefiksem [AI PLACEHOLDER] i unikalną wartością, usunięty rekord się nie formatuje; session_lines dla masek0..7 × ekranów: na starcie/wyniku etykieta konfiguracji i etykiety aktywnych bitów w porządku katalogu, w runie i dla nieznanej konfiguracji nic; audience public odrzuca rejestr. Test-PublicContent.ps1 9/9 PASS; Validate-PublicContent.ps1 kod1 (oczekiwana odmowa placeholderów).
+
 P087-07: application_session_flow (seedy0/1/MAX): wybór maski domyślnie0, cykl 1..7→0 i wstecz 7..0 bez zmiany runu i konfiguracji; wybór konfiguracji nie zmienia maski; confirm startuje start_run(seed, ID2, maska5) i zużywa wybory; w runie i przy nagrodzie odmowa; zwykły restart zachowuje maskę5, nowy wybór daje maskę6; zużyty wybór nie przenosi się na inny run.
 
 P087-06: core_heavy_overdrive_debt — overdrive dla masek0..7 × długów 0/5/MAX−3/MAX−2/MAX−1/MAX × zwolnienia first_overdrive_debt (nieużyte/użyte): koszt 0/1/2 liczony niezależnie, odmowa bez mutacji przy przepełnieniu, is_command_legal zgodny; pełna tura z podglądem; ID3 × seedy0/1/MAX: jeden overdrive z bitem daje dług4, wejście sektora2 tworzy jeden impuls i resztę1 (bez bitu reszta0), bez overdrive brak impulsu i dług2, granica round-trip przez checkpoint; maski4/7 dla ID1..3: bajt31 round-trip i restart. Nowy wektor checkpointu (seed13, sektor2, ID3, maska7, opłacony impuls); korpus integracyjny dopuszcza bajt31 ≤ 7; dekoder odrzuca 8/9/16/128/255.

@@ -206,6 +206,24 @@
       "source_asset_id": null
     },
     {
+      "id": "difficulty-short-turns",
+      "value": "[AI PLACEHOLDER] Modifier: 32 turns per sector.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "difficulty-lean-delivery",
+      "value": "[AI PLACEHOLDER] Modifier: deliveries restore 1 less reserve.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "difficulty-heavy-debt",
+      "value": "[AI PLACEHOLDER] Modifier: overdrive adds 2 debt.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "checkpoint-corrupt",
       "value": "[AI PLACEHOLDER] Saved run is damaged and was not loaded.",
       "status": "ai_placeholder",

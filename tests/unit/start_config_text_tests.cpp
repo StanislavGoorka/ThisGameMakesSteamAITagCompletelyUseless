@@ -26,7 +26,7 @@ int main()
         for (const auto screen :
              {SessionScreen::start, SessionScreen::run, SessionScreen::result})
         {
-            const auto lines = presentation::session_lines(screen, config);
+            const auto lines = presentation::session_lines(screen, config, {});
             const bool shown = text && screen != SessionScreen::run;
             if (lines.size() != (shown ? 1u : 0u) ||
                 (shown && (lines[0].id != *text || lines[0].number)))

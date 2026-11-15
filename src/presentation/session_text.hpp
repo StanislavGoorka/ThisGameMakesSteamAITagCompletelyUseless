@@ -42,14 +42,38 @@ start_config_text_id(StartConfigId id) noexcept
     return std::nullopt;
 }
 
+// Catalog projection: one registered working text ID per difficulty modifier
+// bit. Unknown values have no text; nothing shows a raw bit.
+[[nodiscard]] constexpr std::optional<std::string_view>
+difficulty_modifier_text_id(DifficultyModifier modifier) noexcept
+{
+    switch (modifier)
+    {
+    case DifficultyModifier::short_turn_limit:
+        return "difficulty-short-turns";
+    case DifficultyModifier::lean_delivery:
+        return "difficulty-lean-delivery";
+    case DifficultyModifier::heavy_overdrive_debt:
+        return "difficulty-heavy-debt";
+    }
+    return std::nullopt;
+}
+
 // The start and result screens name the configuration the next confirm
-// starts; the run screen shows none.
-[[nodiscard]] inline std::vector<TextLine> session_lines(SessionScreen screen,
-                                                         StartConfigId selected)
+// starts, then each active modifier in catalog order; the run screen shows
+// none. The empty mask adds no line.
+[[nodiscard]] inline std::vector<TextLine>
+session_lines(SessionScreen screen, StartConfigId selected,
+              DifficultyModifiers modifiers)
 {
     const auto id = start_config_text_id(selected);
     if (screen == SessionScreen::run || !id)
         return {};
-    return {TextLine{*id, std::nullopt}};
+    std::vector<TextLine> lines{TextLine{*id, std::nullopt}};
+    for (const auto modifier : difficulty_modifier_catalog)
+        if (const auto text = difficulty_modifier_text_id(modifier);
+            text && modifiers.contains(modifier))
+            lines.push_back(TextLine{*text, std::nullopt});
+    return lines;
 }
 } // namespace closed_circuit::presentation

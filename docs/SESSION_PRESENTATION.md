@@ -14,6 +14,11 @@ P087-07: osobny wybór maski modyfikatorów — selected_modifiers(run) zwraca
 wybór albo maskę runu, select_next_modifiers/select_previous_modifiers
 cyklicznie po maskach0..7 rosnąco wyłącznie na ekranie startu/wyniku; confirm
 startuje wybraną konfigurację z wybraną maską i czyści oba wybory.
+P087-08: difficulty_modifier_text_id rzutuje bity 1/2/4 na wpisy
+difficulty-short-turns/-lean-delivery/-heavy-debt (robocze [AI PLACEHOLDER]);
+session_lines na ekranie startu/wyniku dodaje po etykiecie konfiguracji
+etykiety aktywnych bitów wybranej maski w porządku katalogu; maska0 i ekran
+runu nie dodają linii. Publiczny build ich odmawia.
 P086-06: SessionFlow przechowuje wybór; select_next/select_previous cyklicznie
 po katalogu wyłącznie na ekranie startu/wyniku, selected(run) bez wyboru zwraca
 konfigurację runu, a confirm startuje wybór i go czyści.
