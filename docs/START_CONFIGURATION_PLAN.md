@@ -13,7 +13,8 @@ i start_run(seed, config). P086-02 zapisuje ID w bajcie30 checkpointu
 (run_rules16); ID spoza katalogu jest odrzucane. P086-03: restart w
 SessionFlow zachowuje konfigurację runu. P086-04: ID2 preinstalled_range
 działa (rezerwa0, moduł ID1) i jest w katalogu. P086-05: ID3 charged_debt
-(rezerwa3, dług2) działa; core ma komplet trzech konfiguracji.
+(rezerwa3, dług2) działa; core ma komplet trzech konfiguracji. P086-06:
+model wyboru w SessionFlow (cykl, bramka ekranu, confirm czyści wybór).
 
 ## Konfiguracje
 

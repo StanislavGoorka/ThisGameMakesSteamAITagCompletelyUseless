@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P086-06: application_session_flow (seedy0/1/MAX): cykl wyboru 1→2→3→1
+i odwrotnie bez mutacji runu, confirm startuje wybrane ID i czyści wybór,
+zwykły restart zachowuje ID runu, odmowa w runie i przy nagrodzie, nieznane
+ID runu daje pierwszy/ostatni wpis katalogu.
+
 P086-05: core_run_start dla 257 seedów: ID3 równe ID1 poza rezerwą3
 i długiem2; overdrive w sektorze1 daje dług3, a advance_run dokładnie jeden
 impuls na wejściu sektora2 i resztę0; bez overdrive dług2 bez impulsu.

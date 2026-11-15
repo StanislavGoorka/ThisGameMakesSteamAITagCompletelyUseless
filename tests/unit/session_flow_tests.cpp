@@ -5,6 +5,85 @@
 #include <limits>
 using namespace closed_circuit;
 
+namespace
+{
+// Selection model: canonical cycle, screen gating and confirm.
+int selection(RunSeed seed)
+{
+    const auto fresh = start_run(seed);
+    auto run = fresh;
+    SessionFlow flow;
+    if (flow.selected(run) != StartConfigId::baseline)
+        return 20;
+    const StartConfigId order[]{StartConfigId::preinstalled_range,
+                                StartConfigId::charged_debt,
+                                StartConfigId::baseline};
+    for (const auto expected : order)
+        if (!flow.select_next(run) || flow.selected(run) != expected ||
+            !test::same_run(run, fresh))
+            return 21;
+    const StartConfigId reverse[]{StartConfigId::charged_debt,
+                                  StartConfigId::preinstalled_range,
+                                  StartConfigId::baseline};
+    for (const auto expected : reverse)
+        if (!flow.select_previous(run) || flow.selected(run) != expected)
+            return 22;
+    // Start the selected ID3; the choice is consumed by confirm.
+    if (!flow.select_previous(run) ||
+        flow.selected(run) != StartConfigId::charged_debt ||
+        !flow.confirm(run) ||
+        !test::same_run(run, *start_run(seed, StartConfigId::charged_debt)) ||
+        flow.selected(run) != StartConfigId::charged_debt)
+        return 23;
+    // The consumed choice never overrides another run's configuration.
+    auto other = fresh;
+    other.sector.player_integrity = 0;
+    SessionFlow consumed{true};
+    if (!consumed.select_next(other) || !consumed.confirm(other) ||
+        other.start_config != StartConfigId::preinstalled_range)
+        return 29;
+    auto replaced = fresh;
+    replaced.sector.player_integrity = 0;
+    if (consumed.selected(replaced) != StartConfigId::baseline ||
+        !consumed.confirm(replaced) || !test::same_run(replaced, fresh))
+        return 30;
+    // During a run and while a reward waits, selection is refused.
+    const auto playing = run;
+    if (flow.select_next(run) || flow.select_previous(run) ||
+        flow.selected(run) != StartConfigId::charged_debt ||
+        !test::same_run(run, playing))
+        return 24;
+    auto reward = run;
+    reward.sector.player_position = *reward.sector.sector_exit;
+    reward.sector.powered_nodes = reward.sector.receiver_nodes;
+    if (run_phase(reward) != RunPhase::choosing_reward ||
+        flow.select_next(reward) ||
+        flow.selected(reward) != StartConfigId::charged_debt)
+        return 25;
+    // A plain restart after the result keeps ID3; a new choice switches.
+    run.sector.player_integrity = 0;
+    if (!flow.confirm(run) || run.start_config != StartConfigId::charged_debt)
+        return 26;
+    run.sector.player_integrity = 0;
+    if (!flow.select_next(run) ||
+        flow.selected(run) != StartConfigId::baseline || !flow.confirm(run) ||
+        !test::same_run(run, fresh))
+        return 27;
+    // An unknown run ID: next picks the first, previous the last entry.
+    auto unknown = fresh;
+    unknown.start_config = static_cast<StartConfigId>(4);
+    SessionFlow first, last;
+    if (!first.select_next(unknown) ||
+        first.selected(unknown) != StartConfigId::baseline ||
+        !last.select_previous(unknown) ||
+        last.selected(unknown) != StartConfigId::charged_debt ||
+        !last.confirm(unknown) ||
+        unknown.start_config != StartConfigId::charged_debt)
+        return 28;
+    return 0;
+}
+} // namespace
+
 int main()
 {
     for (auto seed : {RunSeed{0}, RunSeed{1}, RunSeed{UINT64_MAX}})
@@ -116,5 +195,8 @@ int main()
                 return 6;
         }
     }
+    for (auto seed : {RunSeed{0}, RunSeed{1}, RunSeed{UINT64_MAX}})
+        if (const auto code = selection(seed))
+            return code;
     return 0;
 }
