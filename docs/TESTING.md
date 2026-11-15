@@ -1,5 +1,7 @@
 # Testy i bramki jakości
 
+P087-09: windows_session_window w rzeczywistym HWND (cztery scenariusze): na starcie VK_UP pokazuje difficulty-short-turns obok etykiety konfiguracji, drugie VK_UP difficulty-lean-delivery, dwa VK_DOWN wracają do maski0 bez etykiet modyfikatorów i bez zmiany runu, powtórzony key-down (bit30) nie zmienia wyboru; Enter startuje maskę0. Na wyniku VK_LEFT (ID3) i VK_DOWN (zawinięcie do maski7) pokazują trzy etykiety, Enter startuje start_run(seed, ID3, maska7). W runie VK_UP/VK_DOWN pozostają ruchem (scenariusz zwycięstwa). VK_UP usunięto z listy klawiszy ignorowanych na tych ekranach.
+
 P087-08: presentation_difficulty_text na rzeczywistym rejestrze developer — dokładnie bity1/2/4 mają tekst, każdy z prefiksem [AI PLACEHOLDER] i unikalną wartością, usunięty rekord się nie formatuje; session_lines dla masek0..7 × ekranów: na starcie/wyniku etykieta konfiguracji i etykiety aktywnych bitów w porządku katalogu, w runie i dla nieznanej konfiguracji nic; audience public odrzuca rejestr. Test-PublicContent.ps1 9/9 PASS; Validate-PublicContent.ps1 kod1 (oczekiwana odmowa placeholderów).
 
 P087-07: application_session_flow (seedy0/1/MAX): wybór maski domyślnie0, cykl 1..7→0 i wstecz 7..0 bez zmiany runu i konfiguracji; wybór konfiguracji nie zmienia maski; confirm startuje start_run(seed, ID2, maska5) i zużywa wybory; w runie i przy nagrodzie odmowa; zwykły restart zachowuje maskę5, nowy wybór daje maskę6; zużyty wybór nie przenosi się na inny run.

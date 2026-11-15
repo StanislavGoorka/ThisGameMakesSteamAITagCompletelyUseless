@@ -66,9 +66,9 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
                          repeat % 2 ? 1LL << 30 : 0);
         SendMessageW(hwnd, WM_KEYUP, VK_RETURN, 0);
     };
-    // Left/right select the start configuration; these keys stay inert.
-    const std::array<WPARAM, 6> ignored{VK_SPACE, VK_TAB, VK_UP,
-                                        'R',      'O',    VK_ESCAPE};
+    // Left/right select the start configuration and up/down the modifiers;
+    // these keys stay inert.
+    const std::array<WPARAM, 5> ignored{VK_SPACE, VK_TAB, 'R', 'O', VK_ESCAPE};
     SetWindowPos(hwnd, nullptr, -32000, -32000, 800, 600,
                  SWP_NOACTIVATE | SWP_NOZORDER | SWP_SHOWWINDOW);
     UpdateWindow(hwnd);
@@ -112,6 +112,27 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         if (!shows_config() || shows("start-config-range") ||
             !test::same_run(session.state(), initial))
             return failed("start select left");
+        // Up/down cycle the modifier labels below the configuration label.
+        tap(VK_UP);
+        if (!shows("difficulty-short-turns") || !shows_config() ||
+            shows("difficulty-lean-delivery") ||
+            !test::same_run(session.state(), initial))
+            return failed("start modifiers up");
+        tap(VK_UP);
+        if (!shows("difficulty-lean-delivery") ||
+            shows("difficulty-short-turns"))
+            return failed("start modifiers second up");
+        tap(VK_DOWN);
+        tap(VK_DOWN);
+        if (shows("difficulty-short-turns") ||
+            shows("difficulty-lean-delivery") || !shows_config() ||
+            !test::same_run(session.state(), initial))
+            return failed("start modifiers down");
+        // A repeated key-down is not a new press.
+        SendMessageW(hwnd, WM_KEYDOWN, VK_UP, 1LL << 30);
+        SendMessageW(hwnd, WM_KEYUP, VK_UP, 0);
+        if (shows("difficulty-short-turns"))
+            return failed("start modifiers repeat");
         held_enter();
         run = start_run(initial.seed);
         if (session.screen() != SessionScreen::run ||
@@ -175,13 +196,23 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         if (FAILED(session.error()) || session.view().showing_board())
             return failed("result repaint");
     }
-    // On the result screen left wraps to ID3, and Enter starts that choice.
+    // On the result screen left wraps to ID3 and down wraps to all three
+    // modifiers; Enter starts both choices.
     tap(VK_LEFT);
     if (!shows("start-config-charged") || shows_config() ||
         !test::same_run(session.state(), run))
         return failed("result select");
+    tap(VK_DOWN);
+    if (!shows("difficulty-short-turns") ||
+        !shows("difficulty-lean-delivery") || !shows("difficulty-heavy-debt") ||
+        !shows("start-config-charged") || !test::same_run(session.state(), run))
+        return failed("result modifiers");
     held_enter();
-    const auto fresh = *start_run(initial.seed, StartConfigId::charged_debt);
+    const auto all_modifiers = DifficultyModifiers::from_value(7);
+    if (!all_modifiers)
+        return failed("modifier mask");
+    const auto fresh =
+        *start_run(initial.seed, StartConfigId::charged_debt, *all_modifiers);
     if (!test::same_run(session.state(), fresh) ||
         session.screen() != SessionScreen::run ||
         !session.view().showing_board() || session.selection().planning() ||

@@ -43,3 +43,8 @@ P086-08: na ekranie startu i wyniku strzałki lewo/prawo (InputKey::west/east)
 wybierają konfigurację startu przez SessionFlow::select_previous/select_next;
 Enter startuje wybór. W runie strzałki nadal oznaczają ruch, przy nagrodzie
 kursor nagrody. Pozostałe klawisze na tych ekranach są ignorowane.
+
+P087-09: na ekranie startu i wyniku strzałki góra/dół (InputKey::north/south)
+wybierają maskę modyfikatorów trudności przez
+SessionFlow::select_next_modifiers/select_previous_modifiers; Enter startuje
+wybraną konfigurację z wybraną maską. W runie góra/dół nadal oznaczają ruch N/S.

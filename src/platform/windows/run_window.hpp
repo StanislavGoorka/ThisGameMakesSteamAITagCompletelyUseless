@@ -182,11 +182,16 @@ class RunWindow final : public WindowCommandHandler
             {
                 selection_.reset();
                 reward_selection_.reset();
-                // Left/right pick the configuration the next confirm starts.
+                // Left/right pick the configuration the next confirm starts,
+                // up/down the difficulty modifiers it starts with.
                 if (*key == InputKey::east)
                     static_cast<void>(flow_.select_next(run_));
                 else if (*key == InputKey::west)
                     static_cast<void>(flow_.select_previous(run_));
+                else if (*key == InputKey::north)
+                    static_cast<void>(flow_.select_next_modifiers(run_));
+                else if (*key == InputKey::south)
+                    static_cast<void>(flow_.select_previous_modifiers(run_));
                 else if (*key == InputKey::confirm)
                 {
                     auto next = run_;
