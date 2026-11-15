@@ -3073,10 +3073,120 @@
             "id": "P087",
             "phase": "M7",
             "title": "Rozbij trudności",
-            "scope": "Wyłącznie zaplanuj dzieci dla trzech modyfikatorów trudności.",
-            "acceptance": "Jeden modyfikator na zadanie, testy i brak wymagania nowych assetów bez zgody.",
+            "scope": "Wyłącznie zaplanuj oddzielne dzieci dla trzech modyfikatorów trudności według DIFFICULTY_MODIFIER_PLAN: identyfikator, trwałość, restart, po jednym dziecku na modyfikator, wybór, prezentacja i integracja. Bez implementacji.",
+            "acceptance": "DIFFICULTY_MODIFIER_PLAN opisuje trzy modyfikatory, niezmienniki checkpointu, relację z konfiguracjami startu i testy +/−; jeden modyfikator na zadanie, trwałość przed regułami, brak wymagania nowych assetów bez zgody; P088 wymaga ostatniej integracji.",
             "depends_on": [
                 "P086-09"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-01",
+            "phase": "M7",
+            "title": "Identyfikator modyfikatorów trudności",
+            "scope": "Tylko silny typ DifficultyModifiers (maska uint8) z pustym katalogiem zaimplementowanych bitów, pole GameState::difficulty dziedziczone w przejściu sektora i start_run(seed, config, modifiers); start_run(seed, config) deleguje do maski0. Bez checkpointu, UI i reguł modyfikatorów.",
+            "acceptance": "Maska0 daje identyczny stan jak dotąd dla korpusu seedów i ID1..3; bity 1, 2, 4, 8 i 0xFF odrzucone przez fabrykę; porównania stanu i state_hash uwzględniają pole z jawną decyzją wersji hash/replay. Debug/Release, clang-format.",
+            "depends_on": [
+                "P087"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-02",
+            "phase": "M7",
+            "title": "Modyfikatory w checkpoincie",
+            "scope": "Tylko zapis maski modyfikatorów w ostatnim zarezerwowanym bajcie31 checkpointu i jawna nowa wersja run_rules17 z niezależnymi wektorami (vectors.cjs). Bez reguł modyfikatorów i UI.",
+            "acceptance": "Round-trip maski0 dla ID1..3; nieznane bity odrzucone; reguły16 odrzucane bez nadpisania backupu; schema1/40 bajtów zachowane; CHECKPOINT_FORMAT odnotowuje brak wolnych bajtów. Debug/Release.",
+            "depends_on": [
+                "P087-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-03",
+            "phase": "M7",
+            "title": "Restart z modyfikatorami",
+            "scope": "Tylko restart w SessionFlow używający maski modyfikatorów runu razem z jego konfiguracją. Bez wyboru i UI.",
+            "acceptance": "Restart po wyniku i po resume zachowuje maskę i StartConfigId; aktywny run nadal odmawia; maska0 bez zmian. Debug/Release.",
+            "depends_on": [
+                "P087-02"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-04",
+            "phase": "M7",
+            "title": "Modyfikator short_turn_limit",
+            "scope": "Tylko bit1 short_turn_limit w katalogu i sector_outcome: limit sektora32 tur zamiast48, także w finale. Bez innych modyfikatorów i UI.",
+            "acceptance": "Ukończenie na turze32 wygrywa; tura32 bez ukończenia to przeciążenie; stan po32 nigdy nie kończy; bez bitu granica48 bez zmian; podgląd zgodny z wynikiem; certyfikaty korpusu nadal ważne; checkpoint/restart zachowują bit. Debug/Release.",
+            "depends_on": [
+                "P087-03"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-05",
+            "phase": "M7",
+            "title": "Modyfikator lean_delivery",
+            "scope": "Tylko bit2 lean_delivery w katalogu i deliver_packet: dostawa przywraca o1 rezerwę mniej (0 bez modułu, 1 z delivery_reserve). Bez innych modyfikatorów i UI.",
+            "acceptance": "Rezerwa po dostawie +0 bez modułu, +1 z delivery_reserve, z limitem3; zasilenie odbiornika i delivery_debt_relief bez zmian; bez bitu +1/+2 jak dotąd; checkpoint/restart zachowują bit. Debug/Release.",
+            "depends_on": [
+                "P087-04"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-06",
+            "phase": "M7",
+            "title": "Modyfikator heavy_overdrive_debt",
+            "scope": "Tylko bit4 heavy_overdrive_debt w katalogu i overdrive_from_player: każdy naliczany overdrive dodaje2 długu. Bez zmiany progu3, spawnu długu, innych modyfikatorów i UI.",
+            "acceptance": "Overdrive +2 długu; first_overdrive_debt nadal zwalnia pierwszy; dług UINT32_MAX−1 odrzucony bez mutacji, UINT32_MAX−2 przyjęty; ID3 z bitem4: jeden overdrive daje impuls na wejściu sektora2 i resztę1, checkpoint bez impulsu nadal 0..2; bez bitu +1 jak dotąd. Debug/Release.",
+            "depends_on": [
+                "P087-05"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-07",
+            "phase": "M7",
+            "title": "Wybór modyfikatorów w sesji",
+            "scope": "Tylko wybór maski modyfikatorów w modelu SessionFlow (application). Bez tekstów, klawiszy i HWND.",
+            "acceptance": "Na ekranie startu/wyniku cykl po maskach z zaimplementowanych bitów w rosnącym porządku, domyślnie0, niezależnie od wyboru konfiguracji; w runie odmowa bez zmiany; confirm startuje wybraną konfigurację i maskę. Debug/Release.",
+            "depends_on": [
+                "P087-06"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-08",
+            "phase": "M7",
+            "title": "Robocze etykiety modyfikatorów",
+            "scope": "Tylko projekcja bit modyfikatora → ID tekstu, trzy wpisy texts.json z dokładnym prefiksem [AI PLACEHOLDER] i etykiety aktywnych bitów na ekranie startu/wyniku. Bez klawiszy, assetów i wskaźników graficznych.",
+            "acceptance": "Każdy bit katalogu ma wpis z prefiksem; brak wpisu = błąd testu; ekran pokazuje wyłącznie etykiety aktywnych bitów; Test-PublicContent odmawia placeholderów. Debug/Release; asset-intake.",
+            "depends_on": [
+                "P087-07"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-09",
+            "phase": "M7",
+            "title": "Klawisze wyboru modyfikatorów",
+            "scope": "Tylko mapowanie strzałek góra/dół (InputKey::north/south) na wybór maski w rzeczywistym HWND na ekranie startu/wyniku. Bez nowych typów klawiszy i reguł.",
+            "acceptance": "Góra/dół zmieniają maskę tylko na ekranie startu/wyniku; Enter startuje konfigurację z maską; repeat, run, nagroda i strzałki lewo/prawo bez zmian. Debug/Release; bez obserwacji pulpitu (P104).",
+            "depends_on": [
+                "P087-08"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P087-10",
+            "phase": "M7",
+            "title": "Integracja modyfikatorów trudności",
+            "scope": "Tylko dowód: pełne runy dla każdego modyfikatora i maski7 przez checkpoint/backup, restart, achievementy i rzeczywiste HWND oraz odmowa public dla nowych placeholderów. Bez nowych reguł, tekstów i assetów.",
+            "acceptance": "Dla każdego bitu i maski7 kilka root seedów kończy run; restore każdej granicy daje identyczne stany i oferty; achievementy jak dla maski0; HWND pokazuje oznaczone etykiety; Test-PublicContent odmawia. Debug/Release; bez obserwacji pulpitu (P104).",
+            "depends_on": [
+                "P087-09"
             ],
             "gate": null
         },
@@ -3087,7 +3197,7 @@
             "scope": "Wyłącznie zaplanuj dzieci dla siedmiu dodatkowych predykatów do 12.",
             "acceptance": "Każdy ma test +/−, reset i stabilne ID; tekst i ikona pozyskiwane osobno.",
             "depends_on": [
-                "P087"
+                "P087-10"
             ],
             "gate": null
         },
