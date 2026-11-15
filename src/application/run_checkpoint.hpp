@@ -16,6 +16,8 @@ struct RunCheckpoint
     bool entry_debt_pulse;
     // Byte 30 since run_rules16; restore never falls back to the default.
     StartConfigId start_config{StartConfigId::baseline};
+    // Byte 31 since run_rules17: only implemented modifier bits are valid.
+    DifficultyModifiers difficulty{};
 
     constexpr bool operator==(const RunCheckpoint &) const noexcept = default;
 };
@@ -24,6 +26,7 @@ struct RunCheckpoint
 is_checkpoint_valid(const RunCheckpoint &checkpoint) noexcept
 {
     return is_known_start_config(checkpoint.start_config) &&
+           DifficultyModifiers::from_value(checkpoint.difficulty.bits()) &&
            checkpoint.player_integrity >= 1 &&
            checkpoint.player_integrity <= GameState::initial_player_integrity &&
            checkpoint.reserve <= GameState::reserve_limit &&
@@ -47,6 +50,7 @@ restore_checkpoint(const RunCheckpoint &checkpoint)
     state.reserve = checkpoint.reserve;
     state.overload_debt = checkpoint.overload_debt;
     state.modules = checkpoint.modules;
+    state.difficulty = checkpoint.difficulty;
     // This pulse was already paid for. Never charge debt again on resume.
     if (checkpoint.entry_debt_pulse)
         state.pulses.push_back({*EntityId::from_value(0), *state.sector_entry});
@@ -67,7 +71,8 @@ capture_checkpoint(const RunState &run)
                              run.sector.overload_debt,
                              run.sector.modules,
                              !run.sector.pulses.empty(),
-                             run.start_config};
+                             run.start_config,
+                             run.sector.difficulty};
     const auto restored = restore_checkpoint(checkpoint);
     if (!restored)
         return std::nullopt;

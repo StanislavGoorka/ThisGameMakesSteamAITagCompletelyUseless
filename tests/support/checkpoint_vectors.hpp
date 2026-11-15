@@ -9,8 +9,8 @@ struct CheckpointVector
     RunCheckpoint checkpoint;
     CheckpointBytes bytes;
 };
-// Literal bytes calculated independently by tools/checkpoint/vectors.cjs, never
-// by encoder.
+// Literal bytes calculated independently by tools/checkpoint/vectors.cjs 17,
+// never by encoder.
 inline constexpr auto checkpoint_vectors = []
 {
     ModuleLoadout range, terminal, both;
@@ -27,34 +27,34 @@ inline constexpr auto checkpoint_vectors = []
                           {},
                           false,
                           StartConfigId::baseline},
-                         {67, 67, 67,  80,  1,   0,   0,   0,  16, 0,
-                          0,  0,  0,   0,   0,   0,   0,   0,  0,  0,
-                          1,  3,  2,   0,   0,   0,   0,   0,  0,  0,
-                          1,  0,  234, 134, 221, 218, 204, 43, 7,  90}},
+                         {67, 67, 67,  80, 1,  0,  0, 0,  17,  0,
+                          0,  0,  0,   0,  0,  0,  0, 0,  0,   0,
+                          1,  3,  2,   0,  0,  0,  0, 0,  0,   0,
+                          1,  0,  251, 71, 24, 12, 1, 10, 149, 249}},
         CheckpointVector{
             {RunSeed{UINT64_MAX}, *SectorNumber::from_value(sector_count), 1, 0,
              3, both, true, StartConfigId::baseline},
-            {67,  67,  67,  80,  1,   0,   0,  0, 16,  0,  0,   0,  255, 255,
-             255, 255, 255, 255, 255, 255, 6,  1, 0,   3,  0,   0,  0,   1,
-             2,   1,   1,   0,   90,  77,  62, 4, 209, 57, 170, 181}},
+            {67,  67,  67,  80,  1,   0,   0,   0,  17,  0,   0,   0, 255, 255,
+             255, 255, 255, 255, 255, 255, 6,   1,  0,   3,   0,   0, 0,   1,
+             2,   1,   1,   0,   95,  118, 128, 27, 244, 216, 163, 13}},
         CheckpointVector{
             {RunSeed{0x0123456789abcdefull}, *SectorNumber::from_value(2), 2, 3,
              2, terminal, false, StartConfigId::baseline},
-            {67,  67,  67,  80, 1,   0,   0,   0,  16,  0,   0,  0,  239, 205,
-             171, 137, 103, 69, 35,  1,   2,   2,  3,   2,   0,  0,  0,   2,
-             0,   0,   1,   0,  203, 223, 100, 67, 181, 164, 94, 160}},
+            {67,  67,  67,  80, 1,   0,  0,   0,  17, 0,  0,   0,  239, 205,
+             171, 137, 103, 69, 35,  1,  2,   2,  3,  2,  0,   0,  0,   2,
+             0,   0,   1,   0,  110, 80, 111, 88, 10, 67, 239, 225}},
         CheckpointVector{
             {RunSeed{1}, *SectorNumber::from_value(sector_count), 3, 1,
              UINT32_MAX - 3, range, true, StartConfigId::baseline},
-            {67, 67, 67, 80, 1,   0,  0,   0,  16,  0,   0,   0,   1,   0,
-             0,  0,  0,  0,  0,   0,  6,   3,  1,   252, 255, 255, 255, 1,
-             0,  1,  1,  0,  178, 96, 160, 63, 189, 139, 28,  86}},
+            {67, 67, 67, 80, 1,   0,  0,  0,   17, 0,   0,   0,   1,   0,
+             0,  0,  0,  0,  0,   0,  6,  3,   1,  252, 255, 255, 255, 1,
+             0,  1,  1,  0,  131, 28, 98, 233, 76, 124, 7,   246}},
         CheckpointVector{{RunSeed{42}, *SectorNumber::from_value(1), 3, 0, 0,
                           range, false, StartConfigId::preinstalled_range},
-                         {67, 67, 67,  80, 1,   0,   0,   0,   16,  0,
-                          0,  0,  42,  0,  0,   0,   0,   0,   0,   0,
-                          1,  3,  0,   0,  0,   0,   0,   1,   0,   0,
-                          2,  0,  142, 75, 103, 107, 213, 131, 137, 116}},
+                         {67, 67, 67, 80,  1,   0,   0,   0,   17, 0,
+                          0,  0,  42, 0,   0,   0,   0,   0,   0,  0,
+                          1,  3,  0,  0,   0,   0,   0,   1,   0,  0,
+                          2,  0,  43, 247, 174, 146, 149, 115, 10, 40}},
         CheckpointVector{{RunSeed{7},
                           *SectorNumber::from_value(1),
                           3,
@@ -63,9 +63,9 @@ inline constexpr auto checkpoint_vectors = []
                           {},
                           false,
                           StartConfigId::charged_debt},
-                         {67, 67, 67,  80,  1,  0,   0,   0,  16, 0,
-                          0,  0,  7,   0,   0,  0,   0,   0,  0,  0,
-                          1,  3,  3,   2,   0,  0,   0,   0,  0,  0,
-                          3,  0,  248, 182, 14, 100, 194, 64, 48, 221}}};
+                         {67, 67, 67,  80, 1,   0,  0,   0,  17, 0,
+                          0,  0,  7,   0,  0,   0,  0,   0,  0,  0,
+                          1,  3,  3,   2,  0,   0,  0,   0,  0,  0,
+                          3,  0,  205, 34, 244, 74, 137, 35, 78, 75}}};
 }();
 } // namespace closed_circuit::test

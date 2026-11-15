@@ -1,5 +1,6 @@
 #include "../support/checkpoint_vectors.hpp"
 #include "application/checkpoint_encode.hpp"
+#include <bit>
 #include <iostream>
 using namespace closed_circuit;
 static_assert(encode_checkpoint(test::checkpoint_vectors[0].checkpoint) ==
@@ -20,7 +21,7 @@ bool cases()
             if (encode_checkpoint(v.checkpoint) != v.bytes)
                 return false;
         }
-        for (int field = 0; field < 9; ++field)
+        for (int field = 0; field < 10; ++field)
         {
             auto invalid = before;
             if (field == 0)
@@ -47,6 +48,9 @@ bool cases()
                 invalid.start_config = static_cast<StartConfigId>(0);
             if (field == 8)
                 invalid.start_config = static_cast<StartConfigId>(4);
+            if (field == 9)
+                invalid.difficulty =
+                    std::bit_cast<DifficultyModifiers>(std::uint8_t{1});
             const auto snapshot = invalid;
             for (int repeat = 0; repeat < 2; ++repeat)
                 if (encode_checkpoint(invalid) || invalid != snapshot ||

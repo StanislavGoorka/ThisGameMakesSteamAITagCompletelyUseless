@@ -132,7 +132,7 @@ bool cases()
                     // An ID outside the catalog is refused instead of lost.
                     if (field == 16)
                         bad.start_config = static_cast<StartConfigId>(4);
-                    // Until the checkpoint stores modifiers, any is refused.
+                    // Unimplemented modifier bits are refused, never lost.
                     if (field == 17)
                         bad.sector.difficulty =
                             std::bit_cast<DifficultyModifiers>(std::uint8_t{1});

@@ -35,7 +35,7 @@ bool cases()
         extra.push_back(0);
         if (!rejected(extra))
             return false;
-        for (int scenario = 0; scenario < 20; ++scenario)
+        for (int scenario = 0; scenario < 24; ++scenario)
         {
             auto bad = v.bytes;
             if (scenario == 0)
@@ -65,8 +65,17 @@ bool cases()
                 bad[30] = 5;
             if (scenario == 19)
                 bad[30] = 255;
+            // Byte 31 holds modifier bits: none is implemented yet.
             if (scenario == 10)
                 bad[31] = 1;
+            if (scenario == 20)
+                bad[31] = 2;
+            if (scenario == 21)
+                bad[31] = 4;
+            if (scenario == 22)
+                bad[31] = 8;
+            if (scenario == 23)
+                bad[31] = 255;
             if (scenario == 11)
             {
                 bad[27] = 0;

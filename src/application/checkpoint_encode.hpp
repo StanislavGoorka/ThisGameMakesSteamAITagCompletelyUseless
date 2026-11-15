@@ -26,6 +26,7 @@ encode_checkpoint(const RunCheckpoint &checkpoint) noexcept
             bytes[27 + i] = static_cast<std::uint8_t>(*id);
     bytes[29] = static_cast<std::uint8_t>(checkpoint.entry_debt_pulse);
     bytes[30] = static_cast<std::uint8_t>(checkpoint.start_config);
+    bytes[31] = checkpoint.difficulty.bits();
     checkpoint_detail::put_le(
         bytes, 32, 8,
         checkpoint_detail::checksum(

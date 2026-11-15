@@ -9,7 +9,8 @@ początku; odblokowania nie są częścią P087.
 
 Stan: P087-01 dodało DifficultyModifiers (pusty katalog), GameState::difficulty,
 start_run(seed, config, modifiers) i dziedziczenie w przejściu; state_hash v9,
-replay26. capture odmawia niepustej maski do P087-02.
+replay26. P087-02: maska w bajcie31 checkpointu (run_rules17); restore/capture
+ją przenoszą, a niezaimplementowane bity są odrzucane.
 
 ## Modyfikatory
 

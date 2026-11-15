@@ -170,8 +170,8 @@ bool semantic_fields()
                 {
                     valid = valid_pair(bytes[27], bytes[28]);
                 }
-                // run_rules16: byte 30 is the start configuration (ID1..3
-                // implemented), byte 31 stays reserved.
+                // run_rules17: byte 30 is the start configuration (ID1..3
+                // implemented), byte 31 the modifier bits (none implemented).
                 if (offset == 30)
                     valid = value >= 1 && value <= 3;
                 if (offset == 31)
