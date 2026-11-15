@@ -92,7 +92,50 @@ wyszukaniem każdego ID w `src/` (P090-01).
 
 ## Napisy nagród i modułów
 
-Do uzupełnienia w P090-02.
+P090-02. Ekran nagrody to stan `RunPhase::choosing_reward` lub
+`ready_for_next` na ekranie run (`RunWindow::show_live`). `reward_lines`
+(`src/presentation/reward_text.hpp`) składa instrukcję, etykiety oferowanych
+modułów z numerem opcji i wybór; `module_text_id`
+(`src/presentation/module_text.hpp`) mapuje każdy moduł katalogu
+(`src/core/module_catalog.hpp`, dwanaście ID) na jeden wpis. Stan wszystkich
+pozycji: `placeholder`; wymagane pochodzenie jak w P090-01 (ludzki tekst UI
+ze źródła P091, wpis `approved` z `source_asset_id`).
+
+| ID texts.json | Miejsce użycia (plik → stan) | Stan |
+| --- | --- | --- |
+| reward-instruction | `reward_text.hpp` → pierwszy wiersz niepustej oferty | placeholder |
+| reward-selected | `reward_text.hpp` → wiersz wybranej opcji z numerem | placeholder |
+| reward-error | `run_window.hpp` `show_live` → odrzucone potwierdzenie bez wyboru | placeholder |
+| reward-continue | `run_window.hpp` `show_live` → `ready_for_next`, pusta oferta | placeholder |
+
+Pokrycie etykiet modułów (etykieta z numerem opcji jako sufiksem liczbowym):
+
+| ModuleId (wartość) | ID texts.json | Stan |
+| --- | --- | --- |
+| rotation_range (1) | reward-range | placeholder |
+| terminal_rotation (2) | reward-terminal | placeholder |
+| delivery_reserve (3) | reward-delivery-reserve | placeholder |
+| first_overdrive_debt (4) | reward-first-overdrive | placeholder |
+| packet_stride (5) | reward-packet-stride | placeholder |
+| pulse_cadence (6) | reward-pulse-cadence | placeholder |
+| powered_pulse_barrier (7) | reward-pulse-barrier | placeholder |
+| entry_insulation (8) | reward-entry-insulation | placeholder |
+| delivery_debt_relief (9) | reward-debt-relief | placeholder |
+| overdrive_range (10) | reward-overdrive-range | placeholder |
+| reverse_rotation (11) | reward-reverse-rotation | placeholder |
+| packet_priority (12) | reward-packet-priority | placeholder |
+
+Każdy moduł katalogu ma wpis; brak modułu bez etykiety. Braki (stan `brak`):
+
+| Ekran / stan | Obecne zachowanie (kod) | Brakująca pozycja |
+| --- | --- | --- |
+| Run: posiadane moduły | żaden ekran nie wyświetla loadoutu (brak odwołań w `src/presentation`, `src/platform`) | etykiety posiadanych modułów, jeśli projekt UI je pokaże |
+| Nagroda: nazwa i opis modułu | jedna etykieta łączy nazwę i efekt | rozdzielenie nazwy i opisu tylko, jeśli wymaga tego projekt UI lub sklep |
+| Ikony modułów | moduły nie mają grafiki | ocena w P090-04 |
+
+Zgodność sprawdzono wyszukaniem ID w `src/`: etykiety modułów występują
+wyłącznie w `module_text.hpp`, pozostałe cztery w `reward_text.hpp` lub
+`run_window.hpp` (P090-02).
 
 ## Achievementy
 
