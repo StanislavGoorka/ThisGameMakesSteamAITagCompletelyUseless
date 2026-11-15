@@ -54,6 +54,10 @@ struct SectorCompleted
 struct RunEnded
 {
     RunEndReason reason;
+    // The run's fixed start configuration and difficulty modifiers, so a
+    // predicate needs no history. Defaults describe the unmodified game.
+    StartConfigId start_config = StartConfigId::baseline;
+    DifficultyModifiers difficulty{};
     constexpr bool operator==(const RunEnded &) const noexcept = default;
 };
 

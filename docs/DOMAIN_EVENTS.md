@@ -18,7 +18,7 @@ wspólnym źródłem reguł. Zdarzenia to dane wewnętrzne, bez treści dla grac
 | 1 | ActionCommitted z pełną Command | Jedna zaakceptowana akcja, także wait |
 | 2 | PacketDelivered z NodeId celu | Faktyczna nowa dostawa pakietu |
 | 3 | SectorCompleted | Ukończenie sektora po zagrożeniach i koszcie tury |
-| 4 | RunEnded z RunEndReason | Koniec runu: won=1, death=2, overload=3 |
+| 4 | RunEnded z RunEndReason, StartConfigId i DifficultyModifiers runu | Koniec runu: won=1, death=2, overload=3; konfiguracja i maska od P088-03 (domyślnie ID1 i maska0) |
 
 Rodzaj wylicza payload, nie indeks wariantu. Nie przechowujemy drugiej,
 potencjalnie sprzecznej kopii rodzaju. Akcja zawiera cel obrotu/overdrive

@@ -146,5 +146,45 @@ int main()
         if (!check(lost.state, wait, {}, false, RunPhase::lost))
             return 1;
     }
+    // Every end carries the run's configuration and modifiers; the other
+    // events stay as they were. The last allowed turn follows the mask.
+    for (const auto config : start_config_catalog)
+        for (const unsigned bits : {0u, 1u, 7u})
+        {
+            const auto modifiers = DifficultyModifiers::from_value(bits);
+            if (!modifiers)
+                return 1;
+            auto run = fixture(sector_count);
+            run.start_config = config;
+            run.sector.difficulty = *modifiers;
+            run.sector.turns_taken = TurnIndex{(bits & 1) != 0 ? 31u : 47u};
+            run.sector.powered_nodes[7] = true;
+            const auto end = [&](RunEndReason reason) {
+                return DomainEventPayload{RunEnded{reason, config, *modifiers}};
+            };
+            if (!check(run, move,
+                       {ActionCommitted{move}, delivery, complete,
+                        end(RunEndReason::won)},
+                       true, RunPhase::won) ||
+                !check(run, wait,
+                       {ActionCommitted{wait}, delivery,
+                        end(RunEndReason::overload)},
+                       true, RunPhase::lost))
+                return 1;
+            run.sector.player_integrity = 1;
+            run.sector.pulses = {{*EntityId::from_value(7), node(1)}};
+            if (!check(
+                    run, move,
+                    {ActionCommitted{move}, delivery, end(RunEndReason::death)},
+                    true, RunPhase::lost))
+                return 1;
+            // A default end describes only the unmodified baseline run.
+            const auto plain = resolve_run_turn_events(run, move);
+            if (plain.events.empty() ||
+                (plain.events.back().payload ==
+                 DomainEventPayload{RunEnded{RunEndReason::death}}) !=
+                    (config == StartConfigId::baseline && bits == 0))
+                return 1;
+        }
     return 0;
 }

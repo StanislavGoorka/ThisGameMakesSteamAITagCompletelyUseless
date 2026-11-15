@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-03: application_run_turn_events dla ID1..3 × masek0/1/7 w ostatnim
+sektorze (tura31 przy bicie1, inaczej47): wygrana, przeciążenie i śmierć niosą
+RunEnded z konfiguracją i maską runu, pozostałe zdarzenia bez zmian; domyślny
+RunEnded opisuje tylko ID1 z maską0. application_event_dispatcher: ten sam
+klucz z inną konfiguracją lub maską daje conflict, dokładna kopia delivered.
+
 P088-02: application_profile_model sprawdza stałe AchievementId 6..12 i katalog
 zaimplementowanych ID (pięć, maska 0x1f); application_event_delivery: maska
 kandydatów z bitem5 lub 0x0fff nieprawidłowa; application_event_dispatcher:

@@ -233,6 +233,22 @@ bool full_stream()
                           event(2, 0, ActionCommitted{WaitCommand{}},
                                 sector_count)) != DispatchResult::out_of_order)
         return false;
+    // The whole payload identifies an occurrence: another configuration or
+    // modifier set under the same key conflicts, the exact copy is delivered.
+    const auto modifiers = DifficultyModifiers::from_value(1);
+    if (!modifiers)
+        return false;
+    for (const auto &other :
+         {RunEnded{RunEndReason::death, StartConfigId::charged_debt},
+          RunEnded{RunEndReason::death, StartConfigId::baseline, *modifiers}})
+        if (terminal.dispatch(scope(sector_count),
+                              event(1, 1, other, sector_count)) !=
+            DispatchResult::conflict)
+            return false;
+    if (terminal.dispatch(scope(sector_count),
+                          event(1, 1, RunEnded{RunEndReason::death},
+                                sector_count)) != DispatchResult::delivered)
+        return false;
     return terminal_evaluator.calls == 2;
 }
 int main()

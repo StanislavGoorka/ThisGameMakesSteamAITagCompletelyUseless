@@ -57,11 +57,13 @@ resolve_run_turn_events(const RunState &run, const Command &command)
     if (outcome == SectorOutcome::completed)
         append(SectorCompleted{});
     if (result.turn.phase == RunPhase::won)
-        append(RunEnded{RunEndReason::won});
+        append(RunEnded{RunEndReason::won, run.start_config,
+                        run.sector.difficulty});
     else if (result.turn.phase == RunPhase::lost)
         append(RunEnded{outcome == SectorOutcome::death
                             ? RunEndReason::death
-                            : RunEndReason::overload});
+                            : RunEndReason::overload,
+                        run.start_config, run.sector.difficulty});
     return result;
 }
 } // namespace closed_circuit
