@@ -11,9 +11,9 @@ assetów, a brak ich nie blokuje predykatów.
 Stan: P088 — podział. P088-01: profil schema2 (bity 0..11, odczyt v1/v2, zapis v2).
 P088-02: stałe ID6..12 i katalog zaimplementowanych ID. P088-03: RunEnded
 niesie start_config i difficulty. P088-04: ID6 swift_sector. P088-05/06: ID7
-won_preinstalled_range i ID8 won_charged_debt. P088-07/08: ID9
-won_short_turn_limit i ID10 won_lean_delivery. Następny jest P088-09
-(won_heavy_overdrive_debt).
+won_preinstalled_range i ID8 won_charged_debt. P088-07/08/09: ID9
+won_short_turn_limit, ID10 won_lean_delivery i ID11 won_heavy_overdrive_debt.
+Następny jest P088-10 (won_all_modifiers).
 
 ## Predykaty
 

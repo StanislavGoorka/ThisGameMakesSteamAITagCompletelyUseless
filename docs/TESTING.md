@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P088-09: application_mvp_achievement (won_heavy_overdrive_debt) — ID1..3 ×
+maski0..7 × powody × sektory × pochodzenia: bit10 wyłącznie przy zwycięstwie
+w ostatnim sektorze z bitem4, bit9 nadal tylko z bitem2; dispatch z retry
+tylko dla ID11 (0x32 → 0x432). windows_difficulty_run: w pełnych runach maski4
+i 7 zdobywają 0x400, pozostałe bity (bez 0x700) równe masce0.
+
 P088-08: application_mvp_achievement (won_lean_delivery) — ID1..3 × maski0..7
 × powody × sektory × pochodzenia: bit9 wyłącznie przy zwycięstwie w ostatnim
 sektorze z bitem2, bit8 nadal tylko z bitem1; dispatch z retry tylko dla ID10

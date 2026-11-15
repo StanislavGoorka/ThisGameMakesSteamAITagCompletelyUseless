@@ -65,9 +65,15 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
                     end->difficulty.contains(DifficultyModifier::lean_delivery)
                         ? 0x200
                         : 0;
+                // won_heavy_overdrive_debt: the run kept modifier bit 4.
+                const std::uint16_t heavy =
+                    end->difficulty.contains(
+                        DifficultyModifier::heavy_overdrive_debt)
+                        ? 0x400
+                        : 0;
                 return static_cast<std::uint16_t>(
                     (without_overdrive_ ? 20 : 16) | config | short_turns |
-                    lean);
+                    lean | heavy);
             }
         // swift_sector: completion within the first 16 turns of any sector.
         if (std::holds_alternative<SectorCompleted>(event.payload))
