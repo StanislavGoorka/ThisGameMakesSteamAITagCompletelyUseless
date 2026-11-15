@@ -54,8 +54,14 @@ class MvpAchievementEvaluator final : public AchievementEvaluator
                         ? 0x40
                     : end->start_config == StartConfigId::charged_debt ? 0x80
                                                                        : 0;
+                // won_short_turn_limit: the run kept modifier bit 1.
+                const std::uint16_t short_turns =
+                    end->difficulty.contains(
+                        DifficultyModifier::short_turn_limit)
+                        ? 0x100
+                        : 0;
                 return static_cast<std::uint16_t>(
-                    (without_overdrive_ ? 20 : 16) | config);
+                    (without_overdrive_ ? 20 : 16) | config | short_turns);
             }
         // swift_sector: completion within the first 16 turns of any sector.
         if (std::holds_alternative<SectorCompleted>(event.payload))

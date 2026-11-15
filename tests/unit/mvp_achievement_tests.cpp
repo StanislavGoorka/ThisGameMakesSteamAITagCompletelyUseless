@@ -390,11 +390,67 @@ bool won_charged_debt()
     return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
            sink.calls == calls;
 }
+bool won_short_turn_limit()
+{
+    // Only a final win of a run with modifier bit 1, whatever the other bits
+    // and the configuration, with either history origin.
+    for (const auto origin :
+         {RunHistoryOrigin::fresh_run, RunHistoryOrigin::restored_checkpoint})
+        for (unsigned bits = 0; bits <= 7; ++bits)
+            for (const auto reason : {RunEndReason::won, RunEndReason::death,
+                                      RunEndReason::overload})
+                for (int sector = 1; sector <= sector_count; ++sector)
+                {
+                    const auto modifiers =
+                        DifficultyModifiers::from_value(bits);
+                    if (!modifiers)
+                        return false;
+                    MvpAchievementEvaluator evaluator(origin);
+                    const unsigned result = evaluator.evaluate(event(
+                        RunEnded{reason, StartConfigId::baseline, *modifiers},
+                        1, 2, sector));
+                    const bool won =
+                        reason == RunEndReason::won && sector == sector_count;
+                    if (((result & 0x100) != 0) != (won && (bits & 1) != 0) ||
+                        ((result & 0x10) != 0) != won)
+                        return false;
+                }
+    // Dispatch retries only the failed ID9 and persists bit 8 once.
+    const auto short_turns = DifficultyModifiers::from_value(1);
+    if (!short_turns)
+        return false;
+    MvpAchievementEvaluator evaluator;
+    test::RecordingSink sink;
+    sink.fail_id = AchievementId::won_short_turn_limit;
+    const DeliveryScope scope{
+        RunSeed{1}, {1}, {1}, *SectorNumber::from_value(sector_count)};
+    EventDispatcher dispatcher(scope, evaluator, sink);
+    const auto won = event(
+        RunEnded{RunEndReason::won, StartConfigId::baseline, *short_turns}, 1,
+        2, sector_count);
+    if (dispatcher.dispatch(
+            scope, event(ActionCommitted{WaitCommand{}}, 1, 0, sector_count)) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope,
+                            event(SectorCompleted{}, 1, 1, sector_count)) !=
+            DispatchResult::delivered ||
+        dispatcher.dispatch(scope, won) != DispatchResult::retry ||
+        sink.profile.achievement_bits != 0x32)
+        return false;
+    sink.fail_id.reset();
+    if (dispatcher.dispatch(scope, won) != DispatchResult::delivered ||
+        sink.profile.achievement_bits != 0x132)
+        return false;
+    const auto calls = sink.calls;
+    return dispatcher.dispatch(scope, won) == DispatchResult::delivered &&
+           sink.calls == calls;
+}
 int main()
 {
     return delivery() && sector_completion() && without_overdrive() &&
                    reconfiguration() && completed_run() && swift_sector() &&
-                   won_preinstalled_range() && won_charged_debt()
+                   won_preinstalled_range() && won_charged_debt() &&
+                   won_short_turn_limit()
                ? 0
                : 1;
 }
