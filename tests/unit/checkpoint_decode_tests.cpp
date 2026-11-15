@@ -60,9 +60,9 @@ bool cases()
             if (scenario == 9)
                 bad[30] = 0;
             if (scenario == 17)
-                bad[30] = 3;
-            if (scenario == 18)
                 bad[30] = 4;
+            if (scenario == 18)
+                bad[30] = 5;
             if (scenario == 19)
                 bad[30] = 255;
             if (scenario == 10)

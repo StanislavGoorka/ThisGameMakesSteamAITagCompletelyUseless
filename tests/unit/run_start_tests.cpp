@@ -1,6 +1,7 @@
 #include "../support/run_checks.hpp"
 #include "core/run_reward.hpp"
 #include "core/run_start.hpp"
+#include "core/run_transition.hpp"
 #include "core/run_turn.hpp"
 #include <cstdlib>
 #include <iostream>
@@ -120,8 +121,8 @@ bool boundary_builder()
 }
 bool start_configs()
 {
-    // ID1 and ID2 are implemented; 3 stays reserved until its own step.
-    const auto known = [](unsigned raw) { return raw == 1 || raw == 2; };
+    // ID1..3 are implemented; every other byte is unknown.
+    const auto known = [](unsigned raw) { return raw >= 1 && raw <= 3; };
     for (unsigned raw = 0; raw <= UINT8_MAX; ++raw)
     {
         const auto parsed = start_config_from_value(raw);
@@ -135,7 +136,7 @@ bool start_configs()
     }
     if (start_config_from_value(-1) || start_config_from_value(256) ||
         start_config_from_value(INT64_MIN) ||
-        start_config_from_value(UINT64_MAX) || start_config_catalog.size() != 2)
+        start_config_from_value(UINT64_MAX) || start_config_catalog.size() != 3)
         return false;
     for (std::uint64_t index = 0; index <= 256; ++index)
     {
@@ -186,6 +187,45 @@ bool start_configs()
             run_phase(done) != RunPhase::ready_for_next ||
             module_offer(done.sector.modules, seed, 2)[0])
             return false;
+        // ID3 differs from ID1 only by reserve3 and debt2.
+        const auto charged = start_run(seed, StartConfigId::charged_debt);
+        auto charged_expected = implicit;
+        charged_expected.start_config = StartConfigId::charged_debt;
+        charged_expected.sector.reserve = 3;
+        charged_expected.sector.overload_debt = 2;
+        if (!charged || !test::same_run(*charged, charged_expected) ||
+            test::same_run(*charged, implicit))
+            return false;
+        // One overdrive reaches debt3: the next entry gets one paid pulse.
+        // Without it debt2 carries over and no pulse appears.
+        std::optional<NodeId> near;
+        for (int n = 0; n < 49 && !near; ++n)
+            if (implicit.sector.rotatable_nodes[n] &&
+                std::abs(n / 7 - entry / 7) + std::abs(n % 7 - entry % 7) == 1)
+                near = node(n);
+        if (!near)
+            return false;
+        const auto overdrive =
+            resolve_run_turn(*charged, OverdriveCommand{*near});
+        for (const bool used : {false, true})
+        {
+            auto finished = used ? overdrive.state : *charged;
+            if (used &&
+                (!overdrive.accepted || finished.sector.overload_debt != 3 ||
+                 finished.sector.reserve != 2))
+                return false;
+            finished.sector.player_position = *finished.sector.sector_exit;
+            finished.sector.powered_nodes = finished.sector.receiver_nodes;
+            finished.reward_claimed = true;
+            const auto next = advance_run(finished);
+            const auto &sector = next.state.sector;
+            if (!next.accepted || next.state.sector_number.value() != 2 ||
+                next.state.start_config != StartConfigId::charged_debt ||
+                sector.pulses.size() != (used ? 1u : 0u) ||
+                sector.overload_debt != (used ? 0u : 2u) ||
+                (used && sector.pulses[0].position != *sector.sector_entry))
+                return false;
+        }
     }
     return true;
 }

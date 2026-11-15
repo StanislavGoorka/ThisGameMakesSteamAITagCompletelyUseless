@@ -12,7 +12,8 @@ Stan: P086-01 dodało StartConfigId, katalog {ID1}, RunState::start_config
 i start_run(seed, config). P086-02 zapisuje ID w bajcie30 checkpointu
 (run_rules16); ID spoza katalogu jest odrzucane. P086-03: restart w
 SessionFlow zachowuje konfigurację runu. P086-04: ID2 preinstalled_range
-działa (rezerwa0, moduł ID1) i jest w katalogu; ID3 nadal zarezerwowane.
+działa (rezerwa0, moduł ID1) i jest w katalogu. P086-05: ID3 charged_debt
+(rezerwa3, dług2) działa; core ma komplet trzech konfiguracji.
 
 ## Konfiguracje
 
@@ -22,7 +23,7 @@ Tokeny to stabilne wewnętrzne identyfikatory, nie teksty gry.
 | --- | --- | --- | --- | --- | --- |
 | 1 / baseline | 3 | 2 | 0 | pusty | — (dokładnie obecny start) |
 | 2 / preinstalled_range | 3 | 0 | 0 | ID1 rotation_range | Jeden slot zajęty od startu, więc najwyżej jedna nagroda w runie; brak rezerwy na pierwsze overdrive |
-| 3 / charged_debt | 3 | 3 | 3 | pusty | Pełna rezerwa kosztem długu3, który daje dodatkowy impuls na wejściu sektora2 według zwykłej reguły długu |
+| 3 / charged_debt | 3 | 3 | 2 | pusty | Pełna rezerwa kosztem długu2: już pierwszy overdrive osiąga próg3 i daje dodatkowy impuls na wejściu następnego sektora według zwykłej reguły długu |
 
 Równorzędność oznacza tu: żadna konfiguracja nie dominuje innej w każdym
 parametrze, każda ma jawny koszt i każda zachowuje osiągalność zwycięstwa na
@@ -30,6 +31,11 @@ korpusie seedów. To hipoteza projektowa, nie pomiar balansu ani przyjemności.
 Wartości wolno skorygować osobnym krokiem z ADR, bez zmiany gatunku.
 Konfiguracja nie zmienia topologii sektorów, ofert dla danego loadoutu, limitu
 tur, liczby dostaw ani reguł modułów. ID2 korzysta z istniejącej reguły ID1.
+
+Korekta P086-05: ID3 startuje z długiem2, nie3. Checkpoint bez opłaconego
+impulsu dopuszcza wyłącznie dług0..2 (nowy sektor ma wolne wejście), więc
+dług3 na początku sektora1 nie dałby się zapisać. Dług2 zachowuje koszt
+bez zmiany reguły długu i formatu zapisu.
 
 ## Kolejność dzieci
 
@@ -42,7 +48,7 @@ Najpierw trwałość identyfikatora, dopiero potem konfiguracje inne niż ID1, a
 | P086-02 | Checkpoint zapisuje ID konfiguracji w dotąd zarezerwowanym bajcie; nowa wersja run_rules | Round-trip ID1, nieznane/niezaimplementowane ID i niezerowy ostatni bajt odrzucone; stare reguły odrzucane bez nadpisania backupu; schema1/40 bajtów zachowane |
 | P086-03 | Restart w `SessionFlow` używa `run.start_config` | Restart po wyniku i po resume zachowuje ID; aktywny run nadal odmawia; ID1 bez zmian |
 | P086-04 | Tylko ID2 preinstalled_range w katalogu i `start_run` | Start: rezerwa0, loadout {ID1}, zasięg2 od pierwszej tury; pierwsza oferta bez ID1 i najwyżej jedna nagroda; ID1 bez zmian; checkpoint/restart zachowują ID2 |
-| P086-05 | Tylko ID3 charged_debt w katalogu i `start_run` | Start: rezerwa3, dług3; wejście sektora2 tworzy jeden impuls i reszta0; zablokowany spawn zachowuje dług; ID1/2 bez zmian |
+| P086-05 | Tylko ID3 charged_debt w katalogu i `start_run` | Start: rezerwa3, dług2; po jednym overdrive wejście sektora2 tworzy jeden impuls i reszta0, bez overdrive brak impulsu; ID1/2 bez zmian |
 | P086-06 | Wybór konfiguracji w modelu sesji (application) | Na ekranie startu/wyniku cykl po zaimplementowanych ID w kanonicznym porządku, domyślnie ID1; w trakcie runu odmowa bez zmiany; confirm startuje wybrane ID |
 | P086-07 | Robocze etykiety i ekran startu | Jedna projekcja StartConfigId->ID tekstu, trzy wpisy texts.json z dokładnym prefiksem [AI PLACEHOLDER]; ekran startu pokazuje etykietę wybranej konfiguracji; brak wpisu = błąd testu; public odmawia |
 | P086-08 | Klawisze wyboru w rzeczywistym HWND | Istniejące klawisze nawigacji zmieniają wybór tylko na ekranie startu/wyniku; Enter startuje wybraną konfigurację; repeat i run bez zmian |

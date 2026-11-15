@@ -10,16 +10,18 @@
 namespace closed_circuit
 {
 // Stable internal IDs of start configurations, never player-facing labels.
-// Zero is not a configuration. START_CONFIGURATION_PLAN reserves 3.
+// Zero is not a configuration; START_CONFIGURATION_PLAN defines 1..3.
 enum class StartConfigId : std::uint8_t
 {
     baseline = 1,
-    preinstalled_range = 2
+    preinstalled_range = 2,
+    charged_debt = 3
 };
 
 // Only implemented configurations; a reserved ID is unknown until added here.
 inline constexpr std::array start_config_catalog{
-    StartConfigId::baseline, StartConfigId::preinstalled_range};
+    StartConfigId::baseline, StartConfigId::preinstalled_range,
+    StartConfigId::charged_debt};
 
 [[nodiscard]] constexpr bool is_known_start_config(StartConfigId id) noexcept
 {

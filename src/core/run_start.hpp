@@ -28,6 +28,13 @@ namespace closed_circuit
         state.reserve = 0;
         static_cast<void>(state.modules.add(ModuleId::rotation_range));
     }
+    if (config == StartConfigId::charged_debt)
+    {
+        // A full reserve costs debt2: the first overdrive reaches the pulse
+        // threshold. Debt3 would break the unpaid-entry checkpoint invariant.
+        state.reserve = GameState::reserve_limit;
+        state.overload_debt = 2;
+    }
     return RunState{.seed = seed,
                     .sector_number = number,
                     .sector = std::move(state),

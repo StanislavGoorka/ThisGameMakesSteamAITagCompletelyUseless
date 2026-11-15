@@ -1,6 +1,6 @@
 # Checkpoint granicy sektora — schema1, rules16
 
-P086-02: bieżące run_rules=16. Bajt30 zapisuje StartConfigId (ID1 baseline, od P086-04 także ID2 preinstalled_range; reguły pozostają 16, bo ID2 wcześniej było odrzucane), bajt31 pozostaje zarezerwowany 00. restore ustawia RunState::start_config z zapisu, a capture porównuje je z runem. Reguły15 i starsze są odrzucane bez nadpisania backupu, bo nie zapisywały konfiguracji. Schema1/40 bajtów i hashv8/replay25 bez zmian (replay nie obejmuje metadanych runu).
+P086-02: bieżące run_rules=16. Bajt30 zapisuje StartConfigId (ID1 baseline, od P086-04 także ID2 preinstalled_range, od P086-05 ID3 charged_debt; reguły pozostają 16, bo ID2 wcześniej było odrzucane), bajt31 pozostaje zarezerwowany 00. restore ustawia RunState::start_config z zapisu, a capture porównuje je z runem. Reguły15 i starsze są odrzucane bez nadpisania backupu, bo nie zapisywały konfiguracji. Schema1/40 bajtów i hashv8/replay25 bez zmian (replay nie obejmuje metadanych runu).
 
 Historyczne P085-19: run_rules=15, hashv8/replay25. ID1..12 zaimplementowane i dopuszczone do nagród; oferta zależy od root seedu i ukończonego sektora, więc checkpoint starszych reguł mógłby dać inne oferty i jest odrzucany bez nadpisania backupu. Replay obejmuje jeden sektor bez nagród i zachowuje wersję25. first_overdrive_used resetuje się do false; capture odrzuca true. Schema1/40 bajtów bez utraty danych.
 
@@ -86,7 +86,7 @@ Kodek pamięciowy sprawdza rozmiar przed czytaniem jakiegokolwiek pola.
 | 23 | 4 | overload_debt | Reszta po spawnie, według zakresów powyżej |
 | 27 | 2 | modules | Znane ID1..12 rosnąco; 00 wyłącznie na końcu |
 | 29 | 1 | entry_debt_pulse | 0 lub1 |
-| 30 | 1 | start_config | Znane StartConfigId; obecnie 01 lub 02 |
+| 30 | 1 | start_config | Znane StartConfigId 01..03 |
 | 31 | 1 | reserved | 00 |
 | 32 | 8 | checksum | FNV-1a64 bajtów0..31 |
 

@@ -130,7 +130,7 @@ bool cases()
                                 *EntityId::from_value(0), node(0), 2, 0, 1));
                     // An ID outside the catalog is refused instead of lost.
                     if (field == 16)
-                        bad.start_config = static_cast<StartConfigId>(3);
+                        bad.start_config = static_cast<StartConfigId>(4);
                     if (field == 15)
                         bad.sector.delivery_requirement =
                             *DeliveryRequirement::from_value(required == 3 ? 2

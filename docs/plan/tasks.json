@@ -3018,8 +3018,8 @@
             "id": "P086-05",
             "phase": "M7",
             "title": "Konfiguracja charged_debt",
-            "scope": "Tylko ID3: start z rezerwą3 i długiem3; dopuszczenie do katalogu konfiguracji. Bez UI, tekstów i zmian reguły długu.",
-            "acceptance": "Wejście sektora2 tworzy jeden impuls długu i resztę0; zablokowany spawn zachowuje dług; ID1/2 bez zmian; checkpoint i restart zachowują ID3. Test +/−, Debug/Release.",
+            "scope": "Tylko ID3: start z rezerwą3 i długiem2 (dług3 łamałby niezmiennik checkpointu bez opłaconego impulsu); dopuszczenie do katalogu konfiguracji. Bez UI, tekstów i zmian reguły długu.",
+            "acceptance": "Po jednym overdrive wejście sektora2 tworzy jeden impuls długu i resztę0, bez overdrive brak impulsu; ID1/2 bez zmian; checkpoint i restart zachowują ID3. Test +/−, Debug/Release.",
             "depends_on": [
                 "P086-04"
             ],

@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P086-05: core_run_start dla 257 seedów: ID3 równe ID1 poza rezerwą3
+i długiem2; overdrive w sektorze1 daje dług3, a advance_run dokładnie jeden
+impuls na wejściu sektora2 i resztę0; bez overdrive dług2 bez impulsu.
+Szósty literalny wektor (bajt30=3), capture/restore i restart ID3; ID4
+i wyżej odrzucane. Mutacja długu3 łamie capture sektora1.
+
 P086-04: core_run_start dla 257 seedów: ID2 równe ID1 poza rezerwą0
 i modułem ID1; rotate na dystansie2 w pierwszej turze tylko z ID2; oferta
 po sektorze1 bez ID1, jedna nagroda zapełnia loadout i dalsza oferta jest

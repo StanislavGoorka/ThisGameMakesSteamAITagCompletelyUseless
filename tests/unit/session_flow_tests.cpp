@@ -84,11 +84,27 @@ int main()
             !resumed.confirm(range_restored) ||
             !test::same_run(range_restored, range))
             return 9;
+        // ID3 likewise survives capture/restore and a restart.
+        const auto charged = *start_run(seed, StartConfigId::charged_debt);
+        const auto charged_checkpoint = capture_checkpoint(charged);
+        if (!charged_checkpoint ||
+            charged_checkpoint->start_config != StartConfigId::charged_debt ||
+            charged_checkpoint->overload_debt != 2 ||
+            charged_checkpoint->reserve != 3)
+            return 10;
+        auto charged_restored = *restore_checkpoint(*charged_checkpoint);
+        if (!test::same_run(charged_restored, charged))
+            return 11;
+        charged_restored.sector.player_integrity = 0;
+        charged_restored.sector.overload_debt = 0;
+        if (!resumed.confirm(charged_restored) ||
+            !test::same_run(charged_restored, charged))
+            return 12;
         // An ID outside the catalog refuses on the start and result screens.
         for (const bool started : {false, true})
         {
             auto unknown = fresh;
-            unknown.start_config = static_cast<StartConfigId>(3);
+            unknown.start_config = static_cast<StartConfigId>(4);
             unknown.sector.player_integrity = 0;
             unknown.sector.reserve = 1;
             const auto snapshot = unknown;
