@@ -8,7 +8,7 @@ Dokument wewnętrzny; tokeny nie są etykietami gry. Rozszerza
 `ModuleId` ma stabilne wartości z tabeli planu: 1..12; 0 oznacza pusty slot
 wyłącznie w serializacji. `module_catalog` zawiera tylko zaimplementowane ID,
 a `reward_module_catalog` jest osobną, uporządkowaną podpulą. Początkowo oba
-zawierają wyłącznie 1/2; dzieci reguł rozszerzają pierwszy, P085-14 drugi.
+zawierają wyłącznie 1/2; dzieci reguł rozszerzają pierwszy, P085-19 drugi.
 Żaden decoder ani `ModuleLoadout::add` nie przyjmuje przyszłego ID.
 
 `is_known_module(ModuleId)` sprawdza katalog implementacji. Wspólny
@@ -85,5 +85,5 @@ Każda reguła: pełne porównanie stanu, próba dodatnia i ujemna z tabeli plan
 preview/commit/odmowa, kopie, drugi moduł w slocie, reset/restore, Debug i
 Release. Wersje mają literalne wektory niezależne od kodu C++.
 
-P085-14 dopiero po tych dowodach doda katalogowe placeholdery i oferty.
+Po tych dowodach P085-17 doda katalogowe placeholdery, P085-19 oferty.
 Obserwacja pulpitu, ocena czytelności i ludzki playtest pozostają w P104.

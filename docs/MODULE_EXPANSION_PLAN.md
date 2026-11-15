@@ -13,7 +13,7 @@ P085-02 przygotowuje jeden katalog znanych ID, walidację loadoutu i kodeków.
 ID1/2 zachowują znaczenie; ID3..12 otrzymają pojedyncze dzieci poniżej.
 Nie wolno zaakceptować niezaimplementowanego ID przez decoder ani add.
 Nowe mechaniki najpierw są samodzielną logiką core: pula nagród zachowuje
-ID1/2 do P085-14. Rejestr odróżnia zaimplementowane ID od dopuszczonych ofert.
+ID1/2 do P085-19. Rejestr odróżnia zaimplementowane ID od dopuszczonych ofert.
 
 Obecna oferta najniższych nieposiadanych ID po zapełnieniu dwóch slotów
 nie pozwoliłaby zdobyć ID4..12. Dlatego P085-03 przygotuje deterministyczny
@@ -25,11 +25,14 @@ typów zachowujemy stare oferty i istniejące regresje. Syntetyczny korpus
 indeksów puli1..12 sprawdzi osiągalność każdego indeksu, niezależnie od
 tego, czy przyszłe ID są już zaimplementowane. Nie są to assety gry.
 
-P085-14 doda osobno projekcję/oznaczone etykiety dziesięciu gotowych reguł
-i dopiero wtedy dopuści je do nagród. Żadnych finalnych napisów, ikon,
-pobrań ani nowych assetów. Robocze etykiety wyłącznie przez katalog,
-z dokładnym prefiksem [AI PLACEHOLDER], poza publicznym buildem.
-Stosować asset-intake dla tego zadania. Całość pozostaje developerska.
+P085-14 rozbito: P085-17 doda projekcję/oznaczone etykiety dziesięciu reguł,
+P085-18 przełączy testy integracyjne na oferty z kontekstu runu, P085-19
+dopuści ID3..12 do nagród, a P085-20 zbierze dowód integracyjny.
+Dopiero P085-19 zmienia pulę; wcześniejsze dzieci jej nie dotykają.
+Żadnych finalnych napisów, ikon, pobrań ani nowych assetów. Robocze
+etykiety wyłącznie przez katalog, z dokładnym prefiksem [AI PLACEHOLDER],
+poza publicznym buildem.
+Stosować asset-intake dla dzieci z napisami. Całość pozostaje developerska.
 
 ## Jedna reguła na dziecko
 
@@ -75,6 +78,6 @@ kosztu. P085-06 zależy od P085-16. Zamknięty podział nie dostarcza ID4.
 - Każdy krok kodowy: Debug i Release, test +/− oraz interakcja z istniejącym
   modułem w dwóch slotach. Końcowa integracja sprawdza seed/offers, pełny run,
   checkpoint/backup, achievementy, HWND i publiczną odmowę placeholderów.
-- P086 zależy od P085-14, a łańcuch obejmuje wszystkie wymagane dzieci.
+- P086 zależy od P085-20, a łańcuch obejmuje wszystkie wymagane dzieci.
   Sam P085 nie oznacza gotowego katalogu12. Balans i przyjemność pozostają
   hipotezami do osobnych pomiarów; nie wykonano playtestu.

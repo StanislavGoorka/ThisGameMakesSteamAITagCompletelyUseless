@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 5/10 bieżącej serii: P085-13. ID12 packet_priority: następny wprowadzany pakiet celuje w najwyższy niezasilony odbiornik zamiast najniższego; aktywny pakiet zachowuje cel, a ID5 nie wybiera celu ponownie w tej samej turze. Katalog1..12 (pełny docelowy katalog), nagrody nadal1/2; hashv8/replay25, checkpoint schema1/rules14. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 6/10 bieżącej serii: P085-14. P085-14 podzielono na cztery dzieci: P085-17 robocze etykiety [AI PLACEHOLDER] i katalogowa projekcja ID1..12, P085-18 oferty z kontekstu runu w testach integracyjnych, P085-19 dopuszczenie ID3..12 do nagród z wersjami, P085-20 dowód integracyjny run/checkpoint/achievementy/HWND/public. P086 zależy od P085-20. Katalog1..12 zaimplementowany, nagrody nadal1/2; hashv8/replay25, checkpoint schema1/rules14. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie

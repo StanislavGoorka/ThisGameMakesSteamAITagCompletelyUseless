@@ -2907,11 +2907,55 @@
         {
             "id": "P085-14",
             "phase": "M7",
-            "title": "Prezentacja i dopuszczenie nowych modułów",
-            "scope": "Dla gotowych ID3..12 dodaj katalogową projekcję i oznaczone robocze etykiety, następnie dopuść je do deterministycznych ofert. Bez nowych assetów i finalnych treści.",
-            "acceptance": "Każdy gotowy ID osiągalny w korpusie seedów, dwa sloty/oferty, brak fallbacku i brakujący tekst odrzucony. Public odmawia placeholderów. Pełny run, checkpoint/backup, achievementy i HWND Debug/Release. Stosuj asset-intake; jeśli ponad mikro-zakres, wyłącznie podział.",
+            "title": "Rozbij prezentację i dopuszczenie nowych modułów",
+            "scope": "Wyłącznie podziel etykiety, kontekst ofert w testach, dopuszczenie ID3..12 i dowód integracyjny na osobne dzieci; bez kodu i bez nowych tekstów.",
+            "acceptance": "Cztery dzieci z jedną zmianą każde i domkniętymi zależnościami; P086 zależy od ostatniego dziecka. Plan nie dopuszcza modułów do ofert i nie dodaje etykiet. Stosuj asset-intake w dzieciach z napisami.",
             "depends_on": [
                 "P085-13"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-17",
+            "phase": "M7",
+            "title": "Robocze etykiety modułów ID3..12",
+            "scope": "Jedna katalogowa projekcja ModuleId->ID tekstu dla wszystkich zaimplementowanych modułów i dziesięć wpisów texts.json z dokładnym prefiksem [AI PLACEHOLDER]; reward_lines korzysta z projekcji. Pula nagród nadal1/2, bez zmian reguł i assetów.",
+            "acceptance": "Każde ID1..12 ma unikalny tekst w rzeczywistym rejestrze developer, brak wpisu lub nieznane ID odrzucone bez fallbacku, public odmawia placeholderów. Dotychczasowe oferty1/2 i teksty bez zmian; asset-intake, walidator i Debug/Release.",
+            "depends_on": [
+                "P085-14"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-18",
+            "phase": "M7",
+            "title": "Oferty z kontekstu runu w testach integracyjnych",
+            "scope": "Tylko testy i wsparcie: wybór nagrody w pełnym runie, oknach i dispatcherze z offered_run_modules dla bieżącego runu zamiast domyślnego kontekstu lub stałych ID1/2. Bez zmian produkcyjnych i puli.",
+            "acceptance": "Te same pełne stany, pliki i zdarzenia przy puli1/2; żaden test integracyjny nie wywołuje module_offer z domyślnym seedem ani nie zakłada konkretnego ID nagrody poza jawnymi fixture slotów. Debug/Release.",
+            "depends_on": [
+                "P085-17"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-19",
+            "phase": "M7",
+            "title": "Dopuszczenie ID3..12 do ofert",
+            "scope": "Tylko reward_module_catalog = ID1..12 i wynikające z tego jawne wersje replay/checkpoint run_rules z niezależnymi wektorami. Bez nowych tekstów, UI i zmian reguł modułów.",
+            "acceptance": "Korpus co najmniej257 seedów i sektorów1..5: każde ID osiągalne, dwie różne nieposiadane oferty w kanonicznym porządku, pełny loadout pusty, powtarzalność po restore. Stare reguły odrzucane bez nadpisania backupu; pełna pula Debug/Release.",
+            "depends_on": [
+                "P085-18"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P085-20",
+            "phase": "M7",
+            "title": "Integracja dopuszczonych modułów",
+            "scope": "Tylko dowód: pełne runy z ofertami z nowej puli przez checkpoint/backup, achievementy i rzeczywiste HWND oraz odmowa public dla nowych placeholderów. Bez nowych reguł, tekstów i assetów.",
+            "acceptance": "Kilka root seedów kończy run z co najmniej jednym ID3..12 w loadoucie; restore każdej granicy daje identyczne stany i oferty, profil/backup bez zmian przy powtórce. HWND pokazuje oznaczone etykiety; Test-PublicContent odmawia. Debug/Release; bez obserwacji pulpitu (P104).",
+            "depends_on": [
+                "P085-19"
             ],
             "gate": null
         },
@@ -2922,7 +2966,7 @@
             "scope": "Wyłącznie zaplanuj oddzielne dzieci dla dwóch dodatkowych konfiguracji.",
             "acceptance": "Każda równorzędna, bez permanentnych bonusów; zależności domknięte.",
             "depends_on": [
-                "P085-14"
+                "P085-20"
             ],
             "gate": null
         },
