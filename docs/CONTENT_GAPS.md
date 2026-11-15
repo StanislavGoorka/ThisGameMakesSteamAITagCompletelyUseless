@@ -139,7 +139,48 @@ wyłącznie w `module_text.hpp`, pozostałe cztery w `reward_text.hpp` lub
 
 ## Achievementy
 
-Do uzupełnienia w P090-03.
+P090-03. Katalog zaimplementowanych ID to `achievement_catalog`
+(`src/application/local_profile.hpp`, ID1..12). Powiadomienie w grze tworzy
+`AchievementNotice` (`src/application/achievement_notice.hpp`) wyłącznie dla
+`first_delivery`; `achievement_line` (`src/presentation/achievement_text.hpp`)
+zwraca wiersz tylko dla tego ID. ID2..12 odblokowują się w profilu bez
+widocznego komunikatu. Gra nie ma ekranu listy achievementów.
+
+Pozycje Steam na achievement (Steamworks Stats & Achievements): nazwa
+wyświetlana, opis, ikona odblokowana i ikona zablokowana. Żadna z nich nie
+istnieje w repo ani w rejestrach (stan `brak`; tokeny w kodzie i planie to
+wewnętrzne identyfikatory, nie nazwy). Wymagane pochodzenie: nazwa i opis —
+ludzki tekst ze źródła P091 (jak P090-01); ikony — ludzka grafika z dossier,
+zgodą na pakiet i wersję oraz wpisem `approved` w assets.json, w formacie
+wymaganym przez Steamworks (weryfikacja przy P100). Nazwa i ikona muszą być
+zgodne z mapowaniem App ID (P100).
+
+| ID / token | Komunikat w grze | Nazwa Steam | Opis Steam | Ikona odblokowana | Ikona zablokowana |
+| --- | --- | --- | --- | --- | --- |
+| 1 first_delivery | placeholder: achievement-first-delivery | brak | brak | brak | brak |
+| 2 first_sector | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 3 run_without_overdrive | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 4 reconfigured_delivery | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 5 completed_run | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 6 swift_sector | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 7 won_preinstalled_range | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 8 won_charged_debt | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 9 won_short_turn_limit | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 10 won_lean_delivery | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 11 won_heavy_overdrive_debt | brak (bez powiadomienia) | brak | brak | brak | brak |
+| 12 won_all_modifiers | brak (bez powiadomienia) | brak | brak | brak | brak |
+
+Pozostałe pozycje:
+
+| ID texts.json / pozycja | Miejsce użycia | Stan |
+| --- | --- | --- |
+| achievement-unavailable | `achievement_text.hpp` `achievement_storage_line` → status runu, niedostępny zapis profilu, Enter ponawia | placeholder |
+| Ekran listy achievementów | nie istnieje | brak (tylko jeśli projekt UI go przewidzi; Steam overlay pokazuje listę Steam) |
+
+Razem: 11 komunikatów w grze, 12 nazw, 12 opisów i 24 ikony Steam w stanie
+`brak`, 2 napisy `placeholder`. Komunikat w grze dla ID2..12 wymaga także
+zmiany kodu powiadomień — osobne zadanie po decyzji projektu UI, nie część
+audytu (P090-03).
 
 ## Grafika, audio, font, ikony aplikacji, tutorial i lokalizacja
 
