@@ -10,7 +10,11 @@ Od P086-03 także z tą samą konfiguracją startu (RunState::start_config,
 również po resume z checkpointu); ID spoza katalogu odmawia bez zmiany.
 P086-06: SessionFlow przechowuje wybór; select_next/select_previous cyklicznie
 po katalogu wyłącznie na ekranie startu/wyniku, selected(run) bez wyboru zwraca
-konfigurację runu, a confirm startuje wybór i go czyści. Bez tekstów i klawiszy.
+konfigurację runu, a confirm startuje wybór i go czyści.
+P086-07: start_config_text_id rzutuje ID1..3 na trzy wpisy start-config-*
+w texts.json z prefiksem [AI PLACEHOLDER]; ekran startu i wyniku pokazuje
+komunikat sesji i pod nim etykietę wybranej konfiguracji (overlay zastępuje
+komunikat, więc oba idą jako linie). Bez klawiszy wyboru (P086-08).
 Aktywny run i oczekiwanie na nagrodę odmawiają restartu. Model nie posiada
 profilu, ścieżek ani usług IO, więc nie zeruje ustawień ani achievementów.
 

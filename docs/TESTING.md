@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P086-07: presentation_start_config_text na rzeczywistym rejestrze developer
+sprawdza 256 wartości StartConfigId: unikalny oznaczony tekst dokładnie dla
+ID1..3, linia tylko na ekranie startu/wyniku, usunięty rekord bez formatu,
+odmowa public. windows_session_window: etykieta konfiguracji w HWND na
+starcie i wyniku, brak w runie. Test-PublicContent 9/9.
+
 P086-06: application_session_flow (seedy0/1/MAX): cykl wyboru 1→2→3→1
 i odwrotnie bez mutacji runu, confirm startuje wybrane ID i czyści wybór,
 zwykły restart zachowuje ID runu, odmowa w runie i przy nagrodzie, nieznane

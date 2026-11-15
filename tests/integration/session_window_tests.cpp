@@ -72,6 +72,16 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
                  SWP_NOACTIVATE | SWP_NOZORDER | SWP_SHOWWINDOW);
     UpdateWindow(hwnd);
     SendMessageW(hwnd, WM_SETFOCUS, 0, 0);
+    // The start and result screens name the configuration to be started.
+    const auto config_label =
+        windows::read_text_utf16(catalog, "start-config-baseline");
+    if (!config_label.text)
+        return failed("config label record");
+    const auto shows_config = [&]
+    {
+        return session.view().label_text().find(*config_label.text) !=
+               std::wstring_view::npos;
+    };
     if (kind == 0)
     {
         if (session.screen() != SessionScreen::start ||
@@ -79,7 +89,7 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
             session.view().label_text().find(
                 L"[AI PLACEHOLDER] Press Enter to start.") ==
                 std::wstring_view::npos ||
-            session.view().node_at(100, 100, 800, 600))
+            session.view().node_at(100, 100, 800, 600) || !shows_config())
             return failed("start display");
         for (auto key : ignored)
             tap(key);
@@ -90,7 +100,7 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         run = start_run(initial.seed);
         if (session.screen() != SessionScreen::run ||
             !session.view().showing_board() ||
-            !test::same_run(session.state(), run))
+            !test::same_run(session.state(), run) || shows_config())
             return failed("start confirm");
         for (int i = 0; i < 48; ++i)
         {
@@ -121,7 +131,7 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         !test::same_run(session.state(), run) ||
         session.selection().planning() || session.selection().candidate() ||
         session.selection().pointed() || window.window->pointed() ||
-        !session.view().packet_route().empty())
+        !session.view().packet_route().empty() || !shows_config())
         return failed("result display/reset");
     const auto message = kind == 1   ? "session-death"
                          : kind == 3 ? "session-won"

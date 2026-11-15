@@ -188,6 +188,24 @@
       "source_asset_id": null
     },
     {
+      "id": "start-config-baseline",
+      "value": "[AI PLACEHOLDER] Start setup: standard.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "start-config-range",
+      "value": "[AI PLACEHOLDER] Start setup: range module, no reserve.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
+      "id": "start-config-charged",
+      "value": "[AI PLACEHOLDER] Start setup: full reserve, debt 2.",
+      "status": "ai_placeholder",
+      "source_asset_id": null
+    },
+    {
       "id": "checkpoint-corrupt",
       "value": "[AI PLACEHOLDER] Saved run is damaged and was not loaded.",
       "status": "ai_placeholder",

@@ -451,11 +451,20 @@ class RunWindow final : public WindowCommandHandler
                              status_lines());
             return;
         }
-        view_->set_board(
-            run.sector, {},
+        // Overlay lines replace the message, so the session message leads
+        // and the label of the configuration to be started follows it.
+        const auto message =
             lifecycle_ ? presentation::session_message(flow_.screen(run), run)
-                       : std::nullopt,
-            {}, status_lines());
+                       : std::nullopt;
+        std::vector<TextLine> lines;
+        if (message)
+        {
+            lines.push_back(*message);
+            for (const auto &line : presentation::session_lines(
+                     flow_.screen(run), flow_.selected(run)))
+                lines.push_back(line);
+        }
+        view_->set_board(run.sector, {}, message, lines, status_lines());
     }
     void show_selection()
     {
