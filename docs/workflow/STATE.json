@@ -318,6 +318,12 @@
         "P090-05"
     ],
     "current_task": "P091",
-    "blocked": [],
-    "last_report": "docs/workflow/history/P090-05.md"
+    "blocked": [
+        {
+            "task_id": "P091",
+            "reason": "Żaden ogólny korpus etykiet UI nie pokrywa zakresu z CONTENT_GAPS (tytuł, efekty 12 modułów, nazwy i opisy 12 achievementów, opisy sklepu); jedynym pełnym źródłem jest ludzki autor (właściciel lub zlecony autor), czego agent nie może wykonać. Brak decyzji właściciela i brak wniosku o konkretny pakiet. P092+ zależą od P091; brak innych gotowych zadań.",
+            "unblock_when": "Właściciel dostarcza lub zleca ludzkie teksty z dowodami 1–5 z docs/assets/TEXT_SOURCE_DOSSIER.md (autor, oświadczenie non-AI, prawa, zakres, plik do assets/approved) i zapisuje zgodę, albo wskazuje konkretny korpus (nazwa, wersja, URL) do oceny w trybie dossier."
+        }
+    ],
+    "last_report": "docs/workflow/history/P091.md"
 }
