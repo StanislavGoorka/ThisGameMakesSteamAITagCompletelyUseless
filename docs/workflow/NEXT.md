@@ -1,7 +1,7 @@
 # Następny mały krok
 
-Task: P090-04
+Task: P090-05
 
-Czytaj AGENTS, next-step, skill asset-intake, WORKFLOW, STATE, CONTENT_POLICY, content/REGISTRY.md, content/assets.json, docs/ASSET_MANIFEST.md, BOARD_PRESENTATION, AUDIO_LIFECYCLE, TEXT_PRESENTATION, docs/CONTENT_GAPS.md (zasady i wcześniejsze sekcje) i raport P090-03. P090-04: wypełnij wyłącznie sekcję „Grafika, audio, font, ikony aplikacji, tutorial i lokalizacja” — każdy rysowany element sceny (src/presentation/atlas_tiles.hpp, scene_projection.hpp, unit_projection.hpp) z kaflem zatwierdzonego atlasu lub brakiem, zdarzenia audio (xaudio2_*), font, ikona EXE/okna, splash, tutorial (brak = zapisany brak) i lokalizacja. Bez kodu, tekstów dla gracza, propozycji, pobrań i zmian rejestrów.
+Czytaj AGENTS, next-step, skills asset-intake i release-audit, WORKFLOW, STATE, CONTENT_POLICY, STEAM_RELEASE, content/REGISTRY.md, content/assets.json, content/approvals.json, assets/approved (noty licencyjne), docs/CONTENT_GAPS.md i raport P090-04. P090-05: wypełnij wyłącznie sekcje „Noty licencyjne, credits i materiały sklepu” oraz „Podsumowanie” — noty każdego zatwierdzonego pakietu (Kenney 1.2, Comigo 4947244) z wymaganiami atrybucji, ekran credits (P093), materiały sklepu i społeczności Steam (tytuł, krótki i długi opis, capsule, zrzuty, trailer, ikony klienta/społeczności) oraz liczby braków według kategorii i wejście dla P091. Bez kodu, tekstów dla gracza, propozycji, pobrań i zmian rejestrów.
 
 Walidator, diff --check, raport, STATE/NEXT/README, lokalny commit i kontrola hasha/zakresu. Git z lokalnym -c safe.directory; .claude/ poza zmianami; bez push.

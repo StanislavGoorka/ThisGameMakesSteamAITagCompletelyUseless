@@ -184,7 +184,51 @@ audytu (P090-03).
 
 ## Grafika, audio, font, ikony aplikacji, tutorial i lokalizacja
 
-Do uzupełnienia w P090-04.
+P090-04. Cała grafika sceny pochodzi z jednego zatwierdzonego atlasu
+`kenney1bit12-monochrome` (assets.json, zgoda `kenney-1bit-1.2-2026-11-13`,
+współrzędne przypięte do hasha w `src/presentation/atlas_tiles.hpp`).
+Renderer nie rysuje własnej geometrii ani konturów portów.
+
+| Element sceny | Źródło w kodzie | Kafel atlasu (kolumna, wiersz) | Stan |
+| --- | --- | --- | --- |
+| Przewód: 5 kształtów × 4 obroty | `tile_for_ports` | (8..12, 0) z obrotem | approved |
+| Pole bez portów | `tile_for_ports` | (9, 3) | approved |
+| Gracz | `tile_for_symbol(player)`, `unit_projection.hpp` | (24, 0) | approved |
+| Pakiet | `SymbolKind::packet` | (45, 8) | approved |
+| Impuls | `SymbolKind::pulse` | (25, 7) | approved |
+| Odbiornik / zasilony odbiornik | `SymbolKind::receiver`, `powered_receiver` | (39, 14) / (39, 15) | approved |
+| Wejście / wyjście sektora | `SymbolKind::entry`, `exit` | (19, 20) / (20, 20) | approved |
+| Węzeł stały | `SymbolKind::fixed` | (38, 13) | approved |
+| Trasa pakietu w podglądzie | `scene_projection.hpp` | ponownie glif pakietu | approved |
+
+Braki grafiki (stan `brak`):
+
+| Pozycja | Obecne zachowanie (kod) | Uwagi |
+| --- | --- | --- |
+| Emiter okresowy, opóźniony kondensator, pole zablokowane | pola w `GameState` bez symbolu w `unit_projection.hpp`; obecny generator sektorów ich nie umieszcza | symbol potrzebny dopiero, gdy run je użyje |
+| Ikony modułów, konfiguracji i modyfikatorów | tylko napisy | jeśli projekt UI je przewidzi |
+| Ikony HUD (HP, tury, rezerwa, dług) | tylko napisy z liczbami | opcjonalne |
+| Ikona EXE i okna | brak pliku `.rc` i `LoadIcon`; Windows pokazuje ikonę domyślną | wymagana dla wydania i klienta Steam |
+| Splash / ekran ładowania | nie istnieje | opcjonalny |
+| Tło planszy | czarne `Clear` celu D2D (`atlas_renderer.hpp`), bez grafiki | opcjonalne |
+
+Audio: port `AudioOutput` zna jeden sygnał `AudioCue::delivery`
+(`src/application/audio_output.hpp`), odtwarzany w `RunWindow::play_deliveries`
+z zatwierdzonego klipu `comigo4947244-powerup01` (zgoda
+`comigo-bleeps-4947244-2026-11-14`). Stan `approved`. Brak sygnałów (stan
+`brak`, opcjonalne): obrót, ruch, wait, overdrive, obrażenie, ukończenie
+sektora, koniec runu, wybór nagrody, achievement, nawigacja ekranów; brak
+muzyki i ustawień głośności.
+
+| Pozycja | Stan | Uwagi |
+| --- | --- | --- |
+| Font | systemowy Segoe UI, `en-us`, 16 DIP (`text_renderer.hpp`); nie jest w repo ani paczce | zależność od systemu, nie asset; zasady użycia potwierdzić w audycie paczki P102 |
+| Tutorial i opis sterowania | brak: gra nie ma tutorialu, ekranu pomocy ani instrukcji poza wierszem klawisza obrotu | dokumentacja repo nie może go zastąpić ([polityka](CONTENT_POLICY.md)); wymaga ludzkiej treści lub świadomej redukcji UI |
+| Lokalizacja | brak: jeden zestaw napisów roboczych po angielsku, bez tłumaczeń | deklaracja języków w Steam musi odpowiadać faktycznym finalnym tekstom |
+
+Zgodność sprawdzono odczytem `atlas_tiles.hpp`, `unit_projection.hpp`,
+`scene_projection.hpp`, `game_state.hpp`, `audio_output.hpp`,
+`run_window.hpp` i wyszukaniem `.rc`/`LoadIcon` w `src/` (P090-04).
 
 ## Noty licencyjne, credits i materiały sklepu
 
