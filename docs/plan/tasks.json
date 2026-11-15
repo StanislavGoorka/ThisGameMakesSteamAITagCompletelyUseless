@@ -3356,13 +3356,46 @@
             "gate": null
         },
         {
+            "id": "P089-01",
+            "phase": "M7",
+            "title": "Narzędzie strategii wait-then-walk",
+            "scope": "Tylko narzędzie developer_strategy w tools/strategy (poza paczką gry): deterministyczny bot wait-then-walk z BALANCE_EXPERIMENT_PLAN dla runów z podanych root seedów, wyjście liczbowe per seed i podsumowanie. Bez zmian reguł, pomiaru całego korpusu w docs, tekstów i assetów.",
+            "acceptance": "CTest kontraktu CLI: stały ślad dla kilku seedów, powtórzenie identyczne, każda komenda bota zaakceptowana przez resolver, błędne argumenty dają niezerowy kod i pusty stdout; bez progu balansu. Debug/Release, clang-format.",
+            "depends_on": [
+                "P089"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P089-02",
+            "phase": "M7",
+            "title": "Pomiar bazowy wait-then-walk",
+            "scope": "Tylko uruchomienie developer_strategy (Release) na 1000 root seedach sector_seeds i zapis liczb H1 oraz metryk pomocniczych w BALANCE_EXPERIMENT_PLAN. Bez zmian kodu gry.",
+            "acceptance": "Dokładna komenda i wynik; werdykt H1 według progu ustalonego przed pomiarem; bez twierdzeń o opinii graczy.",
+            "depends_on": [
+                "P089-01"
+            ],
+            "gate": null
+        },
+        {
+            "id": "P089-03",
+            "phase": "M7",
+            "title": "Decyzja balansu i pomiar po",
+            "scope": "Przy potwierdzonej H1 zmień dokładnie jeden parametr uzasadniony pomiarem i zmierz po na tym samym korpusie; przy odrzuconej H1 zapisz brak zmiany. Bez nowej waluty, mechanik, tekstów i assetów.",
+            "acceptance": "Tabela przed/po (lub uzasadniony brak zmiany); regresje hash/replay/korpusów certyfikatów i pełny Debug/Release przy zmianie; wpis w DECISIONS.",
+            "depends_on": [
+                "P089-02"
+            ],
+            "gate": null
+        },
+        {
             "id": "P090",
             "phase": "M8",
             "title": "Audyt brakujących treści",
             "scope": "Sporządź listę wszystkich braków finalnych napisów i grafiki, bez ich generowania.",
             "acceptance": "Każdy ekran, błąd, ikona, tutorial i achievement uwzględniony.",
             "depends_on": [
-                "P089"
+                "P089-03"
             ],
             "gate": null
         },
