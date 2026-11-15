@@ -1,5 +1,9 @@
 # Testy i bramki jakości
 
+P085-18: core_run_integration, windows_reward_window i windows_event_dispatcher
+wybierają nagrody przez reward_offer(run) dla bieżącego seedu i sektora,
+bez stałych ID1/2; odmowy poza oknem nagrody obejmują cały katalog.
+
 P085-17: presentation_module_text na rzeczywistym rejestrze developer
 sprawdza wszystkie256 wartości ModuleId: unikalny oznaczony tekst dokładnie
 dla ID1..12, 66 par ofert, brak rekordu bez fallbacku i odmowę public.

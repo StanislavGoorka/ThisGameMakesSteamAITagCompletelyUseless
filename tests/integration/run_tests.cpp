@@ -1,6 +1,7 @@
 #include "../support/run_checks.hpp"
 #include "application/checkpoint_decode.hpp"
 #include "application/checkpoint_encode.hpp"
+#include "application/reward_selection.hpp"
 #include "application/run_turn_events.hpp"
 #include "core/run_reward.hpp"
 #include "core/run_start.hpp"
@@ -149,20 +150,28 @@ bool solve(RunState &run, bool create_debt)
     }
     return true;
 }
+// No implemented module can be claimed outside the reward window.
+bool claims_nothing(const RunState &run)
+{
+    for (const auto id : module_catalog)
+    {
+        auto copy = run;
+        if (choose_run_module(copy, id) || !test::same_run(copy, run))
+            return false;
+    }
+    return true;
+}
 bool terminal_refuses(const RunState &run, RunPhase phase)
 {
     const auto before = run;
     const auto turn = resolve_run_turn(run, WaitCommand{});
     const auto emitted = resolve_run_turn_events(run, WaitCommand{});
     const auto next = advance_run(run);
-    auto reward = run;
     return !turn.accepted && !emitted.turn.accepted && emitted.events.empty() &&
            test::same_run(emitted.turn.state, before) && turn.phase == phase &&
-           !next.accepted && next.phase == phase &&
-           !choose_run_module(reward, ModuleId::rotation_range) &&
+           !next.accepted && next.phase == phase && claims_nothing(run) &&
            test::same_run(turn.state, before) &&
-           test::same_run(next.state, before) &&
-           test::same_run(reward, before) && test::same_run(run, before);
+           test::same_run(next.state, before) && test::same_run(run, before);
 }
 bool complete(std::uint64_t seed, bool range_first, RunState &final)
 {
@@ -171,11 +180,11 @@ bool complete(std::uint64_t seed, bool range_first, RunState &final)
         run.sector.player_integrity != 3 ||
         run_phase(run) != RunPhase::choosing_reward)
         return false;
-    const auto first =
-        range_first ? ModuleId::rotation_range : ModuleId::terminal_rotation;
-    const auto second =
-        range_first ? ModuleId::terminal_rotation : ModuleId::rotation_range;
-    if (!choose_run_module(run, first))
+    // Rewards come from the live run offer; range_first picks its first or
+    // its last entry, and the second reward takes the next first entry.
+    const auto offer = reward_offer(run);
+    const auto first = range_first || !offer[1] ? offer[0] : offer[1];
+    if (!first || !choose_run_module(run, *first))
         return false;
     auto boundary = advance_run(run);
     if (!boundary.accepted || boundary.state.sector_number.value() != 2 ||
@@ -193,7 +202,10 @@ bool complete(std::uint64_t seed, bool range_first, RunState &final)
         return false;
     run = boundary.state;
     if (!solve(run, false) || run.sector.player_integrity != 2 ||
-        !run.sector.pulses.empty() || !choose_run_module(run, second))
+        !run.sector.pulses.empty())
+        return false;
+    const auto second = reward_offer(run)[0];
+    if (!second || !choose_run_module(run, *second))
         return false;
     boundary = advance_run(run);
     if (!boundary.accepted || boundary.state.sector_number.value() != 3 ||
@@ -214,7 +226,7 @@ bool complete(std::uint64_t seed, bool range_first, RunState &final)
         {
             const auto before = run;
             if (run_phase(run) != RunPhase::ready_for_next ||
-                choose_run_module(run, ModuleId::rotation_range) ||
+                reward_offer(run)[0] || !claims_nothing(run) ||
                 !test::same_run(run, before))
                 return false;
             const auto next = advance_run(run);

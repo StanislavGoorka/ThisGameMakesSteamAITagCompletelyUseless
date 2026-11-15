@@ -14,7 +14,7 @@ AI może projektować mechanikę, pisać kod i narzędzia. Nie może tworzyć tr
 
 Ukończono techniczną bramkę MVP: pełny run trzech sektorów przez HWND, lokalne zapisy, achievementy i wznowienie w nowym procesie. [Dowody i ograniczenia](docs/workflow/history/P081-03.md). Obserwacja pulpitu i ocena percepcyjna nadal czekają na P104.
 
-Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 7/10 bieżącej serii: P085-17. Robocze etykiety modułów: jedna projekcja presentation::module_text_id mapuje ID1..12 na unikalne wpisy reward-*, a reward_lines z niej korzysta. Dziesięć nowych wpisów texts.json ma dokładny prefiks [AI PLACEHOLDER] i status ai_placeholder. Pula nagród nadal1/2; reguły i wersje bez zmian (hashv8/replay25, checkpoint rules14). [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
+Run ma sześć sektorów: 1–5 wymagają dwóch dostaw, a finał w sektorze 6 trzech. Krok 8/10 bieżącej serii: P085-18. Testy integracyjne biorą nagrodę z oferty bieżącego runu: reward_offer(run) (istniejące API aplikacji; nazwa offered_run_modules z kontraktu nie istnieje w kodzie) zastępuje module_offer w domyślnym kontekście i stałe ID1/2. Odmowy poza oknem nagrody sprawdzają cały katalog. Bez zmian produkcyjnych, puli1/2 i wersji. [Plan modułów](docs/MODULE_EXPANSION_PLAN.md) · [Kontrakt](docs/MODULE_CATALOG_CONTRACT.md) · [Przekazanie](docs/workflow/NEXT.md).
 
 Tryb treści jest niezależny od Debug/Release. Domyślny preset windows-msvc
 buduje wariant developerski. Public: `cmake --preset windows-public`, następnie

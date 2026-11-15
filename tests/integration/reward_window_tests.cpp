@@ -53,7 +53,7 @@ int wmain(int argc, wchar_t **argv)
                         std::wstring_view::npos)
                     return 4;
                 tap(VK_RIGHT);
-                const auto first = module_offer(run.sector.modules)[0];
+                const auto first = reward_offer(run)[0];
                 if (session.reward_candidate() != first)
                     return 5;
                 SendMessageW(hwnd, WM_KILLFOCUS, 0, 0);
