@@ -18,8 +18,8 @@ P087-05: bit2 lean_delivery działa w deliver_packet. P087-06: bit4
 heavy_overdrive_debt działa; core ma komplet trzech modyfikatorów (maski0..7).
 P087-07: wybór maski w SessionFlow, niezależny od konfiguracji. P087-08:
 robocze etykiety [AI PLACEHOLDER] aktywnych bitów na ekranie startu/wyniku.
-P087-09: strzałki góra/dół wybierają maskę w rzeczywistym HWND. Następny jest
-dowód integracyjny P087-10.
+P087-09: strzałki góra/dół wybierają maskę w rzeczywistym HWND. P087-10:
+dowód integracyjny (windows_difficulty_run) zamyka łańcuch; następny jest P088.
 
 ## Modyfikatory
 
@@ -115,3 +115,8 @@ nadrzędnego ID i zależności konsumentów.
   wskaźników graficznych i pobrań.
 - P088 zależy od P087-10, a łańcuch obejmuje wszystkie dzieci. Sam P087 nie
   dostarcza żadnego modyfikatora.
+- P087-10: certyfikaty nie używają overdrive ani rezerwy, więc lean_delivery
+  i heavy_overdrive_debt nie zmieniają ich przebiegu, a limit32 zostawia w
+  finale jedną turę zapasu. Wszystkie osiem seedów (0..5, 42, MAX) kończy run
+  dla masek1/2/4/7 z ID1 i masek4/7 z ID3. To granica dowodu, nie pomiar
+  trudności. Maski achievementów są równe masce0 dla wspólnych seedów.

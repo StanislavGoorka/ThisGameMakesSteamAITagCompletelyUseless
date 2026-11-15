@@ -1,5 +1,15 @@
 # Testy i bramki jakości
 
+P087-10: windows_difficulty_run dla masek1/2/4/7 z ID1 oraz masek4/7 z ID3
+(i maski0 z ID1/ID3 jako odniesienia), seedy0..5/42/MAX — każda kombinacja
+8/8 — przechodzi pełny run od start_run(seed, config, maska), zapisując
+i odczytując każdą granicę przez adapter plików z kontrolą .bak; checkpoint
+i restore niosą maskę, restore i oferty równe żywemu runowi. Achievementy
+(MvpAchievementEvaluator na zdarzeniach tur) zawierają first_delivery,
+first_sector i completed_run i są równe masce0 tej samej konfiguracji. HWND:
+VK_UP cyklicznie pokazuje etykiety bitów z literalnych ID rejestru dla masek
+0..7 i zawija do0, VK_DOWN wraca przez0 do7, Enter startuje maskę5.
+
 P087-09: windows_session_window w rzeczywistym HWND (cztery scenariusze): na starcie VK_UP pokazuje difficulty-short-turns obok etykiety konfiguracji, drugie VK_UP difficulty-lean-delivery, dwa VK_DOWN wracają do maski0 bez etykiet modyfikatorów i bez zmiany runu, powtórzony key-down (bit30) nie zmienia wyboru; Enter startuje maskę0. Na wyniku VK_LEFT (ID3) i VK_DOWN (zawinięcie do maski7) pokazują trzy etykiety, Enter startuje start_run(seed, ID3, maska7). W runie VK_UP/VK_DOWN pozostają ruchem (scenariusz zwycięstwa). VK_UP usunięto z listy klawiszy ignorowanych na tych ekranach.
 
 P087-08: presentation_difficulty_text na rzeczywistym rejestrze developer — dokładnie bity1/2/4 mają tekst, każdy z prefiksem [AI PLACEHOLDER] i unikalną wartością, usunięty rekord się nie formatuje; session_lines dla masek0..7 × ekranów: na starcie/wyniku etykieta konfiguracji i etykiety aktywnych bitów w porządku katalogu, w runie i dla nieznanej konfiguracji nic; audience public odrzuca rejestr. Test-PublicContent.ps1 9/9 PASS; Validate-PublicContent.ps1 kod1 (oczekiwana odmowa placeholderów).
