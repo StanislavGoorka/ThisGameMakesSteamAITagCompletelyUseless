@@ -23,6 +23,15 @@ Nowe decyzje dopisuj z dowodem, konsekwencjami i identyfikatorem zadania. Nie es
 od przyszłego QA Windows i grywalności. Brak zmiany reguł; obserwacja MVP nadal
 warunkuje rozszerzanie zakresu. Assety pozostają poza repozytorium.
 
+2026-11-15, P089-03: eksperyment balansu „czekanie dominuje” zakończony bez
+zmiany parametru. Dowód: `developer_strategy.exe --corpus` (Release, bot
+wait-then-walk, 1000 root seedów, ID1, maska0) kończy sektor 1 w 2/1000 runów
+(0,2%), wszystkie runy kończą się przeciążeniem; próg dominacji 25% ustalono
+przed pomiarem ([plan i pomiar](BALANCE_EXPERIMENT_PLAN.md)). Konsekwencja:
+reguły, generator i wersje hash/replay bez zmian; developer_strategy_cli
+chroni ślad bota jako regresję. Ryzyko „overdrive dominuje” nie zostało
+zmierzone i pozostaje otwarte.
+
 | Ryzyko | Sygnał | Reakcja |
 | --- | --- | --- |
 | Niejasna granica treści AI | Nowa interpretacja ankiety lub treść wykonana przez kod | Audyt konkretnego rezultatu, sprawdzenie aktualnego źródła, blokada zamiast zatajenia |

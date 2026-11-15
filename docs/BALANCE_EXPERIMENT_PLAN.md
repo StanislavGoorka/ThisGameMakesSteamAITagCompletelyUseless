@@ -32,7 +32,7 @@ tura ukończenia.
 
 Stan: P089-01 — narzędzie developer_strategy (`SEED...` lub `--corpus`) z
 testem developer_strategy_cli. P089-02 — pomiar bazowy: H1 odrzucona (niżej).
-Następny jest P089-03 (decyzja).
+P089-03 — decyzja bez zmiany parametru; P089 zamknięte.
 
 P090 zależy od P089-03. Kandydaci parametru (do wyboru w P089-03 tylko przy
 potwierdzonej H1): orientacja początkowa węzłów tak, by trasa pakietu na
@@ -66,3 +66,19 @@ przebudowy obiegu, więc sektor kończy się przeciążeniem po 48 turach. Brak
 śmierci oznacza, że w sektorze 1 czekający gracz nie traci integralności do
 zera w limicie tur; nie jest to ocena trudności zagrożeń ani opinia graczy.
 Następny krok P089-03 dokumentuje decyzję bez zmiany parametru.
+
+## Decyzja (P089-03)
+
+H1 odrzucona, więc zgodnie z planem nie zmieniono żadnego parametru reguł ani
+generatora (wpis w [DECISIONS](DECISIONS.md)). Porównanie przed/po na tym
+samym korpusie:
+
+| Metryka | Przed (P089-02) | Po (P089-03, brak zmiany) |
+| --- | --- | --- |
+| Ukończony sektor 1 | 2 / 1000 | 2 / 1000 |
+| Wygrane pełne runy | 0 / 1000 | 0 / 1000 |
+| Koniec: overload / death / won | 1000 / 0 / 0 | 1000 / 0 / 0 |
+
+Regresję zapewnia developer_strategy_cli (literalny ślad seedów 0/1/2/296/MAX).
+Nie zmierzono strategii opartej na overdrive; to nie jest część P089.
+P089 zamknięte; kolejka przechodzi do P090.
