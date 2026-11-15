@@ -14,7 +14,8 @@ konfigurację runu, a confirm startuje wybór i go czyści.
 P086-07: start_config_text_id rzutuje ID1..3 na trzy wpisy start-config-*
 w texts.json z prefiksem [AI PLACEHOLDER]; ekran startu i wyniku pokazuje
 komunikat sesji i pod nim etykietę wybranej konfiguracji (overlay zastępuje
-komunikat, więc oba idą jako linie). Bez klawiszy wyboru (P086-08).
+komunikat, więc oba idą jako linie). P086-08: strzałki lewo/prawo na
+ekranie startu/wyniku zmieniają wybór i etykietę, Enter startuje wybór.
 Aktywny run i oczekiwanie na nagrodę odmawiają restartu. Model nie posiada
 profilu, ścieżek ani usług IO, więc nie zeruje ustawień ani achievementów.
 

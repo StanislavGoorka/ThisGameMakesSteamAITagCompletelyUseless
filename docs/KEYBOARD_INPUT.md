@@ -38,3 +38,8 @@ obrotu A-Z poza O, dopiero po udanym zapisie osobnego rotation-key.bin.
 R przywraca domyślne przypisanie. Capture blokuje komendy gry; Escape
 i focus go anulują. Filtr fizycznego held chroni również samą zmianę
 mapowania. Szczegóły i dowody restartu: [kontrakt](ROTATION_BINDING.md).
+
+P086-08: na ekranie startu i wyniku strzałki lewo/prawo (InputKey::west/east)
+wybierają konfigurację startu przez SessionFlow::select_previous/select_next;
+Enter startuje wybór. W runie strzałki nadal oznaczają ruch, przy nagrodzie
+kursor nagrody. Pozostałe klawisze na tych ekranach są ignorowane.

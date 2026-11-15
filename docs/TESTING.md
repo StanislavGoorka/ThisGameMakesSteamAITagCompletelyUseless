@@ -1,5 +1,10 @@
 # Testy i bramki jakości
 
+P086-08: windows_session_window w rzeczywistym HWND: na starcie VK_RIGHT
+pokazuje etykietę ID2, VK_LEFT wraca do ID1 bez zmiany runu; na każdym
+ekranie wyniku VK_LEFT wybiera ID3, a Enter startuje start_run(seed, ID3).
+Spacja/Tab/góra/R/O/Escape nadal ignorowane na ekranach startu i wyniku.
+
 P086-07: presentation_start_config_text na rzeczywistym rejestrze developer
 sprawdza 256 wartości StartConfigId: unikalny oznaczony tekst dokładnie dla
 ID1..3, linia tylko na ekranie startu/wyniku, usunięty rekord bez formatu,

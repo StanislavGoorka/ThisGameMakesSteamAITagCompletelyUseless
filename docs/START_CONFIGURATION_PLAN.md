@@ -16,7 +16,8 @@ działa (rezerwa0, moduł ID1) i jest w katalogu. P086-05: ID3 charged_debt
 (rezerwa3, dług2) działa; core ma komplet trzech konfiguracji. P086-06:
 model wyboru w SessionFlow (cykl, bramka ekranu, confirm czyści wybór).
 P086-07: robocze etykiety [AI PLACEHOLDER] start-config-* na ekranie
-startu/wyniku; publiczny build ich odmawia.
+startu/wyniku; publiczny build ich odmawia. P086-08: strzałki lewo/prawo
+wybierają konfigurację w rzeczywistym HWND.
 
 ## Konfiguracje
 

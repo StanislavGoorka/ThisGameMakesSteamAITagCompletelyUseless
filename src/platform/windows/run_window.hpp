@@ -182,7 +182,12 @@ class RunWindow final : public WindowCommandHandler
             {
                 selection_.reset();
                 reward_selection_.reset();
-                if (*key == InputKey::confirm)
+                // Left/right pick the configuration the next confirm starts.
+                if (*key == InputKey::east)
+                    static_cast<void>(flow_.select_next(run_));
+                else if (*key == InputKey::west)
+                    static_cast<void>(flow_.select_previous(run_));
+                else if (*key == InputKey::confirm)
                 {
                     auto next = run_;
                     auto flow = flow_;

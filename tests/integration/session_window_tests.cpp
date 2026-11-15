@@ -66,7 +66,8 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
                          repeat % 2 ? 1LL << 30 : 0);
         SendMessageW(hwnd, WM_KEYUP, VK_RETURN, 0);
     };
-    const std::array<WPARAM, 6> ignored{VK_SPACE, VK_TAB, VK_RIGHT,
+    // Left/right select the start configuration; these keys stay inert.
+    const std::array<WPARAM, 6> ignored{VK_SPACE, VK_TAB, VK_UP,
                                         'R',      'O',    VK_ESCAPE};
     SetWindowPos(hwnd, nullptr, -32000, -32000, 800, 600,
                  SWP_NOACTIVATE | SWP_NOZORDER | SWP_SHOWWINDOW);
@@ -82,6 +83,12 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         return session.view().label_text().find(*config_label.text) !=
                std::wstring_view::npos;
     };
+    const auto shows = [&](std::string_view id)
+    {
+        const auto label = windows::read_text_utf16(catalog, id);
+        return label.text && session.view().label_text().find(*label.text) !=
+                                 std::wstring_view::npos;
+    };
     if (kind == 0)
     {
         if (session.screen() != SessionScreen::start ||
@@ -94,8 +101,17 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         for (auto key : ignored)
             tap(key);
         if (!test::same_run(session.state(), initial) ||
-            session.selection().planning())
+            session.selection().planning() || !shows_config())
             return failed("start refusal");
+        // Right then left cycles the label without touching the run.
+        tap(VK_RIGHT);
+        if (!shows("start-config-range") || shows_config() ||
+            !test::same_run(session.state(), initial))
+            return failed("start select right");
+        tap(VK_LEFT);
+        if (!shows_config() || shows("start-config-range") ||
+            !test::same_run(session.state(), initial))
+            return failed("start select left");
         held_enter();
         run = start_run(initial.seed);
         if (session.screen() != SessionScreen::run ||
@@ -159,8 +175,13 @@ bool scenario(const std::filesystem::path &root, const TextCatalog &catalog,
         if (FAILED(session.error()) || session.view().showing_board())
             return failed("result repaint");
     }
+    // On the result screen left wraps to ID3, and Enter starts that choice.
+    tap(VK_LEFT);
+    if (!shows("start-config-charged") || shows_config() ||
+        !test::same_run(session.state(), run))
+        return failed("result select");
     held_enter();
-    const auto fresh = start_run(initial.seed);
+    const auto fresh = *start_run(initial.seed, StartConfigId::charged_debt);
     if (!test::same_run(session.state(), fresh) ||
         session.screen() != SessionScreen::run ||
         !session.view().showing_board() || session.selection().planning() ||
