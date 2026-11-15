@@ -70,6 +70,7 @@ capture_checkpoint(const RunState &run)
     if (a.first_overdrive_used != b.first_overdrive_used ||
         a.delivery_requirement != b.delivery_requirement ||
         run.reward_claimed != restored->reward_claimed ||
+        run.start_config != restored->start_config ||
         a.player_position != b.player_position ||
         a.turns_taken != b.turns_taken || a.packet != b.packet ||
         a.powered_nodes != b.powered_nodes ||

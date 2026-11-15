@@ -68,8 +68,11 @@ bool cases()
             copy.reward_claimed = true;
             copy.sector_number = *SectorNumber::from_value(sector_count);
             run.sector.ports[0] = *PortMask::from_bits(15);
+            auto other_config = before;
+            other_config.start_config = static_cast<StartConfigId>(2);
             if (!test::same_run(start_run(v.seed), before) ||
-                test::same_run(copy, before))
+                test::same_run(copy, before) ||
+                test::same_run(other_config, before))
                 return false;
         }
     }
@@ -112,10 +115,43 @@ bool boundary_builder()
     }
     return true;
 }
+bool start_configs()
+{
+    // Only ID1 is implemented; 2 and 3 stay reserved until their own steps.
+    for (unsigned raw = 0; raw <= UINT8_MAX; ++raw)
+    {
+        const auto parsed = start_config_from_value(raw);
+        if (parsed.has_value() != (raw == 1) ||
+            (parsed && *parsed != StartConfigId::baseline) ||
+            is_known_start_config(static_cast<StartConfigId>(raw)) !=
+                (raw == 1) ||
+            start_run(RunSeed{raw}, static_cast<StartConfigId>(raw))
+                    .has_value() != (raw == 1))
+            return false;
+    }
+    if (start_config_from_value(-1) || start_config_from_value(256) ||
+        start_config_from_value(INT64_MIN) ||
+        start_config_from_value(UINT64_MAX) || start_config_catalog.size() != 1)
+        return false;
+    for (std::uint64_t index = 0; index <= 256; ++index)
+    {
+        const RunSeed seed{index == 256 ? UINT64_MAX : index};
+        const auto chosen = start_run(seed, StartConfigId::baseline);
+        const auto implicit = start_run(seed);
+        if (!chosen || !test::same_run(*chosen, implicit) ||
+            chosen->start_config != StartConfigId::baseline ||
+            implicit.start_config != StartConfigId::baseline ||
+            chosen->sector.player_integrity != 3 ||
+            chosen->sector.reserve != 2 || chosen->sector.overload_debt != 0 ||
+            chosen->sector.modules.size() != 0)
+            return false;
+    }
+    return true;
+}
 } // namespace
 int main()
 {
-    if (!boundary_builder() || !cases())
+    if (!boundary_builder() || !cases() || !start_configs())
     {
         std::cerr << "Fresh run complete-state vector mismatch\n";
         return 1;

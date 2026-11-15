@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/sector_outcome.hpp"
+#include "core/start_config.hpp"
 
 namespace closed_circuit
 {
@@ -39,6 +40,8 @@ struct RunState
     // All inherited resources live here; the run never stores another copy.
     GameState sector;
     bool reward_claimed{false};
+    // Chosen once by start_run; every transition carries it unchanged.
+    StartConfigId start_config{StartConfigId::baseline};
 };
 
 enum class RunPhase : std::uint8_t

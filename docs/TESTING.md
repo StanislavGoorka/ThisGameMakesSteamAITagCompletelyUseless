@@ -1,5 +1,11 @@
 # Testy i bramki jakości
 
+P086-01: core_run_start sprawdza wszystkie256 wartości StartConfigId
+(fabryka, katalog i start_run akceptują wyłącznie ID1), wartości spoza uint8
+oraz 257 seedów: start_run(seed, ID1) równy start_run(seed) z HP3/rezerwą2/
+długiem0/pustym loadoutem. same_run porównuje pole; advance_run przenosi
+zarezerwowaną wartość2 bez powrotu do ID1, a capture checkpointu ją odrzuca.
+
 P085-20: windows_module_run kończy osiem runów z co najmniej jednym ID3..12,
 zapisując i odczytując każdą granicę przez adapter plików z kontrolą .bak;
 restore odtwarza stany i oferty. HWND pokazuje oznaczone etykiety nowych

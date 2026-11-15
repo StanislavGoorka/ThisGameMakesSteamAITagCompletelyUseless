@@ -7,6 +7,6 @@ namespace closed_circuit::test
 {
     return a.seed == b.seed && a.sector_number == b.sector_number &&
            a.reward_claimed == b.reward_claimed &&
-           same_state(a.sector, b.sector);
+           a.start_config == b.start_config && same_state(a.sector, b.sector);
 }
 } // namespace closed_circuit::test

@@ -95,7 +95,7 @@ bool cases()
                         if (!rejected(bad))
                             return false;
                     }
-                for (int field = 0; field < 16; ++field)
+                for (int field = 0; field < 17; ++field)
                 {
                     auto bad = boundary;
                     if (field == 0)
@@ -128,6 +128,9 @@ bool cases()
                         bad.sector.emitters.push_back(
                             *PeriodicEmitter::from_values(
                                 *EntityId::from_value(0), node(0), 2, 0, 1));
+                    // Not persisted before P086-02: refuse instead of losing.
+                    if (field == 16)
+                        bad.start_config = static_cast<StartConfigId>(2);
                     if (field == 15)
                         bad.sector.delivery_requirement =
                             *DeliveryRequirement::from_value(required == 3 ? 2

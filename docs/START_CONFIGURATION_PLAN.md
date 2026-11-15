@@ -8,6 +8,9 @@ modułów ani permanentnych bonusów: konfiguracja zmienia wyłącznie wartości
 początkowe istniejących pól runu i nie zależy od profilu ani poprzednich runów.
 Wszystkie trzy są dostępne od początku; odblokowania nie są częścią P086.
 
+Stan: P086-01 dodało StartConfigId, katalog {ID1}, RunState::start_config
+i start_run(seed, config). Capture checkpointu odmawia ID≠1 do P086-02.
+
 ## Konfiguracje
 
 Tokeny to stabilne wewnętrzne identyfikatory, nie teksty gry.

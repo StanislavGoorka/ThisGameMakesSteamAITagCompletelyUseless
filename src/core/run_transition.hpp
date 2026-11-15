@@ -25,7 +25,11 @@ namespace closed_circuit
     next.modules = run.sector.modules;
     reset_sector_module_usage(next);
     static_cast<void>(spawn_debt_pulse(next));
-    result.state = RunState{run.seed, number, std::move(next), false};
+    result.state = RunState{.seed = run.seed,
+                            .sector_number = number,
+                            .sector = std::move(next),
+                            .reward_claimed = false,
+                            .start_config = run.start_config};
     result.accepted = true;
     result.phase = run_phase(result.state);
     return result;

@@ -143,8 +143,17 @@ bool cases()
     static_cast<void>(full.sector.modules.add(ModuleId::rotation_range));
     static_cast<void>(full.sector.modules.add(ModuleId::terminal_rotation));
     const auto next = advance_run(full);
-    return next.accepted && next.state.sector.modules == full.sector.modules &&
-           !next.state.reward_claimed;
+    if (!next.accepted || next.state.sector.modules != full.sector.modules ||
+        next.state.reward_claimed ||
+        next.state.start_config != StartConfigId::baseline)
+        return false;
+    // The transition copies the field; it must never fall back to baseline.
+    auto carried = completed(0, 1);
+    carried.start_config = static_cast<StartConfigId>(2);
+    const auto moved = advance_run(carried);
+    return moved.accepted &&
+           moved.state.start_config == static_cast<StartConfigId>(2) &&
+           moved.state.sector_number.value() == 2;
 }
 } // namespace
 int main()
